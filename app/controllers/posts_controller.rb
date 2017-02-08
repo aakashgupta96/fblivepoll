@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
 
-  before_action :set_post, except: [:home,:steps]
+  before_action :set_post, except: [:home,:steps,:new, :create]
   before_action :authenticate_user!, except: [:home, :steps]
   before_action :authorize_user! , except: [:home, :steps, :new, ], only: [:frame, :save_canvas, :submit]
   before_action :set_graph, only: [:new, :submit]
@@ -14,15 +14,18 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
-    page_ids = @graph.get_object('me?fields=accounts.limit(100){parent_page}')["accounts"]["data"]
     @pages = Array.new()
-    page_ids.each do |page_id|
-      page_hash = Hash.new()
-      page_attrs = @graph.get_object("#{page_id['id']}?fields=picture{url},name")
-      page_hash["name"] = page_attrs["name"]
-      page_hash["id"] = page_attrs["id"]
-      page_hash["image"] = page_attrs["picture"]["data"]["url"]
-      @pages << page_hash
+    begin
+      page_ids = @graph.get_object('me?fields=accounts.limit(100){parent_page}')["accounts"]["data"]
+      page_ids.each do |page_id|
+        page_hash = Hash.new()
+        page_attrs = @graph.get_object("#{page_id['id']}?fields=picture{url},name")
+        page_hash["name"] = page_attrs["name"]
+        page_hash["id"] = page_attrs["id"]
+        page_hash["image"] = page_attrs["picture"]["data"]["url"]
+        @pages << page_hash
+      end
+    rescue
     end  
   end
 

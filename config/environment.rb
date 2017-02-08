@@ -3,7 +3,6 @@ require File.expand_path('../application', __FILE__)
 require "rmagick"
 require 'koala'
 require 'carrierwave/orm/activerecord'
-require 'frame'
 Rails.application.initialize!
 
 ActionMailer::Base.smtp_settings = {

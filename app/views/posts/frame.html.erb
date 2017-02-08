@@ -312,26 +312,26 @@
         backgroundGroup.add(backgroundImg);
         
         //Watermark group
-        var watermarkGroup = new Kinetic.Group({
-          x: 418,
-          y: 363,
-          draggable: false
-        });
-        var watermarkImg = new Kinetic.Image({
-          x: 0,
-          y: 0,
-          image: images.watermark,
-          width: 300,
-          height: 40,
-          name: 'image'
-        });
-        watermarkGroup.add(watermarkImg);
+        // var watermarkGroup = new Kinetic.Group({
+        //   x: 418,
+        //   y: 363,
+        //   draggable: false
+        // });
+        // var watermarkImg = new Kinetic.Image({
+        //   x: 0,
+        //   y: 0,
+        //   image: images.watermark,
+        //   width: 300,
+        //   height: 40,
+        //   name: 'image'
+        // });
+        // watermarkGroup.add(watermarkImg);
         
         layer1 = new Kinetic.Layer();
         layer2 = new Kinetic.Layer();
         layer3 = new Kinetic.Layer();
         layer1.add(backgroundGroup);
-        layer3.add(watermarkGroup);
+        //layer3.add(watermarkGroup);
         stage.add(layer1);       
         stage.add(layer2);
         stage.add(layer3);
