@@ -1,0 +1,806 @@
+<main>
+  
+  <input id="tab1" type="radio" name="tabs" >
+  <label for="tab1"><a href="/steps">Step 1</a></label>
+    
+  <input id="tab2" type="radio" name="tabs">
+  <label for="tab2"><a href="/posts/new">Step 2</a></label>
+    
+  <input id="tab3" type="radio" name="tabs" checked>
+  <label for="tab3"><a href="#">Step 3</a></label>
+    
+  <input id="tab4" type="radio" name="tabs">
+  <label for="tab4"><a href="#">Step 4</a></label>
+
+  <input id="tab5" type="radio" name="tabs">
+  <label for="tab5"><a href="#">Step 5</a></label>
+  
+  <section> 
+
+  <canvas class="circle" id='textCanvas' style=" display: none;"></canvas>
+  
+  <div class="row">
+    <div class="col s3" style="display: flex; flex-direction: column; justify-content: space-around;">
+      
+      <div class="file-field input-field">
+          <div class="btn">
+            <span class="white-text">Add Image</span>
+            <input id="addImageFile" type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+      </div>
+            
+      <a class="waves-effect waves-light btn" href="#modal1">Add Reaction</a>
+            
+      <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+          <h4>Select Reaction</h4>
+          <div>
+            <a class="add_reaction" data-value="like"><img class="col" src="/like.png"></a>
+            <a class="add_reaction" data-value="love"><img class="col" src="/love.png"></a>
+            <a class="add_reaction" data-value="haha"><img class="col" src="/haha.png"></a>
+            <a class="add_reaction" data-value="wow"><img class="col" src="/wow.png"></a>
+            <a class="add_reaction" data-value="sad"><img class="col" src="/sad.png"></a>
+            <a class="add_reaction" data-value="angry"><img class="col" src="/angry.png"></a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a id="close_add_image" href="#!" class="btn modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col s12">
+          <div class="card z-depth-5">
+            <div class="row">
+              <div class="input-field col s6">
+                  <input placeholder="Enter Text" id="addText" type="text">
+              </div>
+              <div class="input-field col s6">
+                <input id="colorPallete" class="jscolor">
+              </div>
+            </div>
+            <div id="sample" style=" display: flex; flex-wrap: wrap; justify-content: space-around; font-size: 25px; font-weight: 900; font-style: italic;text-align: center; max-width: 220px; overflow: hidden; padding: 10px;"></div>
+             
+            <div class="card-action">
+              <a id="addTextAnchor" class="btn" href="#">Add Text</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col z-depth-5">
+        <h4>Counter</h4>
+        <div class="row">
+          <div class="col s6">Color:</div>
+          <input class="jscolor col s6" id="counterColor">
+        </div>
+        <div class="range-field row">
+          <div class="col s6">Opacity: </div>
+          <input class="col s6" type="range" id="opacity" min="0" max="100" step="10" value="80"/>
+        </div>
+        Text Color:<input class="jscolor" id="counterTextColor">
+        <p class="range-field">
+          Radius: <input type="range" id="radius" min="0" max="20"/>
+        </p>
+      </div>
+      
+      <%= form_tag(save_canvas_path(@post.id), class: "col s12", id: "data_form")  do %> 
+
+        <input type="hidden" name="post_id" value="<%=@post.id%>">
+        <input id="color" type="hidden" name="color" value="#fffff">   
+        <input type="hidden" id="image_data" name="data_uri" value="">
+        <input id="submit_frame" type="submit" value="Submit Frame" class="btn"> 
+
+      <% end %>
+
+    </div>
+
+
+    <div class="col" id="container"></div>
+  </div>
+
+  <div class="row">
+  
+</div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/kineticjs/5.2.0/kinetic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.min.js"></script>
+    <script>
+     
+      $(document).ready(function(){
+        $('.modal').modal();
+      });
+
+      function update(activeAnchor) 
+      {
+        var group = activeAnchor.getParent();
+
+        var topLeft = group.find('.topLeft')[0];
+        var topRight = group.find('.topRight')[0];
+        var bottomRight = group.find('.bottomRight')[0];
+        var bottomLeft = group.find('.bottomLeft')[0];
+        var image = group.find('.image')[0];
+
+        var anchorX = activeAnchor.x();
+        var anchorY = activeAnchor.y();
+
+        // update anchor positions
+        switch (activeAnchor.name()) {
+          case 'topLeft':
+            topRight.y(anchorY);
+            bottomLeft.x(anchorX);
+            break;
+          case 'topRight':
+            topLeft.y(anchorY);
+            bottomRight.x(anchorX);
+            break;
+          case 'bottomRight':
+            bottomLeft.y(anchorY);
+            topRight.x(anchorX); 
+            break;
+          case 'bottomLeft':
+            bottomRight.y(anchorY);
+            topLeft.x(anchorX); 
+            break;
+        }
+
+        image.setPosition(topLeft.getPosition());
+
+        var width = topRight.x() - topLeft.x();
+        var height = bottomLeft.y() - topLeft.y();
+        if(width && height) 
+        {
+          image.setSize({width:width, height: height});
+        }
+      }
+
+
+      var layer1;
+      var layer2;
+      var layer3;
+      var stage;
+
+      function addAnchor(group, x, y, name) 
+      {
+        
+        var stage = group.getStage();
+        var layer = group.getLayer();
+
+        var anchor = new Kinetic.Circle({
+          x: x,
+          y: y,
+          stroke: '#666',
+          fill: '#ddd',
+          strokeWidth: 2,
+          radius: 0,
+          name: name,
+          draggable: true,
+          dragOnTop: false,
+        });
+        
+
+        anchor.on('dragmove', function(){
+          update(this);
+          this.getLayer().draw();
+        });
+        anchor.on('mousedown touchstart', function() {
+          group.setDraggable(false);
+          this.moveToTop();
+        });
+        anchor.on('dragend', function() {
+          group.setDraggable(true);
+          this.getLayer().draw();
+        });
+        // add hover styling
+        anchor.on('mouseover', function() {
+          var layer = this.getLayer();
+          document.body.style.cursor = 'pointer';
+          this.setStrokeWidth(4);
+          this.getLayer().draw();
+        });
+        anchor.on('mouseout', function() {
+          var layer = this.getLayer();
+          document.body.style.cursor = 'default';
+          this.strokeWidth(2);
+          this.getLayer().draw();
+        });
+
+        group.add(anchor);
+      }
+
+
+
+      function addCloseButton(group, x, y,name) 
+      {
+        
+        var stage = group.getStage();
+        var layer = group.getLayer();
+
+        var closeButton = new Kinetic.Circle({
+          x: x,
+          y: y,
+          stroke: '#666',
+          fill: 'red',
+          strokeWidth: 2,
+          radius: 0,
+          name: name,
+          dragOnTop: false,
+        });
+
+        var removeImage = function()
+        {
+          removeBorderEvents(this.parent);
+          if(this.parent.attrs.name == "reaction")
+          {
+            var targets = [];
+            var thisGroup = this.parent;
+            var groups = thisGroup.parent.children;
+            for(i=0;i<groups.length;i++)
+            {
+              if(groups[i].attrs.reaction == thisGroup.attrs.reaction)
+              {
+                targets.push(groups[i]);
+              }
+            }
+            for(i=0;i<targets.length;i++)
+            {
+              targets[i].remove();
+            }
+          }
+          else
+          {
+            this.parent.remove();
+          }
+          
+          layer.draw();
+        };
+        closeButton.on('click',removeImage)
+        group.add(closeButton);
+      }
+
+
+
+
+      function loadImages(sources, callback) 
+      {
+        var images = {};
+        var loadedImages = 0;
+        var numImages = 0;
+        for(var src in sources) {
+          numImages++;
+        }
+        for(var src in sources) {
+          images[src] = new Image();
+          images[src].onload = function() {
+            if(++loadedImages >= numImages) {
+              callback(images);
+            }
+          };
+          images[src].src = sources[src];
+        }
+      }
+
+
+      function initStage(images) 
+      {
+        /* First, create a stage and then layers. Then, create a new layer and add all the image groups to the layer and then add layer t the stage.*/
+        stage = new Kinetic.Stage({
+          container: 'container',
+          width: 720,
+          height: 405,
+        });
+        
+        // Background Image Group
+        var backgroundGroup = new Kinetic.Group({
+          x: 0,
+          y: 0,
+          draggable: false
+        });
+        var backgroundImg = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: images.background,
+          width: 720,
+          height: 405,
+          name: 'image'
+        });
+        backgroundGroup.add(backgroundImg);
+        
+        //Watermark group
+        var watermarkGroup = new Kinetic.Group({
+          x: 418,
+          y: 363,
+          draggable: false
+        });
+        var watermarkImg = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: images.watermark,
+          width: 300,
+          height: 40,
+          name: 'image'
+        });
+        watermarkGroup.add(watermarkImg);
+        
+        layer1 = new Kinetic.Layer();
+        layer2 = new Kinetic.Layer();
+        layer3 = new Kinetic.Layer();
+        layer1.add(backgroundGroup);
+        layer3.add(watermarkGroup);
+        stage.add(layer1);       
+        stage.add(layer2);
+        stage.add(layer3);
+        stage.draw();
+      }
+
+      var sources = {
+        background: "/uploads/post/<%=@post.id%>/background/1.png",
+        watermark: "/watermark.png"
+      };
+      loadImages(sources, initStage);
+
+    
+      
+      var addBorder = function()
+      {
+        this.find("Image")[0].attrs.stroke= "white",
+        this.find("Image")[0].attrs.strokeWidth=2,
+        temp = this.find("Circle");
+        for(i=0;i<temp.length;i++)
+        {
+          temp[i].attrs.radius = 5;
+        }
+        this.getLayer().draw();
+      };
+
+      var removeBorder = function()
+      {
+        var images = this.find("Image")
+        for(i=0;i<images.length;i++)
+        {
+          images[i].attrs.stroke = "";
+          images[i].attrs.strokeWidth=0;
+        }
+        var circles = this.find("Circle");
+        for(i=0;i<circles.length;i++)
+        {
+          circles[i].attrs.radius = 0;
+        }
+        this.getLayer().draw();
+      };
+
+      var addBorderEvents = function(group)
+      {
+          group.addEventListener('mouseover',addBorder);
+          group.addEventListener('mouseout',removeBorder);
+      };
+
+      var removeBorderEvents = function(group)
+      {
+        if(group != undefined)
+        {
+          removeBorder.call(group);
+          group.removeEventListener('mouseover',addBorder);
+          group.removeEventListener('mouseout',removeBorder);
+        }
+      }
+
+
+      var add_image = function(source,w,h)
+      {
+        var new_image = document.createElement("img")
+        new_image.src = source;
+        
+        var imageGroup = new Kinetic.Group({
+          x: 100,
+          y: 100,
+          draggable: true
+        });
+
+        var imageImg = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: new_image,
+          width: w,
+          height: h,
+          name: 'image'
+        });
+
+        imageGroup.add(imageImg);
+        addBorderEvents(imageGroup);
+        imageGroup.on('dragstart', function() {
+          this.moveToTop();
+        });
+        layer1.add(imageGroup);
+        
+        addCloseButton(imageGroup, 0, 0,'topLeft');
+        addAnchor(imageGroup, w, 0, 'topRight');
+        addAnchor(imageGroup, w, h, 'bottomRight');
+        addAnchor(imageGroup, 0, h, 'bottomLeft');
+
+        layer1.draw();
+
+      };
+      
+      var cursorMove = function()
+      {
+        document.body.style.cursor = "move";
+      };
+      var cursorDefault = function()
+      {
+        document.body.style.cursor = "default";
+      };
+      var addCursorEvents = function(group)
+      {
+        group.addEventListener('mouseover',cursorMove);
+        group.addEventListener('mouseout',cursorDefault);
+      };
+      var removeCursorEvents = function(group)
+      {
+        cursorDefault();
+        if(group != undefined)
+        {
+          group.removeEventListener('mouseover',cursorMove);
+          group.removeEventListener('mouseout',cursorDefault); 
+        }
+      };
+
+
+      var showDiv = function(e)
+      {
+        var divGroup = new Kinetic.Group({
+          x: 100,
+          y: 300,
+          name: "div"
+        });
+
+        var divBox = new Kinetic.Rect({
+          height: 25,
+          width: 140,
+          cornerRadius: 5,
+          fill: 'white',
+          stroke: 'black',
+          strokeWidth: 2  ,
+        });
+        
+        var msg = new Kinetic.Text({
+          text: this.attrs.reaction + " counter" ,
+          x: 10,
+          y: 1,
+          fontSize: 20
+        });
+        
+
+        divGroup.add(divBox);
+        divGroup.add(msg);
+        var rect = document.getElementById("container").getBoundingClientRect();
+        divGroup.attrs.x = e.clientX-rect.left;
+        divGroup.attrs.y = e.clientY-rect.top;
+        layer2.add(divGroup);
+        layer2.draw();
+        
+      };
+
+      var hideDiv = function(e)
+      {
+        var groups = layer2.find("Group");
+        var target = false;
+        for(i=0;i<groups.length;i++)
+        {
+          if(groups[i].attrs.name == "div")
+          {
+            target = groups[i];
+            break;
+          }
+        }
+        
+        if(target!=false)
+        {
+          target.remove();
+        }
+        layer2.draw();
+      };
+
+      var addHoverEvents = function(group)
+      {
+        group.addEventListener('mouseover',showDiv);
+        group.addEventListener('mouseout',hideDiv);
+      }
+
+      var removeHoverEvents = function(group)
+      {
+        hideDiv();
+        if(group != undefined)
+        {
+          group.removeEventListener('mouseover',showDiv);
+          group.removeEventListener('mouseout',hideDiv); 
+        }
+      }
+      var addCounter = function(reaction)
+      {
+
+        var counterGroup = new Kinetic.Group({
+           x: 60,
+           y: 170,
+           name: "counter",
+           reaction: reaction,
+           draggable: true
+         });
+
+        var counter = new Kinetic.Rect({
+          width: 140,
+          height: 40,
+          fill: "#"+document.getElementById("counterColor").value,
+          stroke: 'white',
+          strokeWidth: 2,
+          opacity: document.getElementById("opacity").value/100,
+          cornerRadius: document.getElementById("radius").value
+        });
+
+        var count = new Kinetic.Text({
+          text: "0000000",
+          fill: "#" + document.getElementById("counterTextColor").value,
+          fontSize: 25,
+          fontStyle: "bold",
+          x: 20,
+          y: 6
+        });
+
+
+        counterGroup.add(counter);
+        counterGroup.add(count);
+
+        addCursorEvents(counterGroup);
+        addHoverEvents(counterGroup);
+        layer2.add(counterGroup);
+        layer2.draw();
+      }
+
+      var addReaction = function(source)
+      {
+        var temp = $(this).data("value");
+        var new_image = document.createElement("img")
+        new_image.src = "/"+temp+".png";
+        
+        var imageGroup = new Kinetic.Group({
+           x: 100,
+           y: 100,
+           name: "reaction",
+           reaction: temp,
+           draggable: true
+         });
+
+        var imageImg = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: new_image,
+          width: 50,
+          height: 50,
+          name: 'image'
+        });
+
+        imageGroup.add(imageImg);
+        addBorderEvents(imageGroup);
+        imageGroup.on('dragstart', function() {
+          this.moveToTop();
+        });
+        layer2.add(imageGroup);
+        
+        addCloseButton(imageGroup, 0, 0,'topLeft');
+        addAnchor(imageGroup, 50, 0, 'topRight');
+        addAnchor(imageGroup, 50, 50, 'bottomRight');
+        addAnchor(imageGroup, 0, 50, 'bottomLeft');
+        
+        addCounter(temp);
+        
+        layer2.draw();
+
+
+        document.getElementById("close_add_image").click();
+      };
+      
+
+
+      //document.querySelector('input[type="button"]').addEventListener('click',toggle_anchor)
+
+      var addImageFile = function(evt)
+      {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                add_image(fr.result,200,200);
+            }
+            fr.readAsDataURL(files[0]);
+        }
+
+        // Not supported
+        else {
+            // fallback -- perhaps submit the input to an iframe and temporarily store
+            // them on the server until the user's session ends.
+        }
+        //document.getElementById("close_add_image").click();
+      }
+      
+      var addSample = function()
+      {
+        document.getElementById("sample").innerHTML = this.value;
+      }
+
+      var changeSample = function()
+      {
+        document.getElementById("sample").style.color = "#"+this.value ;
+      }
+
+      var addTextToFrame = function()
+      {
+        var text = document.getElementById("sample").innerHTML;
+        if(text.length==0)
+        {
+          return;
+        }
+        var tCtx = document.getElementById('textCanvas').getContext('2d');
+        tCtx.font = "italic bold 60px Verdana";
+        tCtx.canvas.width = tCtx.measureText(text).width;
+        tCtx.canvas.height = 70;
+        //We need to again set font to 30px otherwise things won't go as expected!!! Don't know why :P
+        tCtx.font = "italic bold 60px Verdana";
+        tCtx.fillStyle="#"+document.getElementById("colorPallete").value;
+        tCtx.textAlign="center"; 
+        tCtx.textBaseline="middle"; 
+        tCtx.fillText(text,tCtx.canvas.width/2,tCtx.canvas.height/2);
+        add_image(tCtx.canvas.toDataURL(),tCtx.canvas.width,tCtx.canvas.height);
+      }
+ 
+      var changeFillColor = function()
+      {
+        var groups = layer2.children;
+        for(i=0;i<groups.length;i++)
+        {
+          if(groups[i].attrs.name == "counter")
+          {
+            groups[i].find("Rect")[0].attrs.fill = "#"+this.value;
+          }
+        }
+
+        layer2.draw();
+      };
+
+      var changeOpacity = function()
+      {
+        var groups = layer2.children;
+        for(i=0;i<groups.length;i++)
+        {
+          if(groups[i].attrs.name == "counter")
+          {
+            groups[i].find("Rect")[0].setOpacity(this.value/100);
+          }
+        }
+
+        layer2.draw();
+      };
+
+      var changeTextColor = function()
+      {
+        var groups = layer2.children;
+        for(i=0;i<groups.length;i++)
+        {
+          if(groups[i].attrs.name == "counter")
+          {
+            groups[i].find("Text")[0].attrs.fill = "#"+this.value;
+          }
+        }
+
+        layer2.draw();
+      };
+      
+      var changeRadius = function()
+      {
+        var groups = layer2.children;
+        for(i=0;i<groups.length;i++)
+        {
+          if(groups[i].attrs.name == "counter")
+          {
+            groups[i].find("Rect")[0].cornerRadius(this.value);
+          }
+        }
+        layer2.draw();
+      };
+      
+
+      var sendImage = function(e)
+      {
+          e.preventDefault();
+          var groups = layer1.children;
+          
+          for(var i=0;i<groups.length;i++)
+          { 
+            removeCursorEvents(groups[i]);
+            removeBorderEvents(groups[i]);
+          }
+          groups = layer2.children;
+          for(var i=0;i<groups.length;i++)
+          {
+            removeHoverEvents(groups[i]);
+            removeCursorEvents(groups[i]);
+            removeBorderEvents(groups[i]);
+          }
+
+          groups = layer2.find("Text")
+          for(i=0;i<groups.length;i++)
+          {
+            groups[i].setText("");
+          }
+          
+          layer1.draw();
+          layer2.draw();
+          layer3.draw();
+
+          groups = layer2.find("Group");
+          var form = document.getElementById("data_form");
+          for(i=0;i<groups.length;i++)
+          {
+
+            if(groups[i].attrs.name == "counter")
+            {
+              var x = document.createElement("input");
+              x.name = "reaction["+groups[i].attrs.reaction+"][x]";
+              x.value =  groups[i].attrs.x + 20;
+              x.type="hidden";
+              var y = document.createElement("input");
+              y.name = "reaction["+groups[i].attrs.reaction+"][y]";
+              y.value =  groups[i].attrs.y + 6;
+              y.type="hidden";
+              form.appendChild(x);
+              form.appendChild(y);
+              document.getElementById("color").value = groups[i].find("Text")[0].attrs.fill;
+            }
+          }
+          stage.toDataURL({
+            callback: function(dataUrl) {
+              document.getElementById("image_data").value = dataUrl;    
+              document.getElementById("data_form").submit();
+          }
+          });
+        
+      }
+
+
+      $(".add_reaction").on("click",addReaction);
+      document.getElementById("addImageFile").addEventListener('change',addImageFile); 
+      document.getElementById("addText").addEventListener('input', addSample);
+      document.getElementById("colorPallete").addEventListener('change', changeSample);
+      document.getElementById("addTextAnchor").addEventListener('click', addTextToFrame);
+      document.getElementById("counterColor").addEventListener('change', changeFillColor);
+      document.getElementById("opacity").addEventListener('change',changeOpacity);
+      document.getElementById("counterTextColor").addEventListener('change', changeTextColor);
+      document.getElementById("radius").addEventListener('change',changeRadius);
+      document.getElementById("submit_frame").addEventListener('click',sendImage);
+
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
+</main>

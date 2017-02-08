@@ -1,0 +1,608 @@
+// Place all the styles related to the Posts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,600,700'); 
+
+main{
+  padding-top: 100px;
+  min-width: 320px;
+  max-width: 1200px;
+  padding: 30px;
+  margin: 0 auto;
+  margin-top: 30px; 
+  margin-bottom: 100px;
+  background: #fff;
+  transition: all 0.5s ease;
+
+  >label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  font-size: 30px;
+  padding: 15px 25px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid transparent;
+  width: 19%;
+  }
+
+  a{
+    text-decoration: none;
+    color: #aaa;
+  }
+
+  a:hover {
+    color: #666;
+    cursor: pointer;
+  }
+
+  input[name=tabs] {
+    display: none;
+  }
+
+
+  input[name=tabs]:checked + label {
+    border: 1px solid #ddd;
+    border-top: 2px solid orange;
+    border-bottom: 1px solid #fff;
+    a
+    {
+      color: #666;
+    }
+  }
+
+  #tab1:checked ~ #content1,
+  #tab2:checked ~ #content2,
+  {
+    display: block;
+  }
+
+
+  section {
+    padding: 20px 0 0;
+    border-top: 1px solid #ddd;
+  }
+
+  #dashboard{
+  
+      display : flex;
+      flex-wrap : wrap;
+      flex-direction:column;
+
+      .aim
+      {
+        padding: 30px 10% 30px 10%;
+        font-size: 28px;
+        line-height: 40px;
+        text-align:center;
+        font-weight: 600;
+        
+        span
+        {
+          color: orange;
+        }
+      }
+      
+      .division{
+      padding: 30px 40px 30px 40px;
+      display:flex;
+      justify-content:space-between;
+      }
+
+      .step_image{
+        height: 360px;
+        width:470px;
+        margin-right: 50px;
+      } 
+
+      .text{
+        margin-top: 100px;
+        width: 40%;
+        color: hsl(0,0%,30%);
+        font-size: 18px;
+        text-align:center;
+      }
+
+      #empty{
+        border: 1px solid orange;
+        margin: 20px 300px 20px 300px;
+      }
+
+      .alert
+      {
+        margin-top: 60px;
+        display:flex;
+        justify-content: space-around;
+        text-align:center;
+        font-size:32px;
+        font-weight: 600;
+      }
+
+      .fb_button
+      {
+        align-items: center;
+        background: #4267b2;
+        color: white;
+        font-size:20px;
+        font-weight: 600;
+        padding: 6px;
+        transition: all 0.1s ease-out;
+        box-shadow: 0 0 5px 1px hsl(220,46%,48%);
+      }
+
+      a[class="fb_button"]:hover
+      {
+        padding: 7px;
+        font-size: 21px;
+      }
+  }
+
+  .nextpost{ 
+      padding : 50px;
+      display:flex;
+      justify-content: space-around;
+
+      a
+      {
+        background-color: orange;
+        color: white;
+        font-size:26px;
+        font-weight: 600;
+        padding: 10px 20px 10px 20px;
+        box-shadow: 1px 1px 3px 1px hsl(29,100%,40%);
+        transition: all 0.1s ease-out;
+      }
+  }
+
+  #new_post{
+
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    flex-wrap :wrap;
+    margin-top: 50px;
+
+    .field{
+      display : flex;
+      width: 50%;
+      flex-wrap : wrap;
+      padding-bottom: 10px;
+    }
+
+    label{
+      font-size: 25px;
+      width: 25%;
+      height: 30px;
+      font-weight : bolder;
+      display : inline;
+      padding : 0;
+      margin-right: 50px;
+      text-align: initial;
+    }
+
+    input[type="text"]{
+        display : block;
+        width: 50%;
+        border:none;
+        border-bottom : solid 1px #bbb;
+        transition: border 0.1s;
+    }
+
+    input[type="text"]:focus{
+        outline: none !important;
+        border-bottom : solid 2px orange;
+    }
+
+    input[type=submit]{
+        color:white;
+        background-color : orange;
+        border-color:orange;
+        height : 40px;
+        width: 120px;
+        text-align:center;
+        font-size : 30px;
+        border-shadow : none;
+    }
+  }
+}
+
+
+#new_compare_object{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  .object
+  {
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .item_head
+    {
+      color: orange;
+      text-align: center; 
+      font-size: 30px;
+      margin: 15px 0 15px 0;
+    }
+  }
+  .field{
+    display : flex;
+    align-items: center;
+    width:60%;
+    }
+
+   label{
+      font-size: 20px;
+      width: 25%;
+      height : 20px;
+      font-weight : bolder;
+      display : inline;
+    }
+
+   input[type="text"]{
+        display : inline;
+        width: 75%;
+        border:none;
+        border-bottom : solid 1px #bbb;
+        transition: border 0.1s;
+    }
+
+    input[type="text"]:focus{
+        outline: none !important;
+        border-bottom : solid 2px orange;
+    }
+    
+    input[type="submit"]{
+        color:white;
+        background-color : orange;
+        border-color:orange;
+        height : 40px;
+        width: 120px;
+        text-align:center;
+        font-size : 30px;
+        border-shadow : none;
+    }
+
+    .reaction
+    {
+      width: 40px;
+      height: 40px;
+      margin:0 25px 0 5px;
+    }
+}
+
+#frame{
+  display:flex;
+  flex-wrap:wrap;
+  flex-direction:column;
+  align-items:center;
+
+  h2{
+      margin-top: 20px;
+      margin-bottom: 30px;
+      font-size: 50px;
+      color: orange;
+      font-weight: bolder;
+  }
+
+  img{
+      height: 405px;
+      width: 720px;
+      margin-bottom: 10px;
+  }
+
+  a{
+      text-decoration:none;
+      background-color:orange;
+      color:white;
+      font-size: 20px;
+      width: 150px;
+      height: 40px;
+      text-align:center;
+      padding-top: 7px;
+    }
+}
+
+#last_step{
+  display : flex;
+      flex-wrap : wrap;
+      flex-direction:column;
+      
+      #division{
+      padding: 50px 30px 50px 30px;
+      display:flex;
+      justify-content:space-between;
+      }
+
+      .step_image{
+        height: 360px;
+          width:470px;
+          margin-right: 50px;
+      } 
+
+      #text{
+        width: 40%;
+        color: hsl(0,0%,30%);
+        font-size: 22px;
+        text-align:center;
+        padding-top: 100px;
+      }
+
+      span{
+          font-size: 30px;
+          color: red;
+      }
+
+      .button{
+        padding : 50px;
+        display:flex;
+        justify-content: space-around;
+        background-color: orange;
+        color: white;
+        font-size:26px;
+        font-weight: 600;
+        width: 50%;
+        margin: 0 auto;
+        padding: 10px 20px 10px 20px;
+        box-shadow: 1px 1px 3px 1px hsl(29,100%,40%);
+        transition: all 0.1s ease-out;
+        margin-bottom: 50px;
+      }
+}
+
+.back_image
+{
+	background-image: image-url('home.jpg');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	height:574px;
+	display: flex;
+	flex-direction:column;
+	justify-content: space-around;
+	width:100%;
+
+	.black_box
+	{
+		display:flex;
+		justify-content: space-around;
+		align-items: center;
+		width: 40%;
+    margin: 2% 0% 2% 50%;
+		background-color: black;
+		opacity: 0.7;
+		border-radius: 60px;
+    @media screen and (max-width: 480px)
+    {
+      margin: 2% 0 2% 10%;
+      width: 80%;
+    }
+		p
+		{
+      margin: 30px 30px 30px 30px;
+			font-weight: 200;
+			font-size: 32px;
+			line-height: 44px;
+			color: white;
+			text-align: center;
+      @media screen and (max-width: 1100px)
+      {
+        font-size: 26px; 
+        line-height: 38px; 
+      }
+      @media screen and (max-width: 900px)
+      {
+        font-size: 24px;
+        line-height: 30px;
+      }
+      @media screen and (max-width: 720px)
+      {
+        font-size: 20px; 
+        line-height: 28px; 
+      }
+      
+			a
+			{
+				text-decoration:none;
+				color: red;
+			}
+		}
+	}
+}
+
+.section
+{
+  background: white;
+	padding: 60px 0 60px 0;
+  .heading
+	{
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		font-size: 48px;
+    line-height: 50px;
+		text-align:center;
+		font-family: "Futura";
+		color: hsl(0,0%,26%);
+		margin-bottom: 60px;
+	}
+	.content
+	{
+    padding: 0px 24% 0px 24%;
+		text-align:center;
+		line-height: 32px;
+		font-size:19px;
+		color:hsl(0, 0%, 40%);
+		margin-bottom:20px;
+		display:flex;
+    justify-content: space-around;
+		flex-wrap: wrap;
+    @media screen and (max-width: 1100px)
+    {
+      padding: 0 12% 0 12%;
+    }
+    @media screen and (max-width: 900px)
+    {
+      padding: 0 10% 0 10%;
+    } 
+	}
+  .list_head
+  {
+    padding: 0px 18% 0px 18%;
+    text-align:center;
+    line-height: 30px;
+    font-size:24px;
+    color:hsl(0, 0%, 40%);
+    margin-bottom:20px;
+    font-weight: 600;
+    @media screen and (max-width: 900px)
+    {
+      padding: 0 10% 0 10%;
+      font-size: 20px;
+    } 
+  }
+  .list
+  {
+    padding: 0 10% 0 10%;
+    list-style: square;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
+    @media screen and (max-width: 900px)
+    {
+      flex-direction: column;
+    } 
+
+    li
+    {
+      width: 44%;
+      margin: 20px;
+      @media screen and (max-width: 900px)
+      {
+        width: 100%;  
+        margin: 10px;
+      } 
+    }
+  }
+  .video_box
+  {
+    padding: 0 20px 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    iframe
+    {
+      width: 580px;
+      height: 380px;
+
+      @media screen and (max-width: 480px)
+      {
+        height: 250px;
+      }
+    }
+  }
+
+}
+
+.grey
+{
+  background: hsl(0,0%,95%);
+  ul
+  {
+    padding: 0 8% 0 10%;
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    @media screen and (max-width: 900px)
+    {
+      flex-direction: column;
+      padding: 0 4% 0 5%;
+    }
+    @media screen and (max-width: 900px)
+    {
+      padding: 0 2% 0 2%;
+    }
+  }
+  li
+  {
+    margin: 0 20px 0 20px;
+    @media screen and (max-width: 900px)
+    {
+      display: flex;
+      margin-bottom: 35px;
+    }
+
+    .name
+    {
+      text-align: center;
+      font-size: 27px;
+      font-weight: 600;
+
+      @media screen and (max-width: 900px)
+      {
+        font-size: 23px;
+        text-align: left;
+        min-width: 150px;
+        padding-right: 20px;
+      }
+    }
+    .description
+    {
+      margin-top: 15px;
+      padding: 15px 0 15px 0;
+      font-size: 16px;
+      text-align: center;
+
+      @media screen and (max-width: 900px)
+      {
+        padding: 0px;
+        margin: 0px;
+        text-align: left;
+      }
+    }
+  }
+  
+}
+.field
+{
+  margin: 10px 0 5px 0;
+  line-height: 40px;
+}
+.select
+{
+  display: inline-block !important;
+  width: 150px;
+  background: white;
+  color: #555;
+  margin: 0 7px 0 7px;
+  font-size: 16px;
+  border: 0px;
+  box-shadow: 1px 1px 3px #777;
+}
+
+.file_select
+{
+  padding: 3px 0 1px 3px;
+  font-size:16px;
+  box-shadow: 1px 1px 1px #777;
+}
+
+@media screen and (max-width: 650px) {
+  label {
+    font-size: 0;
+  }
+  label:before {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+
+
+@media screen and (max-width: 400px) {
+  label {
+    padding: 15px;
+  }
+}

@@ -1,0 +1,87 @@
+<main>
+  
+  <input id="tab1" type="radio" name="tabs" checked>
+  <label for="tab1"><a href="/steps">Step 1</a></label>
+    
+  <input id="tab2" type="radio" name="tabs">
+  <label for="tab2"><a href="/posts/new">Step 2</a></label>
+    
+  <input id="tab3" type="radio" name="tabs">
+  <label for="tab3"><a href="#">Step 3</a></label>
+    
+  <input id="tab4" type="radio" name="tabs">
+  <label for="tab4"><a href="#">Step 4</a></label>
+
+  <input id="tab5" type="radio" name="tabs">
+  <label for="tab5"><a href="#">Step 5</a></label>
+    
+  <section id= "dashboard">
+  	<div class="aim">
+  		Our aim is to generate a <span>stream key</span> and <span>video embed link</span> from facebook so that we can use it to stream video on your page.
+  	</div>
+	<div class="division">
+	<p class="text">a. Click the <strong>NEW POST</strong> button and login to your facebook account. Select <strong>"Share on a page you manage"</strong> option from the options provided and then click the next button. <strong>Come back to us for furthur instructions!</strong></br></br><a id="liveButton" class="fb_button">New Post</a></p>
+  
+	<%= image_tag "step_1_2.jpg" ,:class => "step_image"%>
+	</div>
+
+	<div id="empty"></div>
+
+  <div class="division">
+  <p class="text">b. If your browser blocks pop ups from our site, allow them as shown in figure and click 'Finished' button and <strong>start again from Step 1.</strong></p>
+  <%= image_tag "step_1_3.jpg" ,:class => "step_image"%>
+  </div>
+
+  <div id="empty"></div>
+
+	<div class="division">
+	<p class="text">c. A new screen will pop up showing information regarding the video. Fill out the details related to your video in facebook window. </br> Copy the <strong>STREAM KEY</strong> and give it to us in Step 2 and then <strong>Come back for next instruction.</strong></p>
+	<%= image_tag "step_1_4.jpg" ,:class => "step_image"%>
+	</div>
+
+  <div id="empty"></div>
+
+  <div class="division">
+  <p class="text">d. Go to settings and click the embed option as shown in picture.</p>
+  <%= image_tag "step_1_5.jpg" ,:class => "step_image"%>
+  </div>
+
+  <div id="empty"></div>
+  
+  <div class="division">
+  <p class="text">e. Copy <strong>embed video link</strong> and give it to us in step 2.</p>
+  <%= image_tag "step_1_6.jpg" ,:class => "step_image"%>
+  </div>
+
+  <div class="alert"> Do not close the facebook window </div>
+	</section>
+
+	<div class="nextpost">
+	 <%= link_to 'NEXT', new_post_path%>
+	</div>
+
+	
+</main>
+<script>
+document.getElementById('liveButton').onclick = function() {
+  FB.ui({
+    display: 'popup',
+    method: 'live_broadcast',
+    phase: 'create',
+}, function(response) {
+    if (!response.id) {
+      alert('dialog canceled');
+      return;
+    }
+    //alert('stream url:' + response.secure_stream_url);
+    FB.ui({
+      display: 'popup',
+      method: 'live_broadcast',
+      phase: 'publish',
+      broadcast_data: response,
+    }, function(response) {
+    });
+  });
+};
+</script>
+

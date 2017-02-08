@@ -1,0 +1,47 @@
+<%= form_for(@post) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, required: true, placeholder: "Title"%>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :caption %>
+    <%= f.text_field :caption, required: true, placeholder: "Caption"%>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :background_Image %>
+    <%= f.file_field :background, {required: 'true', class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 5.megabytes} }%>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :playback_audio %>
+    <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 5.megabytes} }%>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :Page %>
+    <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id']] }),{},{class: 'select'}) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Duration %>
+    <%=  f.time_select :duration, {start_hour: 0 , end_hour: 3, default:{hour: 0, minute: 30}},{class: 'select'} %>
+  </div><br>
+  <div class="actions">
+    <%= f.submit "Next" %>
+  </div>
+<% end %>
+

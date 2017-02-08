@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shuriken Live</title>
+  <%= stylesheet_link_tag 'application', media: 'all'%>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">  
+    <meta name="description" content="A tool for posting customized FB Live videos for polling purpose.">
+    <meta name="keywords" content="Fb,facebook,live,streaming,codingninjas,shuriken,shurikenlive">
+
+    <link rel="shortcut-icon" href="favicon.ico">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  </head>
+<body>
+<% unless notice.nil? %>
+  <div class="notice"><%=notice %></div>
+<% end %>
+
+ <% unless alert.nil? %>
+ <div id= "alert" style="display: none;"><%=alert%></div>
+ <script >
+   var x = document.getElementById("alert").innerHTML
+   alert(x)
+ </script>
+<% end %>
+
+<% if user_signed_in? %>
+  <%= link_to "Sign Out", destroy_user_session_path, method: "delete"%>
+<% else %>
+  <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %>
+<% end %>
+<!-- <header id="header">
+    <a href="http://www.codingninjas.in"><%#= image_tag "logo.png" %></a>
+    <nav>
+      <a href="#header" class="show" ><i class="fa fa-bars" aria-hidden="true"></i></a>
+            <a href="#x" class="hide" ><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <ul class="col l3 pull-s3">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#about_us">About Us</a></li>
+        <li><a href="/#tips">Tips</a></li>
+        <li>
+          <div>
+            <a id="get_started" href="/steps">GET STARTED</a>
+          </div>
+        </li>
+      </ul>
+    </nav>  
+</header>
+ -->
+<%= yield %>
+
+<footer id="footer">
+  <div class="people">
+    <p>
+      DEVELOPED BY:
+    </p>
+    <ul>
+      <li>
+        <a href="https://in.linkedin.com/in/aakash-gupta-876883124">Aakash Gupta</a>
+      </li>
+      <li>
+        <a href="https://www.facebook.com/apoorva.smartgirl">Apoorva Sharma</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="people">
+    <p>
+      GUIDED BY:
+    </p>
+    <ul>
+      <li>
+        <a href="https://in.linkedin.com/in/ankushsingla">Ankush Singla</a>
+      </li>
+      <li>
+        <a href="https://in.linkedin.com/in/tushar-tuteja-00350613">Tushar Tuteja</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="people">
+    <p>
+      CONTACT US:
+    </p>
+    <div>
+      <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:apoorva.11596@gmail.com">apoorva.11596@gmail.com</a>
+    </div>
+    <div>
+      <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:aakash@shurikenlive.com">aakash@shurikenlive.com</a>
+    </div>
+    <div>
+      <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:contact@codingninjas.in">contact@codingninjas.in </a>
+    </div>    
+  </div>
+</footer>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '241493676272963',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+</body>
+</html>

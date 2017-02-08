@@ -1,0 +1,277 @@
+  /*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+@import "materialize";
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+
+
+@font-face {
+  font-family: "Proxima Nova";
+  src: url('proxima-nova-regular.ttf');
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face{
+  font-family:"Futura";
+  src: url('futura1.ttf');
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  line-height: 26px;
+  color:hsl(0,0%,30%);
+  font-family: Proxima Nova;
+  box-sizing: border-box;
+}
+
+body {
+  background: #eee;
+}
+
+body>header
+{
+  padding-left: 10%;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background-color: rgba(255,255,255,0.95);
+  display:flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  border-width:0 0 1 0;
+  border-style: solid;
+  border-color: hsl(0,0%,95%);
+  z-index: 1000;
+}
+body
+{
+  padding-top:80px;
+}
+body>header>a>img
+{
+  margin-top:5px;
+  height:60px;
+  width:145px;
+}
+body>header>nav
+{
+  margin-right: 20%;
+}
+body>header>nav>a
+{
+  color: orange;
+  display: none;
+}
+body>header>nav>ul
+{
+  list-style: none;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+body>header>nav>ul>li
+{
+  height:40px;
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
+}
+body>header>nav>ul>li>a
+{
+  font-family: 'Open Sans', sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  color:hsl(0,0%,40%);
+  font-weight: bolder;
+}
+body>header>nav>ul>li>div
+{
+  width: 140px;
+  height: 40px;
+  background-color: orange;
+  #box-shadow: 1px 1px 3px 1px hsl(29,100%,40%);
+}
+body>header>nav>ul>li>div>a
+{
+  text-decoration: none;
+  font-size: 15px;
+  font-family: 'Open Sans', sans-serif;
+  height:100%;  
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-weight: 900;
+  color:white;
+  transition: all 0.1s ease;
+}
+body>header>nav>ul>li>div>a:hover
+{
+  font-size: 16px;
+  box-shadow: 0 0 3px 1px orange;
+}
+body>header>nav>ul>li>a:hover
+{
+  color:orange;
+}
+p {
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+#footer{
+     padding: 50px;
+     background-color: hsl(0, 0%, 8%);
+     display:flex;
+     flex-wrap: wrap;
+     justify-content: space-around;
+  }
+
+  .people{
+      padding: 60px;
+  }
+  .people a 
+  {
+    color:white;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  .people a:hover{
+    color: orange;
+  }
+
+  .people p{
+    color: orange;
+    font-size: 30px;
+  }
+  .people>ul
+  {
+    list-style: none;
+  }
+  .people>ul>li
+  {
+    padding-bottom: 15px;
+  }
+  .people > div{
+    padding-bottom: 20px;
+  }
+  
+  .people>div>i{
+    font-size: 25px;
+    color : green;
+    padding-right: 15px;
+  }
+
+@media screen and (max-width:1130px)
+{
+  #footer
+  {
+    padding: 30px 10px 30px 10px;
+  }
+  .people
+  {
+    padding: 40px 20px 40px 20px;
+  }
+}
+
+
+@media all and (max-width:1090px)
+{
+  body>header
+  {
+    padding-left: 0;
+  }
+  body>header>nav
+  {
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width:900px)
+{
+  #footer
+  {
+    #flex-direction: column;
+  }
+  .people
+  {
+    padding: 40px 20px 40px 20px;
+  }
+}
+
+@media all and (max-width: 800px)
+{
+  #header
+  {
+    flex-direction: column; 
+    justify-content: space-around;
+  }
+  #header>nav>ul
+  {
+    height:0;
+    overflow: hidden;
+    transition: all 1s ease;
+  } 
+  .show
+  {
+    display:inline; 
+    position: absolute;
+    top:15px;
+    left:0px;
+    padding-left:20px;
+    font-size: 30px;
+  }
+  .show>i
+  {
+   color: orange;
+  }
+
+  #header:target .show
+  {
+   display: none;
+  }
+  #header:target > nav >ul
+  {
+   height: 80px;
+  }
+  #header:target .hide
+  {
+    display:inline;
+    position: absolute;
+    top:15px;
+    left:0px;
+    padding-left: 20px;
+    font-size : 30px;
+  }
+  #header:target .hide > i
+  {
+    color: orange;  
+  }
+  #header:target + main
+  {
+    margin-top:80px;
+  }
+}
+
+@media screen and (max-width:720px)
+{
+  #footer
+  {
+    flex-direction: column;
+  }
+}
