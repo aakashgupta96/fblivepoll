@@ -2,7 +2,7 @@ class PostsController < ApplicationController
 
   before_action :set_post, except: [:home,:steps,:new, :create]
   before_action :authenticate_user!, except: [:home, :steps]
-  before_action :authorize_user! , except: [:home, :steps, :new, ], only: [:frame, :save_canvas, :submit]
+  before_action :authorize_user! , only: [:frame, :save_canvas, :submit]
   before_action :set_graph, only: [:new, :submit]
   require 'base64'
   
@@ -70,7 +70,7 @@ class PostsController < ApplicationController
       Resque.enqueue(UpdateFrame,@post.id)
       Resque.enqueue(NotifyAdmins,@post.id)
     else
-      redirect_to root_path, alert: "Sorry! Can't process you request"
+      redirect_to root_path, alert: "Sorry! All slots are taken. Please try after sometime."
       return
     end
   end
@@ -110,8 +110,7 @@ class PostsController < ApplicationController
     def workers_available?
       start = 0
       update = 0
-      Resque::Worker.all.each do |worker|
-        
+      Resque::Worker.all.each do |worker| 
         unless worker.working?
           start = 1 if worker.queues.first == "start_stream"
           update = 1 if worker.queues.first == "update_frame"

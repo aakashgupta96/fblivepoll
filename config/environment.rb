@@ -4,7 +4,6 @@ require "rmagick"
 require 'koala'
 require 'carrierwave/orm/activerecord'
 Rails.application.initialize!
-
 ActionMailer::Base.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
