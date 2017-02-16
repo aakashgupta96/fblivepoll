@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get '/posts/:post_id/submit' => 'posts#submit', as: "submit"
   
   #get '/editor/createFrame'
-  #get '/editor/testFrame'
+  get '/editor/testFrame'
   
 
 

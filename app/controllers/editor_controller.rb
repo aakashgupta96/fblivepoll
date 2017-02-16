@@ -7,20 +7,39 @@ class EditorController < ApplicationController
     post = Post.find(593)
     result = ImageList.new("public/uploads/post/#{post.id}/frame.png")
     
-    counters = post.counters
-    if(counters.length > 0)
-      txt = Draw.new
-      txt.pointsize = 25
-      txt.fill = post.counter_color
-      txt.font_weight = Magick::BoldWeight
-       
-      count = "1000000"
-      offset = [nil,40,33,25,20,15,7,0]
-      counters.each do |counter|
-        result.annotate(txt,0,0,counter.x+offset[count.length],counter.y+23,count)
-      end
+    f = Image.new(720,100) { self.background_color = "red" }
+    current = result.composite(f,0,310, Magick::OverCompositeOp)
+    current.write("public/testing.tmp.png")
+    %x[mv "public/testing.tmp.png" "public/testing.png"]
+    y = 410
+    loop do
+      # current = result.composite(f,0,y, Magick::OverCompositeOp)
+      # current.write("public/testing.tmp.png")
+      # %x[mv "public/testing.tmp.png" "public/testing.png"]
+      sleep(0.1)
+      y-=5
+      break if y<=310
     end
+    result = ImageList.new("public/uploads/post/#{post.id}/frame.png")
+    result.write("public/testing.tmp.png")
+    %x[mv "public/testing.tmp.png" "public/testing.png"]
       
+    #f.display
+    # counters = post.counters
+    # if(counters.length > 0)
+    #   txt = Draw.new
+    #   txt.pointsize = 25
+    #   txt.fill = post.counter_color
+    #   txt.font_weight = Magick::BoldWeight
+       
+    #   count = "1000000"
+    #   offset = [nil,40,33,25,20,15,7,0]
+    #   counters.each do |counter|
+    #     result.annotate(txt,0,0,counter.x+offset[count.length],counter.y+23,count)
+    #   end
+    # end
+    # #send_data f, :type => 'image/jpg', :disposition => 'inline'
+    #byebug
     send_data result.to_blob, :stream => "false", :filename => "test.gif", :type => "image/gif", :disposition => "inline"
   end
 
