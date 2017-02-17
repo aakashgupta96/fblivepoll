@@ -1,24 +1,18 @@
 class UpdateFrame
-
   include Magick
-
   @queue = :update_frame
 
   def self.perform(post_id)
-
-
     pid = Process.fork do
       UpdateFrame.work post_id  
     end
     Process.wait
   end
 
-  def self.work post_id
-    
+  def self.work post_id  
     Resque.logger = Logger.new(Rails.root.join("log").join("update").join(post_id.to_s).to_s)
     post = Post.find(post_id)
     @graph = Koala::Facebook::API.new(post.user.token)
-    
     counters = post.counters
     if(counters.length > 0)
       txt = Draw.new
@@ -34,11 +28,12 @@ class UpdateFrame
         sleep(1)
       
         if counters.length>0
-          
-          reactions = @graph.get_object("#{post.video_id}/reactions?limit=10000000")
+          shared_post_ids = @graph.graph_call("#{post.video_id}?fields=sharedposts{id}")["sharedposts"]["data"]
+          ids = shared_post_ids.collect {|u| u["id"]}
           frame = ImageList.new("public/uploads/post/#{post.id}/frame.png")
           counters.each do |counter|
-            count = UpdateFrame.retrieve(counter.reaction,reactions)
+            count_hash = @graph.graph_call("?ids=#{post.video_id},#{ids.join(',')}&fields=reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count)")
+            count = UpdateFrame.retrieve(count_hash)
             frame.annotate(txt,0,0,counter.x+offset[count.to_s.length],counter.y+23,count.to_s)
           end
           
@@ -56,14 +51,10 @@ class UpdateFrame
 
   end
 
-  def self.retrieve x,reactions
-    count = 0;
-    x = x.upcase
-    
-    return 0 if reactions.nil?
-     
-    reactions.each do |i|
-      count = count + 1 if x == i["type"]
+  def self.retrieve(count_hash) 
+    count = 0
+    count_hash.each do |key,value|
+      count += value["reactions"]["summary"]["total_count"]
     end
     return count
   end

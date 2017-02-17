@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'materialize-sass'
-gem 'active_device'
+#gem 'active_device'
 gem 'data-confirm-modal'
 gem 'devise'
 gem 'omniauth-facebook'
