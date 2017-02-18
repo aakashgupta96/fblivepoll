@@ -21,6 +21,26 @@ $secondary-color: #fa3e3e !default;
 	margin-right: 0px !important;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Style.css of materialize
 
 nav ul,
@@ -59,6 +79,14 @@ p {
 @media only screen and (max-width : 600px) {
   #index-banner .section {
     top: 0;
+  }
+}
+
+@media only screen and (max-width : 324px)
+{
+  .parallax-container
+  {
+  	min-height: 430px;
   }
 }
 

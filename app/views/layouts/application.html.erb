@@ -21,7 +21,7 @@
   <nav>
       <div class="nav-wrapper container no-pad">
         <a href="/" class="brand-logo">Live Poll</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="#" class="nav-option center-align">Home</a></li>
           <li><a href="#" class="nav-option center-align">FAQS</a></li>
@@ -37,10 +37,13 @@
         <ul class="side-nav" id="mobile-demo">
           <li><a href="#">Home</a></li>
           <li><a href="#">FAQS</a></li>
+          <li>
+            <a href="/posts/new" class="btn">New Live Poll</a>
+          </li>
           <% if user_signed_in? %>
-          <li><a href="/users/sign_out" class="btn" data-method="DELETE">Log Out</a></li>
+          <li><a href="/users/sign_out" class="btn green" data-method="DELETE">Log Out</a></li>
           <% else %>
-          <li><a href="/users/auth/facebook" class="btn">Log In with FB</a></li>
+          <li><a href="/users/auth/facebook" class="btn green">Log In with FB</a></li>
           <% end %>
         </ul>
       </div>
@@ -61,30 +64,37 @@
 <%= yield %>
 
 <footer class="page-footer red darken-1">
-    <div class="container">
+    <div class="row">
       <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-
-
+        <div class="col l5 s12">
+          <h5 class="white-text">About Us</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project. Any amount would help support and continue development on this project and is greatly appreciated.</p>
         </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
+
+        <div class="col l2 s12">
+          <h5 class="white-text">Developed By</h5>
           <ul>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 1</a></li>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 2</a></li>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 3</a></li>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 4</a></li>
+            <li><a class="white-text" href="https://www.linkedin.com/in/aakash-gupta-876883124">Aakash Gupta</a></li>
+            <li><a class="white-text" href="https://www.facebook.com/apoorva.smartgirl">Apoorva Sharma</a></li>
+          </ul>
+        </div>
+        
+        <div class="col l2 s12">
+          <h5 class="white-text">Guided By</h5>
+          <ul>
+            <li><a class="white-text" href="https://in.linkedin.com/in/ankushsingla">Ankush Singla</a></li>
+            <li><a class="white-text" href="https://in.linkedin.com/in/tushar-tuteja-00350613">Tushar Tuteja</a></li>
           </ul>
         </div>
         <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
+          <h5 class="white-text">Contact Us</h5>
           <ul>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 1</a></li>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 2</a></li>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 3</a></li>
-            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 4</a></li>
+            <li>
+              <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:aakash@shurikenlive.com" class="white-text">aakash@shurikenlive.com</a>
+            </li>
+            <li>
+              <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:apoorva.11596@gmail.com" class="white-text">apoorva.11596@gmail.com</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -96,51 +106,6 @@
     </div>
   </footer>
 
-<!-- <footer id="footer">
-  <div class="people">
-    <p>
-      DEVELOPED BY:
-    </p>
-    <ul>
-      <li>
-        <a href="https://in.linkedin.com/in/aakash-gupta-876883124">Aakash Gupta</a>
-      </li>
-      <li>
-        <a href="https://www.facebook.com/apoorva.smartgirl">Apoorva Sharma</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="people">
-    <p>
-      GUIDED BY:
-    </p>
-    <ul>
-      <li>
-        <a href="https://in.linkedin.com/in/ankushsingla">Ankush Singla</a>
-      </li>
-      <li>
-        <a href="https://in.linkedin.com/in/tushar-tuteja-00350613">Tushar Tuteja</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="people">
-    <p>
-      CONTACT US:
-    </p>
-    <div>
-      <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:apoorva.11596@gmail.com">apoorva.11596@gmail.com</a>
-    </div>
-    <div>
-      <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:aakash@shurikenlive.com">aakash@shurikenlive.com</a>
-    </div>
-    <div>
-      <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:contact@codingninjas.in">contact@codingninjas.in </a>
-    </div>    
-  </div>
-</footer>
- -->
 <script>
 
   $( document ).ready(function(){
