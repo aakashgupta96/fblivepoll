@@ -19,25 +19,28 @@
 <body>
 
   <nav>
-      <div class="nav-wrapper">
-        <a href="/" class="brand-logo" style="margin-left: 5%;">Do Live Poll</a>
+      <div class="nav-wrapper container no-pad">
+        <a href="/" class="brand-logo">Live Poll</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="#" class="nav-option center-align">Home</a></li>
           <li><a href="#" class="nav-option center-align">FAQS</a></li>
+          <li>
+            <a href="/posts/new" class="btn">New Live Poll</a>
+          </li>
           <% if user_signed_in? %>
-          <li><a href="/users/sign_out" class="nav-option waves-effect waves-light btn row relative" data-method="DELETE" style="top: 10px;">Log Out</a></li></li>
+          <li><a href="/users/sign_out" class="session_button nav-option btn green row" data-method="DELETE">Log Out</a></li></li>
           <% else %>
-          <li><a href="/users/auth/facebook" class="nav-option waves-effect waves-light btn row" style="top: 10px;"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 10px;"></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
+          <li><a href="/users/auth/facebook" class="nav-option session_button btn green row"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
           <% end %>
         </ul>
         <ul class="side-nav" id="mobile-demo">
           <li><a href="#">Home</a></li>
           <li><a href="#">FAQS</a></li>
           <% if user_signed_in? %>
-          <li><a href="/users/sign_out" class="nav-option waves-effect waves-light btn" data-method="DELETE">Log Out</a></li>
+          <li><a href="/users/sign_out" class="btn" data-method="DELETE">Log Out</a></li>
           <% else %>
-          <li><a href="/users/auth/facebook" class="nav-option waves-effect waves-light btn">Log In with FB</a></li>
+          <li><a href="/users/auth/facebook" class="btn">Log In with FB</a></li>
           <% end %>
         </ul>
       </div>
@@ -57,7 +60,43 @@
 
 <%= yield %>
 
-<footer id="footer">
+<footer class="page-footer red darken-1">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 1</a></li>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 2</a></li>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 3</a></li>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 1</a></li>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 2</a></li>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 3</a></li>
+            <li><a class="white-text" href="http://materializecss.com/templates/parallax-template/preview.html#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright red lighten-1">
+      <div class="container">
+      Made by <a class="brown-text text-lighten-3" href="http://facebook.com/aakashgupta96">Aakash Gupta</a>
+      </div>
+    </div>
+  </footer>
+
+<!-- <footer id="footer">
   <div class="people">
     <p>
       DEVELOPED BY:
@@ -101,9 +140,11 @@
     </div>    
   </div>
 </footer>
-
+ -->
 <script>
+
   $( document ).ready(function(){
+    $('.parallax').parallax();
     $(".button-collapse").sideNav();
   window.fbAsyncInit = function() {
     FB.init({
