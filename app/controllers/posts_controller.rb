@@ -135,8 +135,11 @@ class PostsController < ApplicationController
       @graph = Koala::Facebook::API.new(current_user.token)
     end
 
+    def authenticate_user!
+      redirect_to root_path, notice: "You need to sign in before continuing" unless user_signed_in?
+    end
+
     def authorize_user!
-      return redirect_to root_path, notice: "Unauthorized" unless current_user == @post.user
-      return true
+      redirect_to root_path, notice: "Unauthorized" unless current_user == @post.user
     end
 end
