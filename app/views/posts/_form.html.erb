@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= f.label :Page %>
-    <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id']] }),{},{class: 'select'}) %>
+    <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id']] }),{},{class: 'browser-default'}) %>
   </div>
 
   <div class="field">

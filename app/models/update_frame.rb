@@ -9,46 +9,42 @@ class UpdateFrame
     Process.wait
   end
 
-  def self.work post_id  
+  def self.work(post_id)
     Resque.logger = Logger.new(Rails.root.join("log").join("update").join(post_id.to_s).to_s)
     post = Post.find(post_id)
     @graph = Koala::Facebook::API.new(post.user.token)
     counters = post.counters
-    if(counters.length > 0)
+    if counters.length>0
       txt = Draw.new
       txt.pointsize = 25
       txt.fill = post.counter_color
       txt.font_weight = Magick::BoldWeight
     end
-    offset = [nil,40,33,25,20,15,7,0]  
+    offset = [nil,40,33,25,20,15,7,0] 
+    video_id = @graph.graph_call("#{post.video_id}?fields=video")["video"]["id"] 
     loop do 
-    
       begin
-      
         sleep(1)
-      
         if counters.length>0
-          shared_post_ids = @graph.graph_call("#{post.video_id}?fields=sharedposts{id}")["sharedposts"]["data"]
-          ids = shared_post_ids.collect {|u| u["id"]}
+          ids = [] 
+          shared_post_ids = @graph.graph_call("#{video_id}?fields=sharedposts{id}")["sharedposts"]["data"] rescue false
+          ids = shared_post_ids.collect {|u| u["id"]} if shared_post_ids.class == Array
+          ids.push(video_id)
           frame = ImageList.new("public/uploads/post/#{post.id}/frame.png")
           counters.each do |counter|
-            count_hash = @graph.graph_call("?ids=#{post.video_id},#{ids.join(',')}&fields=reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count)")
+            count_hash = @graph.graph_call("?ids=#{ids.join(',')}&fields=reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count)")
             count = UpdateFrame.retrieve(count_hash)
             frame.annotate(txt,0,0,counter.x+offset[count.to_s.length],counter.y+23,count.to_s)
-          end
-          
+          end  
           frame.write("public/uploads/post/#{post.id}/frame1.tmp.png")
           %x[mv "public/uploads/post/#{post.id}/frame1.tmp.png" "public/uploads/post/#{post.id}/frame1.png"]
-    
         end
-        
       rescue Exception => e
         Resque.logger.info "Error message is #{e.message}"
         Resque.logger.info "Error class is #{e.class}"
         retry
       end
     end
-
   end
 
   def self.retrieve(count_hash) 
