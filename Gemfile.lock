@@ -20,7 +20,6 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    active_device (1.2.0)
     activejob (4.2.6)
       activesupport (= 4.2.6)
       globalid (>= 0.3.0)
@@ -219,7 +218,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_device
   byebug
   carrierwave (>= 1.0.0.rc, < 2.0)
   coffee-rails (~> 4.1.0)
@@ -246,4 +244,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.13.6
+   1.14.3
