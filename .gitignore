@@ -14,7 +14,6 @@
 /config/local_env.yml
 /public/assets/*
 /public/uploads/*
-/public/images/*
 /shared/*
 # Ignore all logfiles and tempfiles.
 /log/*
