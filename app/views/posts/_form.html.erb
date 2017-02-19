@@ -1,4 +1,5 @@
-<%= form_for(@post) do |f| %>
+<div class="row container section">
+<%= form_for(@post,html: {class: "col s12 z-depth-4", style: "padding: 0px 40px 50px 40px"}) do |f| %>
   <% if @post.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -10,38 +11,57 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title, required: true, placeholder: "Title"%>
-  </div><br>
-
-  <div class="field">
-    <%= f.label :caption %>
-    <%= f.text_area :caption, required: true, placeholder: "Caption"%>
-  </div><br>
-
-  <div class="field">
-    <%= f.label :background_Image %>
-    <%= f.file_field :background, {required: 'true', class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 5.megabytes} }%>
-  </div><br>
-
-  <div class="field">
-    <%= f.label :playback_audio %>
-    <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 5.megabytes} }%>
-  </div><br>
-
-  <div class="field">
-    <%= f.label :Page %>
-    <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id']] }),{},{class: 'browser-default'}) %>
+  <h2 class="row center">
+    Live Poll Details
+  </h2>
+  <div class="row" style="margin-bottom: 0px;">
+    <div class="input-field col s12 l6">
+      <%= f.text_field :title, required: true%>
+      <%= f.label "Title" %>
+    </div>
+    <div class="input-field col s12 l6">
+      <%=  f.time_select :duration, {start_hour: 0 , end_hour: 3, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
+      <%= f.label "Duration ( hrs : min )" %>
+    </div>
+  </div>
+  
+  <div class="row">
+      <div class="input-field col s12">
+        <textarea id="post_caption" name="post[caption]" class="materialize-textarea" style="padding: 0.6rem 0px 0.2rem 0px"></textarea>
+        <label for="textarea1">Caption</label>
+      </div>
   </div>
 
-  <div class="field">
-    <%= f.label :Duration %>
-    <%=  f.time_select :duration, {start_hour: 0 , end_hour: 3, default:{hour: 0, minute: 30}},{class: 'browser-default'} %>
-  </div><br>
-  <div class="actions">
-    <%= f.submit "Next" %>
+  
+  <div class="row">
+    <div class="file-field input-field col s12 m6 l6">
+      <div class="btn">
+        <span>Playback Audio</span>
+        <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 50.megabytes} }%>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
+    </div>
+
+   <div class="input-field col s12 m6 l6">
+      <%=  f.select(:page_id, options_for_select([["Choose an option","",disabled: true, selected: true]] + @pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
+      <%= f.label "Select Page" %>
+    </div>
+  </div>
+  
+  <div class="row">
+    
+  </div>
+  <div class="row">
+    <%= f.submit "Proceed to draw frame", {class: "col s12 btn"}%>
   </div>
 <% end %>
+</div>
 
+
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+</script>

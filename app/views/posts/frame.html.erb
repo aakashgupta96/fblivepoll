@@ -1,24 +1,9 @@
 <main>
   
-  <input id="tab1" type="radio" name="tabs" >
-  <label for="tab1"><a href="/steps">Step 1</a></label>
-    
-  <input id="tab2" type="radio" name="tabs">
-  <label for="tab2"><a href="/posts/new">Step 2</a></label>
-    
-  <input id="tab3" type="radio" name="tabs" checked>
-  <label for="tab3"><a href="#">Step 3</a></label>
-    
-  <input id="tab4" type="radio" name="tabs">
-  <label for="tab4"><a href="#">Step 4</a></label>
-
-  <input id="tab5" type="radio" name="tabs">
-  <label for="tab5"><a href="#">Step 5</a></label>
-  
   <section> 
 
   <canvas class="circle" id='textCanvas' style=" display: none;"></canvas>
-  
+  Change background:<input type="file" name="background" id="background">
   <div class="row">
     <div class="col s3" style="display: flex; flex-direction: column; justify-content: space-around;">
       
@@ -38,12 +23,12 @@
         <div class="modal-content">
           <h4>Select Reaction</h4>
           <div>
-            <a class="add_reaction" data-value="like"><img class="col" src="/like.png"></a>
-            <a class="add_reaction" data-value="love"><img class="col" src="/love.png"></a>
-            <a class="add_reaction" data-value="haha"><img class="col" src="/haha.png"></a>
-            <a class="add_reaction" data-value="wow"><img class="col" src="/wow.png"></a>
-            <a class="add_reaction" data-value="sad"><img class="col" src="/sad.png"></a>
-            <a class="add_reaction" data-value="angry"><img class="col" src="/angry.png"></a>
+            <a class="add_reaction" data-value="like"><img class="col" src="/reactions/like.png"></a>
+            <a class="add_reaction" data-value="love"><img class="col" src="/reactions/love.png"></a>
+            <a class="add_reaction" data-value="haha"><img class="col" src="/reactions/haha.png"></a>
+            <a class="add_reaction" data-value="wow"><img class="col" src="/reactions/wow.png"></a>
+            <a class="add_reaction" data-value="sad"><img class="col" src="/reactions/sad.png"></a>
+            <a class="add_reaction" data-value="angry"><img class="col" src="/reactions/angry.png"></a>
           </div>
         </div>
         <div class="modal-footer">
@@ -339,7 +324,7 @@
       }
 
       var sources = {
-        background: "/uploads/post/<%=@post.id%>/background/1.png",
+        background: "/backgrounds/default.jpg",
         watermark: "/watermark.png"
       };
       loadImages(sources, initStage);
@@ -427,6 +412,14 @@
 
       };
       
+      var change_background = function(source)
+      {
+        var new_image = document.createElement("img")
+        new_image.src = source;
+        layer1.children[0].children[0].attrs.image = new_image;
+        layer1.draw();
+      };
+
       var cursorMove = function()
       {
         document.body.style.cursor = "move";
@@ -565,7 +558,7 @@
       {
         var temp = $(this).data("value");
         var new_image = document.createElement("img")
-        new_image.src = "/"+temp+".png";
+        new_image.src = "/reactions/"+temp+".png";
         
         var imageGroup = new Kinetic.Group({
            x: 100,
@@ -616,18 +609,26 @@
         // FileReader support
         if (FileReader && files && files.length) {
             var fr = new FileReader();
+            fr.readAsDataURL(files[0]);
             fr.onload = function () {
                 add_image(fr.result,200,200);
             }
-            fr.readAsDataURL(files[0]);
         }
+      }
+      
+      var addBackgrounfFile = function(evt)
+      {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
 
-        // Not supported
-        else {
-            // fallback -- perhaps submit the input to an iframe and temporarily store
-            // them on the server until the user's session ends.
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.readAsDataURL(files[0]);
+            fr.onload = function () {
+                change_background(fr.result);
+            }
         }
-        //document.getElementById("close_add_image").click();
       }
       
       var addSample = function()
@@ -784,7 +785,7 @@
       document.getElementById("counterTextColor").addEventListener('change', changeTextColor);
       document.getElementById("radius").addEventListener('change',changeRadius);
       document.getElementById("submit_frame").addEventListener('click',sendImage);
-
+      document.getElementById("background").addEventListener('change',addBackgrounfFile);
     </script>
   
 

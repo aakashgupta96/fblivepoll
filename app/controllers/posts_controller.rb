@@ -78,6 +78,7 @@ class PostsController < ApplicationController
   
   
   def create
+    byebug
     @post = Post.new(post_params)
     @post.user = current_user
     if @post.save
@@ -128,7 +129,7 @@ class PostsController < ApplicationController
     end
 
     def post_params
-      params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:background,:audio)
+      params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio)
     end
 
     def set_graph
