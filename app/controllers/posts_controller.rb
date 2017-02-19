@@ -78,7 +78,6 @@ class PostsController < ApplicationController
   
   
   def create
-    byebug
     @post = Post.new(post_params)
     @post.user = current_user
     if @post.save
