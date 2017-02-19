@@ -47,11 +47,12 @@ class PostsController < ApplicationController
     data = params[:data_uri]
     image_data = Base64.decode64(data['data:image/png;base64,'.length .. -1])
 
-    File.open("#{Rails.root}/public/uploads/post/#{@post.id}/frame.png", 'wb') do |f|
+    path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
+    FileUtils.mkdir_p(path) unless File.exist?(path)
+    File.open(File.join(path,"frame.png"),'wb') do |f|
       f.write image_data
     end
-
-    File.open("#{Rails.root}/public/uploads/post/#{@post.id}/frame1.png", 'wb') do |f|
+    File.open(File.join(path,"frame1.png"), 'wb') do |f|
       f.write image_data
     end
     
