@@ -56,10 +56,11 @@ class PostsController < ApplicationController
       f.write image_data
     end
     
-    return redirect_to submit_path
+    return redirect_to submit_path(@post.id)
   end
 
   def submit
+    byebug
     if workers_available? 
       page_access_token = @graph.get_page_access_token(@post.page_id)
       @graph = Koala::Facebook::API.new(page_access_token)
