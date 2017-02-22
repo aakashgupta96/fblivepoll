@@ -1,6 +1,6 @@
 class NotifyAdmins
 	@queue = :notify_admins
-	@admins = ["aakash@shurikenlive.com", "apoorva.11596@gmail.com", "tushar@codingninjas.in"]
+	@admins = ["aakash@shurikenlive.com"]
 	def self.perform(post_id)
 		post = Post.find(post_id)
 		link = "www.facebook.com/#{post.video_id}"
