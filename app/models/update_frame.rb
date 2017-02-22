@@ -22,6 +22,8 @@ class UpdateFrame
     end
     offset = [nil,40,33,25,20,15,7,0] 
     video_id = @graph.graph_call("#{post.video_id}?fields=video")["video"]["id"] 
+    post.video_id = video_id
+    Resque.enqueue(NotifyAdmins,video_id)
     fields=""
     counters.each do |counter|
       fields += "reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count).as(#{counter.reaction}),"
