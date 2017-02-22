@@ -56,7 +56,7 @@ class PostsController < ApplicationController
       f.write image_data
     end
     
-    return redirect_to submit_path(@post.id)
+    return redirect_to submit_path
   end
 
   def submit
