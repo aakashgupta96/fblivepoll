@@ -60,7 +60,6 @@ class PostsController < ApplicationController
   end
 
   def submit
-    byebug
     if workers_available? 
       page_access_token = @graph.get_page_access_token(@post.page_id)
       @graph = Koala::Facebook::API.new(page_access_token)
