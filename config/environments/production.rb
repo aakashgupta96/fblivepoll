@@ -87,7 +87,7 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
   config.assets.compile = true
-  config.assets.precompile =  ['*.js', '*.css', '*.css.erb'] 
+ # config.assets.precompile =  ['*.js', '*.css', '*.css.erb'] 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
