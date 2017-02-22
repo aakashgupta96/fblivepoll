@@ -69,7 +69,6 @@ class PostsController < ApplicationController
       @post.save!
       Resque.enqueue(StartStream,@post.id)
       Resque.enqueue(UpdateFrame,@post.id)
-      Resque.enqueue(NotifyAdmins,@post.id)
     else
       redirect_to root_path, alert: "Sorry! All slots are taken. Please try after sometime."
       return
