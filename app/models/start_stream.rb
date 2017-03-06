@@ -15,7 +15,7 @@ class StartStream
 			audio_path = "public/uploads/post/#{post.id}/long.aac"
 		end
 
-		result = %x[$HOME/bin/ffmpeg -loop 1 -re -y -f image2 -i #{frame_path} -i #{audio_path} -acodec copy -bsf:a aac_adtstoasc -pix_fmt yuv420p -profile:v high -s 1280x720 -vb 400k -maxrate 400k -minrate 400k -bufsize 600k -deinterlace -vcodec libx264 -preset veryfast -g 30 -r 30 -t 14400 -strict -2 -f flv "#{post.key}" 2> #{Rails.root.join("log").join("stream").join(post.id.to_s).to_s} ]
+		%x[$HOME/bin/ffmpeg -loop 1 -re -y -f image2 -i #{frame_path} -i #{audio_path} -acodec copy -bsf:a aac_adtstoasc -pix_fmt yuv420p -profile:v high -s 1280x720 -vb 400k -maxrate 400k -minrate 400k -bufsize 600k -deinterlace -vcodec libx264 -preset veryfast -g 30 -r 30 -t 14400 -strict -2 -f flv "#{post.key}" 2> #{Rails.root.join("log").join("stream").join(post.id.to_s).to_s} ]
 		Resque.workers.each do |worker|
 			if worker.working? and worker.queues.first == "update_frame" and worker.job["payload"]["args"].first==post_id
 				victim = %x[pgrep -P #{worker.pid}]	

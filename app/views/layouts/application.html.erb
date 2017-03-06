@@ -115,6 +115,7 @@
     $('.parallax').parallax();
     $(".button-collapse").sideNav();
   window.fbAsyncInit = function() {
+    FB._https = true;
     FB.init({
       appId      : '241493676272963',
       xfbml      : true,
