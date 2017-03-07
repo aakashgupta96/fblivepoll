@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
 
 
-  get "*path" => redirect('/')
+  get "*path" => 'posts#invalid'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

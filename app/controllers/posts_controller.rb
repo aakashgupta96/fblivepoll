@@ -6,6 +6,10 @@ class PostsController < ApplicationController
   before_action :set_graph, only: [:new, :save_canvas, :submit]
   require 'base64'
   
+  def invalid
+    redirect_to root_path, notice: "Page requested not found"
+  end
+
   def home    
   end
   
@@ -127,7 +131,7 @@ class PostsController < ApplicationController
     def set_post
       @post = Post.find_by_id(params[:post_id]) 
       if @post.nil?
-        return redirect_to root_path, alert: "Invalid URL"
+        return redirect_to root_path, notice: "Page requested not found"
       end
     end
 
