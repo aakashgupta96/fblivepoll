@@ -8,13 +8,21 @@ body
 {
   background: linear-gradient(to right, #bbbbbb, #cccccc, #eeeeee, #ffffff, #eeeeee, #cccccc, #bbbbbb);
 }
-.navbar
+.gradient
 {
   background: radial-gradient(#0089ec,#4267b2,#421782);
+}
+.linear-gradient
+{
+  background: linear-gradient(to bottom, #4267b2, #0089ec, #0089ec, #0089ec, #4267b2, #421782);
 }
 .greenish
 {
   background-color: #00d04b !important;
+}
+.test
+{
+  background: #4267b2;
 }
 .flexbox
 {

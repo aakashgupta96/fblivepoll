@@ -18,15 +18,16 @@
 
 <body>
 
-  <nav class="navbar">
+  <nav class="gradient">
       <div class="nav-wrapper container no-pad">
-        <a href="/" class="brand-logo">Live Poll</a>
+        <a href="/" class="brand-logo">Shuriken Live</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="/" class="nav-option center-align">Home</a></li>
           <li><a href="#" class="nav-option center-align">FAQS</a></li>
           <li>
-            <a href="/posts/new" class="btn">New Live Poll</a>
+            <a href="/posts/new" class="btn" style="padding: 0px 15px 0px 10px;"><i class="material-icons relative" style="display: inline-block; bottom: 13px;">videocam
+</i><span class="relative" style="left: 5px; bottom: 21px;">New Live Poll</span></a>
           </li>
           <% if user_signed_in? %>
           <li><a href="/users/sign_out" class="session_button nav-option btn greenish row" data-method="DELETE"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log Out</span></a></li></li>
@@ -66,7 +67,7 @@
 <%= yield %>
 
 
-<footer class="page-footer red darken-1">
+<footer class="page-footer gradient">
     <div class="row">
       <div class="row">
         <div class="col l5 s12">
@@ -102,7 +103,7 @@
         </div>
       </div>
     </div>
-    <div class="footer-copyright red lighten-1">
+    <div class="footer-copyright">
       <div class="container">
       Made by <a class="brown-text text-lighten-3" href="http://facebook.com/aakashgupta96">Aakash Gupta</a>
       </div>
