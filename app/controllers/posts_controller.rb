@@ -1,9 +1,9 @@
 class PostsController < ApplicationController
 
-  before_action :set_post, except: [:home,:steps,:new, :create]
+  before_action :set_post, except: [:home, :steps, :new, :create]
   before_action :authenticate_user!, except: [:home, :steps]
   before_action :authorize_user! , only: [:frame, :save_canvas, :submit]
-  before_action :set_graph, only: [:new, :submit]
+  before_action :set_graph, only: [:new, :save_canvas, :submit]
   require 'base64'
   
   def home    
@@ -29,7 +29,7 @@ class PostsController < ApplicationController
     end  
   end
 
-  def frame  
+  def frame
   end
 
   def save_canvas
@@ -56,26 +56,16 @@ class PostsController < ApplicationController
       f.write image_data
     end
     
+    start_stream_if_possible
+
     return redirect_to submit_path
   end
 
   def submit
-    if workers_available? 
-      page_access_token = @graph.get_page_access_token(@post.page_id)
-      @graph = Koala::Facebook::API.new(page_access_token)
-      video = @graph.graph_call("#{@post.page_id}/live_videos",{status: "LIVE_NOW", description: "#{@post.caption} \nMade with: www.shurikenlive.com", title: @post.title},"post")
-      @post.video_id = video["id"]
-      @post.key = video["stream_url"]
-      @post.save!
-      Resque.enqueue(StartStream,@post.id)
-      Resque.enqueue(UpdateFrame,@post.id)
-    else
-      redirect_to root_path, alert: "Sorry! All slots are taken. Please try after sometime."
-      return
-    end
+    embed_link = @graph.get_object("#{@post.video_id}?fields=embed_html")["embed_html"]
+    @permalink = @graph.get_object("#{@post.video_id}?fields=permalink_url")["permalink_url"]
+    @src = embed_link.split("\"")[1]
   end
-
-  
   
   def create
     @post = Post.new(post_params)
@@ -106,7 +96,23 @@ class PostsController < ApplicationController
 
 
   private
-    
+
+    def start_stream_if_possible
+      if workers_available? 
+        page_access_token = @graph.get_page_access_token(@post.page_id)
+        @graph = Koala::Facebook::API.new(page_access_token)
+        video = @graph.graph_call("#{@post.page_id}/live_videos",{status: "LIVE_NOW", description: "#{@post.caption} \nMade with: www.shurikenlive.com", title: @post.title},"post")
+        @post.video_id = video["id"]
+        @post.key = video["stream_url"]
+        @post.save!
+        Resque.enqueue(StartStream,@post.id)
+        Resque.enqueue(UpdateFrame,@post.id)
+      else
+        redirect_to root_path, alert: "Sorry! All slots are taken. Please try after sometime."
+        return
+      end
+    end
+
     def workers_available?
       start = 0
       update = 0

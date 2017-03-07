@@ -1,1 +1,25 @@
-DONE
+<div class="row">
+	<div class="center-align">
+		<h4 class="header red-text">
+			Success! Streaming has been successfully started. 
+		</h4>
+	</div>
+	<div class="row">
+		<div class="col s12 m8 l8 offest-m2 offset-l2">
+			<div class="row">
+					<div class="card hoverable z-depth-5">
+					  <div class="card-image">
+					    <img src="/uploads/post/<%=@post.id%>/frame1.png">
+				      <span class="card-title"><%=@post.title%></span>
+				    </div>
+					  <div class="card-content">
+					    <p><%=@post.caption%></p>
+				    </div>
+				    <div class="card-action">
+					    <a class="btn" href="https://www.facebook.com<%=@permalink%>">Watch Video</a>
+				    </div>
+				  </div>
+				</div>
+		</div>
+	</div>
+</div>
