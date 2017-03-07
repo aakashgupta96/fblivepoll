@@ -62,9 +62,7 @@ class PostsController < ApplicationController
   end
 
   def submit
-    embed_link = @graph.get_object("#{@post.video_id}?fields=embed_html")["embed_html"]
     @permalink = @graph.get_object("#{@post.video_id}?fields=permalink_url")["permalink_url"]
-    @src = embed_link.split("\"")[1]
   end
   
   def create

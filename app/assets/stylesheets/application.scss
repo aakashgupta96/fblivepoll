@@ -4,6 +4,39 @@ $secondary-color: #fa3e3e !default;
 @import 'materialize';
 @import "materialize/extras/nouislider";
 
+body
+{
+  background: linear-gradient(to right, #bbbbbb, #cccccc, #eeeeee, #ffffff, #eeeeee, #cccccc, #bbbbbb);
+}
+.navbar
+{
+  background: radial-gradient(#0089ec,#4267b2,#421782);
+}
+.greenish
+{
+  background-color: #00d04b !important;
+}
+.flexbox
+{
+  display: flex;
+  justify-content: space-around;
+}
+.container-wide
+{
+  width: 95%;
+}
+.zero-margin
+{
+  margin: 0px  !important;
+}
+.bold
+{
+  font-weight: bold;
+}
+.bolder
+{
+  font-weight: bolder;
+}
 .nav-option
 {
   min-width: 80px;
@@ -24,9 +57,6 @@ a:hover
 {
   cursor: pointer;
 }
-
-
-
 
 
 
