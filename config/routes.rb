@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   mount Resque::Server, :at => "/resque"
 
   root 'posts#home'
-  #get '/steps' => 'posts#steps', as: "steps"
   get '/posts/:post_id/frame' => 'posts#frame', as: "frame"
   post '/posts/:post_id/save_canvas' => 'posts#save_canvas', as: "save_canvas"
   get '/posts/:post_id/submit' => 'posts#submit', as: "submit"
+  
   #get '/editor/createFrame'
   #get '/editor/testFrame'
   
@@ -17,6 +17,12 @@ Rails.application.routes.draw do
 
   resources :posts, :except => [:edit , :show , :index , :update, :destroy]
   
+
+
+
+
+
+  get "*path" => redirect('/')
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
