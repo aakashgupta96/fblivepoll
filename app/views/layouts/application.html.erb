@@ -18,8 +18,8 @@
 
 <body>
 
-  <nav class="gradient">
-      <div class="nav-wrapper container no-pad">
+  <nav class="radial-gradient">
+      <div class="nav-wrapper container-wide no-pad">
         <a href="/" class="brand-logo">Shuriken Live</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
@@ -51,7 +51,9 @@
   </nav>
   
   <% unless notice.nil? %>
-    <div class="notice"><%=notice %></div>
+    <script>
+      Materialize.toast('<%=notice%>',30000) 
+    </script>
   <% end %>
 
    <% unless alert.nil? %>
@@ -63,11 +65,10 @@
   <% end %>
 
 
-
 <%= yield %>
 
 
-<footer class="page-footer gradient">
+<footer class="page-footer radial-gradient">
     <div class="row">
       <div class="row">
         <div class="col l5 s12">
@@ -105,7 +106,8 @@
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="brown-text text-lighten-3" href="http://facebook.com/aakashgupta96">Aakash Gupta</a>
+        © 2014 Copyright Text
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
       </div>
     </div>
   </footer>

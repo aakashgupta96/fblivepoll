@@ -8,34 +8,35 @@ body
 {
   background: linear-gradient(to right, #bbbbbb, #cccccc, #eeeeee, #ffffff, #eeeeee, #cccccc, #bbbbbb);
 }
-.gradient
+.radial-gradient
 {
   background: radial-gradient(#0089ec,#4267b2,#421782);
 }
+
 .linear-gradient
 {
   background: linear-gradient(to bottom, #4267b2, #0089ec, #0089ec, #0089ec, #4267b2, #421782);
 }
+
 .greenish
 {
   background-color: #00d04b !important;
 }
-.test
-{
-  background: #4267b2;
-}
+
 .flexbox
 {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 .container-wide
 {
-  width: 95%;
+  width: 80%;
+  margin: 0 auto;
 }
-.zero-margin
+.margin
 {
-  margin: 0px  !important;
+  margin: 30px 20px 30px 20px !important;
 }
 .bold
 {
