@@ -60,9 +60,11 @@ class PostsController < ApplicationController
       f.write image_data
     end
     
-    start_stream_if_possible
-
-    return redirect_to submit_path
+    if start_stream_if_possible
+      redirect_to submit_path
+    else
+      redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
+    end
   end
 
   def submit
@@ -109,9 +111,9 @@ class PostsController < ApplicationController
         @post.save!
         Resque.enqueue(StartStream,@post.id)
         Resque.enqueue(UpdateFrame,@post.id)
+        return true
       else
-        redirect_to root_path, alert: "Sorry! All slots are taken. Please try after sometime."
-        return
+        return false
       end
     end
 
