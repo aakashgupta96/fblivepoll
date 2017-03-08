@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   mount Resque::Server, :at => "/resque"
 
   root 'posts#home'
+  get '/privacy' => 'extras#privacy'
+  get '/terms' => 'extras#terms'
   get '/posts/:post_id/frame' => 'posts#frame', as: "frame"
   post '/posts/:post_id/save_canvas' => 'posts#save_canvas', as: "save_canvas"
   get '/posts/:post_id/submit' => 'posts#submit', as: "submit"

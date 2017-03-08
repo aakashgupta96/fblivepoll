@@ -40,6 +40,62 @@ body
   width: 80%;
   margin: 0 auto;
 }
+.container-extrawide
+{
+  width: 90%;
+  margin: 0 auto;
+}
+.privacy-box
+{
+  width: 80%;
+  margin: 10px 10% 50px 10%;
+  padding: 30px;
+  .policy-para
+  {
+    line-height: 25px;
+  }
+  h5
+  {
+    font-weight: bolder;
+  }
+  ol
+  {
+    list-style-type: disc;
+    li
+    {
+      line-height: 25px;
+      span
+      {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.terms-box
+{
+  width: 80%;
+  margin: 10px 10% 50px 10%;
+  padding: 30px;
+  h5
+  {
+    font-weight: bolder;
+  }
+  ol
+  {
+    li
+    {
+      line-height: 25px;
+      span
+      {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
 .margin
 {
   margin: 30px 20px 30px 20px !important;
@@ -73,6 +129,11 @@ a:hover
   cursor: pointer;
 }
 
+footer a:hover
+{
+  text-decoration: underline;
+  color: yellow !important;
+}
 
 
 
