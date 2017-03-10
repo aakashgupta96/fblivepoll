@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'materialize-sass'
+gem "httparty"
 #gem 'active_device'
 gem 'data-confirm-modal'
 gem 'devise'

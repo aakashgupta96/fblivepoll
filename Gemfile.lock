@@ -72,6 +72,8 @@ GEM
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hashie (3.4.6)
+    httparty (0.14.0)
+      multi_xml (>= 0.5.2)
     httpauth (0.2.1)
     i18n (0.7.0)
     jbuilder (2.6.1)
@@ -106,6 +108,7 @@ GEM
     minitest (5.10.1)
     mono_logger (1.1.0)
     multi_json (1.12.1)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
@@ -223,6 +226,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   data-confirm-modal
   devise
+  httparty
   jbuilder (~> 2.0)
   jquery-rails
   koala

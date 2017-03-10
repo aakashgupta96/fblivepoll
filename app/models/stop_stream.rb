@@ -18,10 +18,14 @@ class StopStream
 					post = Post.find(post_id)
 					duration = (post.duration-30.years).to_i
 					if(elapsed_time >= duration)
+						begin
 						graph = Koala::Facebook::API.new(post.user.token)
 						page_access_token = graph.get_page_access_token(post.page_id)
     					graph = Koala::Facebook::API.new(page_access_token)
     					graph.graph_call("#{post.video_id}", {end_live_video: "true"},"post")
+    					rescue
+    						
+    					end
 						%x[kill -9 #{process_id}]	
 					end
 				end

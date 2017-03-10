@@ -8,8 +8,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if @user.persisted?
       @user.token = request.env["omniauth.auth"].credentials.token
       @user.save!
-      sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
-      set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+      if @user.has_granted_permissions
+        sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
+        set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+      else
+        redirect_to root_path, notice: "Please try again and grant all the required permissions to continue"
+      end
     else
       session["devise.facebook_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
