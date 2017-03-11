@@ -21,6 +21,7 @@ module Live
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
+    config.assets.paths << "#{Rails.root}/app/assets/videos"
     config.active_record.raise_in_transactional_callbacks = true
     config.before_configuration do
       env_file = File.join(Rails.root, 'config', 'local_env.yml')

@@ -6,4 +6,6 @@ class ExtrasController < ApplicationController
 	def terms
 	end
 
+	def demo
+	end
 end

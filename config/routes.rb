@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get '/posts/:post_id/frame' => 'posts#frame', as: "frame"
   post '/posts/:post_id/save_canvas' => 'posts#save_canvas', as: "save_canvas"
   get '/posts/:post_id/submit' => 'posts#submit', as: "submit"
-  
+  get '/demo' => 'extras#demo'
   #get '/editor/createFrame'
   #get '/editor/testFrame'
   
