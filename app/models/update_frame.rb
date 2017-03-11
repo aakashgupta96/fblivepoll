@@ -13,6 +13,8 @@ class UpdateFrame
     Resque.logger = Logger.new(Rails.root.join("log").join("update").join(post_id.to_s).to_s)
     post = Post.find(post_id)
     @graph = Koala::Facebook::API.new(post.user.token)
+    page_access_token = @graph.get_page_access_token(post.page_id)
+    @graph = Koala::Facebook::API.new(page_access_token)
     counters = post.counters
     if counters.length>0
       txt = Draw.new
@@ -50,6 +52,7 @@ class UpdateFrame
         Resque.logger.info "Error class is #{e.class}"
         retry
       end
+      sleep(5)
     end
   end
 
