@@ -35,8 +35,8 @@ class UpdateFrame
       begin
         if counters.length>0
           ids = [] 
-          shared_post_ids = @graph.graph_call("#{video_id}?fields=sharedposts{id}")["sharedposts"]["data"] rescue false
-          ids = shared_post_ids.collect {|u| u["id"]} if shared_post_ids.class == Array
+          # shared_post_ids = @graph.graph_call("#{video_id}?fields=sharedposts{id}")["sharedposts"]["data"] rescue false
+          # ids = shared_post_ids.collect {|u| u["id"]} if shared_post_ids.class == Array
           ids.push(video_id)
           frame = ImageList.new("public/uploads/post/#{post.id}/frame.png")
           count_hash = @graph.graph_call("?ids=#{ids.join(',')}&fields=#{fields}")
