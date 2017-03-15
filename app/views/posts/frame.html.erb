@@ -373,7 +373,7 @@
         layer2 = new Kinetic.Layer();
         layer3 = new Kinetic.Layer();
         layer1.add(backgroundGroup);
-        //layer3.add(watermarkGroup);
+        // layer3.add(watermarkGroup);
         stage.add(layer1);       
         stage.add(layer2);
         stage.add(layer3);
@@ -715,7 +715,7 @@
         tCtx.font = "italic bold 60px Verdana";
         tCtx.canvas.width = tCtx.measureText(text).width;
         tCtx.canvas.height = 70;
-        //We need to again set font to 30px otherwise things won't go as expected!!! Don't know why :P
+        //We need to again set font to 60px otherwise things won't go as expected!!! Don't know why :P
         tCtx.font = "italic bold 60px Verdana";
         tCtx.fillStyle="#"+document.getElementById("colorPallete").value;
         tCtx.textAlign="center"; 

@@ -15,6 +15,31 @@ main
 {
   flex: 1 0 auto;
 }
+.logo
+{
+  position: relative;
+  top: -3px;
+  width: 260px;
+  height: 64px;
+}
+
+@media only screen and (max-width : 480px) {
+  .logo
+  {
+    position: relative;
+    top: 0px;
+    left: 10px;
+    width: 180px;
+    height: 56px;
+  }
+}
+@media only screen and (max-width : 1080px)
+{
+  #nav-container
+  {
+    width: 95%;
+  }
+}
 .radial-gradient
 {
   background: radial-gradient(#0089ec,#4267b2,#421782);
@@ -29,6 +54,7 @@ main
 .linear-gradient
 {
   background: linear-gradient(to bottom, #4267b2, #0089ec, #0089ec, #0089ec, #4267b2, #421782);
+  //background: linear-gradient(to bottom, hsla(220, 46%, 48%, 1), hsla(205, 100%, 46%, 1), hsla(205, 100%, 46%, 1), hsla(205, 100%, 46%, 1), hsla(220, 46%, 48%, 1), hsla(264, 70%, 80%, 1));
 }
 
 .greenish
