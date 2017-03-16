@@ -32,29 +32,16 @@
 
           <% if user_signed_in? %>
             <li>
-              <div class='dropdown-button btn greenish' data-activates='dropdown1' style="max-width : 220px;"><i class="material-icons relative" style="display: inline-block; bottom: 13px; right: 20px;">perm_identity</i><span class="relative" style="bottom: 19px; right: 7px;"><%=current_user.name.split.first %></span></div>
-              <!-- Dropdown Structure -->
+              <div class='dropdown-button btn greenish' data-activates='dropdown1' style="max-width : 220px;">  <i class="material-icons relative" style="display: inline-block; bottom: 13px; right: 20px;">perm_identity</i><span class="relative" style="bottom: 19px; right: 7px;"><%=current_user.name.split.first %></span>
+              </div>
               <ul id='dropdown1' class='dropdown-content'>
                 <li><%= link_to "My Polls", myposts_path%></li>
-                <!-- <li><%#= link_to "Edit Profile", edit_profile_path(current_user.id)%></li>
-                 --><li class="divider"></li>
+                <li class="divider"></li>
                 <li><a href="/users/sign_out" data-method="DELETE">Log Out</a></li>
               </ul>
             </li>
           <% else %>
             <li><a href="/users/auth/facebook" class="nav-option session_button btn greenish row"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
-          <% end %>
-        
-
-
-
-
-
-
-          <% if user_signed_in? %>
-          
-          <% else %>
-          
           <% end %>
         </ul>
         <ul class="side-nav" id="mobile-demo">
@@ -64,9 +51,10 @@
             <a href="/posts/new" class="btn">New Live Poll</a>
           </li>
           <% if user_signed_in? %>
-          <li><a href="/users/sign_out" class="btn greenish" data-method="DELETE">Log Out</a></li>
+            <li><%= link_to "My Polls", myposts_path%></li>
+            <li><a href="/users/sign_out" class="btn greenish" data-method="DELETE">Log Out</a></li>
           <% else %>
-          <li><a href="/users/auth/facebook" class="btn greenish">Log In with FB</a></li>
+            <li><a href="/users/auth/facebook" class="btn greenish">Log In with FB</a></li>
           <% end %>
         </ul>
       </div>

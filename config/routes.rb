@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get '/admins/dashboard' => 'admins#dashboard'
   post '/admins/stop/:post_id' => 'admins#stop_post'
   post '/users/stop/:post_id' => 'users#stop_post'
-  get 'users/posts' => 'users#posts', as: "myposts"
+  get '/users/posts' => 'users#posts', as: "myposts"
   #get '/editor/createFrame'
   #get '/editor/testFrame'
   

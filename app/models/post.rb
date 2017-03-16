@@ -34,12 +34,12 @@ class Post < ActiveRecord::Base
 	def start
 		graph = graph_with_page_token
 		video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption} \nMade with: www.shurikenlive.com", title: self.title},"post")
-    self.key = video["stream_url"]
-    self.video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
-    self.save!
-    Resque.enqueue(StartStream,self.id)
-    Resque.enqueue(UpdateFrame,self.id)
-    Resque.enqueue(NotifyAdmins,self.video_id) 
+	    self.key = video["stream_url"]
+	    self.video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
+	    self.save!
+	    Resque.enqueue(StartStream,self.id)
+	    Resque.enqueue(UpdateFrame,self.id)
+	    Resque.enqueue(NotifyAdmins,self.video_id) 
 	end
 
 	def can_start?
