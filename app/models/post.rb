@@ -10,7 +10,6 @@ class Post < ActiveRecord::Base
 	end
 
 	def stop
-		byebug
 		Resque.workers.find_all{ |worker| worker.queues[0]=="start_stream" and worker.job["payload"]["args"].first==id }.each do |worker| 
 			process_id = worker.pid
 			3.times do
@@ -30,6 +29,8 @@ class Post < ActiveRecord::Base
 				%x[kill -9 #{process_id}]	
 			end
 		end	
+		self.live=false
+		self.save!
 	end
-	
+
 end
