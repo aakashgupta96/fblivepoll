@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def stop
-		Resque.workers.find_all{ |worker| worker.queues and worker.queues[0]=="start_stream" and worker.job["payload"]["args"].first==self.id }.each do |worker| 
+		Resque.workers.find_all{ |worker| ((worker.queues != nil) and (worker.queues[0]=="start_stream") and (worker.job["payload"] != nil ) and (worker.job["payload"]["args"] != nil) and (worker.job["payload"]["args"].first==self.id) ) }.each do |worker| 
 			process_id = worker.pid
 			3.times do
 				process_id = %x[pgrep -P #{process_id}]
