@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
   def stop_post
   	@post.stop
-  	redirect_to myposts_path
+  	return redirect_to myposts_path
   end
 
   private
