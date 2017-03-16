@@ -20,8 +20,8 @@
             	<td><%= post.id %></td>
             	<td><%= post.title %></td>
             	<td><%= post.user.name %></td>
-            	<td><%#= post.video_link %></td>
-            	<td><a href="/admins/stop/<%=post.id%>" data-method="post" class="btn">Stop Streaming</a>
+            	<td><a href="https://www.facebook.com/<%=post.video_id%>">www.facebook.com/<%=post.video_id%></a></td>
+            	<td><a href="/admins/stop/<%=post.id%>" data-method="post" onclick="return confirm('Are you sure?')" class="btn">Stop Streaming</a>
         	</tr>
 		<% end %>
     </tbody>

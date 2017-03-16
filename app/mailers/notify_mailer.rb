@@ -1,5 +1,5 @@
 class NotifyMailer < ApplicationMailer
-	default from: "fblivepoll@gmail.com"
+	default from: "liveshuriken@gmail.com"
 
 	def new_post(email_id,link)
 		@link = link

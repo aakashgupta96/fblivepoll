@@ -12,9 +12,7 @@ class UpdateFrame
   def self.work(post_id)
     Resque.logger = Logger.new(Rails.root.join("log").join("update").join(post_id.to_s).to_s)
     post = Post.find(post_id)
-    @graph = Koala::Facebook::API.new(post.user.token)
-    page_access_token = @graph.get_page_access_token(post.page_id)
-    @graph = Koala::Facebook::API.new(page_access_token)
+    @graph = post.graph_with_page_token
     counters = post.counters
     if counters.length>0
       txt = Draw.new
@@ -23,9 +21,6 @@ class UpdateFrame
       txt.font_weight = Magick::BoldWeight
     end
     offset = [nil,40,33,25,20,15,7,0] 
-    video_id = @graph.graph_call("#{post.video_id}?fields=video")["video"]["id"] 
-    post.video_id = video_id
-    Resque.enqueue(NotifyAdmins,video_id)
     fields=""
     counters.each do |counter|
       fields += "reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count).as(#{counter.reaction}),"
@@ -37,7 +32,7 @@ class UpdateFrame
           ids = [] 
           # shared_post_ids = @graph.graph_call("#{video_id}?fields=sharedposts{id}")["sharedposts"]["data"] rescue false
           # ids = shared_post_ids.collect {|u| u["id"]} if shared_post_ids.class == Array
-          ids.push(video_id)
+          ids.push(post.video_id)
           frame = ImageList.new("public/uploads/post/#{post.id}/frame.png")
           count_hash = @graph.graph_call("?ids=#{ids.join(',')}&fields=#{fields}")
           counters.each do |counter|

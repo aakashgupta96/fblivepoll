@@ -60,7 +60,8 @@ class PostsController < ApplicationController
       f.write image_data
     end
     
-    if start_stream_if_possible
+    if @post.can_start?
+      @post.start 
       redirect_to submit_path
     else
       redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
@@ -68,7 +69,6 @@ class PostsController < ApplicationController
   end
 
   def submit
-    @permalink = @graph.get_object("#{@post.video_id}?fields=permalink_url")["permalink_url"]
   end
   
   def create
@@ -89,46 +89,8 @@ class PostsController < ApplicationController
     end
   end
 
-  def destroy
-    @post.destroy
-    respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-
 
   private
-
-    def start_stream_if_possible
-      if workers_available? 
-        page_access_token = @graph.get_page_access_token(@post.page_id)
-        @graph = Koala::Facebook::API.new(page_access_token)
-        video = @graph.graph_call("#{@post.page_id}/live_videos",{status: "LIVE_NOW", description: "#{@post.caption} \nMade with: www.shurikenlive.com", title: @post.title},"post")
-        @post.video_id = video["id"]
-        @post.key = video["stream_url"]
-        @post.save!
-        Resque.enqueue(StartStream,@post.id)
-        Resque.enqueue(UpdateFrame,@post.id)
-        return true
-      else
-        return false
-      end
-    end
-
-    def workers_available?
-      start = 0
-      update = 0
-      Resque::Worker.all.each do |worker| 
-        unless worker.working?
-          start = 1 if worker.queues.first == "start_stream"
-          update = 1 if worker.queues.first == "update_frame"
-        end
-        return true if start==1 and update==1
-      end
-      return false
-    end
 
     def set_post
       @post = Post.find_by_id(params[:post_id]) 
