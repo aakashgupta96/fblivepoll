@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :admins
+  
+  devise_for :admins, skip: [:registrations, :passwords]
   devise_for :users, controllers: {registrations: "users/registrations", sessions: "users/sessions", :omniauth_callbacks => "users/omniauth_callbacks"}
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -14,7 +15,9 @@ Rails.application.routes.draw do
   get '/posts/:post_id/submit' => 'posts#submit', as: "submit"
   get '/demo' => 'extras#demo'
   get '/admins/dashboard' => 'admins#dashboard'
-  post '/admins/stop/:post_id' => 'admins#stop'
+  post '/admins/stop/:post_id' => 'admins#stop_post'
+  post '/users/stop/:post_id' => 'users#stop_post'
+  get 'users/posts' => 'users#posts', as: "myposts"
   #get '/editor/createFrame'
   #get '/editor/testFrame'
   

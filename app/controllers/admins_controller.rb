@@ -5,7 +5,7 @@ class AdminsController < ApplicationController
 		@posts = Post.live
 	end
 
-	def stop
+	def stop_post
 		Post.find(params[:post_id]).stop
 		redirect_to '/admins/dashboard'
 	end

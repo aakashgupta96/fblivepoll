@@ -29,10 +29,32 @@
             <a href="/posts/new" class="btn" style="padding: 0px 15px 0px 10px;"><i class="material-icons relative" style="display: inline-block; bottom: 13px;">videocam
 </i><span class="relative" style="left: 5px; bottom: 21px;">New Live Poll</span></a>
           </li>
+
           <% if user_signed_in? %>
-          <li><a href="/users/sign_out" class="session_button nav-option btn greenish row" data-method="DELETE"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log Out</span></a></li></li>
+            <li>
+              <div class='dropdown-button btn greenish' data-activates='dropdown1' style="max-width : 220px;"><i class="material-icons relative" style="display: inline-block; bottom: 13px; right: 20px;">perm_identity</i><span class="relative" style="bottom: 19px; right: 7px;"><%=current_user.name.split.first %></span></div>
+              <!-- Dropdown Structure -->
+              <ul id='dropdown1' class='dropdown-content'>
+                <li><%= link_to "My Polls", myposts_path%></li>
+                <!-- <li><%#= link_to "Edit Profile", edit_profile_path(current_user.id)%></li>
+                 --><li class="divider"></li>
+                <li><a href="/users/sign_out" data-method="DELETE">Log Out</a></li>
+              </ul>
+            </li>
           <% else %>
-          <li><a href="/users/auth/facebook" class="nav-option session_button btn greenish row"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
+            <li><a href="/users/auth/facebook" class="nav-option session_button btn greenish row"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
+          <% end %>
+        
+
+
+
+
+
+
+          <% if user_signed_in? %>
+          
+          <% else %>
+          
           <% end %>
         </ul>
         <ul class="side-nav" id="mobile-demo">
@@ -118,22 +140,31 @@
   $( document ).ready(function(){
     $('.parallax').parallax();
     $(".button-collapse").sideNav();
-  window.fbAsyncInit = function() {
-    FB._https = true;
-    FB.init({
-      appId      : '241493676272963',
-      xfbml      : true,
-      version    : 'v2.8'
+    $('.dropdown-button').dropdown({
+      inDuration: 400,
+      outDuration: 600,
+      constrain_width: true, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: true, // Displays dropdown below the button
+      alignment: 'left' // Displays dropdown with edge aligned to the left of button
     });
-  };
+    window.fbAsyncInit = function() {
+      FB._https = true;
+      FB.init({
+        appId      : '241493676272963',
+        xfbml      : true,
+        version    : 'v2.8'
+      });
+    };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/all.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/all.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   })
   
 </script>
