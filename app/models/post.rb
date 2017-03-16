@@ -20,9 +20,9 @@ class Post < ActiveRecord::Base
 				begin
 					self.graph_with_page_token.graph_call("#{post.video_id}", {end_live_video: "true"},"post")
     		rescue
-   				100.times do
-   					puts "Error ocurred while stopping"
-   				end
+   				# 100.times do
+   				# 	puts "Error ocurred while stopping"
+   				# end
    			end
 				%x[kill -9 #{process_id}]	
 			end

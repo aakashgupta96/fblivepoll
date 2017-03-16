@@ -35,6 +35,10 @@ class UpdateFrame
           ids.push(post.video_id)
           frame = ImageList.new("public/uploads/post/#{post.id}/frame.png")
           count_hash = @graph.graph_call("?ids=#{ids.join(',')}&fields=#{fields}")
+          if count_hash.size == 0
+            Resque.logger.info "Stopping post after its deletion"
+            post.stop
+          end
           counters.each do |counter|
             count = UpdateFrame.retrieve(count_hash,counter.reaction)
             frame.annotate(txt,0,0,counter.x+offset[count.to_s.length],counter.y+23,count.to_s)
