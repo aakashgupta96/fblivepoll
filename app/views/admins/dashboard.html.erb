@@ -1,0 +1,28 @@
+<%= link_to "Sign Out", destroy_admin_session_path, method: "delete" %> 
+<ul>
+	
+</ul>
+
+<table class="striped">
+    <thead>
+        <tr>
+            <th data-field="id">Id</th>
+            <th data-field="title">Title</th>
+            <th data-field="user">user Name</th>
+            <th data-field="link">Video Link</th>
+      		<th data-field="stop">Action</th>	
+        </tr>
+    </thead>
+
+    <tbody>
+    	<% @posts.each do |post| %>
+			<tr>
+            	<td><%= post.id %></td>
+            	<td><%= post.title %></td>
+            	<td><%= post.user.name %></td>
+            	<td><%#= post.video_link %></td>
+            	<td><a href="/admins/stop/<%=post.id%>" data-method="post" class="btn">Stop Streaming</a>
+        	</tr>
+		<% end %>
+    </tbody>
+</table>

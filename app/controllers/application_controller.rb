@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   
   protect_from_forgery with: :exception
+  def after_sign_in_path_for(resource)
+    return root_path if resource.class == User
+    '/admins/dashboard' 
+  end
 
   protected
 
@@ -14,6 +18,5 @@ class ApplicationController < ActionController::Base
   
   def set_user
   	@user  = (current_user.nil? ? User.new : current_user)
-  	#byebug
   end
 end

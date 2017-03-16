@@ -4,6 +4,8 @@ class StartStream
 
 	def self.perform(post_id)
 		post = Post.find(post_id)
+		post.live = true
+		post.save!
 		frame_path = "public/uploads/post/#{post.id}/frame1.png"
 		if post.audio.url.nil?
 			audio_path = "public/silent.aac"
@@ -28,5 +30,7 @@ class StartStream
 		unless post.audio.url.nil?
 			%x[rm #{audio_path}]
 		end
+		post.live = false
+		post.save!
 	end
 end
