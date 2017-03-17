@@ -22,6 +22,42 @@
 
 // });
 
+
+$( document ).ready(function(){
+    //$("#cover").fadeOut(2000);
+    $('.parallax').parallax();
+    $(".button-collapse").sideNav();
+    $('.dropdown-button').dropdown({
+      inDuration: 400,
+      outDuration: 600,
+      constrain_width: true, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: true, // Displays dropdown below the button
+      alignment: 'left' // Displays dropdown with edge aligned to the left of button
+    });
+    window.fbAsyncInit = function() {
+      FB._https = true;
+      FB.init({
+        appId      : '241493676272963',
+        xfbml      : true,
+        version    : 'v2.8'
+      });
+    };
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/all.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  })
+
+  $(window).load(function() {
+    $("#cover").fadeOut(200);
+});
+
 function validateAudioFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (5 MB)";
     var extErrorMessage = "Only audio file with extension: .mp3, .m4a, .mp4a, .wma, .wav or .aac is allowed";

@@ -11,6 +11,19 @@ body
   flex-direction: column;
   background: linear-gradient(to right, #bbbbbb, #cccccc, #eeeeee, #ffffff, #eeeeee, #cccccc, #bbbbbb);
 }
+#cover 
+{
+  position: fixed;
+  height: 100%; 
+  width: 100%; 
+  top:0; 
+  left: 0; 
+  background: #ffffff; 
+  z-index:9999;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 main
 {
   flex: 1 0 auto;
