@@ -46,14 +46,11 @@ class User < ActiveRecord::Base
   def pages
     temp = Array.new()
     begin
-      @graph = Koala::Facebook::API.new(self.token)
-      page_ids = @graph.get_object('me?fields=accounts.limit(100){parent_page}')["accounts"]["data"]
+      graph = Koala::Facebook::API.new(self.token)
+      page_ids = graph.get_object('me?fields=accounts.limit(100){parent_page}')["accounts"]["data"]
       page_ids.each do |page_id|
-        page_hash = Hash.new()
-        page_attrs = @graph.get_object("#{page_id['id']}?fields=picture{url},name")
-        page_hash["name"] = page_attrs["name"]
-        page_hash["id"] = page_attrs["id"]
-        page_hash["image"] = page_attrs["picture"]["data"]["url"]
+        page_attrs = graph.get_object("#{page_id['id']}?fields=picture{url},name")
+        page_hash = {"name"=> page_attrs["name"], "id" => page_attrs["id"], "image" => page_attrs["picture"]["data"]["url"]}
         temp << page_hash
       end
     rescue

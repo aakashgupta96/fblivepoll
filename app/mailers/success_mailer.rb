@@ -1,4 +1,4 @@
-class NotifyMailer < ApplicationMailer
+class SuccessMailer < ApplicationMailer
 	default from: "liveshuriken@gmail.com"
 
 	def new_post(email_id,link)

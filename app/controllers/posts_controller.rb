@@ -31,12 +31,10 @@ class PostsController < ApplicationController
     
     unless reactions.nil? 
       reactions.each do |reaction,cordinates|
-        counter = Counter.create(reaction: reaction, x: cordinates[:x].to_i, y: cordinates[:y].to_i)
-        @post.counters << counter
+        @post.counters  << Counter.create(reaction: reaction, x: cordinates[:x].to_i, y: cordinates[:y].to_i)
       end
     end
-    @post.counter_color = params[:color]
-    @post.save!
+    @post.update(counter_color: params[:color])
     data = params[:data_uri]
     image_data = Base64.decode64(data['data:image/png;base64,'.length .. -1])
 
@@ -53,6 +51,7 @@ class PostsController < ApplicationController
       @post.start 
       redirect_to submit_path
     else
+      Resque.enqueue(NotifyAdmins,false) 
       redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
     end
   end

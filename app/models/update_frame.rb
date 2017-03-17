@@ -12,7 +12,7 @@ class UpdateFrame
   def self.work(post_id)
     Resque.logger = Logger.new(Rails.root.join("log").join("update").join(post_id.to_s).to_s)
     post = Post.find(post_id)
-    @graph = post.graph_with_page_token
+    graph = post.graph_with_page_token
     counters = post.counters
     if counters.length>0
       txt = Draw.new
@@ -30,11 +30,11 @@ class UpdateFrame
       begin
         if counters.length>0
           ids = [] 
-          # shared_post_ids = @graph.graph_call("#{video_id}?fields=sharedposts{id}")["sharedposts"]["data"] rescue false
+          # shared_post_ids = graph.graph_call("#{video_id}?fields=sharedposts{id}")["sharedposts"]["data"] rescue false
           # ids = shared_post_ids.collect {|u| u["id"]} if shared_post_ids.class == Array
           ids.push(post.video_id)
           frame = ImageList.new("public/uploads/post/#{post.id}/frame.png")
-          count_hash = @graph.graph_call("?ids=#{ids.join(',')}&fields=#{fields}")
+          count_hash = graph.graph_call("?ids=#{ids.join(',')}&fields=#{fields}")
           if count_hash.size == 0
             Resque.logger.info "Stopping post after its deletion"
             post.stop
