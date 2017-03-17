@@ -1,11 +1,12 @@
 <div class="white privacy-box card hoverable z-depth-4">
-  <table class="striped">
+  <table class="responsive-table striped">
     <thead>
         <tr>
             <th data-field="title">Title</th>
             <th data-field="caption">Caption</th>
+            <th data-field="status">Status</th>
             <th data-field="link">Video Link</th>
-        		<th data-field="stop">Action</th>	
+        		<th data-field="action">Action</th>	
         </tr>
     </thead>
 
@@ -14,14 +15,17 @@
     		<tr>
          	<td><%= post.title %></td>
          	<td><%= post.caption %></td>
+          <td><%= post.status.capitalize %></td>
          	<td>
             <% unless post.video_id.nil? %>
               <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
             <% end %>
           </td>
          	<td>
-            <% if post.live %>
-              <a href="/users/stop/<%=post.id%>" data-method="post" onclick="return confirm('Are you sure?')" class="btn">Stop Streaming</a>
+            <% if post.status == "live" %>
+              <a href="/users/stop/<%=post.id%>" data-method="post" onclick="return confirm('Are you sure?')" class="btn">End Video</a>
+            <% elsif post.status == "drafted" %>
+              <a href="/posts/<%=post.id%>/frame" class="btn">Draw Frame</a>
             <% end %>
           </td>
        	</tr>

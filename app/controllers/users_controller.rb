@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
   def stop_post
   	@post.stop
-  	return redirect_to myposts_path
+  	return redirect_to myposts_path, notice: "Live Video has been successfully stopped."
   end
 
   private

@@ -15,4 +15,4 @@ ActionMailer::Base.smtp_settings = {
 }
 
 
-Resque.enqueue(StopStream)
+Resque.enqueue(LoopTask)

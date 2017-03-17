@@ -1,7 +1,11 @@
 <div class="row">
 	<div class="center-align">
 		<h4 class="header red-text">
-			Success! Streaming has been successfully started. Your video will go live within 1 minute.
+			<% if @post.status == "scheduled" %>
+				Your post has been scheduled successfully. Note that it will be posted at scheduled time only if slots will be available.
+			<% else %>
+				Success! Streaming has been successfully started. Your video will go live within 1 minute.
+			<% end %>
 		</h4>
 	</div>
 	<div class="row">
@@ -16,7 +20,11 @@
 					    <p><%=@post.caption%></p>
 				    </div>
 				    <div class="card-action">
-					    <a class="btn" href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
+					    <% if @post.status == "scheduled" %>
+					    	<a class="btn" href="/posts/<%=@post.id%>/frame">Redraw Frame</a>
+					    <% else %>
+					    	<a class="btn" href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
+					    <% end %>
 				    </div>
 				  </div>
 				</div>

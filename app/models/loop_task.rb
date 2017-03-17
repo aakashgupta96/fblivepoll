@@ -1,8 +1,9 @@
-class StopStream
-	@queue = :stop_stream
+class LoopTask
+	@queue = :loop_task
 
 	def self.perform 
 	  loop do
+	  	#Code for Stopping a streaming process
 			Resque.workers.find_all{ |worker| worker.queues[0]=="start_stream" }.each do |worker|
 				process_id = worker.pid
 				3.times do
@@ -12,18 +13,25 @@ class StopStream
 				end
 				unless process_id==0
 					elapsed_time = %x[ps -p #{process_id} -o etime=]
-					elapsed_time = StopStream.convert_to_sec(elapsed_time.strip!)
-					post_id = StopStream.retrieve_post_id(worker)
+					elapsed_time = LoopTask.convert_to_sec(elapsed_time.strip!)
+					post_id = LoopTask.retrieve_post_id(worker)
 					post = Post.find(post_id)
 					duration = (post.duration-30.years).to_i
 					if(elapsed_time >= duration)
 						begin
 							post.graph_with_page_token.graph_call("#{post.video_id}", {end_live_video: "true"},"post")
-    					rescue
-    						
-    					end
-						%x[kill -9 #{process_id}]	
+    				rescue
+    					
+    				end
+						post.stop
 					end
+				end
+			end
+
+			#Code for Starting a scheduled post
+			Post.scheduled.each do |post|
+				if(post.start_time.to_time < Time.now.getutc)
+					post.start if post.can_start?
 				end
 			end
 			sleep(5)

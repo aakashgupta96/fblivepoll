@@ -33,12 +33,22 @@
     
     <div class="row">
         <div class="input-field col s12">
-          <textarea id="post_caption" name="post[caption]" class="materialize-textarea" style="padding: 0.6rem 0px 0.2rem 0px"></textarea>
+          <textarea id="post_caption" name="post[caption]" class="materialize-textarea" style="margin: 0px;"></textarea>
           <label for="textarea1">Caption</label>
         </div>
     </div>
 
-    
+    <div class="row">
+      <div class="input-field col s12 l6">
+        <input type="checkbox" id="schedule" name="post[scheduled]"/>
+        <label for="schedule">Schedule Post</label>
+      </div>  
+      <div id="datetime" class="input-field col s12 l6" style="display: none;">
+        <%= f.datetime_select :start_time,{discard_year: true, datetime_separator: "",time_separator: "", ampm: true},{class: "col s6 l3"}%>
+        <%= f.label "Scheduled Date and Time in UTC Time Zone" %>
+      </div>
+    </div>
+
     <div class="row">
       <div class="file-field input-field col s12 m6 l6">
         <div class="btn">
@@ -52,7 +62,6 @@
 
      <div class="input-field col s12 m6 l6">
         <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
-        <%#=  f.select(:page_id, options_for_select([["Choose an option","",disabled: true, selected: true]] + @pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
         <%= f.label "Select Page" %>
       </div>
     </div>
@@ -70,6 +79,13 @@
   <script>
     $(document).ready(function() {
       $('select').material_select();
+
+      $('#schedule').click(function(){
+        if( $(this).is(':checked') )
+          $('#datetime')[0].style.display = "inline-block";
+        else
+          $('#datetime')[0].style.display = "none";
+      });
     });
   </script>
 <% end %>

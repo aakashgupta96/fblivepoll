@@ -4,6 +4,10 @@ $secondary-color: #fa3e3e !default;
 @import 'materialize';
 @import "materialize/extras/nouislider";
 
+td
+{
+  width: 20%;
+}
 body
 {
   display: flex;

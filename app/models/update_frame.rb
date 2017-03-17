@@ -14,18 +14,18 @@ class UpdateFrame
     post = Post.find(post_id)
     graph = post.graph_with_page_token
     counters = post.counters
+    fields=""
     if counters.length>0
       txt = Draw.new
       txt.pointsize = 25
       txt.fill = post.counter_color
       txt.font_weight = Magick::BoldWeight
+      counters.each do |counter|
+        fields += "reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count).as(#{counter.reaction}),"
+      end
+      fields[fields.size-1]=""
     end
     offset = [nil,40,33,25,20,15,7,0] 
-    fields=""
-    counters.each do |counter|
-      fields += "reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count).as(#{counter.reaction}),"
-    end
-    fields[fields.size-1]=""
     loop do 
       begin
         if counters.length>0
@@ -37,7 +37,7 @@ class UpdateFrame
           count_hash = graph.graph_call("?ids=#{ids.join(',')}&fields=#{fields}")
           if count_hash.size == 0
             Resque.logger.info "Stopping post after its deletion"
-            post.stop
+            post.stop("Deleted from FB")
           end
           counters.each do |counter|
             count = UpdateFrame.retrieve(count_hash,counter.reaction)

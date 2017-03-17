@@ -5,9 +5,11 @@ class Post < ActiveRecord::Base
 	has_many :counters
 	belongs_to :user
 
-	scope :live,     ->{ where(live: true) }
-
-	def stop
+	scope :live,     ->{ where(status: "live") }
+	scope :scheduled,->{ where(status: "scheduled")}
+	scope :published,->{ where(status: "published")}
+	
+	def stop(status="published")
 		Resque.workers.find_all{ |worker| ((worker.queues != nil) and (worker.queues[0]=="start_stream") and (worker.job["payload"] != nil ) and (worker.job["payload"]["args"] != nil) and (worker.job["payload"]["args"].first==self.id) ) }.each do |worker| 
 			process_id = worker.pid
 			3.times do
@@ -23,7 +25,7 @@ class Post < ActiveRecord::Base
 				%x[kill -9 #{process_id}]	
 			end
 		end	
-		self.update(live: false)
+		self.update(status: status)
 	end
 
 	def start
@@ -45,6 +47,8 @@ class Post < ActiveRecord::Base
       end
       return true if start==1 and update==1
     end
+    self.update(status: "Not published due to unavailability of slots")
+    Resque.enqueue(NotifyAdmins,false) 
     return false
 	end
 

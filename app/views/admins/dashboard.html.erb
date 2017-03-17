@@ -1,27 +1,34 @@
 <%= link_to "Sign Out", destroy_admin_session_path, method: "delete" %> 
 <div class="white privacy-box card hoverable z-depth-4">
-    <table class="striped">
-        <thead>
-            <tr>
-                <th data-field="id">Id</th>
-                <th data-field="title">Title</th>
-                <th data-field="user">user Name</th>
-                <th data-field="link">Video Link</th>
-          		<th data-field="stop">Action</th>	
-            </tr>
-        </thead>
+  <table class="responsive-table striped">
+    <thead>
+        <tr>
+            <th data-field="title">Title</th>
+            <th data-field="caption">Caption</th>
+            <th data-field="status">Status</th>
+            <th data-field="link">Video Link</th>
+            <th data-field="action">Action</th> 
+        </tr>
+    </thead>
 
-        <tbody>
-        	<% @posts.each do |post| %>
-    			<tr>
-                	<td><%= post.id %></td>
-                	<td><%= post.title %></td>
-                	<td><%= post.user.name %></td>
-                	<td><a href="https://www.facebook.com/<%=post.video_id%>">www.facebook.com/<%=post.video_id%></a></td>
-                	<td><a href="/admins/stop/<%=post.id%>" data-method="post" onclick="return confirm('Are you sure?')" class="btn">Stop Streaming</a>
-                    </td>
-            	</tr>
-    		<% end %>
-        </tbody>
-    </table>
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr>
+          <td><%= post.title %></td>
+          <td><%= post.caption %></td>
+          <td><%= post.status.capitalize %></td>
+          <td>
+          <% unless post.video_id.nil? %>
+            <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
+          <% end %>
+          </td>
+          <td>
+          <% if post.status == "live" %>
+            <a href="/admins/stop/<%=post.id%>" data-method="post" onclick="return confirm('Are you sure?')" class="btn">End Video</a>
+          <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

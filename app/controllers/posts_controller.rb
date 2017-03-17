@@ -47,13 +47,9 @@ class PostsController < ApplicationController
       f.write image_data
     end
     
-    if @post.can_start?
-      @post.start 
-      redirect_to submit_path
-    else
-      Resque.enqueue(NotifyAdmins,false) 
-      redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
-    end
+    (@post.start and return redirect_to submit_path) if (@post.status != "scheduled" and @post.can_start?)
+    return redirect_to submit_path if @post.status == "scheduled"
+    return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
   end
 
   def submit
@@ -62,10 +58,11 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.user = current_user
+    @post.status = "scheduled" if params["post"]["scheduled"]=="on"
     if @post.save
       return redirect_to frame_path(@post.id)
     else
-      return redirect_to new_post_path, alert: "Invalid details"
+      return redirect_to new_post_path, notice: "Invalid Details"
     end
   end
 
