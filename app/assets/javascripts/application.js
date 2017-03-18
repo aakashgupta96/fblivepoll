@@ -59,7 +59,7 @@ $( document ).ready(function(){
 });
 
 function validateAudioFiles(inputFile) {
-    var maxExceededMessage = "This file exceeds the maximum allowed file size (5 MB)";
+    var maxExceededMessage = "This file exceeds the maximum allowed file size (50 MB)";
     var extErrorMessage = "Only audio file with extension: .mp3, .m4a, .mp4a, .wma, .wav or .aac is allowed";
     var allowedExtension = ["mp3", "m4a", "mp4a", "aac", "wma", "wav"];
 
@@ -83,6 +83,33 @@ function validateAudioFiles(inputFile) {
         $(inputFile).val('');
     };
 }
+
+function validateVideoFiles(inputFile) {
+    var maxExceededMessage = "This file exceeds the maximum allowed file size (500 MB)";
+    var extErrorMessage = "Only audio file with extension: .mpeg, .mp4, .flv, .mkv or .wmv is allowed";
+    var allowedExtension = ["mp4", "mpeg", "avi", "flv", "mkv", "wmv"];
+
+    var extName;
+    var maxFileSize = $(inputFile).data('max-file-size');
+    var sizeExceeded = false;
+    var extError = false;
+
+    $.each(inputFile.files, function() {
+        if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
+        extName = this.name.split('.').pop();
+        if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
+    });
+    if (sizeExceeded) {
+        window.alert(maxExceededMessage);
+        $(inputFile).val('');
+    };
+
+    if (extError) {
+        window.alert(extErrorMessage);
+        $(inputFile).val('');
+    };
+}
+
 
 function validateImageFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (5 MB)";

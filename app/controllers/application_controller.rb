@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_user
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   
@@ -16,7 +15,23 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
   
-  def set_user
-  	@user  = (current_user.nil? ? User.new : current_user)
+  def set_post
+    @post = Post.find_by_id(params[:post_id]) 
+    if @post.nil?
+      return redirect_to root_path, notice: "Page requested not found"
+    end
   end
+
+  def post_params
+    params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio,:category,:video,:image)
+  end
+
+  def authenticate_user!
+    redirect_to root_path, notice: "You need to sign in before continuing" unless user_signed_in?
+  end
+
+  def authorize_user!
+    redirect_to root_path, notice: "Unauthorized" unless current_user == @post.user
+  end
+
 end

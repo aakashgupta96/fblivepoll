@@ -1,22 +1,12 @@
-class PostsController < ApplicationController
+class PollsController < ApplicationController
 
-  before_action :set_post, except: [:home, :steps, :new, :create]
-  before_action :authenticate_user!, except: [:home, :steps]
-  before_action :authorize_user! , only: [:frame, :save_canvas, :submit]
-  before_action :set_graph, only: [:new, :save_canvas, :submit]
+  before_action :set_post, except: [:new, :create]
+  before_action :authenticate_user!
+  before_action :authorize_user! , except: [:new, :create]
+  
   
   require 'base64'
   
-  def invalid
-    redirect_to root_path, notice: "Page requested not found"
-  end
-
-  def home    
-  end
-  
-  def steps
-  end
-
   def new
     @post = Post.new
     @pages = current_user.pages
@@ -46,9 +36,9 @@ class PostsController < ApplicationController
     File.open(File.join(path,"frame1.png"), 'wb') do |f|
       f.write image_data
     end
-    
-    (@post.start and return redirect_to submit_path) if (@post.status != "scheduled" and @post.can_start?)
-    return redirect_to submit_path if @post.status == "scheduled"
+    @post.update(image:  File.open(File.join(path,"frame.png")))
+    (@post.start and return redirect_to submit_poll_path) if (@post.status != "scheduled" and @post.can_start?)
+    return redirect_to submit_poll_path if @post.status == "scheduled"
     return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
   end
 
@@ -56,14 +46,14 @@ class PostsController < ApplicationController
   end
   
   def create
-    #byebug
     @post = Post.new(post_params)
+    @post.category = "poll"
     @post.user = current_user
     @post.status = "scheduled" if params["post"]["scheduled"]=="on"
     if @post.save
       return redirect_to frame_path(@post.id)
     else
-      return redirect_to new_post_path, notice: "Invalid Details"
+      return redirect_to new_poll_path, notice: "Invalid Details"
     end
   end
 
@@ -75,29 +65,4 @@ class PostsController < ApplicationController
     end
   end
 
-
-  private
-
-    def set_post
-      @post = Post.find_by_id(params[:post_id]) 
-      if @post.nil?
-        return redirect_to root_path, notice: "Page requested not found"
-      end
-    end
-
-    def post_params
-      params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio,:category)
-    end
-
-    def set_graph
-      @graph = Koala::Facebook::API.new(current_user.token)
-    end
-
-    def authenticate_user!
-      redirect_to root_path, notice: "You need to sign in before continuing" unless user_signed_in?
-    end
-
-    def authorize_user!
-      redirect_to root_path, notice: "Unauthorized" unless current_user == @post.user
-    end
 end

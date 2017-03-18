@@ -6,9 +6,10 @@
     </div>
   </div>
 <% else %>
-  <h3 class="header grey-text text-darken-2 bolder center">Live Poll Details</h3>
+  <h3 class="header grey-text text-darken-2 bolder center">Video Details</h3>
+  <h5 class="header red-text bold center">This plugin will stream your video in a loop so that video starts again as soon as it ends for the selected time duration.</h5>
   <div class="row container white z-depth-4" style="padding: 40px 40px 50px 40px;">
-  <%= form_for(@post,html: {class: "col s12"}) do |f| %>
+  <%= form_for(@post,:url => url_for(:controller => 'loop_videos', :action => 'create'),html: {class: "col s12"}) do |f| %>
     <% if @post.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -49,16 +50,11 @@
       </div>
     </div>
 
-    <div class="field">
-      <%= f.label :type %><br>
-      <%= f.select :category, [["Poll","poll"], ["Loop Video","loop_video"]] %>
-    </div>
-
     <div class="row">
       <div class="file-field input-field col s12 m6 l6">
         <div class="btn">
-          <span>Playback Audio</span>
-          <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 50.megabytes} }%>
+          <span>Video</span>
+          <%= f.file_field :video, {class: 'file_select', onchange: "validateVideoFiles(this);", data: { max_file_size: 500.megabytes} }%>
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text">
@@ -72,10 +68,7 @@
     </div>
     
     <div class="row">
-      
-    </div>
-    <div class="row">
-      <%= f.submit "Proceed to draw frame", {class: "col s12 btn"}%>
+      <%= f.submit "Submit", {class: "col s12 btn"}%>
     </div>
   <% end %>
   </div>
@@ -87,9 +80,9 @@
 
       $('#schedule').click(function(){
         if( $(this).is(':checked') )
-          $('#datetime')[0].style.display = "inline-block";
+          $('#datetime').slideDown(300);
         else
-          $('#datetime')[0].style.display = "none";
+          $('#datetime').slideUp(300);
       });
     });
   </script>

@@ -1,0 +1,77 @@
+<% if @pages.count==0 %>
+  <div class="card valign-wrapper center" style="height: 280px;">
+    <div class="valign container">
+      <h4 class="row red-text"> Sorry! But you do not own any Facebook page.</h4>
+      <h4 class="row red-text">You have to be editor or admin of atleast one facebook page to proceed further. </h4>
+    </div>
+  </div>
+<% else %>
+  <h3 class="header grey-text text-darken-2 bolder center">Live Poll Details</h3>
+  <div class="row container white z-depth-4" style="padding: 40px 40px 50px 40px;">
+  <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {class: "col s12"}) do |f| %>
+    <div class="row" style="margin-bottom: 0px;">
+      <div class="input-field col s12 l6">
+        <%= f.text_field :title, required: true%>
+        <%= f.label "Title" %>
+      </div>
+      <div class="input-field col s12 l6">
+        <%=  f.time_select :duration, {start_hour: 0 , end_hour: 3, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
+        <%= f.label "Duration ( hrs : min )" %>
+      </div>
+    </div>
+    
+    <div class="row">
+        <div class="input-field col s12">
+          <textarea id="post_caption" name="post[caption]" class="materialize-textarea" style="margin: 0px;"></textarea>
+          <label for="textarea1">Caption</label>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12 l6">
+        <input type="checkbox" id="schedule" name="post[scheduled]"/>
+        <label for="schedule">Schedule Post</label>
+      </div>  
+      <div id="datetime" class="input-field col s12 l6" style="display: none;">
+        <%= f.datetime_select :start_time,{discard_year: true, datetime_separator: "",time_separator: "", ampm: true},{class: "col s6 l3"}%>
+        <%= f.label "Scheduled Date and Time in UTC Time Zone" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="file-field input-field col s12 m6 l6">
+        <div class="btn">
+          <span>Playback Audio</span>
+          <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 50.megabytes} }%>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+
+     <div class="input-field col s12 m6 l6">
+        <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
+        <%= f.label "Select Page" %>
+      </div>
+    </div>
+    
+    <div class="row">
+      <%= f.submit "Proceed to draw frame", {class: "col s12 btn"}%>
+    </div>
+  <% end %>
+  </div>
+
+
+  <script>
+    $(document).ready(function() {
+      $('select').material_select();
+
+      $('#schedule').click(function(){
+        if( $(this).is(':checked') )
+          $('#datetime').slideDown(300);
+        else
+          $('#datetime').slideUp(300);
+      });
+    });
+  </script>
+<% end %>

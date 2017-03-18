@@ -1,6 +1,9 @@
 class Post < ActiveRecord::Base
 	
 	mount_uploader :audio, AudioUploader
+	mount_uploader :video, VideoUploader
+	mount_uploader :image, ImageUploader
+	
 	has_many :compare_objects
 	has_many :counters
 	belongs_to :user
@@ -31,13 +34,17 @@ class Post < ActiveRecord::Base
 	end
 
 	def start
-		graph = graph_with_page_token
-		video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption} \nMade with: www.shurikenlive.com", title: self.title},"post")
-	  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
-	  self.update(key: video["stream_url"], video_id: video_id)
-	  Resque.enqueue(StartStream,self.id)
-	  Resque.enqueue(UpdateFrame,self.id)
-	  Resque.enqueue(NotifyAdmins,true,self.video_id) 
+		begin
+			graph = graph_with_page_token
+			video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption} \nMade with: www.shurikenlive.com", title: self.title},"post")
+		  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
+		  self.update(key: video["stream_url"], video_id: video_id)
+		  Resque.enqueue(StartStream,self.id)
+		  Resque.enqueue(UpdateFrame,self.id) if self.poll?
+		  Resque.enqueue(NotifyAdmins,true,self.video_id)
+		rescue Exception => e
+			self.update(status: "Facebook declined request for creating live video")
+		end
 	end
 
 	def can_start?

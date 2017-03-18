@@ -7,15 +7,20 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   mount Resque::Server, :at => "/resque"
 
-  root 'posts#home'
+  root 'extras#home'
   get '/privacy' => 'extras#privacy'
   get '/terms' => 'extras#terms'
-  get '/posts/:post_id/frame' => 'posts#frame', as: "frame"
-  post '/posts/:post_id/save_canvas' => 'posts#save_canvas', as: "save_canvas"
-  get '/posts/:post_id/submit' => 'posts#submit', as: "submit"
   get '/demo' => 'extras#demo'
+  
+  get '/polls/:post_id/frame' => 'polls#frame', as: "frame"
+  post '/polls/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
+  get '/polls/:post_id/submit' => 'polls#submit', as: "submit_poll"
+  
+  get '/loop_videos/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
+
   get '/admins/dashboard' => 'admins#dashboard'
   post '/admins/stop/:post_id' => 'admins#stop_post'
+  
   post '/users/stop/:post_id' => 'users#stop_post'
   get '/users/posts' => 'users#posts', as: "myposts"
   #get '/editor/createFrame'
@@ -23,14 +28,14 @@ Rails.application.routes.draw do
   
 
 
-  resources :posts, :except => [:edit , :show , :index , :update, :destroy]
-  
+  resources :polls, :except => [:edit , :show , :index , :update, :destroy]
+  resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
 
 
 
 
 
-  get "*path" => 'posts#invalid'
+  get "*path" => 'extras#invalid'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

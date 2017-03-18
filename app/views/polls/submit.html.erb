@@ -21,7 +21,7 @@
 				    </div>
 				    <div class="card-action">
 					    <% if @post.status == "scheduled" %>
-					    	<a class="btn" href="/posts/<%=@post.id%>/frame">Redraw Frame</a>
+					    	<a class="btn" href="/polls/<%=@post.id%>/frame">Redraw Frame</a>
 					    <% else %>
 					    	<a class="btn" href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
 					    <% end %>
