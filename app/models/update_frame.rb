@@ -51,7 +51,7 @@ class UpdateFrame
         Resque.logger.info "Error class is #{e.class}"
         retry
       end
-      sleep(5)
+      sleep(3)
     end
   end
 

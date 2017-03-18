@@ -49,6 +49,11 @@
       </div>
     </div>
 
+    <div class="field">
+      <%= f.label :type %><br>
+      <%= f.select :category, [["Poll","poll"], ["Loop Video","loop_video"]] %>
+    </div>
+
     <div class="row">
       <div class="file-field input-field col s12 m6 l6">
         <div class="btn">

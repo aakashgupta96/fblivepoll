@@ -5,6 +5,8 @@ class Post < ActiveRecord::Base
 	has_many :counters
 	belongs_to :user
 
+	enum category: [ :poll, :loop_video ]
+
 	scope :live,     ->{ where(status: "live") }
 	scope :scheduled,->{ where(status: "scheduled")}
 	scope :published,->{ where(status: "published")}

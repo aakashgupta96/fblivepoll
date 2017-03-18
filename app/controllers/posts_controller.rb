@@ -56,6 +56,7 @@ class PostsController < ApplicationController
   end
   
   def create
+    #byebug
     @post = Post.new(post_params)
     @post.user = current_user
     @post.status = "scheduled" if params["post"]["scheduled"]=="on"
@@ -85,7 +86,7 @@ class PostsController < ApplicationController
     end
 
     def post_params
-      params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio)
+      params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio,:category)
     end
 
     def set_graph
