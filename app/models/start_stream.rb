@@ -32,7 +32,7 @@ class StartStream
 				%x[rm #{audio_path}]
 			end
 		else
-			# video_path = "public/uploads/post/#{post_id.to_s}/1.flv" 
+			video_path = "public/uploads/post/#{post_id.to_s}/1.flv" 
 			# width = FFMPEG::Movie.new(Rails.root.to_s + "/public" + post.video.url).width
 			# width = (width>960 ? 1280 : 640)
 			%x[$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv "#{post.key}" 2> #{Rails.root.join("log").join("stream").join(post.id.to_s).to_s} ]
