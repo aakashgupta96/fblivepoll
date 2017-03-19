@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+
+gem 'streamio-ffmpeg'
 gem 'materialize-sass'
 gem "httparty"
 #gem 'active_device'

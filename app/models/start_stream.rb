@@ -32,9 +32,12 @@ class StartStream
 				%x[rm #{audio_path}]
 			end
 		else
-			video_path = "public/uploads/post/#{post_id.to_s}/1.flv" 
-			#%x[$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv "#{post.key}" 2> #{Rails.root.join("log").join("stream").join(post.id.to_s).to_s} ]
-			%x[$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -i "public/logo_small.png" -filter_complex "overlay=W-w-5:H-h-5" -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv "#{post.key}" 2> #{Rails.root.join("log").join("stream").join(post.id.to_s).to_s} ]
+			# video_path = "public/uploads/post/#{post_id.to_s}/1.flv" 
+			# width = FFMPEG::Movie.new(Rails.root.to_s + "/public" + post.video.url).width
+			# width = (width>960 ? 1280 : 640)
+			%x[$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv "#{post.key}" 2> #{Rails.root.join("log").join("stream").join(post.id.to_s).to_s} ]
+			#%x[$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -i "public/logo_#{width}.png" -filter_complex "overlay=W-w-5:H-h-5" -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv "#{post.key}" 2> #{Rails.root.join("log").join("stream").join(post.id.to_s).to_s} ]
+			#%x[$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i 2.mp4 -t 00:05:00 -strict -2 -f flv pipe:1 | ffmpeg -re -i - -i "logo_1280.png" -filter_complex "overlay=W-w-5:H-h-5" -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -f flv "rtmp://rtmp-api.facebook.com:80/rtmp/250736748729969?ds=1&s_l=1&a=ATgdN4ICGXBysECX"]
 			%x[rm #{video_path}]
 			post.update(status: "published")
 		end
