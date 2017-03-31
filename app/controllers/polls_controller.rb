@@ -33,10 +33,9 @@ class PollsController < ApplicationController
     File.open(File.join(path,"frame.png"),'wb') do |f|
       f.write image_data
     end
-    File.open(File.join(path,"frame1.png"), 'wb') do |f|
-      f.write image_data
-    end
-    @post.update(image:  File.open(File.join(path,"frame.png")))
+    @post.template = Template.first
+    @post.image = File.open(File.join(path,"frame.png"))
+    @post.save
     (@post.start and return redirect_to submit_poll_path) if (@post.status != "scheduled" and @post.can_start?)
     return redirect_to submit_poll_path if @post.status == "scheduled"
     return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."

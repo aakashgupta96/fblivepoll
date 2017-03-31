@@ -3,6 +3,10 @@ require File.expand_path('../application', __FILE__)
 require "rmagick"
 require 'koala'
 require 'carrierwave/orm/activerecord'
+require "rubygems"
+require "headless"
+require "selenium-webdriver"
+require 'process_exists'
 Rails.application.initialize!
 ActionMailer::Base.smtp_settings = {
     address:              'smtp.gmail.com',

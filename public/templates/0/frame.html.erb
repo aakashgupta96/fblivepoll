@@ -1,0 +1,147 @@
+<html>
+
+  <head>
+    <title>Frame Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <img src="../../../<%=post.image.url%>" class="background">
+      <% i=1 %>
+      <% post.counters.each do |counter|%>
+        <div class="absolute <%=counter.reaction%>">
+          <p id="counter<%=i%>" class="counter">
+            0
+          </p>
+          <% i = i+1 %>
+        </div>
+      <% end %>
+    </div>
+    <script>
+      var postID = "<%= post.video_id %>";
+      var access_token = "<%=post.page_access_token%>";
+      var refreshTime = 3;
+      var defaultCount = 0;
+      var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+      var code = 'reactions_' + e.toLowerCase();
+        return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+      }).join(',');
+        
+      function refreshCounts() {
+        var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;
+      	$.getJSON(url, function(res){
+          <% i=1 %>
+      		<% post.counters.each do |counter| %>
+            var v<%=i%> = res[postID].reactions_<%=counter.reaction%>.summary.total_count
+            $('#counter<%=i%>').text(v<%=i%>);
+            <% i = i+1 %>
+      		<% end %>
+      	});
+      }
+
+      $(document).ready(function(){
+          setInterval(refreshCounts, refreshTime * 1000);
+          refreshCounts();
+      });
+    </script>
+    
+    <style>
+      * {
+      cursor: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+      @font-face {
+        font-family: 'Sansita';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Sansita Bold Italic'), local('Sansita-BoldItalic'), url(https://fonts.gstatic.com/s/sansita/v1/Izkki8H_L5Nxxk6vpKrxXT0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+        unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+      }
+      /* latin */
+      @font-face {
+        font-family: 'Sansita';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Sansita Bold Italic'), local('Sansita-BoldItalic'), url(https://fonts.gstatic.com/s/sansita/v1/Izkki8H_L5Nxxk6vpKrxXegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+      }
+      /* latin-ext */
+      @font-face {
+        font-family: 'Exo';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Exo Bold Italic'), local('Exo-BoldItalic'), url(https://fonts.gstatic.com/s/exo/v4/qnDKcEBjgjEqyrM95Y2N4xTbgVql8nDJpwnrE27mub0.woff2) format('woff2');
+        unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+      }
+      /* latin */
+      @font-face {
+        font-family: 'Exo';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Exo Bold Italic'), local('Exo-BoldItalic'), url(https://fonts.gstatic.com/s/exo/v4/RUd6U3c1BMbwtyTv2U6XJfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+      }
+
+      .absolute{
+        position: absolute;
+      }
+      .wrapper{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 800px;
+      height: 450px;
+      }
+      .background
+      {
+        width: 800px;
+        height: 450px;
+      }
+      <%post.counters.each do |counter| %>
+      .<%=counter.reaction%>{
+        display: flex;
+        justify-content: space-around;
+        width: 160px ;
+        top: <%=((counter.y * 1.111).to_i)%>;
+        left: <%=((counter.x * 1.111).to_i)%>;
+      }
+      <%end%>
+      .counter
+      {
+        font-size: 38px;
+        font-weight: bold;
+        color: <%= post.counter_color %>;
+      }
+      @-webkit-keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @-moz-keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @-o-keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @-webkit-keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+      @-moz-keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+      @-o-keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+      @keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+    
+    </style>
+  </body>
+
+</html>

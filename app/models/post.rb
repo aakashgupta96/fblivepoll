@@ -1,13 +1,14 @@
 class Post < ActiveRecord::Base
 	
 	mount_uploader :audio, AudioUploader
+	mount_uploader :background, BackgroundUploader
 	mount_uploader :video, VideoUploader
 	mount_uploader :image, ImageUploader
 	
-	has_many :compare_objects
+	has_many :images
 	has_many :counters
 	belongs_to :user
-
+	belongs_to :template
 	enum category: [ :poll, :loop_video ]
 
 	scope :live,     ->{ where(status: "live") }
@@ -15,21 +16,12 @@ class Post < ActiveRecord::Base
 	scope :published,->{ where(status: "published")}
 	
 	def stop(status="published")
-		Resque.workers.find_all{ |worker| ((worker.queues != nil) and (worker.queues[0]=="start_stream") and (worker.job["payload"] != nil ) and (worker.job["payload"]["args"] != nil) and (worker.job["payload"]["args"].first==self.id) ) }.each do |worker| 
-			process_id = worker.pid
-			3.times do
-				process_id = %x[pgrep -P #{process_id}]
-				process_id = process_id.strip.to_i
-				break if process_id == 0
-			end
-			unless process_id==0
-				begin
-					self.graph_with_page_token.graph_call("#{post.video_id}", {end_live_video: "true"},"post")
-    		rescue
-   			end
-				%x[kill -9 #{process_id}]	
-			end
-		end	
+		begin
+      self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post")
+    rescue Exception => e
+      puts e.class,e.message	
+    end
+    %x[kill -9 #{self.process_id}]  	
 		self.update(status: status)
 	end
 
@@ -37,34 +29,36 @@ class Post < ActiveRecord::Base
 		begin
 			graph = graph_with_page_token
 			video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption} \nMade with: www.shurikenlive.com", title: self.title},"post")
+			live_id = video["id"]
 		  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
-		  self.update(key: video["stream_url"], video_id: video_id)
-		  Resque.enqueue(StartStream,self.id)
+		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id)
 		  Resque.enqueue(UpdateFrame,self.id) if self.poll?
-		  Resque.enqueue(NotifyAdmins,true,self.video_id)
+		  # Resque.enqueue(NotifyAdmins,true,self.video_id)
 		rescue Exception => e
 			self.update(status: "Facebook declined request for creating live video")
 		end
 	end
 
 	def can_start?
-		start = update = 0
-    Resque::Worker.all.each do |worker| 
+		Resque::Worker.all.each do |worker| 
       unless worker.working?
-        start = 1 if worker.queues.first == "start_stream"
-        update = 1 if worker.queues.first == "update_frame"
+        return true if worker.queues.first == "update_frame"
       end
-      return true if start==1 and update==1
     end
     self.update(status: "Not published due to unavailability of slots")
     Resque.enqueue(NotifyAdmins,false) 
     return false
 	end
 
+	def page_access_token
+		graph = Koala::Facebook::API.new(self.user.token)
+		access_token = graph.get_page_access_token(self.page_id)
+	end
+
 	def graph_with_page_token
 		graph = Koala::Facebook::API.new(self.user.token)
-		page_access_token = graph.get_page_access_token(self.page_id)
-		graph = Koala::Facebook::API.new(page_access_token) 			
+		access_token = graph.get_page_access_token(self.page_id)
+		graph = Koala::Facebook::API.new(access_token) 			
 	end
 	
 end

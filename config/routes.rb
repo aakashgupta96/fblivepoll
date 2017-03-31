@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/privacy' => 'extras#privacy'
   get '/terms' => 'extras#terms'
   get '/demo' => 'extras#demo'
+  get '/test' => 'extras#test'
   
   get '/polls/:post_id/frame' => 'polls#frame', as: "frame"
   post '/polls/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"

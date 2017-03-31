@@ -1,0 +1,577 @@
+<html lang="en">
+  <head>
+    <title>Frame Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <%  h = {"like" => "blue", "love" => "red" , "wow" => "green", "angry" => "yellow" , "sad" => "yellow" , "haha" => "yellow"} %>
+  <body>
+    <div class="voteCover" style="background-image: url('../../../<%=post.background.url%>')">
+      <div class="voteContent">
+        <div class="question"><%=post.title%></div>
+        <div class="voteOptionList">
+          <div class="voteOption">
+            <div class="type">
+              <div class="icon">
+                <img src="../../../reactions/<%=images[0].reaction%>.gif" class="icon">
+                <div class="count react_count_<%=images[0].reaction.upcase%>">-</div>
+              </div>
+            </div>
+            <div class="line">
+              <div class="lineInc <%=h[images[0].reaction]%>" style="width: 0%">
+                <div class="imageCompare">
+                  <img src="../../..<%=images[0].file.url%>">
+                </div>
+              </div>
+            </div>
+            <div class="optionName"><%=images[0].name%></div>
+          </div>
+
+          <div class="voteOption">
+            <div class="type">
+              <div class="icon">
+                <img src="../../../reactions/<%=images[1].reaction%>.gif" class="icon">
+                <div class="count react_count_<%=images[1].reaction.upcase%>">-</div>
+              </div>
+            </div>
+            <div class="line">
+              <div class="lineInc <%=h[images[1].reaction]%>"" style="width: 0%">
+                <div class="imageCompare">
+                  <img src="../../..<%=images[1].file.url%>">
+                </div>
+              </div>
+            </div>
+            <div class="optionName"><%=images[1].name%></div>
+          </div>
+
+          <div class="voteOption">
+            <div class="type">
+              <div class="icon">
+                <img src="../../../reactions/<%=images[2].reaction%>.gif" class="icon">
+                <div class="count react_count_<%=images[2].reaction.upcase%>">-</div>
+              </div>
+            </div>
+            <div class="line">
+              <div class="lineInc <%=h[images[2].reaction]%>" style="width: 0%">
+                <div class="imageCompare">
+                  <img src="../../..<%=images[2].file.url%>">
+                </div>
+              </div>
+            </div>
+            <div class="optionName"><%=images[2].name%></div>
+          </div>
+
+          <div class="voteOption">
+            <div class="type">
+              <div class="icon">
+                <img src="../../../reactions/<%=images[3].reaction%>.gif" class="icon">
+                <div class="count react_count_<%=images[3].reaction.upcase%>">-</div>
+              </div>
+            </div>
+            <div class="line">
+              <div class="lineInc <%=h[images[3].reaction]%>" style="width: 0%">
+                <div class="imageCompare">
+                  <img src="../../..<%=images[3].file.url%>">
+                </div>
+              </div>
+            </div>
+            <div class="optionName"><%=images[3].name%></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+        
+    <script>
+      var globalReactions = ["<%=images[0].reaction%>".toUpperCase(), "<%=images[1].reaction%>".toUpperCase(), "<%=images[2].reaction%>".toUpperCase(), "<%=images[3].reaction%>".toUpperCase()];
+      function changeCounter() {
+        $(".count").each(function(index) {
+          var sumLikes = 0;
+          $(".count").each(function(index) {
+            sumLikes += parseInt($(this).text());
+          });
+          sumLikes += 10;
+          $(this).parent().parent().next().children().width((parseInt($(this).text()) * 100 / sumLikes) + '%');
+        });
+      }
+      var globalPostId = "<%=post.video_id%>";
+      var globalAccessToken = "<%=post.page_access_token%>";
+      var fieldsFbApi = [];
+      $(document).ready(function() {
+        $.each(globalReactions, function(i, react) {
+          var reactNumber = 'react_count_' + react;
+          fieldsFbApi.push('reactions.type(' + react + ').limit(0).summary(total_count).as(' + reactNumber + ')');
+        });
+        updateReaction();
+      });
+      function updateReaction() {
+        $.ajax({
+          url: 'https://graph.facebook.com/v2.8/?ids=' + globalPostId + '&fields=' + fieldsFbApi.join(',') + '&access_token=' + globalAccessToken,
+          success: function(res) {
+            if (res[globalPostId] != undefined) {
+              $.each(globalReactions, function(i, react) {
+                var reactNumber = 'react_count_' + react;
+                $('.' + reactNumber).text(res[globalPostId][reactNumber].summary.total_count);
+                try {
+                  changeCounter();
+                } catch (e) {}
+              });
+            }
+          },
+          complete: function(jqXHR, textStatus) {
+            setTimeout(function() {
+              updateReaction();
+            }, 3 * 1000);
+          }
+        });
+      }
+    </script>
+
+    <style>
+
+    * {
+      cursor: none;
+      margin: 0;
+      padding: 0;
+    }
+  
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTa-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+      unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+    }
+    /* cyrillic */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTZX5f-9o1vgP2EXwfjgl7AY.woff2) format('woff2');
+      unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    }
+    /* greek-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTRWV49_lSm1NYrwo-zkhivY.woff2) format('woff2');
+      unicode-range: U+1F00-1FFF;
+    }
+    /* greek */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTaaRobkAwv3vxw3jMhVENGA.woff2) format('woff2');
+      unicode-range: U+0370-03FF;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTf8zf_FOSsgRmwsS7Aa9k2w.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTT0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+      unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+    /* cyrillic-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/K88pR3goAWT7BTt32Z01mxJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+      unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+    }
+    /* cyrillic */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/RjgO7rYTmqiVp7vzi-Q5URJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+      unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    }
+    /* greek-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/LWCjsQkB6EMdfHrEVqA1KRJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+      unicode-range: U+1F00-1FFF;
+    }
+    /* greek */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/xozscpT2726on7jbcb_pAhJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+      unicode-range: U+0370-03FF;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/59ZRklaO5bWGqF5A9baEERJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/u-WUoqrET9fUeobQW7jkRRJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+      unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+    /* cyrillic-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSq-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+      unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+    }
+    /* cyrillic */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSpX5f-9o1vgP2EXwfjgl7AY.woff2) format('woff2');
+      unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    }
+    /* greek-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNShWV49_lSm1NYrwo-zkhivY.woff2) format('woff2');
+      unicode-range: U+1F00-1FFF;
+    }
+    /* greek */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSqaRobkAwv3vxw3jMhVENGA.woff2) format('woff2');
+      unicode-range: U+0370-03FF;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSv8zf_FOSsgRmwsS7Aa9k2w.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSj0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+      unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSugdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+    /* cyrillic-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzK-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+      unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+    }
+    /* cyrillic */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzJX5f-9o1vgP2EXwfjgl7AY.woff2) format('woff2');
+      unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    }
+    /* greek-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzBWV49_lSm1NYrwo-zkhivY.woff2) format('woff2');
+      unicode-range: U+1F00-1FFF;
+    }
+    /* greek */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzKaRobkAwv3vxw3jMhVENGA.woff2) format('woff2');
+      unicode-range: U+0370-03FF;
+    }
+    /* vietnamese */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzP8zf_FOSsgRmwsS7Aa9k2w.woff2) format('woff2');
+      unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzD0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+      unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzOgdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+    .voteCover {
+        width: 797px;
+        height: 447px;
+        background: #f2f2f2;
+        background-size: cover;
+        position: relative;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .voteCover:after {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 797px;
+        height: 447px;
+        background: rgba(0, 0, 0, 0.5);
+        content: '';
+    }
+
+    .voteCover .voteContent {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        color: #fff;
+    }
+
+    .voteCover .voteContent .question {
+        text-align: center;
+        font-size: 33px;
+        font-weight: 600;
+    }
+
+    .voteCover .voteContent .voteOptionList {
+        margin: 20px 2%;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        height: 30px;
+        margin: 55px 0;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .type {
+        width: 20%;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .type .icon {
+        height: 67px;
+        border-radius: 50%;
+        position: relative;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .type .icon img {
+        max-width: 115%;
+        position: relative;
+        left: -37px;
+        top: 1px;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .type .icon.red {
+        background: #e73754;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .type .icon.blue {
+        background: #1f579c;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .type .icon .count {
+        font-size: 25px;
+        font-weight: 600;
+        position: absolute;
+        width: 60px;
+        left: 50%;
+        top: 15px;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line {
+        width: 61%;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        height: 30px;
+        background: #fff;
+        border-radius: 20px;
+        position: relative;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line .lineInc {
+        height: 30px;
+        border-radius: 18px;
+        position: relative;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line .lineInc.blue {
+        background: -webkit-gradient(linear, left top, right top, from(rgba(31, 87, 156, 0.5)), to(#1f579c));
+        background: -webkit-linear-gradient(left, rgba(31, 87, 156, 0.5), #1f579c);
+        background: linear-gradient(to right, rgba(31, 87, 156, 0.5), #1f579c);
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line .lineInc.red {
+        background: -webkit-gradient(linear, left top, right top, from(rgba(211, 36, 50, 0.8)), to(#d32432));
+        background: -webkit-linear-gradient(left, rgba(211, 36, 50, 0.8), #d32432);
+        background: linear-gradient(to right, rgba(211, 36, 50, 0.8), #d32432);
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line .lineInc.yellow {
+        background: -webkit-gradient(linear, left top, right top, from(rgba(255, 210, 2, 0.5)), to(#ffd202));
+        background: -webkit-linear-gradient(left, rgba(255, 210, 2, 0.5), #ffd202);
+        background: linear-gradient(to right, rgba(255, 210, 2, 0.5), #ffd202);
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line .lineInc.green {
+        background: -webkit-gradient(linear, left top, right top, from(rgba(76, 175, 80, 0.5)), to(#4CAF50));
+        background: -webkit-linear-gradient(left, rgba(76, 175, 80, 0.5), #4CAF50);
+        background: linear-gradient(to right, rgba(76, 175, 80, 0.5), #4CAF50);
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line .lineInc .imageCompare {
+        position: absolute;
+        right: -25px;
+        width: 60px;
+        height: 60px;
+        top: -8px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .line .lineInc .imageCompare img {
+        max-width: 100%;
+        border-radius: 20%;
+    }
+
+    .voteCover .voteContent .voteOptionList .voteOption .optionName {
+        font-size: 17px;
+        width: 20%;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        margin-left: 1.5%;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    @-webkit-keyframes moveX {
+      from { left: 0; } to { left: 800px; }
+    }
+    @-moz-keyframes moveX {
+      from { left: 0; } to { left: 800px; }
+    }
+    @-o-keyframes moveX {
+      from { left: 0; } to { left: 800px; }
+    }
+    @keyframes moveX {
+      from { left: 0; } to { left: 800px; }
+    }
+    @-webkit-keyframes moveY {
+      from { top: 0; } to { top: 500px; }
+    }
+    @-moz-keyframes moveY {
+      from { top: 0; } to { top: 500px; }
+    }
+    @-o-keyframes moveY {
+      from { top: 0; } to { top: 500px; }
+    }
+    @keyframes moveY {
+      from { top: 0; } to { top: 500px; }
+    }
+
+    </style>
+  </body>
+</html>

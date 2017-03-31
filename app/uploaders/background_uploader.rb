@@ -11,7 +11,7 @@ class BackgroundUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/post/#{model.id}/background"
+    "uploads/post/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -54,7 +54,7 @@ class BackgroundUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-     "1.png" if original_filename
+     "background.png" if original_filename
    end
    
 end

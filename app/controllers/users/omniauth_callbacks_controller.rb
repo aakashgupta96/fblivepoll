@@ -15,12 +15,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         redirect_to root_path, notice: "Please try again and grant all the required permissions to continue"
       end
     else
-      session["devise.facebook_data"] = request.env["omniauth.auth"]
-      redirect_to new_user_registration_url
+      #session["devise.facebook_data"] = request.env["omniauth.auth"]
+      #redirect_to new_user_registration_url
+      redirect_to root_path
     end
   end
 
   def failure
+    byebug
     redirect_to root_path
   end
   # You should also create an action method in this controller like this:

@@ -1,9 +1,11 @@
 source 'https://rubygems.org'
 
-
+gem 'process_exists'
 gem 'streamio-ffmpeg'
 gem 'materialize-sass'
 gem "httparty"
+gem "headless"
+gem "selenium-webdriver"
 #gem 'active_device'
 gem 'data-confirm-modal'
 gem 'devise'

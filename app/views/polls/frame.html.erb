@@ -817,11 +817,11 @@
             {
               var x = document.createElement("input");
               x.name = "reaction["+groups[i].attrs.reaction+"][x]";
-              x.value =  groups[i].attrs.x + 20;
+              x.value =  groups[i].attrs.x;
               x.type="hidden";
               var y = document.createElement("input");
               y.name = "reaction["+groups[i].attrs.reaction+"][y]";
-              y.value =  groups[i].attrs.y + 6;
+              y.value =  groups[i].attrs.y;
               y.type="hidden";
               form.appendChild(x);
               form.appendChild(y);

@@ -11,16 +11,20 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/post/#{model.id}"
+    if model.class == "Image"
+      "uploads/post/#{model.post.id}"
+    else
+      "uploads/post/#{model.id}"
+    end
   end
 
   def extension_whitelist
      %w(png jpg jpeg gif)
    end
 
-   def filename
-    "frame.png" if original_filename
-   end
+   # def filename
+   #  "frame.png" if original_filename
+   # end
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
   #   # For Rails 3.1+ asset pipeline compatibility:

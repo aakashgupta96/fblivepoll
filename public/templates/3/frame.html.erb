@@ -1,0 +1,210 @@
+<html>
+
+  <head>
+    <title>Frame Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <center>
+        <h1>
+          <%= post.title %>
+        </h1>
+      </center>
+      <div class="images" style="background-image: url(../../..<%=images[0].file.url%>); background-size: cover; position: absolute; top: 50px; left: 0px;"></div>
+      <div class="images" style="background-image: url(../../..<%=images[1].file.url%>); background-size: cover; position: absolute; top: 50px; left: 270px;"></div>
+      <div class="images" style="background-image: url(../../..<%=images[2].file.url%>); background-size: cover; position: absolute; top: 50px; left: 540px;"></div>
+      <div class="grad"></div>
+      <div class="desc" style="left: 0px;">
+        <center>
+          <%=images[0].name%>
+        </center>
+      </div>
+      <div class="desc" style="left: 270px;">
+        <center>
+          <%=images[1].name%>
+        </center>
+      </div>
+      <div class="desc" style="left: 540px;">
+        <center>
+          <%=images[2].name%>
+        </center>
+      </div>
+      <div class="count" style="left: 30px;">
+        <img src="../../../reactions/<%=images[0].reaction%>.gif" width="60px" style="margin-top: -10px; margin-left: -15px;">
+        <center>
+          <div class="counters" id="counter1">
+            0
+          </div>
+        </center>
+      </div>
+      <div class="count" style="left: 300px;">
+        <img src="../../../reactions/<%=images[1].reaction%>.gif" width="60px" style="margin-top: -10px; margin-left: -15px;">
+        <center>
+          <div class="counters" id="counter2">
+            0
+          </div>
+        </center>
+      </div>
+      <div class="count" style="left: 570px;">
+        <img src="../../../reactions/<%=images[2].reaction%>.gif" width="60px" style="margin-top: -10px; margin-left: -15px;">
+        <center>
+          <div class="counters" id="counter3">
+            0
+          </div>
+        </center>
+      </div>
+    </div>
+    <script>
+      var postID = "<%= post.video_id %>";
+      var access_token = "<%=post.page_access_token%>";
+      var refreshTime = 3;
+      var defaultCount = 0;
+      var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+      var code = 'reactions_' + e.toLowerCase();
+        return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+      }).join(',');
+        
+      function refreshCounts() {
+        var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;
+      	$.getJSON(url, function(res){
+      		var v1 = res[postID].reactions_<%=images[0].reaction%>.summary.total_count;
+      		var v2 = res[postID].reactions_<%=images[1].reaction%>.summary.total_count;
+          var v3 = res[postID].reactions_<%=images[2].reaction%>.summary.total_count;
+          $('#counter1').text(v1);
+          $('#counter2').text(v2);
+          $('#counter3').text(v3);
+      	});
+      }
+
+      $(document).ready(function(){
+          setInterval(refreshCounts, refreshTime * 1000);
+          refreshCounts();
+      });
+    </script>
+    
+    <style>
+      * {
+      cursor: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+      @font-face {
+        font-family: 'Sansita';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Sansita Bold Italic'), local('Sansita-BoldItalic'), url(https://fonts.gstatic.com/s/sansita/v1/Izkki8H_L5Nxxk6vpKrxXT0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+        unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+      }
+      /* latin */
+      @font-face {
+        font-family: 'Sansita';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Sansita Bold Italic'), local('Sansita-BoldItalic'), url(https://fonts.gstatic.com/s/sansita/v1/Izkki8H_L5Nxxk6vpKrxXegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+      }
+      /* latin-ext */
+      @font-face {
+        font-family: 'Exo';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Exo Bold Italic'), local('Exo-BoldItalic'), url(https://fonts.gstatic.com/s/exo/v4/qnDKcEBjgjEqyrM95Y2N4xTbgVql8nDJpwnrE27mub0.woff2) format('woff2');
+        unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+      }
+      /* latin */
+      @font-face {
+        font-family: 'Exo';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Exo Bold Italic'), local('Exo-BoldItalic'), url(https://fonts.gstatic.com/s/exo/v4/RUd6U3c1BMbwtyTv2U6XJfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+      }
+
+      .wrapper{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      background-color: #230152;
+      width: 800px;
+      height: 450px;
+      }
+      h1{
+      margin-top: 0px;
+      color: #FEDE00;
+      font-family: 'Sansita', sans-serif;
+      }
+      .images{
+      width: 260px;
+      height: 305px;
+      }
+      .grad{
+      position: absolute;
+      width: 800px;
+      height: 220px;
+      top: 230px;
+      background: -moz-linear-gradient(bottom, rgba(6,15,68,0.9) 0%, rgba(3,8,38,0.9) 44%, rgba(1,2,10,0) 85%, rgba(0,0,0,0) 100%);
+      background: -webkit-linear-gradient(bottom, rgba(6,15,68,0.9) 0%,rgba(3,8,38,0.9) 44%,rgba(1,2,10,0) 85%,rgba(0,0,0,0) 100%);
+      background: linear-gradient(to top, rgba(6,15,68,0.9) 0%,rgba(3,8,38,0.9) 44%,rgba(1,2,10,0) 85%,rgba(0,0,0,0) 100%);
+      }
+      .desc{
+      width: 260px;
+      height: 80px;
+      position: absolute;
+      top: 360px;
+      z-index: 9;
+      color: white;
+      font-family: 'Exo', sans-serif;
+      font-size: 27px;
+      }
+      .count{
+      width: 200px;
+      height: 40px;
+      position: absolute;
+      top: 300px;
+      z-index: 99;
+      border: 3px solid white;
+      border-radius: 4px;
+      }
+      .counters{
+      width: 200px;
+      height: 40px;
+      color: white;
+      margin-top: -50px;
+      margin-left: 20px;
+      font-family: 'Exo', sans-serif;
+      font-size: 31px;
+      }
+
+      @-webkit-keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @-moz-keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @-o-keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @keyframes moveX {
+        from { left: 0; } to { left: 800px; }
+      }
+      @-webkit-keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+      @-moz-keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+      @-o-keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+      @keyframes moveY {
+        from { top: 0; } to { top: 500px; }
+      }
+    
+    </style>
+  </body>
+
+</html>
