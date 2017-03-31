@@ -23,12 +23,7 @@ class UpdateFrame
     headless.start
     #puts "Headless display is #{headless.display}"
     driver = Selenium::WebDriver.for :chrome
-    if Rails.env == "development"
-      start = "http://localhost:3000"
-    elsif Rails.env == "production"
-      start = "https://test.shurikenlive.com"
-    end
-    driver.navigate.to "#{start}/uploads/post/#{@post.id}/frame.html"
+    driver.navigate.to "#{ENV["domain"]}/uploads/post/#{@post.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,518)
 
