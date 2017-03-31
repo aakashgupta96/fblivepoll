@@ -15,9 +15,9 @@ Devise.setup do |config|
   if Rails.env == "development"
     callback_url = "http://localhost:3000/users/auth/facebook/callback"
   elsif Rails.env == "production"
-    callback_url = "https://new.shurikenlive.com/users/auth/facebook/callback"
+    callback_url = "https://test.shurikenlive.com/users/auth/facebook/callback"
   end
-  config.omniauth :facebook, ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"], callback_url: callback_url, scope: 'email, manage_pages, publish_pages, pages_show_list', info_fields: 'email,name'
+  config.omniauth :facebook, ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"], callback_url: callback_url, scope: 'email, manage_pages, publish_pages, pages_show_list', info_fields: 'email,name',token_params: { parse: :json }
   
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
