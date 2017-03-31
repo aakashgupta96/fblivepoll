@@ -7,6 +7,7 @@ require "rubygems"
 require "headless"
 require "selenium-webdriver"
 require 'process_exists'
+require 'socket'
 Rails.application.initialize!
 ActionMailer::Base.smtp_settings = {
     address:              'smtp.gmail.com',
