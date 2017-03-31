@@ -26,7 +26,7 @@ class UpdateFrame
     if Rails.env == "development"
       start = "http://localhost:3000"
     elsif Rails.env == "production"
-      start = "https://www.shurikenlive.com"
+      start = "https://test.shurikenlive.com"
     end
     driver.navigate.to "#{start}/uploads/post/#{@post.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
