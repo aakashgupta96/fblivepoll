@@ -27,7 +27,17 @@ class UpdateFrame
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,518)
 
-    audio_path = Rails.root.to_s + "/public/silent.aac"
+    frame_path = "public/uploads/post/#{@post.id}/frame.png"
+    if @post.audio.url.nil?
+      audio_path = "public/silent.aac"
+    else
+      audio_path = "public/uploads/post/#{@post.id}"
+      %x[$HOME/bin/ffmpeg -i "#{audio_path}/audio.aac" -codec:a aac -ac 1 -ar 44100 -b:a 128k "#{audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      %x[rm #{audio_path}/audio.aac]
+      %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{audio_path}/final.aac" -c copy -t 14400 "#{audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      audio_path = "public/uploads/post/#{@post.id}/long.aac"
+    end
+
     command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:450:0:66' -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
     pid = Process.spawn(command)
     ffmpeg_id = %x[pgrep -P #{pid}]
@@ -45,6 +55,9 @@ class UpdateFrame
     end
     headless.destroy
     driver.quit
+    unless @post.audio.url.nil?
+      %x[rm #{audio_path}]
+    end
   end
 
   def self.convert_to_sec(time)
