@@ -26,6 +26,7 @@ class PollsController < ApplicationController
     end
     @post.update(counter_color: params[:color])
     data = params[:data_uri]
+    #return redirect_to frame_path(@post.id), notice: 'Error occured while saving post' if data.nil?
     image_data = Base64.decode64(data['data:image/png;base64,'.length .. -1])
 
     path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
@@ -35,10 +36,13 @@ class PollsController < ApplicationController
     end
     @post.template = Template.first
     @post.image = File.open(File.join(path,"frame.png"))
-    @post.save
-    (@post.start and return redirect_to submit_poll_path) if (@post.status != "scheduled" and @post.can_start?)
-    return redirect_to submit_poll_path if @post.status == "scheduled"
-    return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
+    if @post.save
+      (@post.start and return redirect_to submit_poll_path) if (@post.status != "scheduled" and @post.can_start?)
+      return redirect_to submit_poll_path if @post.status == "scheduled"
+      return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
+    else 
+      return redirect_to frame_path(@post.id), notice: 'Error occured while saving post'
+    end
   end
 
   def submit

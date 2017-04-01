@@ -5,9 +5,7 @@ class LoopTask
 	  loop do
 			#Code for Starting a scheduled post
 			Post.scheduled.each do |post|
-				if(post.start_time.to_time < Time.now.getutc)
-					post.start if post.can_start?
-				end
+				post.start if ((post.start_time.to_time < Time.now.getutc)  and (post.image != nil) and post.can_start?)
 			end
 			sleep(5)
 		end
