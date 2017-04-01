@@ -6,6 +6,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # You need to implement the method below in your model (e.g. app/models/user.rb)
     @user = User.from_omniauth(request.env["omniauth.auth"])
     if @user.persisted?
+      @user.email = request.env["omniauth.auth"].info.email unless request.env["omniauth.auth"].info.email.nil?
       @user.token = request.env["omniauth.auth"].credentials.token
       @user.save!
       if @user.has_granted_permissions
