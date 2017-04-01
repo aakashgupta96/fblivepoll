@@ -22,7 +22,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    byebug
     redirect_to root_path
   end
   # You should also create an action method in this controller like this:
