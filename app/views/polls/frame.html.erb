@@ -144,7 +144,7 @@
         <input type="hidden" name="post_id" value="<%=@post.id%>">
         <input id="color" type="hidden" name="color" value="#fffff">   
         <input type="hidden" id="image_data" name="data_uri" value="">
-        <input id="submit_frame" type="submit" value=<%= @post.status=="scheduled" ? "Schedule" : "Submit" %> class="btn col s12"> 
+        <input id="submit_frame" data-confirm ="Are you sure?" type="submit" value=<%= @post.status=="scheduled" ? "Schedule" : "Submit" %> class="btn col s12"> 
 
       <% end %>
     </div>
@@ -849,7 +849,8 @@
       document.getElementById("opacity").addEventListener('change',changeOpacity);
       document.getElementById("counterTextColor").addEventListener('change', changeTextColor);
       document.getElementById("radius").addEventListener('change',changeRadius);
-      document.getElementById("submit_frame").addEventListener('click',sendImage);
+      $("#data_form").submit(sendImage);
+      //document.getElementById("submit_frame").addEventListener('click',sendImage);
       document.getElementById("background").addEventListener('change',addBackgrounfFile);
     </script>
   

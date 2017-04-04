@@ -3,10 +3,8 @@ class UpdateFrame
   @queue = :update_frame
 
   def self.perform(post_id)
-    
     @post = Post.find_by_id(post_id) #Instance variable so that erb can access it
     @images = @post.images#Prepare an html for the frame of this post
-    
     erb_file = Rails.root.to_s + "/public#{@post.template.path}/frame.html.erb" #Path of erb file to be rendered
     html_file = Rails.root.to_s + "/public/uploads/post/#{@post.id}/frame.html" #=>"target file name"
     erb_str = File.read(erb_file)
@@ -17,7 +15,6 @@ class UpdateFrame
     File.open(html_file, 'w') do |f|
       f.write(result)
     end
-    
     #Start updating frame by taking screenshots
     headless = Headless.new(display: rand(100))
     headless.start

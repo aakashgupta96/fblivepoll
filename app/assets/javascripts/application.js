@@ -15,17 +15,15 @@
 // = require jquery
 // = require jquery_ujs
 // = require materialize
+//= require materialize-rails-confirm.js
 // = require_tree
-//require data-confirm-modal
-// jQuery(document).on('turbolinks:load',function(){
-// 	jQuery("a[href^='#']").attr('data-turbolinks',false);
-
-// });
 
 
+$(function(){ $('.carousel.carousel-slider').carousel({full_width: true}); });
 $( document ).ready(function(){
-    //$("#cover").fadeOut(2000);
     $('.parallax').parallax();
+    $('.carousel.carousel-slider').carousel({fullWidth: true});
+    $('.scrollspy').scrollSpy();
     $(".button-collapse").sideNav();
     $('.dropdown-button').dropdown({
       inDuration: 400,
@@ -36,6 +34,14 @@ $( document ).ready(function(){
       belowOrigin: true, // Displays dropdown below the button
       alignment: 'left' // Displays dropdown with edge aligned to the left of button
     });
+    $("#nextCarousel").click(function(){
+        $('.carousel').carousel('next');
+    });
+
+    $("#prevCarousel").click(function(){
+        $('.carousel').carousel('prev');
+    });
+
     window.fbAsyncInit = function() {
       FB._https = true;
       FB.init({
@@ -52,12 +58,17 @@ $( document ).ready(function(){
       js.src = "https://connect.facebook.net/en_US/all.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
+
   })
 
-  $(window).load(function() {
+  $(window).load(function(){
     $("#cover").fadeOut(200);
+    //$('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
 });
-
+  $(window).resize(function(){
+    //$('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
+  });
 function validateAudioFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (50 MB)";
     var extErrorMessage = "Only audio file with extension: .mp3, .m4a, .mp4a, .wma, .wav or .aac is allowed";
@@ -113,8 +124,8 @@ function validateVideoFiles(inputFile) {
 
 function validateImageFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (5 MB)";
-    var extErrorMessage = "Only image file with extension: .jpg, .jpeg, .gif or .png is allowed";
-    var allowedExtension = ["jpg", "jpeg", "gif", "png"];
+    var extErrorMessage = "Only image file with extension: .jpg, .jpeg,.webp .gif or .png is allowed";
+    var allowedExtension = ["jpg", "jpeg", "gif", "png", "webp"];
 
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');
@@ -135,4 +146,9 @@ function validateImageFiles(inputFile) {
         window.alert(extErrorMessage);
         $(inputFile).val('');
     };
-}
+};
+
+function validateReactions(x) {
+    console.log($('#'+x.id).val());
+    
+};

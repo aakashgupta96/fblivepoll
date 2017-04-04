@@ -6,7 +6,7 @@
   </head>
   <%  h = {"like" => "blue", "love" => "red" , "wow" => "green", "angry" => "yellow" , "sad" => "yellow" , "haha" => "yellow"} %>
   <body>
-    <div class="voteCover" style="background-image: url('../../../<%=post.background.url%>')">
+    <div class="voteCover" style="background-image: url('../../../<%=post.background.url%>'); background-size: 800px 450px;">
       <div class="voteContent">
         <div class="question"><%=post.title%></div>
         <div class="voteOptionList">
@@ -14,7 +14,7 @@
             <div class="type">
               <div class="icon">
                 <img src="../../../reactions/<%=images[0].reaction%>.gif" class="icon">
-                <div class="count react_count_<%=images[0].reaction.upcase%>">-</div>
+                <div class="count react_count_<%=images[0].reaction.upcase%>">0</div>
               </div>
             </div>
             <div class="line">
@@ -31,7 +31,7 @@
             <div class="type">
               <div class="icon">
                 <img src="../../../reactions/<%=images[1].reaction%>.gif" class="icon">
-                <div class="count react_count_<%=images[1].reaction.upcase%>">-</div>
+                <div class="count react_count_<%=images[1].reaction.upcase%>">0</div>
               </div>
             </div>
             <div class="line">
@@ -48,7 +48,7 @@
             <div class="type">
               <div class="icon">
                 <img src="../../../reactions/<%=images[2].reaction%>.gif" class="icon">
-                <div class="count react_count_<%=images[2].reaction.upcase%>">-</div>
+                <div class="count react_count_<%=images[2].reaction.upcase%>">0</div>
               </div>
             </div>
             <div class="line">
@@ -65,7 +65,7 @@
             <div class="type">
               <div class="icon">
                 <img src="../../../reactions/<%=images[3].reaction%>.gif" class="icon">
-                <div class="count react_count_<%=images[3].reaction.upcase%>">-</div>
+                <div class="count react_count_<%=images[3].reaction.upcase%>">0</div>
               </div>
             </div>
             <div class="line">
@@ -532,7 +532,10 @@
     }
 
     .voteCover .voteContent .voteOptionList .voteOption .line .lineInc .imageCompare img {
-        max-width: 100%;
+        position: relative;
+        left: 25px;
+        max-width: 150%;
+        min-height: 50px;
         border-radius: 20%;
     }
 

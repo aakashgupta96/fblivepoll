@@ -11,7 +11,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    if model.class == "Image"
+    if model.class == Image
       "uploads/post/#{model.post.id}"
     else
       "uploads/post/#{model.id}"
@@ -19,7 +19,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def extension_whitelist
-     %w(png jpg jpeg gif)
+     %w(png jpg jpeg gif webp)
    end
 
    # def filename

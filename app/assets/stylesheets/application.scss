@@ -28,6 +28,13 @@ body
   justify-content: space-around;
   align-items: center;
 }
+#container
+{
+  *
+  {
+    z-index: 100;
+  }
+}
 main
 {
   flex: 1 0 auto;
@@ -40,23 +47,6 @@ main
   height: 64px;
 }
 
-@media only screen and (max-width : 480px) {
-  .logo
-  {
-    position: relative;
-    top: 0px;
-    left: 10px;
-    width: 180px;
-    height: 56px;
-  }
-}
-@media only screen and (max-width : 1080px)
-{
-  #nav-container
-  {
-    width: 95%;
-  }
-}
 .radial-gradient
 {
   background: radial-gradient(#0089ec,#4267b2,#421782);
@@ -81,7 +71,7 @@ main
 
 .flexbox
 {
-  display: flex;
+  display: flex !important;
   justify-content: space-around;
   flex-wrap: wrap;
 }
@@ -152,20 +142,23 @@ main
 }
 .bold
 {
-  font-weight: bold;
+  font-weight: bold !important;
 }
 .bolder
 {
-  font-weight: bolder;
+  font-weight: bolder !important;
 }
 .nav-option
 {
-  //min-width: 80px;
   font-size: 18px;
 }
 .relative
 {
   position: relative;
+}
+.absolute
+{
+  position: absolute;
 }
 .session_button
 {
@@ -185,9 +178,89 @@ footer a:hover
   color: yellow !important;
 }
 
+.plugin
+{
+  width: 80%;
+  img
+  {
+    width: 720px;
+    height: 405px;
+  }
+}
+.features
+{
+  li
+  {
+    text-align: left;
+    font-size: 28px;
+    i
+    {
+      margin-right: 10px;
+    }
+  }
+}
+@keyframes display {
+    from {opacity: 1;}
+    to {opacity: 0.5;}
+}
+.newFeature{
+  position:relative;
+  font-size: 13px; 
+  top: -6px; 
+  left: 4px; 
+  font-weight: 900;
+  animation: display 1s ease-in 0s infinite alternate;
+}
 
 
 
+@media only screen and (max-width : 480px) {
+  .logo
+  {
+    position: relative;
+    top: 0px;
+    left: 10px;
+    width: 180px;
+    height: 56px;
+  }
+  .plugin
+  {
+    width: 95%;
+  }
+  .plugin img
+  {
+    height: 250px !important;
+  }
+}
+
+@media only screen and (max-width : 720px)
+{
+  .plugin img
+  {
+    height: 250px !important;
+  }
+  .features
+  {
+    li
+    {
+      text-align: left;
+      font-size: 22px;
+      i
+      {
+        top: 4px;
+        margin-right: 6px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width : 1080px)
+{
+  #nav-container
+  {
+    width: 95%;
+  }
+}
 
 
 

@@ -9,6 +9,9 @@ class Post < ActiveRecord::Base
 	has_many :counters
 	belongs_to :user
 	belongs_to :template
+
+	accepts_nested_attributes_for :images
+
 	enum category: [ :poll, :loop_video ]
 
 	scope :live,     ->{ where(status: "live") }

@@ -24,7 +24,7 @@
           </td>
           <td>
           <% if post.status == "live" %>
-            <a href="/admins/stop/<%=post.id%>" data-method="post" onclick="return confirm('Are you sure?')" class="btn">End Video</a>
+            <a href="/admins/stop/<%=post.id%>" data-method="post" data-confirm="Are you sure?" class="btn">End Video</a>
           <% end %>
           </td>
         </tr>

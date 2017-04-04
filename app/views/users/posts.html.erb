@@ -23,7 +23,7 @@
           </td>
          	<td>
             <% if post.status == "live" %>
-              <a href="/users/stop/<%=post.id%>" data-method="post" onclick="return confirm('Are you sure?')" class="btn">End Video</a>
+              <a href="/users/stop/<%=post.id%>" data-method="post" data-confirm="Are you sure?" class="btn">End Video</a>
             <% elsif post.status == "drafted" %>
               <a href="/polls/<%=post.id%>/frame" class="btn">Draw Frame</a>
             <% end %>
