@@ -9,7 +9,8 @@ class PollsController < ApplicationController
   
   def new
     @post = Post.new
-    @template = Template.find_by_id(params[:template]).nil? ? Template.first : Template.find_by_id(params[:template])
+    @template = Template.find_by_id(params[:template])
+    return redirect_to '/#pluginCarousel', notice: "Invalid Selection of Template" if @template.nil?
     @template.image_count.times {@post.images.build}
     @pages = current_user.pages
   end
