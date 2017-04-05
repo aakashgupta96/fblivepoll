@@ -22,7 +22,7 @@ class Post < ActiveRecord::Base
 		begin
       self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post")
     rescue Exception => e
-      puts e.class,e.message	
+      #puts e.class,e.message	
     end
     %x[kill -9 #{self.process_id}]  	
 		self.update(status: status)
