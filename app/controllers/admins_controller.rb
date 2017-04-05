@@ -2,7 +2,7 @@ class AdminsController < ApplicationController
 	before_action :authenticate_admin!
 
 	def dashboard
-		@posts = Post.all.order(id: :desc)
+		@posts = Post.last(100).reverse
 	end
 
 	def stop_post

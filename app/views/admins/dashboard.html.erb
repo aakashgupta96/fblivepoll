@@ -6,6 +6,7 @@
             <th data-field="title">Title</th>
             <th data-field="name">User Name</th>
             <th data-field="status">Status</th>
+            <th data-field="duration">Duration</th>
             <th data-field="link">Video Link</th>
             <th data-field="action">Action</th> 
         </tr>
@@ -17,6 +18,7 @@
           <td><%= post.title %></td>
           <td><%= post.user.nil? ? "--------" : post.user.name %></td>
           <td><%= post.status.capitalize %></td>
+          <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
           <td>
           <% unless post.video_id.nil? %>
             <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
