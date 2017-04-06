@@ -5,7 +5,7 @@ gem 'streamio-ffmpeg'
 gem 'materialize-sass'
 gem "httparty"
 gem "headless"
-gem "selenium-webdriver"
+gem "selenium-webdriver", '~> 2.53.4'
 #gem 'active_device'
 gem 'data-confirm-modal'
 gem 'devise'
