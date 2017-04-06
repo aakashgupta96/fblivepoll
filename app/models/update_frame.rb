@@ -48,9 +48,9 @@ class UpdateFrame
     duration = (@post.duration-30.years).to_i
     loop do
       if (Process.exists?(ffmpeg_id) == false)
-        if (@post.status == "live" && @post.status != "Deleted from FB" && @post.status != "Published") 
-          @post.stop("Network error occured") 
-        end
+        # if (@post.status == "live" && @post.status != "Deleted from FB" && @post.status != "Published") 
+        #   @post.stop("Network error occured") 
+        # end
         break
       end
       if HTTParty.get(query).parsed_response["#{@post.video_id}"].nil?
