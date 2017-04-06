@@ -37,18 +37,29 @@ class UpdateFrame
 
     command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:450:0:66' -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
     pid = Process.spawn(command)
+    sleep(30)
     ffmpeg_id = %x[pgrep -P #{pid}]
-    @post.update(process_id: ffmpeg_id.strip)
+    @post.update(status: "live", process_id: ffmpeg_id.strip)
+    query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
     duration = (@post.duration-30.years).to_i
     loop do
-      break if (Process.exists?(ffmpeg_id) == false)
+      if (Process.exists?(ffmpeg_id) == false)
+        if (@post.status == "live" && @post.status != "Deleted from FB") 
+          @post.stop("Network error occured") 
+        end
+        break
+      end
+      if HTTParty.get(query).parsed_response["#{@post.video_id}"].nil?
+        @post.stop("Deleted from FB")
+        break
+      end
       elapsed_time = %x[ps -p #{pid} -o etime=]
       elapsed_time = UpdateFrame.convert_to_sec(elapsed_time.strip!)
       if(elapsed_time >= duration)
         @post.stop
         break 
       end
-      sleep(1)
+      sleep(10)
     end
     headless.destroy
     driver.quit
