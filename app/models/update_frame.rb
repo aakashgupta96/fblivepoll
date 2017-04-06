@@ -19,7 +19,11 @@ class UpdateFrame
     headless = Headless.new(display: rand(100))
     headless.start
     #puts "Headless display is #{headless.display}"
-    driver = Selenium::WebDriver.for :chrome
+    if (ENV["domain"] == "https://new.shurikenlive.com")
+      driver = Selenium::WebDriver.for :firefox
+    else
+      driver = Selenium::WebDriver.for :chrome
+    end
     driver.navigate.to "#{ENV["domain"]}/uploads/post/#{@post.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,518)
@@ -61,8 +65,8 @@ class UpdateFrame
       end
       sleep(10)
     end
-    headless.destroy
     driver.quit
+    headless.destroy
     unless @post.audio.url.nil?
       %x[rm #{audio_path}]
     end

@@ -110,8 +110,8 @@ class PollsController < ApplicationController
     path = File.join(Rails.root,'public','uploads','post',post_id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
     driver.save_screenshot("public/uploads/post/#{post_id}/frame.png" )
-    headless.destroy
     driver.quit
+    headless.destroy
   end
 
 end
