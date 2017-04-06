@@ -48,7 +48,7 @@ class UpdateFrame
     duration = (@post.duration-30.years).to_i
     loop do
       if (Process.exists?(ffmpeg_id) == false)
-        if (@post.status == "live" && @post.status != "Deleted from FB") 
+        if (@post.status == "live" && @post.status != "Deleted from FB" && @post.status != "Published") 
           @post.stop("Network error occured") 
         end
         break
