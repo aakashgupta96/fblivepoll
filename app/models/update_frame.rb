@@ -14,6 +14,9 @@ class UpdateFrame
 
     path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
+    path = File.join(Rails.root,'log','stream')
+    FileUtils.mkdir_p(path) unless File.exist?(path)
+    
     File.open(html_file, 'w') do |f|
       f.write(result)
     end
