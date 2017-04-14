@@ -24,7 +24,7 @@ class UpdateFrame
     else
       driver = Selenium::WebDriver.for :chrome
     end
-    driver.navigate.to "#{ENV["domain"]}/uploads/post/#{@post.id}/frame.html"
+    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,518)
 
@@ -32,11 +32,10 @@ class UpdateFrame
     if @post.audio.url.nil?
       audio_path = "public/silent.aac"
     else
-      audio_path = "public/uploads/post/#{@post.id}"
-      %x[$HOME/bin/ffmpeg -i "#{audio_path}/audio.aac" -codec:a aac -ac 1 -ar 44100 -b:a 128k "#{audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
-      %x[rm #{audio_path}/audio.aac]
-      %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{audio_path}/final.aac" -c copy -t 14400 "#{audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
-      audio_path = "public/uploads/post/#{@post.id}/long.aac"
+      local_audio_path = "public/uploads/post/#{@post.id}"
+      %x[$HOME/bin/ffmpeg -i "#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/final.aac" -c copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      audio_path = "#{local_audio_path}/long.aac"
     end
 
     command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:450:0:66' -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"

@@ -6,7 +6,7 @@
   </head>
   <%  h = {"like" => "blue", "love" => "red" , "wow" => "green", "angry" => "yellow" , "sad" => "yellow" , "haha" => "yellow"} %>
   <body>
-    <div class="voteCover" style="background-image: url('../../../<%=post.background.url%>'); background-size: 800px 450px;">
+    <div class="voteCover" style="background-image: url('<%=post.background.url%>'); background-size: 800px 450px;">
       <div class="voteContent">
         <div class="question"><%=post.title%></div>
         <div class="voteOptionList">
@@ -20,7 +20,7 @@
             <div class="line">
               <div class="lineInc <%=h[images[0].reaction]%>" style="width: 0%">
                 <div class="imageCompare">
-                  <img src="../../..<%=images[0].file.url%>">
+                  <img src="<%=images[0].file.url%>">
                 </div>
               </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="line">
               <div class="lineInc <%=h[images[1].reaction]%>"" style="width: 0%">
                 <div class="imageCompare">
-                  <img src="../../..<%=images[1].file.url%>">
+                  <img src="<%=images[1].file.url%>">
                 </div>
               </div>
             </div>
@@ -54,7 +54,7 @@
             <div class="line">
               <div class="lineInc <%=h[images[2].reaction]%>" style="width: 0%">
                 <div class="imageCompare">
-                  <img src="../../..<%=images[2].file.url%>">
+                  <img src="<%=images[2].file.url%>">
                 </div>
               </div>
             </div>
@@ -71,7 +71,7 @@
             <div class="line">
               <div class="lineInc <%=h[images[3].reaction]%>" style="width: 0%">
                 <div class="imageCompare">
-                  <img src="../../..<%=images[3].file.url%>">
+                  <img src="<%=images[3].file.url%>">
                 </div>
               </div>
             </div>
