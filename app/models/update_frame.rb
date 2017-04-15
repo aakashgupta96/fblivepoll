@@ -65,8 +65,9 @@ class UpdateFrame
         @post.stop
         break 
       end
-
+      puts "IS post live #{@post.live}"
       if (@post.live == false)
+        puts "breaking as post is no more live"
         break
       end
       sleep(10)
