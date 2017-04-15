@@ -65,10 +65,8 @@ class UpdateFrame
         @post.stop
         break 
       end
-      @post = Post.find_by_id(post_id)
-      puts "IS post live #{@post.live}"
+      @post.reload
       if (@post.live == false)
-        puts "breaking as post is no more live"
         break
       end
       sleep(10)
