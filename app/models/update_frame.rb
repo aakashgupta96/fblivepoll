@@ -65,6 +65,10 @@ class UpdateFrame
         @post.stop
         break 
       end
+
+      if (@post.live == false)
+        break
+      end
       sleep(10)
     end
     %x[kill -9 #{@post.process_id}] 
