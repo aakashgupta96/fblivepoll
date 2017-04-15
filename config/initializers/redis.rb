@@ -1,4 +1,4 @@
-if Rails.env == "production"
-	Redis.current = Redis.new(:host => "35.154.196.122", :port => 6379, :thread_safe => true, auth: "rasenshuriken")
+if Rails.env.production?
+	Redis.current = Redis.new(:host => ENV['HOST'], :port => ENV['POST'], :thread_safe => true, auth: ENV['AUTH'])
 	Resque.redis = Redis.current
 end

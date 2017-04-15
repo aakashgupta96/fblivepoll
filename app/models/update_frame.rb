@@ -52,6 +52,7 @@ class UpdateFrame
     duration = (@post.duration-30.years).to_i
     loop do
       if (Process.exists?(ffmpeg_id) == false)
+        @post.stop("Streaming stopped due to network error")
         break
       end
       if HTTParty.get(query).parsed_response["#{@post.video_id}"].nil?
@@ -66,6 +67,7 @@ class UpdateFrame
       end
       sleep(10)
     end
+    %x[kill -9 #{@post.process_id}] 
     driver.quit
     headless.destroy
     unless @post.audio.url.nil?
