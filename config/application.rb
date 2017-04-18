@@ -29,15 +29,8 @@ module Live
         ENV[key.to_s] = value
       end if File.exists?(env_file)
     end
-    if Socket.gethostname == "Aakash"
-      ENV["domain"] = "http://localhost:3000"
-    elsif Socket.gethostname == "ip-172-31-26-213"
-      ENV["domain"] = "https://test.shurikenlive.com"
-    elsif Socket.gethostname == "ip-172-31-14-228"
-      ENV["domain"] = "https://www.shurikenlive.com"
-    elsif Socket.gethostname == "ubuntu-512mb-blr1-01"
-      ENV["domain"] = "https://new.shurikenlive.com"
-    end
-  
+    
+    ENV["domain"] = "https://www.shurikenlive.com"
+    
   end
 end
