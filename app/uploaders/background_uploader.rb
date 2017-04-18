@@ -2,7 +2,7 @@ class BackgroundUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   #include CarrierWave::MiniMagick
-  include CarrierWave::RMagick
+  #include CarrierWave::RMagick
  
   # Choose what kind of storage to use for this uploader:
   #storage :file
@@ -37,7 +37,7 @@ class BackgroundUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
    def extension_whitelist
-     %w(jpg jpeg gif png webp)
+     %w(jpg jpeg gif png)
    end
 
   # Create different versions of your uploaded files:

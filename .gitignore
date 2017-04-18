@@ -20,3 +20,5 @@
 /log/stream/*
 /log/update/*
 /tmp
+/Dockerfile
+/config/container

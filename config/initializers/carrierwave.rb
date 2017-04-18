@@ -2,6 +2,7 @@ CarrierWave.configure do |config|
 
 	if Rails.env.development? || Rails.env.test?
 		config.storage = :file
+		ENV["prefix"] = "../../.."
 	else
 		config.fog_credentials = {
 	      :provider               => 'AWS',
@@ -11,6 +12,7 @@ CarrierWave.configure do |config|
 	  }
 	  config.storage = :fog
 	  config.fog_directory  = "shurikenlive"
+	  ENV["prefix"] = ""
 	end
 
 end

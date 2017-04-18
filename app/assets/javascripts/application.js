@@ -124,8 +124,8 @@ function validateVideoFiles(inputFile) {
 
 function validateImageFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (5 MB)";
-    var extErrorMessage = "Only image file with extension: .jpg, .jpeg,.webp .gif or .png is allowed";
-    var allowedExtension = ["jpg", "jpeg", "gif", "png", "webp"];
+    var extErrorMessage = "Only image file with extension: .jpg, .jpeg, .gif or .png is allowed";
+    var allowedExtension = ["jpg", "jpeg", "gif", "png"];
 
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');

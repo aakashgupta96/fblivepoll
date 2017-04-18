@@ -17,10 +17,10 @@
 
     <div class="wrapper">
       <center><h1 class="title"><%=post.title%></h1></center>
-      <img src="<%= images[0].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 0px; border: 10px solid white; -webkit-transform: rotate(-7deg);">
-      <img src="<%= images[1].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 200px; border: 10px solid white; -webkit-transform: rotate(13deg);">
-      <img src="<%= images[2].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 390px; border: 10px solid white; -webkit-transform: rotate(-16deg);">
-      <img src="<%= images[3].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 590px; border: 10px solid white; -webkit-transform: rotate(19deg);">
+      <img src="<%=ENV['prefix']%><%=images[0].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 0px; border: 10px solid white; -webkit-transform: rotate(-7deg);">
+      <img src="<%=ENV['prefix']%><%= images[1].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 200px; border: 10px solid white; -webkit-transform: rotate(13deg);">
+      <img src="<%=ENV['prefix']%><%= images[2].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 390px; border: 10px solid white; -webkit-transform: rotate(-16deg);">
+      <img src="<%=ENV['prefix']%><%= images[3].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 590px; border: 10px solid white; -webkit-transform: rotate(19deg);">
       <img src="../../../reactions/<%=images[0].reaction%>.gif" width="70px" style="position: absolute; top: 310px; left: 80px;">
       <img src="../../../reactions/<%=images[1].reaction%>.gif" width="70px" style="position: absolute; top: 310px; left: 270px;">
       <img src="../../../reactions/<%=images[2].reaction%>.gif" width="70px" style="position: absolute; top: 310px; left: 460px;">
