@@ -107,7 +107,7 @@ class PollsController < ApplicationController
     #end
     driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
-    driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,518)
+    driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
     path = File.join(Rails.root,'public','uploads','post',post_id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
     driver.save_screenshot("public/uploads/post/#{post_id}/frame.png" )
