@@ -101,9 +101,9 @@ class PollsController < ApplicationController
     headless = Headless.new(display: rand(100))
     headless.start
     #if (ENV["domain"] == "https://new.shurikenlive.com")
-      driver = Selenium::WebDriver.for :firefox
+      #driver = Selenium::WebDriver.for :firefox
     #else
-     # driver = Selenium::WebDriver.for :chrome
+     driver = Selenium::WebDriver.for :chrome
     #end
     driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
