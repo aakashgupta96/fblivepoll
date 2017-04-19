@@ -37,8 +37,23 @@ class Post < ActiveRecord::Base
 		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true)
 		  Resque.enqueue(UpdateFrame,self.id) if self.poll?
 		  Resque.enqueue(NotifyAdmins,true,self.video_id)
+		  return true
 		rescue Exception => e
-			self.update(status: e.message)
+			begin 
+				message =  "Facebook declined request with message #{e.message.split("message:").last.split(') ').second.split(',').first} "
+			rescue
+				message = "Facebook declined request"
+			end
+			self.update(status: message)
+			return false
+		end
+	end
+
+	def required_images_available?
+		if self.template.id == 0
+			return self.image != nil
+		else
+			return self.images.size > 0
 		end
 	end
 

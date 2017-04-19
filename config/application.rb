@@ -30,7 +30,10 @@ module Live
       end if File.exists?(env_file)
     end
     
-    ENV["domain"] = "https://www.shurikenlive.com"
-    
+    if Rails.env.production?
+      ENV["domain"] = "https://www.shurikenlive.com"
+    else
+      ENV["domain"] = "http://localhost:3000"
+    end
   end
 end

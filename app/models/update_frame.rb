@@ -36,8 +36,12 @@ class UpdateFrame
     if @post.audio.url.nil?
       audio_path = "public/silent.aac"
     else
-      local_audio_path = "public/uploads/post/#{@post.id}"
-      %x[$HOME/bin/ffmpeg -i "#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      local_audio_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
+      if Rails.env.production?
+        %x[$HOME/bin/ffmpeg -i "{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      else
+        %x[$HOME/bin/ffmpeg -i "#{Rails.root.to_s}/public/#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      end
       %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/final.aac" -c copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
       audio_path = "#{local_audio_path}/long.aac"
     end

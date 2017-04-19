@@ -75,7 +75,13 @@ class PollsController < ApplicationController
 
   def save_and_redirect
     if @post.save
-      (@post.start and return redirect_to submit_poll_path(@post.id)) if (@post.status != "scheduled" and @post.can_start?)
+      if (@post.status != "scheduled" and @post.can_start?)
+        if @post.start 
+          return redirect_to submit_poll_path(@post.id)
+        else
+          return redirect_to root_path, notice: "Facebook declined your request. Please visit My Post section to see the status." 
+        end
+      end
       return redirect_to submit_poll_path(@post.id) if @post.status == "scheduled"
       return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
     else 
