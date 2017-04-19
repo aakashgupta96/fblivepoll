@@ -54,10 +54,14 @@ class UpdateFrame
         @post.stop("Streaming stopped due to network error")
         break
       end
-      status = HTTParty.get(query) rescue true
-      if status.parsed_response["#{@post.video_id}"].nil?
-        @post.stop("Deleted from FB")
-        break
+      begin
+        status = HTTParty.get(query)
+        if status.parsed_response["#{@post.video_id}"].nil?
+          @post.stop("Deleted from FB")
+          break
+        end
+      rescue
+        
       end
       elapsed_time = %x[ps -p #{pid} -o etime=]
       elapsed_time = UpdateFrame.convert_to_sec(elapsed_time.strip!)
