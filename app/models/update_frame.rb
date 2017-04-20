@@ -22,8 +22,7 @@ class UpdateFrame
     namespace = OpenStruct.new(post: @post, images: @images)
     result = ERB.new(erb_str)
     result = result.result(namespace.instance_eval { binding })
-
-      
+  
     File.open(html_file, 'w') do |f|
       f.write(result)
     end
