@@ -1,0 +1,468 @@
+<html>
+	<head>
+		<title>Frame Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+   
+  <body>
+
+		<div class="main">
+      <div class="box">
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[0].file.url%>); background-size: 133px 320px;"></div>
+        <div class="counters">
+          <div class="reaction1"></div>
+          <div class="name1"><%=images[0].name%></div>
+          <div class="count1">0</div>
+          <div class="votes1">VOTES</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[1].file.url%>); background-size: 133px 320px;"></div>
+        <div class="counter">
+          <div class="reaction2"></div>
+          <div class="name2"><%=images[1].name%></div>
+          <div class="count2">0</div>
+          <div class="votes2">VOTES</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[2].file.url%>); background-size: 133px 320px;"></div>
+        <div class="counters">
+          <div class="reaction3"></div>
+          <div class="name3"><%=images[2].name%></div>
+          <div class="count3">0</div>
+          <div class="votes3">VOTES</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[3].file.url%>); background-size: 133px 320px;"></div>
+        <div class="counter">
+          <div class="reaction4"></div>
+          <div class="name4"><%=images[3].name%></div>
+          <div class="count4">0</div>
+          <div class="votes4">VOTES</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[4].file.url%>); background-size: 133px 320px;"></div>
+        <div class="counters">
+          <div class="reaction5"></div>
+          <div class="name5"><%=images[4].name%></div>
+          <div class="count5">0</div>
+          <div class="votes5">VOTES</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[5].file.url%>); background-size: 133px 320px;"></div>
+        <div class="counter">
+          <div class="reaction6"></div>
+          <div class="name6"><%=images[5].name%></div>
+          <div class="count6">0</div>
+          <div class="votes6">VOTES</div>
+        </div>
+      </div>
+    </div>
+    <script>
+	    var postID = "<%= post.video_id %>";
+	    var access_token = "<%=post.page_access_token%>";
+	    var refreshTime = 3;
+	    var defaultCount = 0;
+	    var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+	    var code = 'reactions_' + e.toLowerCase();
+	      return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+	    }).join(',');
+	        
+	    var	v1 = $('.count1'),
+	    	v2 = $('.count2'),
+	      v3 = $('.count3'),
+	      v4 = $('.count4'),
+	      v5 = $('.count5'),
+	      v6 = $('.count6');
+
+	    function refreshCounts() {
+	      var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;
+	    	$.getJSON(url, function(res){
+	    		v1.text(defaultCount + res[postID].reactions_<%=images[0].reaction%>.summary.total_count);
+	    		v2.text(defaultCount + res[postID].reactions_<%=images[1].reaction%>.summary.total_count);
+	        v3.text(defaultCount + res[postID].reactions_<%=images[2].reaction%>.summary.total_count);
+	        v4.text(defaultCount + res[postID].reactions_<%=images[3].reaction%>.summary.total_count);
+	        v5.text(defaultCount + res[postID].reactions_<%=images[4].reaction%>.summary.total_count);
+	        v6.text(defaultCount + res[postID].reactions_<%=images[5].reaction%>.summary.total_count);
+	    	});
+	    }
+
+	    $(document).ready(function(){
+	        setInterval(refreshCounts, refreshTime * 1000);
+	        refreshCounts();
+	    });
+		</script>
+   
+
+
+
+  <style>
+  		* {
+      cursor: none;
+      padding: 0;
+      margin: 0;
+    }
+    body {
+				width: 800px;
+				height: 450px;
+			}
+
+			.main {
+				width: 800px;
+				height: 450px;
+				position: absolute;
+				padding: 0px;
+				left: 0px;
+				top: 0px;
+			}
+
+			.box {
+				display: inline-block;
+				width: 132.58px;
+				height: 450px;
+				margin: -2px;
+			}
+
+			.counters {
+				width: 100%;
+				height: 130px;
+				margin-top: 1px;
+				background-color: white;
+			}
+
+			.counter {
+				width: 100%;
+				height: 130px;
+				margin-top: 1px;
+				background-color: #f0f0f0;
+			}
+
+			.image {
+				height: 320px;
+				width: 133.58px;
+				margin-top: 0px;
+			}
+
+			.reaction1 {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				z-index: 999;
+				top: 290px;
+				left: 41.6px;
+				border-radius: 50%;
+				background-image: url(../../../reactions/<%=images[0].reaction%>.gif);
+				background-size: cover;
+			}
+
+			.reaction2 {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				z-index: 999;
+				top: 290px;
+				left: 174.9px;
+				border-radius: 50%;
+				background-image: url(../../../reactions/<%=images[1].reaction%>.gif);
+				background-size: cover;
+			}
+
+			.reaction3 {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				z-index: 999;
+				top: 290px;
+				left: 308.2px;
+				border-radius: 50%;
+				background-image: url(../../../reactions/<%=images[2].reaction%>.gif);
+				background-size: cover;
+			}
+
+			.reaction4 {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				z-index: 999;
+				top: 290px;
+				left: 441.5px;
+				border-radius: 50%;
+				background-image: url(../../../reactions/<%=images[3].reaction%>.gif);
+				background-size: cover;
+			}
+
+			.reaction5 {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				z-index: 999;
+				top: 290px;
+				left: 574.8px;
+				border-radius: 50%;
+				background-image: url(../../../reactions/<%=images[4].reaction%>.gif);
+				background-size: cover;
+			}
+
+			.reaction6 {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				z-index: 999;
+				top: 290px;
+				left: 708.1px;
+				border-radius: 50%;
+				background-image: url(../../../reactions/<%=images[5].reaction%>.gif);
+				background-size: cover;
+			}
+
+			.name1 {
+				width: 133px;
+				height: 30px;
+				position: absolute;
+				top: 340px;
+				left: 0px;
+				z-index: 998;
+				font-size: 20px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.name2 {
+				width: 133px;
+				height: 30px;
+				position: absolute;
+				top: 340px;
+				left: 133.3px;
+				z-index: 998;
+				font-size: 20px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.name3 {
+				width: 133px;
+				height: 30px;
+				position: absolute;
+				top: 340px;
+				left: 266.6px;
+				z-index: 998;
+				font-size: 20px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.name4 {
+				width: 133px;
+				height: 30px;
+				position: absolute;
+				top: 340px;
+				left: 399.9px;
+				z-index: 998;
+				font-size: 20px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.name5 {
+				width: 133px;
+				height: 30px;
+				position: absolute;
+				top: 340px;
+				left: 533.2px;
+				z-index: 998;
+				font-size: 20px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.name6 {
+				width: 133px;
+				height: 30px;
+				position: absolute;
+				top: 340px;
+				left: 666.5px;
+				z-index: 998;
+				font-size: 20px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.count1 {
+				width: 133px;
+				position: absolute;
+				top: 370px;
+				left: 0px;
+				z-index: 998;
+				font-size: 35px;
+				font-weight: bolder;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.count2 {
+				width: 133px;
+				position: absolute;
+				top: 370px;
+				left: 133.3px;
+				z-index: 998;
+				font-size: 35px;
+				font-weight: bolder;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.count3 {
+				width: 133px;
+				position: absolute;
+				top: 370px;
+				left: 266.6px;
+				z-index: 998;
+				font-size: 35px;
+				font-weight: bolder;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.count4 {
+				width: 133px;
+				position: absolute;
+				top: 370px;
+				left: 399.9px;
+				z-index: 998;
+				font-size: 35px;
+				font-weight: bolder;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.count5 {
+				width: 133px;
+				position: absolute;
+				top: 370px;
+				left: 533.2px;
+				z-index: 998;
+				font-size: 35px;
+				font-weight: bolder;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.count6 {
+				width: 133px;
+				position: absolute;
+				top: 370px;
+				left: 666.5px;
+				z-index: 998;
+				font-size: 35px;
+				font-weight: bolder;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.votes1 {
+				width: 133px;
+				position: absolute;
+				top: 420px;
+				left: 0px;
+				z-index: 998;
+				font-size: 16px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.votes2 {
+				width: 133px;
+				position: absolute;
+				top: 420px;
+				left: 133.3px;
+				z-index: 998;
+				font-size: 16px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.votes3 {
+				width: 133px;
+				position: absolute;
+				top: 420px;
+				left: 266.6px;
+				z-index: 998;
+				font-size: 16px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.votes4 {
+				width: 133px;
+				position: absolute;
+				top: 420px;
+				left: 399.9px;
+				z-index: 998;
+				font-size: 16px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.votes5 {
+				width: 133px;
+				position: absolute;
+				top: 420px;
+				left: 533.2px;
+				z-index: 998;
+				font-size: 16px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+
+			.votes6 {
+				width: 133px;
+				position: absolute;
+				top: 420px;
+				left: 666.5px;
+				z-index: 998;
+				font-size: 16px;
+				font-family: sans-serif;
+				text-align: center;
+			}
+			.random b {
+			  position: absolute;
+			  display: block;
+			  z-index: 100000;
+			  -webkit-animation: moveX 13.05s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+				-moz-animation: moveX 13.05s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+			  -o-animation: moveX 13.05s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+			  animation: moveX 13.05s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+			}
+
+			@-webkit-keyframes moveX {
+			  from { left: 0; } to { left: 800px; }
+			}
+			@-moz-keyframes moveX {
+			  from { left: 0; } to { left: 800px; }
+			}
+			@-o-keyframes moveX {
+			  from { left: 0; } to { left: 800px; }
+			}
+			@keyframes moveX {
+			  from { left: 0; } to { left: 800px; }
+			}
+			@-webkit-keyframes moveY {
+			  from { top: 0; } to { top: 500px; }
+			}
+			@-moz-keyframes moveY {
+			  from { top: 0; } to { top: 500px; }
+			}
+			@-o-keyframes moveY {
+			  from { top: 0; } to { top: 500px; }
+			}
+			@keyframes moveY {
+			  from { top: 0; } to { top: 500px; }
+			}
+		</style>
+		
+</body></html>

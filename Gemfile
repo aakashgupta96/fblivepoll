@@ -1,9 +1,12 @@
 source 'https://rubygems.org'
 
-
+gem 'fog'
+gem 'process_exists'
 gem 'streamio-ffmpeg'
 gem 'materialize-sass'
 gem "httparty"
+gem "headless"
+gem "selenium-webdriver", '~> 3.3.0'
 #gem 'active_device'
 gem 'data-confirm-modal'
 gem 'devise'
@@ -11,7 +14,6 @@ gem 'omniauth-facebook'
 gem 'unicorn'
 gem 'pg'
 gem 'redis', '~>3.2'
-gem 'rmagick'
 gem "koala"
 gem 'resque',:require => "resque/server"
 gem "mini_magick"

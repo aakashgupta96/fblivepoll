@@ -17,11 +17,17 @@ class LoopVideosController < ApplicationController
     @post.status = "scheduled" if params["post"]["scheduled"]=="on"
 
     if @post.save
-      (@post.start and return redirect_to submit_loop_video_path(@post.id)) if (@post.status != "scheduled" and @post.can_start?)
+      if (@post.status != "scheduled" and @post.can_start?)
+        if @post.start 
+          return redirect_to submit_loop_video_path(@post.id)
+        else
+          return redirect_to root_path, notice: "Facebook declined your request. Please visit My Post section to see the status." 
+        end
+      end
       return redirect_to submit_loop_video_path(@post.id) if @post.status == "scheduled"
       return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
-    else
-      redirect_to new_loop_video_path,notice: "Invalid Details"
+    else 
+      return redirect_to new_loop_video_path,notice: "Invalid Details"
     end
   end
 

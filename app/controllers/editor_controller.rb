@@ -1,6 +1,6 @@
 class EditorController < ApplicationController
 	
-	include Magick
+	#include Magick
 
   def testFrame
     

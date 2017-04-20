@@ -1,66 +1,109 @@
 class UpdateFrame
-  include Magick
+  #include Magick
   @queue = :update_frame
 
   def self.perform(post_id)
-    pid = Process.fork do
-      UpdateFrame.work post_id  
+    @post = Post.find_by_id(post_id) #Instance variable so that erb can access it
+    path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
+    FileUtils.mkdir_p(path) unless File.exist?(path)
+    path = File.join(Rails.root,'log','stream')
+    FileUtils.mkdir_p(path) unless File.exist?(path)
+      
+    html_file = Rails.root.to_s + "/public/uploads/post/#{@post.id}/frame.html" #=>"target file name"
+    @images = @post.images#Prepare an html for the frame of this post
+       
+    if @post.poll?
+      erb_file = Rails.root.to_s + "/public#{@post.template.path}/frame.html.erb" #Path of erb file to be rendered
+    else
+      erb_file = Rails.root.to_s + "/public/videos/loop_video_frame.html.erb"
     end
-    Process.wait
-  end
 
-  def self.work(post_id)
-    Resque.logger = Logger.new(Rails.root.join("log").join("update").join(post_id.to_s).to_s)
-    post = Post.find(post_id)
-    graph = post.graph_with_page_token
-    counters = post.counters
-    fields=""
-    if counters.length>0
-      txt = Draw.new
-      txt.pointsize = 25
-      txt.fill = post.counter_color
-      txt.font_weight = Magick::BoldWeight
-      counters.each do |counter|
-        fields += "reactions.type(#{counter.reaction.upcase}).limit(0).summary(total_count).as(#{counter.reaction}),"
-      end
-      fields[fields.size-1]=""
+    erb_str = File.read(erb_file)
+    namespace = OpenStruct.new(post: @post, images: @images)
+    result = ERB.new(erb_str)
+    result = result.result(namespace.instance_eval { binding })
+
+      
+    File.open(html_file, 'w') do |f|
+      f.write(result)
     end
-    offset = [nil,40,33,25,20,15,7,0] 
-    loop do 
-      begin
-        if counters.length>0
-          ids = [] 
-          # shared_post_ids = graph.graph_call("#{video_id}?fields=sharedposts{id}")["sharedposts"]["data"] rescue false
-          # ids = shared_post_ids.collect {|u| u["id"]} if shared_post_ids.class == Array
-          ids.push(post.video_id)
-          frame = ImageList.new("public/uploads/post/#{post.id}/frame.png")
-          count_hash = graph.graph_call("?ids=#{ids.join(',')}&fields=#{fields}")
-          if count_hash.size == 0
-            Resque.logger.info "Stopping post after its deletion"
-            post.stop("Deleted from FB")
-          end
-          counters.each do |counter|
-            count = UpdateFrame.retrieve(count_hash,counter.reaction)
-            frame.annotate(txt,0,0,counter.x+offset[count.to_s.length],counter.y+23,count.to_s)
-          end  
-          frame.write("public/uploads/post/#{post.id}/frame1.tmp.png")
-          %x[mv "public/uploads/post/#{post.id}/frame1.tmp.png" "public/uploads/post/#{post.id}/frame1.png"]
+
+    if @post.poll?
+      if @post.audio.url.nil?
+        audio_path = "public/silent.aac"
+      else
+        local_audio_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
+        if Rails.env.production?
+          %x[$HOME/bin/ffmpeg -i "#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+        else
+          %x[$HOME/bin/ffmpeg -i "#{Rails.root.to_s}/public/#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
         end
-      rescue Exception => e
-        Resque.logger.info "Error message is #{e.message}"
-        Resque.logger.info "Error class is #{e.class}"
-        retry
+        %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/final.aac" -c copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+        audio_path = "#{local_audio_path}/long.aac"
       end
-      sleep(3)
+    else
+      local_audio_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
+      if Rails.env.production?
+        %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{@post.video.url}" -vn -acodec copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      else
+        %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{Rails.root.to_s}/public#{@post.video.url}" -vn -acodec copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      end
+      audio_path = "#{local_audio_path}/long.aac"
+    end
+
+    headless = Headless.new(display: rand(100))
+    headless.start
+    driver = Selenium::WebDriver.for :firefox
+    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
+    driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
+    driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
+
+    command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:449:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+    pid = Process.spawn(command)
+    sleep(30)
+    ffmpeg_id = %x[pgrep -P #{pid}]
+    @post.update(status: "live", process_id: ffmpeg_id.strip)
+    query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
+    duration = (@post.duration-30.years).to_i
+    loop do
+      if (Process.exists?(ffmpeg_id) == false)
+        @post.stop("Streaming stopped due to network error")
+        break
+      end
+      begin
+        status = HTTParty.get(query)
+        if status.parsed_response["#{@post.video_id}"].nil?
+          @post.stop("Deleted from FB")
+          break
+        end
+      rescue
+        
+      end
+      elapsed_time = %x[ps -p #{pid} -o etime=]
+      elapsed_time = UpdateFrame.convert_to_sec(elapsed_time.strip!)
+      if(elapsed_time >= duration)
+        @post.stop
+        break 
+      end
+      @post.reload
+      if (@post.live == false)
+        break
+      end
+      sleep(10)
+    end
+    %x[kill -9 #{@post.process_id}] 
+    driver.quit
+    headless.destroy
+    unless @post.audio.url.nil?
+      %x[rm #{audio_path}]
     end
   end
 
-  def self.retrieve(count_hash,reaction) 
-    count = 0
-    count_hash.each do |key,value|
-      count += value["#{reaction}"]["summary"]["total_count"]
-    end
-    return count
+  def self.convert_to_sec(time)
+    a,b,c = time.split(":").map{|str| str.to_i}
+    return ((a*3600)+(b*60)+c) unless c.nil?
+    return ((a*60) + b) unless b.nil?
+    return a
   end
 
 end

@@ -6,16 +6,30 @@
     </div>
   </div>
 <% else %>
-  <h3 class="header grey-text text-darken-2 bolder center">Live Poll Details</h3>
-  <div class="row container white z-depth-4" style="padding: 40px 40px 50px 40px;">
-  <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {class: "col s12"}) do |f| %>
+  <!-- <h3 class="header grey-text text-darken-2 bolder center">Live Poll Details</h3>
+   -->
+<center>
+  <div class="card plugin hoverable">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="/templates/template<%=@template.id%>.png">
+    </div>
+    <div class="card-content" style="padding: 10px !important;">
+      <span class="card-title activator grey-text text-darken-4 bolder relative" style="left: 20px; font-size: 30px;">Edit Template</span>
+      </div>
+    </div>
+  </center>
+  <h5 class="header red-text bold center">Make sure that you do not upload any copyrighted content without permission otherwise your post will be deleted by facebook.</h5>
+  <div class="container-wide">
+  <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {id: "newPoll",class: "col s12"}) do |f| %>
+  <div class="white z-depth-4"  style="padding: 40px 40px 30px 40px;">
+    <%= f.hidden_field :template_id , value: @template.id%>
     <div class="row" style="margin-bottom: 0px;">
       <div class="input-field col s12 l6">
         <%= f.text_field :title, required: true%>
-        <%= f.label "Title" %>
+        <%= f.label "Title / Heading" %>
       </div>
       <div class="input-field col s12 l6">
-        <%=  f.time_select :duration, {start_hour: 0 , end_hour: 3, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
+        <%=  f.time_select :duration, {start_hour: 0 , end_hour: 1, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
         <%= f.label "Duration ( hrs : min )" %>
       </div>
     </div>
@@ -54,12 +68,61 @@
         <%= f.label "Select Page" %>
       </div>
     </div>
-    
+
+    <% if @template.needs_background %>
+      <div class="row">
+      <div class="file-field input-field col s12 m6 l6">
+        <div class="btn">
+          <span>Background Image</span>
+          <%= f.file_field :background, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 15.megabytes}, required: true}%>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+    <% i = 1 %>
     <div class="row">
-      <%= f.submit "Proceed to draw frame", {class: "col s12 btn"}%>
+    <%= f.fields_for :images do |builder| %>
+      <div class="card col l6 m12 s12" style="padding: 10px 30px 10px 30px;">
+      <% if @template.needs_image_names %>
+        <div class="input-field col s12 l6">
+          <%= builder.label "Name for image #{i}" %>
+          <%= builder.text_field :name, required: true %>
+        </div>
+      <% end %>
+      <div class="row">
+        <div class="file-field input-field col s12 m6 l6">
+          <div class="btn">
+            <span>Add Image <%=i%></span>
+            <%= builder.file_field :file, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 15.megabytes}, required: true }%>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <%=  builder.select(:reaction, [["Like","like",{class: "left circle", "data-icon" => "/reactions/like.gif"}],["Love","love",{class: "left circle", "data-icon" => "/reactions/love.gif"}],["Haha","haha",{class: "left circle", "data-icon" => "/reactions/haha.gif"}],["Wow","wow",{class: "left circle", "data-icon" => "/reactions/wow.gif"}],["Sad","sad",{class: "left circle", "data-icon" => "/reactions/sad.gif"}],["Angry","angry",{class: "left circle", "data-icon" => "/reactions/angry.gif"}]],{}, {class: "icons reactions"}) %>
+          <%= f.label "Select Reaction" %>
+        </div>
+      </div>
+      </div>
+      <% i = i+1 %>
+    <% end %>
+    </div>
+
+    <div class="row">
+      <% if @template.id == 0 %>
+        <%= f.submit "Proceed to draw frame", {class: "col s12 btn"}%>
+      <% else %>
+        <%= f.submit "Submit", {class: "col s12 btn", data: {:confirm => 'Are you sure?'} }%>
+      <% end %>
     </div>
   <% end %>
   </div>
+ 
 
 
   <script>
@@ -71,6 +134,31 @@
           $('#datetime').slideDown(300);
         else
           $('#datetime').slideUp(300);
+      });
+
+      $('#newPoll').on('submit',function(){
+          var valid = true;
+          var select_tags = $(".reactions select");
+          for(var i=0;i<select_tags.length && valid;i++)
+          {
+            for(var j=i+1;j<select_tags.length && valid;j++)
+            {
+              if($("#"+$(".reactions select")[i].id).val() == $("#"+$(".reactions select")[j].id).val())
+              {
+                valid = false;
+              }
+            }
+          }
+          if(!valid)
+          {
+            Materialize.toast("One reaction can't be selected for two or more images", 4000); 
+            return false;
+          }
+          else
+          {
+            Materialize.toast("Please wait while the files are being uploaded", 400000); 
+            return true;
+          }
       });
     });
   </script>

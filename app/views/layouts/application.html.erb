@@ -13,6 +13,18 @@
     <link rel="shortcut-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    <script type="text/javascript"> var infolinks_pid = 2989478; var infolinks_wsid = 0; </script> 
+    <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-4726706343331157",
+        enable_page_level_ads: true
+      });
+    </script>
+
+
 </head>
 
 
@@ -69,10 +81,10 @@
           <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li>
           <li style=" margin-right: 10px;">
             <div class='dropdown-button waves-effect waves-light btn' data-activates='dropdown1'>
-              <i class="material-icons left relative" style="top: -13px;"> videocam</i>Plugins
+              <i class="material-icons left relative" style="top: -13px;">videocam</i>Plugins<span class="newFeature">New</span>
             </div>
               <ul id='dropdown1' class='dropdown-content'>
-                <li><%= link_to "Live Polling", new_poll_path%></li>
+                <li><a href="/#pluginCarousel">Live Polling</a></li>
                 <li class="divider"></li>
                 <li><%= link_to "Stream Video", new_loop_video_path%></li>
               </ul>
@@ -86,7 +98,7 @@
               <ul id='dropdown2' class='dropdown-content'>
                 <li><%= link_to "My Posts", myposts_path%></li>
                 <li class="divider"></li>
-                <li><a href="/users/sign_out" data-method="DELETE">Log Out</a></li>
+                <li><a href="/users/sign_out" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
               </ul>
             </li>
           <% else %>
@@ -100,11 +112,11 @@
             <li><%= link_to "My Posts", myposts_path%></li>
           <% end %>
           <li>
-            <a href="/polls/new" class="waves-effect waves-light btn">Live Polling</a>
+            <a href="/#pluginCarousel" class="waves-effect waves-light btn">Live Polling</a>
             <a href="/loop_videos/new" class="waves-effect waves-light btn">Stream Video</a>
           </li>
           <% if user_signed_in? %>
-            <li><a href="/users/sign_out" class="waves-effect waves-light btn greenish" data-method="DELETE">Log Out</a></li>
+            <li><a href="/users/sign_out" class="waves-effect waves-light btn greenish" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
           <% else %>
             <li><a href="/users/auth/facebook" class="waves-effect waves-light btn greenish">Log In with FB</a></li>
           <% end %>

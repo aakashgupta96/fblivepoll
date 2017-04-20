@@ -2,9 +2,9 @@ default: &default
   adapter: postgresql
   pool: 5
   encoding: unicode
-  username: shurikenlive
-  password: rasenshuriken
-  host: localhost
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['HOST'] %>
 development:
   <<: *default
   database: db/shuriken_live_dev

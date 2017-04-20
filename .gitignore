@@ -10,7 +10,6 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
-/config/initializers/resque_auth.rb
 /config/local_env.yml
 /public/assets/*
 /public/uploads/*
@@ -21,3 +20,6 @@
 /log/stream/*
 /log/update/*
 /tmp
+/Dockerfile
+/config/container
+/resque.conf

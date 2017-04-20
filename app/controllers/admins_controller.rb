@@ -2,11 +2,11 @@ class AdminsController < ApplicationController
 	before_action :authenticate_admin!
 
 	def dashboard
-		@posts = Post.all.order(id: :desc)
+		@posts = Post.last(100).reverse
 	end
 
 	def stop_post
-		Post.find(params[:post_id]).stop("Stopped by admin")
+		Post.find(params[:post_id]).stop("Stopped")
 		redirect_to '/admins/dashboard', notice: "Live Video has been successfully stopped."
 	end
 end

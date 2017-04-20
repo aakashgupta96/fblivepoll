@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <link href="http://vjs.zencdn.net/5.19.0/video-js.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <video id="my-video" class="video-js" loop preload="auto" muted autoplay width="800" height="450" data-setup="{}">
+      <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/mp4">
+      <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/ogg">
+      <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/webm">
+    </video>
+
+    <script src="http://vjs.zencdn.net/5.19.0/video.js"></script>
+  </body>
+
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      cursor: none;
+    }
+  </style>
+  <script></script>
+</html>

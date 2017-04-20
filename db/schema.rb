@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170318165956) do
+ActiveRecord::Schema.define(version: 20170402153950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(version: 20170318165956) do
     t.integer  "post_id"
   end
 
+  create_table "images", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "file"
+    t.integer  "post_id"
+    t.string   "reaction"
+    t.string   "name"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string   "key"
     t.string   "title"
@@ -72,6 +81,18 @@ ActiveRecord::Schema.define(version: 20170318165956) do
     t.integer  "category"
     t.string   "video"
     t.string   "image"
+    t.integer  "template_id"
+    t.string   "live_id"
+    t.string   "process_id"
+  end
+
+  create_table "templates", force: :cascade do |t|
+    t.string   "path"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "image_count"
+    t.boolean  "needs_background",  default: false
+    t.boolean  "needs_image_names", default: false
   end
 
   create_table "users", force: :cascade do |t|

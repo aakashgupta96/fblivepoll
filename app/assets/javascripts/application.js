@@ -15,17 +15,15 @@
 // = require jquery
 // = require jquery_ujs
 // = require materialize
+//= require materialize-rails-confirm.js
 // = require_tree
-//require data-confirm-modal
-// jQuery(document).on('turbolinks:load',function(){
-// 	jQuery("a[href^='#']").attr('data-turbolinks',false);
-
-// });
 
 
+$(function(){ $('.carousel.carousel-slider').carousel({full_width: true}); });
 $( document ).ready(function(){
-    //$("#cover").fadeOut(2000);
     $('.parallax').parallax();
+    $('.carousel.carousel-slider').carousel({fullWidth: true});
+    $('.scrollspy').scrollSpy();
     $(".button-collapse").sideNav();
     $('.dropdown-button').dropdown({
       inDuration: 400,
@@ -36,6 +34,14 @@ $( document ).ready(function(){
       belowOrigin: true, // Displays dropdown below the button
       alignment: 'left' // Displays dropdown with edge aligned to the left of button
     });
+    $("#nextCarousel").click(function(){
+        $('.carousel').carousel('next');
+    });
+
+    $("#prevCarousel").click(function(){
+        $('.carousel').carousel('prev');
+    });
+
     window.fbAsyncInit = function() {
       FB._https = true;
       FB.init({
@@ -52,12 +58,15 @@ $( document ).ready(function(){
       js.src = "https://connect.facebook.net/en_US/all.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
+
   })
 
-  $(window).load(function() {
+  $(window).load(function(){
     $("#cover").fadeOut(200);
 });
-
+  $(window).resize(function(){
+  });
 function validateAudioFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (50 MB)";
     var extErrorMessage = "Only audio file with extension: .mp3, .m4a, .mp4a, .wma, .wav or .aac is allowed";
@@ -74,20 +83,20 @@ function validateAudioFiles(inputFile) {
         if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
     });
     if (sizeExceeded) {
-        window.alert(maxExceededMessage);
+        Materialize.toast(maxExceededMessage, 5000);
         $(inputFile).val('');
     };
 
     if (extError) {
-        window.alert(extErrorMessage);
+        Materialize.toast(extErrorMessage, 5000);
         $(inputFile).val('');
     };
 }
 
 function validateVideoFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (500 MB)";
-    var extErrorMessage = "Only audio file with extension: .mpeg, .mp4, .flv, .mkv or .wmv is allowed";
-    var allowedExtension = ["mp4", "mpeg", "avi", "flv", "mkv", "wmv"];
+    var extErrorMessage = "Only video file with extension: .mp4, .m4v, .ogg, .ogv, .mov or .mpeg is allowed";
+    var allowedExtension = ["mp4", "m4v", "ogg", "mov", "ogv", "mpeg"];
 
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');
@@ -100,12 +109,12 @@ function validateVideoFiles(inputFile) {
         if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
     });
     if (sizeExceeded) {
-        window.alert(maxExceededMessage);
+        Materialize.toast(maxExceededMessage, 5000);
         $(inputFile).val('');
     };
 
     if (extError) {
-        window.alert(extErrorMessage);
+        Materialize.toast(extErrorMessage, 5000);
         $(inputFile).val('');
     };
 }
@@ -127,12 +136,17 @@ function validateImageFiles(inputFile) {
         if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
     });
     if (sizeExceeded) {
-        window.alert(maxExceededMessage);
+        Materialize.toast(maxExceededMessage, 5000);
         $(inputFile).val('');
     };
 
     if (extError) {
-        window.alert(extErrorMessage);
+        Materialize.toast(extErrorMessage, 5000);
         $(inputFile).val('');
     };
-}
+};
+
+function validateReactions(x) {
+    console.log($('#'+x.id).val());
+    
+};

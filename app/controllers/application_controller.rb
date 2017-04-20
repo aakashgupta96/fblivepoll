@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::Base
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  #before_action :configure_permitted_parameters, if: :devise_controller?
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   
   protect_from_forgery with: :exception
+  
   def after_sign_in_path_for(resource)
     return root_path if resource.class == User
     '/admins/dashboard' 
@@ -23,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def post_params
-    params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio,:category,:video,:image)
+    params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio,:category,:video,:image, :background, images_attributes: [:file, :reaction, :name])
   end
 
   def authenticate_user!

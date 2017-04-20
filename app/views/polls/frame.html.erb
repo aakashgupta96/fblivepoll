@@ -144,7 +144,7 @@
         <input type="hidden" name="post_id" value="<%=@post.id%>">
         <input id="color" type="hidden" name="color" value="#fffff">   
         <input type="hidden" id="image_data" name="data_uri" value="">
-        <input id="submit_frame" type="submit" value=<%= @post.status=="scheduled" ? "Schedule" : "Submit" %> class="btn col s12"> 
+        <input id="submit_frame" data-confirm ="Are you sure?" type="submit" value=<%= @post.status=="scheduled" ? "Schedule" : "Submit" %> class="btn col s12"> 
 
       <% end %>
     </div>
@@ -817,11 +817,11 @@
             {
               var x = document.createElement("input");
               x.name = "reaction["+groups[i].attrs.reaction+"][x]";
-              x.value =  groups[i].attrs.x + 20;
+              x.value =  groups[i].attrs.x;
               x.type="hidden";
               var y = document.createElement("input");
               y.name = "reaction["+groups[i].attrs.reaction+"][y]";
-              y.value =  groups[i].attrs.y + 6;
+              y.value =  groups[i].attrs.y;
               y.type="hidden";
               form.appendChild(x);
               form.appendChild(y);
@@ -849,7 +849,8 @@
       document.getElementById("opacity").addEventListener('change',changeOpacity);
       document.getElementById("counterTextColor").addEventListener('change', changeTextColor);
       document.getElementById("radius").addEventListener('change',changeRadius);
-      document.getElementById("submit_frame").addEventListener('click',sendImage);
+      $("#data_form").submit(sendImage);
+      //document.getElementById("submit_frame").addEventListener('click',sendImage);
       document.getElementById("background").addEventListener('change',addBackgrounfFile);
     </script>
   
