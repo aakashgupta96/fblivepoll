@@ -5,9 +5,15 @@
 
   <body>
     <video id="my-video" class="video-js" loop preload="auto" muted autoplay width="800" height="450" data-setup="{}">
-      <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/mp4">
-      <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/ogg">
-      <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/webm">
+      <% if Rails.env.production? %>
+        <source src="<%=post.video.url%>" type="video/mp4">
+        <source src="<%=post.video.url%>" type="video/ogg">
+        <source src="<%=post.video.url%>" type="video/webm">
+      <% else %>
+        <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/mp4">
+        <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/ogg">
+        <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/webm">
+      <% end %>
     </video>
 
     <script src="http://vjs.zencdn.net/5.19.0/video.js"></script>
