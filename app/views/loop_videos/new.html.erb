@@ -7,7 +7,8 @@
   </div>
 <% else %>
   <h3 class="header grey-text text-darken-2 bolder center">Video Details</h3>
-  <h5 class="header red-text bold center">This plugin will stream your video in a loop so that video starts again as soon as it ends for the selected time duration.</h5>
+  <p class="header blue-text bold center" style="font-size: 20px;">This plugin will stream your video in a loop so that video starts again as soon as it ends for the selected time duration.</p>
+  <p class="header red-text bold center" style="font-size: 23px;">Make sure that you do not upload any copyrighted content without permission otherwise your post will be deleted by facebook.</p>
   <div class="row container white z-depth-4" style="padding: 40px 40px 50px 40px;">
   <%= form_for(@post,:url => url_for(:controller => 'loop_videos', :action => 'create'),html: {class: "col s12"}) do |f| %>
     <% if @post.errors.any? %>
@@ -54,7 +55,7 @@
       <div class="file-field input-field col s12 m6 l6">
         <div class="btn">
           <span>Video</span>
-          <%= f.file_field :video, {class: 'file_select', onchange: "validateVideoFiles(this);", data: { max_file_size: 500.megabytes} }%>
+          <%= f.file_field :video, {class: 'file_select', onchange: "validateVideoFiles(this);", data: { max_file_size: 2500.megabytes}, required: true }%>
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text">
@@ -68,7 +69,7 @@
     </div>
     
     <div class="row">
-      <%= f.submit "Submit", {class: "col s12 btn"}%>
+      <%= f.submit "Submit", {class: "col s12 btn",data: {:confirm => 'Are you sure?'} }%>
     </div>
   <% end %>
   </div>

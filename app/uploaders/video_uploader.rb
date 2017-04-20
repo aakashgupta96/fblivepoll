@@ -15,11 +15,11 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
 
   def extension_whitelist
-     %w(mp4 mpeg avi flv mkv wmv)
+     %w(mp4 m4v ogg mov ogv mpeg)
    end
 
    def filename
-    "1.flv" if original_filename
+    "1.mp4" if original_filename
    end
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url

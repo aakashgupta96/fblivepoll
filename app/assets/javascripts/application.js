@@ -64,10 +64,8 @@ $( document ).ready(function(){
 
   $(window).load(function(){
     $("#cover").fadeOut(200);
-    //$('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
 });
   $(window).resize(function(){
-    //$('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
   });
 function validateAudioFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (50 MB)";
@@ -85,20 +83,20 @@ function validateAudioFiles(inputFile) {
         if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
     });
     if (sizeExceeded) {
-        window.alert(maxExceededMessage);
+        Materialize.toast(maxExceededMessage, 5000);
         $(inputFile).val('');
     };
 
     if (extError) {
-        window.alert(extErrorMessage);
+        Materialize.toast(extErrorMessage, 5000);
         $(inputFile).val('');
     };
 }
 
 function validateVideoFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (500 MB)";
-    var extErrorMessage = "Only audio file with extension: .mpeg, .mp4, .flv, .mkv or .wmv is allowed";
-    var allowedExtension = ["mp4", "mpeg", "avi", "flv", "mkv", "wmv"];
+    var extErrorMessage = "Only video file with extension: .mp4, .m4v, .ogg, .ogv, .mov or .mpeg is allowed";
+    var allowedExtension = ["mp4", "m4v", "ogg", "mov", "ogv", "mpeg"];
 
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');
@@ -111,12 +109,12 @@ function validateVideoFiles(inputFile) {
         if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
     });
     if (sizeExceeded) {
-        window.alert(maxExceededMessage);
+        Materialize.toast(maxExceededMessage, 5000);
         $(inputFile).val('');
     };
 
     if (extError) {
-        window.alert(extErrorMessage);
+        Materialize.toast(extErrorMessage, 5000);
         $(inputFile).val('');
     };
 }
@@ -138,12 +136,12 @@ function validateImageFiles(inputFile) {
         if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
     });
     if (sizeExceeded) {
-        window.alert(maxExceededMessage);
+        Materialize.toast(maxExceededMessage, 5000);
         $(inputFile).val('');
     };
 
     if (extError) {
-        window.alert(extErrorMessage);
+        Materialize.toast(extErrorMessage, 5000);
         $(inputFile).val('');
     };
 };

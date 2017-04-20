@@ -35,7 +35,7 @@ class Post < ActiveRecord::Base
 			live_id = video["id"]
 		  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
 		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true)
-		  Resque.enqueue(UpdateFrame,self.id) if self.poll?
+		  Resque.enqueue(UpdateFrame,self.id)
 		  Resque.enqueue(NotifyAdmins,true,self.video_id)
 		  return true
 		rescue Exception => e
