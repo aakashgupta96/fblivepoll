@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   post '/polls/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
   get '/polls/:post_id/submit' => 'polls#submit', as: "submit_poll"
   
-  get '/loop_videos/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
+  #get '/loop_videos/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
 
   get '/admins/dashboard' => 'admins#dashboard'
   post '/admins/stop/:post_id' => 'admins#stop_post'
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
 
 
   resources :polls, :except => [:edit , :show , :index , :update, :destroy]
-  resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
+  #resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
 
 
 

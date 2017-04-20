@@ -86,7 +86,7 @@
               <ul id='dropdown1' class='dropdown-content'>
                 <li><a href="/#pluginCarousel">Live Polling</a></li>
                 <li class="divider"></li>
-                <li><%= link_to "Stream Video", new_loop_video_path%></li>
+                <!-- <li><%#= link_to "Stream Video", new_loop_video_path%></li> -->
               </ul>
           </li>
 
@@ -113,7 +113,7 @@
           <% end %>
           <li>
             <a href="/#pluginCarousel" class="waves-effect waves-light btn">Live Polling</a>
-            <a href="/loop_videos/new" class="waves-effect waves-light btn">Stream Video</a>
+            <!-- <a href="/loop_videos/new" class="waves-effect waves-light btn">Stream Video</a> -->
           </li>
           <% if user_signed_in? %>
             <li><a href="/users/sign_out" class="waves-effect waves-light btn greenish" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>

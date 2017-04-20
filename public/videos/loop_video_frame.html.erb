@@ -1,22 +1,21 @@
 <html>
   <head>
     <link href="http://vjs.zencdn.net/5.19.0/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/5.19.0/video.js"></script>
   </head>
 
   <body>
     <video id="my-video" class="video-js" loop preload="auto" muted autoplay width="800" height="450" data-setup="{}">
       <% if Rails.env.production? %>
-        <source src="<%=Rails.root.to_s%>/public/uploads/post/<%=post.id%>/1.mp4" type="video/mp4">
-        <source src="<%=Rails.root.to_s%>/public/uploads/post/<%=post.id%>/1.mp4" type="video/ogg">
-        <source src="<%=Rails.root.to_s%>/public/uploads/post/<%=post.id%>/1.mp4" type="video/webm">
+        <source src="1.mp4" type="video/mp4">
+        <source src="1.mp4" type="video/ogg">
+        <source src="1.mp4" type="video/webm">
       <% else %>
         <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/mp4">
         <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/ogg">
         <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/webm">
       <% end %>
     </video>
-
-    <script src="http://vjs.zencdn.net/5.19.0/video.js"></script>
   </body>
 
   <style>
