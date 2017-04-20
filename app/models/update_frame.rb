@@ -46,7 +46,6 @@ class UpdateFrame
       if Rails.env.production?
         %x[wget #{@post.video.url} -O #{local_audio_path}/1.mp4]
         %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/1.mp4" -vn -acodec copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
-        %x[rm -f #{local_audio_path}/1.mp4]
       else
         %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{Rails.root.to_s}/public#{@post.video.url}" -vn -acodec copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
       end
@@ -98,6 +97,9 @@ class UpdateFrame
     headless.destroy
     unless @post.audio.url.nil?
       %x[rm #{audio_path}]
+    end
+    if @post.loop_video?
+      %x[rm -f #{local_audio_path}/1.mp4]
     end
   end
 
