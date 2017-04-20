@@ -50,6 +50,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def required_images_available?
+		return true if self.loop_video?
 		if self.template.id == 0
 			return self.image != nil
 		else
