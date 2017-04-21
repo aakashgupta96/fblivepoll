@@ -43,7 +43,7 @@ class UpdateFrame
     else
       local_audio_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
       if Rails.env.production?
-        %x[wget #{@post.video.url} -O #{local_audio_path}/1.mp4]
+        %x[wget #{@post.video.url} -q -O #{local_audio_path}/1.mp4]
         %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/1.mp4" -vn -acodec copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
       else
         %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{Rails.root.to_s}/public#{@post.video.url}" -vn -acodec copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
