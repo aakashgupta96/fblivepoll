@@ -98,6 +98,7 @@ class UpdateFrame
       %x[rm #{audio_path}]
     end
     if @post.loop_video?
+      %x[rm -f #{local_audio_path}/long.aac]
       %x[rm -f #{local_audio_path}/1.mp4]
     end
   end
