@@ -34,7 +34,7 @@ class Post < ActiveRecord::Base
 			video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption} \nMade with: www.shurikenlive.com", title: self.title},"post")
 			live_id = video["id"]
 		  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
-		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true)
+		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
 		  Resque.enqueue(UpdateFrame,self.id)
 		  Resque.enqueue(NotifyAdmins,true,self.video_id)
 		  return true
