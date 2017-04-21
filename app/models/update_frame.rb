@@ -54,11 +54,11 @@ class UpdateFrame
     headless = Headless.new(display: rand(100))
     headless.start
     driver = Selenium::WebDriver.for :firefox
-    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
-
-    command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:449:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
+    
+    command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:449:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"  
     pid = Process.spawn(command)
     sleep(30)
     ffmpeg_id = %x[pgrep -P #{pid}]
