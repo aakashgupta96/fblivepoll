@@ -6,18 +6,11 @@
 
   <body>
     <video id="my-video" class="video-js" loop preload="auto" muted autoplay width="800" height="450" data-setup="{}">
-      <% if Rails.env.production? %>
-        <source src="1.mp4" type="video/mp4">
-        <source src="1.mp4" type="video/ogg">
-        <source src="1.mp4" type="video/webm">
-      <% else %>
-        <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/mp4">
-        <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/ogg">
-        <source src="<%=Rails.root.to_s%>/public<%=post.video.url%>" type="video/webm">
-      <% end %>
+      <source src="1.mp4" type="video/mp4">
+      <source src="1.mp4" type="video/ogg">
+      <source src="1.mp4" type="video/webm">
     </video>
   </body>
-
   <style>
     *{
       padding: 0;
