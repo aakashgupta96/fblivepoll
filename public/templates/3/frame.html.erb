@@ -7,6 +7,11 @@
   </head>
 
   <body>
+    <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
+      <b style="position: absolute; z-index: 100000;">
+        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
+      </b>
+    </div>
     <div class="wrapper">
       <center>
         <h1>
@@ -190,30 +195,41 @@
       font-size: 31px;
       }
 
+      .random b {
+        position: absolute;
+        display: block;
+        z-index: 100000;
+        -webkit-animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+        -moz-animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+        -o-animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+        animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+      }
+
       @-webkit-keyframes moveX {
-        from { left: 0; } to { left: 800px; }
+        from { left: 0; } to { left: 705px; }
       }
       @-moz-keyframes moveX {
-        from { left: 0; } to { left: 800px; }
+        from { left: 0; } to { left: 705px; }
       }
       @-o-keyframes moveX {
-        from { left: 0; } to { left: 800px; }
+        from { left: 0; } to { left: 705px; }
       }
       @keyframes moveX {
-        from { left: 0; } to { left: 800px; }
+        from { left: 0; } to { left: 705px; }
       }
       @-webkit-keyframes moveY {
-        from { top: 0; } to { top: 500px; }
+        from { top: 0; } to { top: 395px; }
       }
       @-moz-keyframes moveY {
-        from { top: 0; } to { top: 500px; }
+        from { top: 0; } to { top: 395px; }
       }
       @-o-keyframes moveY {
-        from { top: 0; } to { top: 500px; }
+        from { top: 0; } to { top: 395px; }
       }
       @keyframes moveY {
-        from { top: 0; } to { top: 500px; }
+        from { top: 0; } to { top: 395px; }
       }
+
     
     </style>
   </body>
