@@ -99,8 +99,8 @@ class UpdateFrame
       video_path = "#{local_video_path}/1.mp4"
       command = "$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv \"#{@post.key.to_s}\" 2> #{Rails.root.join("log").join("stream").join(@post.id.to_s).to_s}"
     end
-    puts command
     pid = Process.spawn(command)
+    start_time = Time.now
     sleep(30)
     ffmpeg_id = %x[pgrep -P #{pid}]
     @post.update(status: "live", process_id: ffmpeg_id.strip)
@@ -120,8 +120,7 @@ class UpdateFrame
       rescue
         
       end
-      elapsed_time = %x[ps -p #{pid} -o etime=]
-      elapsed_time = UpdateFrame.convert_to_sec(elapsed_time.strip!)
+      elapsed_time = Time.now - start_time
       if(elapsed_time >= duration)
         @post.stop
         break 
@@ -142,13 +141,6 @@ class UpdateFrame
     else
       %x[rm -f #{video_path}]
     end
-  end
-
-  def self.convert_to_sec(time)
-    a,b,c = time.split(":").map{|str| str.to_i}
-    return ((a*3600)+(b*60)+c) unless c.nil?
-    return ((a*60) + b) unless b.nil?
-    return a
   end
 
 end
