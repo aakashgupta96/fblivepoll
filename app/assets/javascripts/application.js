@@ -95,8 +95,8 @@ function validateAudioFiles(inputFile) {
 
 function validateVideoFiles(inputFile) {
     var maxExceededMessage = "This file exceeds the maximum allowed file size (500 MB)";
-    var extErrorMessage = "Only video file with extension: .mp4, .m4v, .ogg, .ogv, .mov or .mpeg is allowed";
-    var allowedExtension = ["mp4", "m4v", "ogg", "mov", "ogv", "mpeg"];
+    var extErrorMessage = "Only video file with extension: .mp4, .m4v, .ogg, .ogv, .mov, .mkv, .avi, .flv or .mpeg is allowed";
+    var allowedExtension = ["mp4", "m4v", "ogg", "mov", "ogv", "mpeg", "flv", "avi", "mkv"];
 
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');

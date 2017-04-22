@@ -15,7 +15,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
 
   def extension_whitelist
-     %w(mp4 m4v ogg mov ogv mpeg)
+     %w(mp4 m4v ogg mov ogv mpeg flv avi mkv)
    end
 
    def filename
