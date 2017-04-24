@@ -6,7 +6,8 @@ class UpdateFrame
     @post = Post.find_by_id(post_id) #Instance variable so that erb can access it
     path = File.join(Rails.root,'log','stream')
     FileUtils.mkdir_p(path) unless File.exist?(path)
-      
+    path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
+    FileUtils.mkdir_p(path) unless File.exist?(path)
     # html_file = Rails.root.to_s + "/public/uploads/post/#{@post.id}/frame.html" #=>"target file name"
     # @images = @post.images#Prepare an html for the frame of this post
        
@@ -77,6 +78,7 @@ class UpdateFrame
     else
       local_video_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
       if Rails.env.production?
+
         %x[wget #{@post.video.url} -q -O #{local_video_path}/1.mp4]
       end
       video_path = "#{local_video_path}/1.mp4"

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def check_slots
-    return true if Post.new.can_start?
+    return true if (params["post"]["scheduled"]=="on" || Post.new.can_start?)
     return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
   end
 
