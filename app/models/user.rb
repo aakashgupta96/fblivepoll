@@ -58,4 +58,7 @@ class User < ActiveRecord::Base
     return temp
   end
 
+  def is_already_live?
+    Post.where(live: true).where(user_id: self.id).empty? ? false : true
+  end
 end

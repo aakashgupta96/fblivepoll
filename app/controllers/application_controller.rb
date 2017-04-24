@@ -13,8 +13,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def check_slots
-    return true if (params["post"]["scheduled"]=="on" || Post.new.can_start?)
-    return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
+    if current_user.is_already_live?
+      redirect_to root_path, notice: "You already has one ongoing live post. Please try after that live video ends."
+    elsif (params["post"]["scheduled"]=="on" || Post.new.can_start?)
+      true
+    else
+      redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
+    end
   end
 
   def configure_permitted_parameters
