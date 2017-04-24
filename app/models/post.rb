@@ -5,12 +5,12 @@ class Post < ActiveRecord::Base
 	mount_uploader :video, VideoUploader
 	mount_uploader :image, ImageUploader
 	
-	has_many :images
-	has_many :counters
+	has_many :images, dependent: :destroy
+	has_many :counters, dependent: :destroy
 	belongs_to :user
 	belongs_to :template
 
-	accepts_nested_attributes_for :images
+	accepts_nested_attributes_for :images, allow_destroy: true
 
 	enum category: [ :poll, :loop_video ]
 
@@ -24,7 +24,6 @@ class Post < ActiveRecord::Base
     rescue Exception => e
       #puts e.class,e.message	
     end
-    #%x[kill -9 #{self.process_id}] 
     self.update(status: status, live: false)
 	end
 
@@ -52,9 +51,9 @@ class Post < ActiveRecord::Base
 	def required_images_available?
 		return true if self.loop_video?
 		if self.template.id == 0
-			return self.image != nil
+		  self.image != nil
 		else
-			return self.images.size > 0
+			self.images.size > 0
 		end
 	end
 
@@ -64,9 +63,9 @@ class Post < ActiveRecord::Base
         return true if worker.queues.first == "update_frame"
       end
     end
-    self.update(status: "Not published due to unavailability of slots")
-    Resque.enqueue(NotifyAdmins,false) 
-    return false
+    #self.update(status: "Not published due to unavailability of slots")
+    #Resque.enqueue(NotifyAdmins,false) 
+    false
 	end
 
 	def page_access_token
@@ -80,4 +79,46 @@ class Post < ActiveRecord::Base
 		graph = Koala::Facebook::API.new(access_token) 			
 	end
 	
+	def take_screenshot_of_frame
+		driver,headless = open_in_browser("chrome")
+		path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
+    FileUtils.mkdir_p(path) unless File.exist?(path)
+    driver.save_screenshot("#{path}/frame.png")
+    driver.quit
+    headless.destroy
+	end
+
+	def create_html
+		images = self.images#Prepare an html for the frame of this post
+    erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
+    html_file = Rails.root.to_s + "/public/uploads/post/#{self.id}/frame.html" #=>"target file name"
+    erb_str = File.read(erb_file)
+    namespace = OpenStruct.new(post: self, images: images)
+    result = ERB.new(erb_str)
+    result = result.result(namespace.instance_eval { binding })
+    path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
+    FileUtils.mkdir_p(path) unless File.exist?(path)
+    File.open(html_file, 'w') do |f|
+      f.write(result)
+    end
+   end
+
+   def open_in_browser(browser = "firefox")
+   	create_html
+    headless = Headless.new
+    headless.start
+    attempts = 0
+    begin
+    	driver = Selenium::WebDriver.for browser.to_sym
+    rescue
+    	attempts += 1
+    	retry if attempts < 5
+    	throw "Unable to open browser"
+    end
+    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{self.id}/frame.html"
+    driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
+    driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
+    [driver,headless]
+	end
+
 end

@@ -12,7 +12,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     if model.class == Image
-      "uploads/post/#{model.post.id}"
+      "uploads/post/#{model.post_id}"
     else
       "uploads/post/#{model.id}"
     end

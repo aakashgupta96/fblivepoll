@@ -12,6 +12,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def check_slots
+    return true if Post.new.can_start?
+    return redirect_to root_path, notice: "Sorry! All slots are taken. Please try after sometime."
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end

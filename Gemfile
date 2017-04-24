@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'forceps'
 gem 'fog'
 gem 'process_exists'
 gem 'streamio-ffmpeg'

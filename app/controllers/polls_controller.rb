@@ -3,7 +3,7 @@ class PollsController < ApplicationController
   before_action :set_post, except: [:new, :create]
   before_action :authenticate_user!
   before_action :authorize_user! , except: [:new, :create]
-  
+  before_action :check_slots, only: [:create]
   
   require 'base64'
   
@@ -19,6 +19,7 @@ class PollsController < ApplicationController
   end
 
   def save_canvas
+
     reactions = params[:reaction]
     @post.counters.delete_all
     
@@ -56,7 +57,7 @@ class PollsController < ApplicationController
     @post.status = "scheduled" if params["post"]["scheduled"]=="on"
     if @post.save
       return redirect_to frame_path(@post.id) if @post.template.id == 0
-      take_screenshot_of_frame(@post.id)
+      @post.take_screenshot_of_frame
       return save_and_redirect
     else
       return redirect_to new_poll_path, notice: "Invalid Details"
@@ -87,38 +88,6 @@ class PollsController < ApplicationController
     else 
       return redirect_to frame_path(@post.id), notice: 'Error occured while saving post'
     end
-  end
-
-  def take_screenshot_of_frame post_id
-    @post = Post.find_by_id(post_id) #Instance variable so that erb can access it
-    @images = @post.images#Prepare an html for the frame of this post
-    erb_file = Rails.root.to_s + "/public#{@post.template.path}/frame.html.erb" #Path of erb file to be rendered
-    html_file = Rails.root.to_s + "/public/uploads/post/#{@post.id}/frame.html" #=>"target file name"
-    erb_str = File.read(erb_file)
-    namespace = OpenStruct.new(post: @post, images: @images)
-    result = ERB.new(erb_str)
-    result = result.result(namespace.instance_eval { binding })
-    path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
-    FileUtils.mkdir_p(path) unless File.exist?(path)
-    File.open(html_file, 'w') do |f|
-      f.write(result)
-    end
-    
-    headless = Headless.new(display: rand(100))
-    headless.start
-    #if (ENV["domain"] == "https://new.shurikenlive.com")
-      #driver = Selenium::WebDriver.for :firefox
-    #else
-     driver = Selenium::WebDriver.for :chrome
-    #end
-    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
-    driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
-    driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
-    path = File.join(Rails.root,'public','uploads','post',post_id.to_s)
-    FileUtils.mkdir_p(path) unless File.exist?(path)
-    driver.save_screenshot("#{path}/frame.png")
-    driver.quit
-    headless.destroy
   end
 
 end

@@ -3,7 +3,7 @@ class LoopVideosController < ApplicationController
   before_action :set_post, except: [:new, :create]
   before_action :authenticate_user!
   before_action :authorize_user! , except: [:new, :create]
-  
+  before_action :check_slots, only: [:create]
 
   def new
   	@post = Post.new
