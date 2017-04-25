@@ -15,7 +15,7 @@
 // = require jquery
 // = require jquery_ujs
 // = require materialize
-//= require materialize-rails-confirm.js
+// = require materialize-rails-confirm.js
 // = require_tree
 
 

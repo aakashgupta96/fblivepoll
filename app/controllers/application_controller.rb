@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   #before_action :configure_permitted_parameters, if: :devise_controller?
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  
+  before_action :set_raven_context
   protect_from_forgery with: :exception
   
   def after_sign_in_path_for(resource)
@@ -43,6 +43,14 @@ class ApplicationController < ActionController::Base
 
   def authorize_user!
     redirect_to root_path, notice: "Unauthorized" unless current_user == @post.user
+  end
+
+  private
+
+  def set_raven_context
+    user_id = current_user ? current_user.id : nil
+    Raven.user_context(id: user_id)
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
 end

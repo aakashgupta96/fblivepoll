@@ -14,7 +14,7 @@ class Post < ActiveRecord::Base
 
 	enum category: [ :poll, :loop_video ]
 
-	scope :live,     ->{ where(status: "live") }
+	scope :live,     ->{ where(live: true) }
 	scope :scheduled,->{ where(status: "scheduled")}
 	scope :published,->{ where(status: "published")}
 	

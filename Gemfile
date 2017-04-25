@@ -1,13 +1,14 @@
 source 'https://rubygems.org'
 
-gem 'forceps'
+gem "sentry-raven"
+gem 'droplet_kit'
 gem 'fog'
 gem 'process_exists'
 gem 'streamio-ffmpeg'
-gem 'materialize-sass'
+gem 'materialize-sass', '~> 0.97.8'
 gem "httparty"
 gem "headless"
-gem "selenium-webdriver", '~> 3.3.0'
+gem "selenium-webdriver"
 #gem 'active_device'
 gem 'data-confirm-modal'
 gem 'devise'
