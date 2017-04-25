@@ -6,7 +6,7 @@ class AdminsController < ApplicationController
 	end
 
 	def stop_post
-		Post.find(params[:post_id]).stop("Stopped")
+		Post.find(params[:post_id]).stop()
 		redirect_to '/admins/dashboard', notice: "Live Video has been successfully stopped."
 	end
 end
