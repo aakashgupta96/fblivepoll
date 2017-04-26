@@ -13,5 +13,6 @@ Template.create(id:3, path: "/templates/3", image_count: 3, needs_background: fa
 Template.create(id:4, path: "/templates/4", image_count: 3, needs_background: true, needs_image_names: false)
 Template.create(id:5, path: "/templates/5", image_count: 4, needs_background: true, needs_image_names: true)
 Template.create(id:6, path: "/templates/6", image_count: 2, needs_background: false, needs_image_names: false)
+Template.create(id:7, path: "/templates/7", image_count: 4, needs_background: false, needs_image_names: true)
 
 Admin.create(email: "aakash@shurikenlive.com", password: "rasenshuriken", password_confirmation: "rasenshuriken")

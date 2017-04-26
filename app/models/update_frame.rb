@@ -91,6 +91,7 @@ class UpdateFrame
     @post.update(status: "live", process_id: ffmpeg_id.strip)
     query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
     duration = (@post.duration-30.years).to_i
+    nil_count = 0
     loop do
       if (Process.exists?(ffmpeg_id) == false)
         @post.stop("Post has been deleted or Streaming stopped due to network error")
@@ -99,8 +100,11 @@ class UpdateFrame
       begin
         status = HTTParty.get(query)
         if status.parsed_response["#{@post.video_id}"].nil?
-          @post.stop("Deleted from FB")
-          break
+          nil_count += 1
+          if nil_count > 3
+            @post.stop("Deleted from FB")
+            break
+          end
         end
       rescue
         
