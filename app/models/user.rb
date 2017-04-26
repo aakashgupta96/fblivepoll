@@ -45,6 +45,7 @@ class User < ActiveRecord::Base
 
   def pages
     temp = Array.new()
+    attempts = 0
     begin
       graph = Koala::Facebook::API.new(self.token)
       page_ids = graph.get_object('me?fields=accounts.limit(100){parent_page}')["accounts"]["data"]
@@ -53,12 +54,15 @@ class User < ActiveRecord::Base
         page_hash = {"name"=> page_attrs["name"], "id" => page_attrs["id"], "image" => page_attrs["picture"]["data"]["url"]}
         temp << page_hash
       end
-    rescue
+    rescue Exception => e
+      attempts += 1
+      retry if attempts <= 3
+      raise e 
     end
     return temp
   end
 
   def is_already_live?
-    Post.where(live: true).where(user_id: self.id).empty? ? false : true
+    Post.live.where(user_id: self.id).empty? ? false : true
   end
 end

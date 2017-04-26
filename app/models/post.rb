@@ -69,14 +69,28 @@ class Post < ActiveRecord::Base
 	end
 
 	def page_access_token
-		graph = Koala::Facebook::API.new(self.user.token)
-		access_token = graph.get_page_access_token(self.page_id)
+		attempts = 0
+		begin
+			graph = Koala::Facebook::API.new(self.user.token)
+			access_token = graph.get_page_access_token(self.page_id)
+		rescue Exception => e
+			attempts += 1
+			retry if attempts <= 3
+			raise e
+		end
 	end
 
 	def graph_with_page_token
-		graph = Koala::Facebook::API.new(self.user.token)
-		access_token = graph.get_page_access_token(self.page_id)
-		graph = Koala::Facebook::API.new(access_token) 			
+		attempts = 0
+		begin
+			graph = Koala::Facebook::API.new(self.user.token)
+			access_token = graph.get_page_access_token(self.page_id)
+			graph = Koala::Facebook::API.new(access_token) 			
+		rescue Exception => e
+			attempts += 1
+			retry if attempts <= 3
+			raise e
+		end
 	end
 	
 	def take_screenshot_of_frame
@@ -110,10 +124,10 @@ class Post < ActiveRecord::Base
     attempts = 0
     begin
     	driver = Selenium::WebDriver.for browser.to_sym
-    rescue
+    rescue Exception => e
     	attempts += 1
-    	retry if attempts < 5
-    	throw "Unable to open browser"
+    	retry if attempts <= 3
+    	raise e
     end
     driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{self.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
