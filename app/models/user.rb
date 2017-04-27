@@ -48,18 +48,23 @@ class User < ActiveRecord::Base
     attempts = 0
     begin
       graph = Koala::Facebook::API.new(self.token)
-      page_ids = graph.get_object('me?fields=accounts.limit(100){parent_page}')["accounts"]["data"]
-      page_ids.each do |page_id|
-        page_attrs = graph.get_object("#{page_id['id']}?fields=picture{url},name")
-        page_hash = {"name"=> page_attrs["name"], "id" => page_attrs["id"], "image" => page_attrs["picture"]["data"]["url"]}
-        temp << page_hash
-      end
+      response = graph.get_object('me?fields=accounts.limit(100){parent_page}')
+      if response.nil? || response["accounts"].nil?
+      	temp
+      else
+      	page_ids = response["accounts"]["data"]
+	      page_ids.each do |page_id|
+	        page_attrs = graph.get_object("#{page_id['id']}?fields=picture{url},name")
+	        page_hash = {"name"=> page_attrs["name"], "id" => page_attrs["id"], "image" => page_attrs["picture"]["data"]["url"]}
+	        temp << page_hash
+	      end
+	      temp
+	    end
     rescue Exception => e
-      attempts += 1
+    	attempts += 1
       retry if attempts <= 3
       raise e 
     end
-    return temp
   end
 
   def is_already_live?
