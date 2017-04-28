@@ -53,9 +53,14 @@ class User < ActiveRecord::Base
       	temp
       else
       	page_ids = response["accounts"]["data"]
-	      page_ids.each do |page_id|
-	        page_attrs = graph.get_object("#{page_id['id']}?fields=picture{url},name")
-	        page_hash = {"name"=> page_attrs["name"], "id" => page_attrs["id"], "image" => page_attrs["picture"]["data"]["url"]}
+        ids = Array.new
+        page_ids.each do |hash| 
+          ids << hash['id']
+        end
+        query = "?ids=#{ids.join(',')}&fields=picture{url},name"
+        response = graph.get_object(query)
+	      response.each do |page_attrs|
+	        page_hash = {"name"=> page_attrs.second["name"], "id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
 	        temp << page_hash
 	      end
 	      temp
