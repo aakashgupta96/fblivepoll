@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
         page_ids.each do |hash| 
           ids << hash['id']
         end
-        query = "?ids=#{ids.join(',')}&fields=picture{url},name"
+        query = "?ids=#{ids.first(49).join(',')}&fields=picture{url},name"
         response = graph.get_object(query)
 	      response.each do |page_attrs|
 	        page_hash = {"name"=> page_attrs.second["name"], "id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
