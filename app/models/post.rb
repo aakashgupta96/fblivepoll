@@ -57,16 +57,16 @@ class Post < ActiveRecord::Base
 		end
 	end
 
-	def can_start?
-		Resque::Worker.all.each do |worker| 
-      unless worker.working?
-        return true if worker.queues.first == "update_frame"
-      end
-    end
-    #self.update(status: "Not published due to unavailability of slots")
-    #Resque.enqueue(NotifyAdmins,false) 
-    false
+	def worker_available?
+		queued_jobs = Resque.size("update_frame")
+		available_workers = Resque.workers.select{|worker|  worker.queues.first=="update_frame" && !worker.working?}.count
+		return available_workers > queued_jobs
 	end
+
+	def can_start?
+		return required_images_available? && worker_available?
+	end
+
 
 	def page_access_token
 		attempts = 0
