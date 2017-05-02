@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   post '/admins/stop/:post_id' => 'admins#stop_post'
   
   post '/users/stop/:post_id' => 'users#stop_post'
+  post '/users/cancel/:post_id' => 'users#cancel_scheduled_post'
   get '/users/posts' => 'users#posts', as: "myposts"
   #get '/editor/createFrame'
   #get '/editor/testFrame'

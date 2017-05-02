@@ -46,7 +46,15 @@ main
   width: 260px;
   height: 64px;
 }
-
+.note
+{
+  font-size: 22px;
+  background-color: rgba(41,43,44,0.9);
+  border-radius: 5px;
+  max-width: 94%;
+  margin: 2px auto;
+  text-align: center;
+}
 .radial-gradient
 {
   background: radial-gradient(#0089ec,#4267b2,#421782);
@@ -68,7 +76,10 @@ main
 {
   background-color: #00d04b !important;
 }
-
+.dull-purple
+{
+  background-color: rgb(86,61,124) !important;
+}
 .flexbox
 {
   display: flex !important;

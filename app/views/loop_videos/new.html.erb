@@ -6,10 +6,10 @@
     </div>
   </div>
 <% else %>
-  <h3 class="header grey-text text-darken-2 bolder center">Video Details</h3>
-  <p class="header blue-text bold center" style="font-size: 20px;">This plugin will stream your video in a loop so that video starts again as soon as it ends for the selected time duration.</p>
-  <p class="header red-text bold center" style="font-size: 23px;">Make sure that you do not upload any copyrighted content without permission otherwise your post will be deleted by facebook. Also, videos with bad encoding may not be posted properly.</p>
-  <p class="header red-text bold center" style="font-size: 23px;">Scheduling time of post is in <a href="http://www.thetimezoneconverter.com/" target="_blank">UTC time format</a></p>
+  <div class="grey-text text-darken-2 bolder center" style="font-size: 26px;">Video Details</div>
+  <div class="note white-text">This plugin will stream your video in a loop so that video starts again as soon as it ends for the selected time duration.</div>
+  <div class="note white-text">Make sure that you do not upload any copyrighted content without permission otherwise your post will be deleted by facebook. Also, videos with bad encoding may not be posted properly.</div>
+  <div class="note white-text">Scheduling time of post is in <a href="http://www.thetimezoneconverter.com/" target="_blank">UTC time format</a></div>
   <div class="row container white z-depth-4" style="padding: 40px 40px 50px 40px;">
   <%= form_for(@post,:url => url_for(:controller => 'loop_videos', :action => 'create'),html: {class: "col s12"}) do |f| %>
     <% if @post.errors.any? %>

@@ -24,7 +24,10 @@
          	<td>
             <% if post.status == "live" %>
               <a href="/users/stop/<%=post.id%>" data-method="post" data-confirm="Are you sure?" class="btn">End Video</a>
+            <% elsif post.status == "scheduled" %>
+              <a href="/users/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure?" class="btn dull-purple">Cancel</a>
             <% end %>
+
           </td>
        	</tr>
   	  <% end %>

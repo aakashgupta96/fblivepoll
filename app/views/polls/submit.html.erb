@@ -2,9 +2,11 @@
 	<div class="center-align">
 		<h4 class="header red-text">
 			<% if @post.status == "scheduled" %>
-				Your post has been scheduled successfully. Note that it will be posted after scheduled time as soon as a slots will be available.
+					<div class="note white-text">Your post has been scheduled successfully.</div>
+					<div class="note white-text">Note that it will be posted after scheduled time as soon as a slots will be available.</div>
+					<div class="note white-text">You can cancel schedule if you want from <%= link_to "My Posts", myposts_path%> section.</div> 
 			<% else %>
-				Success! Streaming has been successfully started. Your video will go live within 1 minute.
+				<div class="note white-text">Success! Streaming has been successfully started. Your video will go live within 1 minute.</div>
 			<% end %>
 		</h4>
 	</div>
@@ -14,16 +16,15 @@
 					<div class="card hoverable z-depth-5">
 					  <div class="card-image">
 					    <img src="/uploads/post/<%=@post.id%>/frame.png">
-				      <span class="card-title"><%=@post.title%></span>
 				    </div>
 					  <div class="card-content">
 					    <p><%=@post.caption%></p>
 				    </div>
 				    <div class="card-action">
-					    <% if @post.status == "scheduled" %>
-					    	<a class="btn" href="/polls/<%=@post.id%>/frame">Redraw Frame</a>
-					    <% else %>
+					    <% unless @post.status == "scheduled" %>
 					    	<a class="btn" href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
+					    <% else %>
+					    	<%= link_to "My Posts", myposts_path, class: "btn"%>
 					    <% end %>
 				    </div>
 				  </div>

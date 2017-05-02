@@ -48,6 +48,10 @@ class Post < ActiveRecord::Base
 		end
 	end
 
+	def cancel_scheduled
+		self.update(status: "Schedule cancelled") if status == "scheduled"
+	end
+
 	def required_images_available?
 		return true if self.loop_video?
 		if self.template.id == 0
