@@ -12,7 +12,7 @@ class Post < ActiveRecord::Base
 
 	accepts_nested_attributes_for :images, allow_destroy: true
 
-	enum category: [ :poll, :loop_video ]
+	enum category: [:poll, :loop_video]
 
 	scope :live,     ->{ where(live: true) }
 	scope :scheduled,->{ where(status: "scheduled")}

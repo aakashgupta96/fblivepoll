@@ -6,11 +6,13 @@
   </head>
   
   <body>
+    <% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
         <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
       </b>
     </div>
+    <% end %>
     <div class="container">
       <div class="sky">
         <div class="stars"></div>

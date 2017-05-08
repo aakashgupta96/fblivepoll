@@ -7,11 +7,13 @@
   </head>
 
   <body>       
+    <% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
         <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
       </b>
     </div>
+    <% end %>
     <div class="wrapper">
       <div class="pg1">
         <img src="<%=ENV['prefix']%><%=images[0].file.url%>" class="unskew" width="432px" height="450px" style="position: absolute; left: 40px;">

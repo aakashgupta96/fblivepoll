@@ -6,12 +6,14 @@
   </head>
    
   <body>
-  	<div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
+  	<% if post.user.member? %>
+    <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
         <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
       </b>
     </div>
-		<div class="main">
+    <% end %>
+    <div class="main">
       <div class="box">
         <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[0].file.url%>); background-size: 133px 320px;"></div>
         <div class="counters">
