@@ -23,7 +23,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    redirect_to root_path
+    redirect_to root_path, notice: "Please try again"
   end
   # You should also create an action method in this controller like this:
   # def twitter

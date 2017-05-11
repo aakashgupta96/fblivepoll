@@ -19,7 +19,7 @@
     </div>
   </center>
   <div class="note white-text">Make sure that you don't upload any copyrighted content without permission otherwise your post will be deleted by facebook.</div>
-  <div class="note white-text">Scheduling time of post is in <a href="http://www.thetimezoneconverter.com/" target="_blank">UTC time format</a></div>
+  <div class="note white-text">Scheduling time of post is in <a href="http://www.thetimezoneconverter.com/" target="_blank">UTC Time Format / GMT Time Zone</a>.</div>
   <div class="container-wide section">
   <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {id: "newPoll",class: "col s12"}) do |f| %>
   <div class="white z-depth-4"  style="padding: 40px 40px 30px 40px;">
@@ -31,7 +31,7 @@
       </div>
       <div class="input-field col s12 l6">
         <%=  f.time_select :duration, {start_hour: 0 , end_hour: 1, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
-        <%= f.label "Duration ( hrs : min )" %>
+        <%= f.label :duration, "Duration ( Hrs : Min )" %>
       </div>
     </div>
     
@@ -49,7 +49,7 @@
       </div>  
       <div id="datetime" class="input-field col s12 l6" style="display: none;">
         <%= f.datetime_select :start_time,{discard_year: true, datetime_separator: "",time_separator: "", ampm: true},{class: "col s6 l3"}%>
-        <%= f.label "Scheduled Date and Time in UTC Time Zone" %>
+        <%= f.label :start_time, "Scheduling Date and Time in GMT Time Zone" %>
       </div>
     </div>
 
@@ -75,7 +75,7 @@
       <div class="file-field input-field col s12 m6 l6">
         <div class="btn">
           <span>Background Image</span>
-          <%= f.file_field :background, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 15.megabytes}, required: true}%>
+          <%= f.file_field :background, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 20.megabytes}, required: true}%>
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text">
