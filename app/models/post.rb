@@ -35,7 +35,7 @@ class Post < ActiveRecord::Base
 		  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
 		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
 		  Resque.enqueue(UpdateFrame,self.id)
-		  Resque.enqueue(NotifyAdmins,true,self.video_id)
+		  #Resque.enqueue(NotifyAdmins,true,self.video_id)
 		  return true
 		rescue Exception => e
 			begin 
@@ -130,7 +130,7 @@ class Post < ActiveRecord::Base
     	driver = Selenium::WebDriver.for browser.to_sym
     rescue Exception => e
     	attempts += 1
-    	retry if attempts <= 3
+    	sleep(2) and retry if attempts <= 3
     	raise e
     end
     driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{self.id}/frame.html"

@@ -86,11 +86,10 @@ class UpdateFrame
     end
     pid = Process.spawn(command)
     start_time = Time.now
-    sleep(30)
+    sleep(20)
     ffmpeg_id = %x[pgrep -P #{pid}]
-    @post.update(status: "live", process_id: ffmpeg_id.strip)
+    @post.update(status: "live")
     query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
-    duration = (@post.duration-30.years).to_i
     nil_count = 0
     loop do
       if (Process.exists?(ffmpeg_id) == false)
@@ -105,16 +104,19 @@ class UpdateFrame
             @post.stop("Deleted from FB")
             break
           end
+        else
+          nil_count = 0
         end
       rescue
         
       end
+      @post.reload
       elapsed_time = Time.now - start_time
+      duration = (@post.duration-30.years).to_i
       if(elapsed_time >= duration)
         @post.stop
         break 
       end
-      @post.reload
       if (@post.live == false)
         break
       end
