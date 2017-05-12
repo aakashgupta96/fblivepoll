@@ -29,7 +29,6 @@ module Live
         ENV[key.to_s] = value
       end if File.exists?(env_file)
     end
-    config.middleware.use Rack::TempfileReaper
     if Rails.env.production?
       ENV["domain"] = "https://www.shurikenlive.com"
     else
