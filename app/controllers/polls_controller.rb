@@ -19,7 +19,6 @@ class PollsController < ApplicationController
   end
 
   def save_canvas
-
     reactions = params[:reaction]
     @post.counters.delete_all
     
@@ -40,13 +39,10 @@ class PollsController < ApplicationController
     end
     @post.template = Template.first
     @post.image = File.open(File.join(path,"frame.png"))
-    
     return save_and_redirect
-
   end
 
   def submit
-
   end
   
   def create

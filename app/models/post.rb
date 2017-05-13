@@ -68,7 +68,7 @@ class Post < ActiveRecord::Base
 	def required_images_available?
 		return true if self.loop_video?
 		if self.template.id == 0
-		  self.image != nil
+		  self.image.url != nil
 		else
 			self.images.size > 0
 		end
