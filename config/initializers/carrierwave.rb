@@ -4,7 +4,6 @@ CarrierWave.configure do |config|
 		config.storage = :file
 		ENV["prefix"] = "../../.."
 	else
-		config.fog_attributes = { :multipart_chunk_size => 104857600 }
 		config.fog_credentials = {
 	      :provider               => 'AWS',
 	      :aws_access_key_id      => ENV['AWS_ACCESS_KEY'],
@@ -13,7 +12,8 @@ CarrierWave.configure do |config|
 	  }
 	  config.storage = :fog
 	  config.fog_directory  = "shurikenlive"
-	  ENV["prefix"] = ""
+	  config.fog_attributes = { :multipart_chunk_size => 104857600 }
+		ENV["prefix"] = ""
 	end
 
 end
