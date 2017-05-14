@@ -29,7 +29,8 @@
         <%= f.label "Title" %>
       </div>
       <div class="input-field col s12 l6">
-        <%=  f.time_select :duration, {start_hour: 0 , end_hour: 3, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
+        <% temp = current_user.donor? ? 3 : 0 %>
+        <%=  f.time_select :duration, {start_hour: 0 , end_hour: temp, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
         <%= f.label :duration, "Duration ( Hrs : Min )" %>
       </div>
     </div>
