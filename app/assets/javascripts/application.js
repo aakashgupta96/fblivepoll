@@ -94,7 +94,7 @@ function validateAudioFiles(inputFile) {
 }
 
 function validateVideoFiles(inputFile) {
-    var maxExceededMessage = "This file exceeds the maximum allowed file size (500 MB)";
+    var maxExceededMessage = "This file exceeds the maximum allowed file size (1000 MB)";
     var extErrorMessage = "Only video file with extension: .mp4, .m4v, .ogg, .ogv, .mov, .mkv, .avi, .flv or .mpeg is allowed";
     var allowedExtension = ["mp4", "m4v", "ogg", "mov", "ogv", "mpeg", "flv", "avi", "mkv"];
 
@@ -121,7 +121,7 @@ function validateVideoFiles(inputFile) {
 
 
 function validateImageFiles(inputFile) {
-    var maxExceededMessage = "This file exceeds the maximum allowed file size (5 MB)";
+    var maxExceededMessage = "This file exceeds the maximum allowed file size (20 MB)";
     var extErrorMessage = "Only image file with extension: .jpg, .jpeg, .gif or .png is allowed";
     var allowedExtension = ["jpg", "jpeg", "gif", "png"];
 
