@@ -46,7 +46,7 @@
         </center>
       </div>
       <div class="count" style="left: 30px;">
-        <img src="../../../reactions/<%=images[0].reaction%>.gif" width="60px" style="margin-top: -10px; margin-left: -15px;">
+        <img src="../../../reactions/<%=images[0].reaction%>.gif" width="60px" class="reactionImage" style="margin-top: -10px; margin-left: -15px;">
         <center>
           <div class="counters" id="counter1">
             0
@@ -54,7 +54,7 @@
         </center>
       </div>
       <div class="count" style="left: 300px;">
-        <img src="../../../reactions/<%=images[1].reaction%>.gif" width="60px" style="margin-top: -10px; margin-left: -15px;">
+        <img src="../../../reactions/<%=images[1].reaction%>.gif" width="60px" class="reactionImage" style="margin-top: -10px; margin-left: -15px;">
         <center>
           <div class="counters" id="counter2">
             0
@@ -62,7 +62,7 @@
         </center>
       </div>
       <div class="count" style="left: 570px;">
-        <img src="../../../reactions/<%=images[2].reaction%>.gif" width="60px" style="margin-top: -10px; margin-left: -15px;">
+        <img src="../../../reactions/<%=images[2].reaction%>.gif" width="60px" class="reactionImage" style="margin-top: -10px; margin-left: -15px;">
         <center>
           <div class="counters" id="counter3">
             0
@@ -137,6 +137,11 @@
         unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
       }
 
+      .reactionImage
+      {
+        background: white;
+        border-radius: 50%;
+      }
       .wrapper{
       position: absolute;
       top: 0px;

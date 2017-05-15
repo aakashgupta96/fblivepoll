@@ -20,7 +20,7 @@
           <div class="voteOption">
             <div class="type">
               <div class="icon">
-                <img src="../../../reactions/<%=images[0].reaction%>.gif" class="icon">
+                <img src="../../../reactions/<%=images[0].reaction%>.gif" class="icon reactionImage">
                 <div class="count react_count_<%=images[0].reaction.upcase%>">0</div>
               </div>
             </div>
@@ -37,7 +37,7 @@
           <div class="voteOption">
             <div class="type">
               <div class="icon">
-                <img src="../../../reactions/<%=images[1].reaction%>.gif" class="icon">
+                <img src="../../../reactions/<%=images[1].reaction%>.gif" class="icon reactionImage">
                 <div class="count react_count_<%=images[1].reaction.upcase%>">0</div>
               </div>
             </div>
@@ -54,7 +54,7 @@
           <div class="voteOption">
             <div class="type">
               <div class="icon">
-                <img src="../../../reactions/<%=images[2].reaction%>.gif" class="icon">
+                <img src="../../../reactions/<%=images[2].reaction%>.gif" class="icon reactionImage">
                 <div class="count react_count_<%=images[2].reaction.upcase%>">0</div>
               </div>
             </div>
@@ -71,7 +71,7 @@
           <div class="voteOption">
             <div class="type">
               <div class="icon">
-                <img src="../../../reactions/<%=images[3].reaction%>.gif" class="icon">
+                <img src="../../../reactions/<%=images[3].reaction%>.gif" class="icon reactionImage">
                 <div class="count react_count_<%=images[3].reaction.upcase%>">0</div>
               </div>
             </div>
@@ -567,6 +567,11 @@
         font-weight: 600;
     }
 
+    .reactionImage
+    {
+      background: white;
+      border-radius: 50%;
+    }
     .random b {
       position: absolute;
       display: block;

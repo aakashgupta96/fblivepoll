@@ -35,7 +35,7 @@
       </svg>
       
       <div class="flc" style="top: 10px; left: 240px;">
-        <img src="../../../reactions/<%=images[0].reaction%>.gif" width="60px" style="margin-top: 20px; margin-left: 50px;">
+        <img src="../../../reactions/<%=images[0].reaction%>.gif" width="60px" class="reactionImage" style="margin-top: 20px; margin-left: 50px;">
         <div style="width: 120px; height: 35px; background-color: white; border-radius: 10px; margin-top: 10px; margin-left: 20px; display: flex; justify-content: center; align-items: center; font-family:Roboto, sans-serif; font-size: 30px;">
           <center id="counter1">
             0
@@ -49,7 +49,7 @@
       </div>
       
       <div class="flc" style="top: 10px; left: 400px;">
-        <img src="../../../reactions/<%=images[1].reaction%>.gif" width="60px" style="margin-top: 20px; margin-left: 40px;">
+        <img src="../../../reactions/<%=images[1].reaction%>.gif" width="60px" class="reactionImage" style="margin-top: 20px; margin-left: 40px;">
         <div style="width: 120px; height: 35px; background-color: white; border-radius: 10px; margin-top: 10px; margin-left: 12px; display: flex; justify-content: center; align-items: center; font-family:Roboto, sans-serif; font-size: 30px;">
           <center id="counter2">
             0
@@ -73,7 +73,7 @@
             0
           </center>
         </div>
-        <img src="../../../reactions/<%=images[2].reaction%>.gif" width="60px" style="margin-top: 10px; margin-left: 50px;">
+        <img src="../../../reactions/<%=images[2].reaction%>.gif" width="60px" class="reactionImage" style="margin-top: 10px; margin-left: 50px;">
       </div>
          
       <div class="flc" style="top: 270px; left: 400px;">
@@ -87,7 +87,7 @@
             0
           </center>
         </div>
-        <img src="../../../reactions/<%=images[3].reaction%>.gif" width="60px" style="margin-top: 10px; margin-left: 40px;">
+        <img src="../../../reactions/<%=images[3].reaction%>.gif" width="60px" class="reactionImage" style="margin-top: 10px; margin-left: 40px;">
       </div>
          
       <div class="line" style="top: 100px; left: 320px;"></div>
@@ -202,6 +202,11 @@
        display: flex;
        justify-content: center;
        align-items: center;
+       }
+       .reactionImage
+       {
+        background: white;
+        border-radius: 50%;
        }
       .random b {
         position: absolute;

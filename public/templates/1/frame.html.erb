@@ -27,10 +27,10 @@
       <img src="<%=ENV['prefix']%><%= images[1].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 200px; border: 10px solid white; -webkit-transform: rotate(13deg);">
       <img src="<%=ENV['prefix']%><%= images[2].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 390px; border: 10px solid white; -webkit-transform: rotate(-16deg);">
       <img src="<%=ENV['prefix']%><%= images[3].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 590px; border: 10px solid white; -webkit-transform: rotate(19deg);">
-      <img src="../../../reactions/<%=images[0].reaction%>.gif" width="70px" style="position: absolute; top: 310px; left: 80px;">
-      <img src="../../../reactions/<%=images[1].reaction%>.gif" width="70px" style="position: absolute; top: 310px; left: 270px;">
-      <img src="../../../reactions/<%=images[2].reaction%>.gif" width="70px" style="position: absolute; top: 310px; left: 460px;">
-      <img src="../../../reactions/<%=images[3].reaction%>.gif" width="70px" style="position: absolute; top: 310px; left: 650px;">
+      <img src="../../../reactions/<%=images[0].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 80px;">
+      <img src="../../../reactions/<%=images[1].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 270px;">
+      <img src="../../../reactions/<%=images[2].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 460px;">
+      <img src="../../../reactions/<%=images[3].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 650px;">
       <div class="counter <%=images[0].reaction%>" style="position: absolute; top: 385px; left: 25px;">
         <center>
           <div style="font-size: 30px;" id="<%=images[0].reaction%>">0</div>
@@ -247,6 +247,11 @@
     }
     .angry{
     border: 2px solid yellow;
+    }
+    .reactionImage
+    {
+      background: white;
+      border-radius: 50%;
     }
     </style>
   </body>
