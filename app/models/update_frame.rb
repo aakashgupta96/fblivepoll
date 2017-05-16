@@ -122,7 +122,7 @@ class UpdateFrame
       end
       sleep(10)
     end
-    %x[kill -9 #{@post.process_id}] 
+    %x[kill -9 #{ffmpeg_id}] 
     if @post.poll?
       driver.quit
       headless.destroy
