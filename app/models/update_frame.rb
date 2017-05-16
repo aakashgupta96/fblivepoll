@@ -93,7 +93,7 @@ class UpdateFrame
     nil_count = 0
     loop do
       if (Process.exists?(ffmpeg_id) == false)
-        @post.stop("Post has been deleted or Streaming stopped due to network error")
+        @post.stop("Post has been deleted or Streaming stopped due to network error") if post.live
         break
       end
       begin
