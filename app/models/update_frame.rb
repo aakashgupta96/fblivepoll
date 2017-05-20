@@ -3,29 +3,13 @@ class UpdateFrame
   @queue = :update_frame
 
   def self.perform(post_id)
+    %x[pulseaudio -D]
     @post = Post.find_by_id(post_id) #Instance variable so that erb can access it
     path = File.join(Rails.root,'log','stream')
     FileUtils.mkdir_p(path) unless File.exist?(path)
     path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
-    # html_file = Rails.root.to_s + "/public/uploads/post/#{@post.id}/frame.html" #=>"target file name"
-    # @images = @post.images#Prepare an html for the frame of this post
-       
-    # if @post.poll?
-    #   erb_file = Rails.root.to_s + "/public#{@post.template.path}/frame.html.erb" #Path of erb file to be rendered
-    # else
-    #   erb_file = Rails.root.to_s + "/public/videos/loop_video_frame.html.erb"
-    # end
-
-    # erb_str = File.read(erb_file)
-    # namespace = OpenStruct.new(post: @post, images: @images)
-    # result = ERB.new(erb_str)
-    # result = result.result(namespace.instance_eval { binding })
-  
-    # File.open(html_file, 'w') do |f|
-    #   f.write(result)
-    # end
-
+    
     # if @post.poll?
     #   if @post.audio.url.nil?
     #     audio_path = "public/silent.aac"
@@ -58,8 +42,8 @@ class UpdateFrame
     # driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{@post.id}/frame.html"
     
     # command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:449:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"  
-    
-
+ 
+   
     if @post.poll?
       if @post.audio.url.nil?
         audio_path = "public/silent.aac"
@@ -73,17 +57,21 @@ class UpdateFrame
           %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/final.aac" -c copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
           audio_path = "#{local_audio_path}/long.aac"
       end
-      driver,headless = @post.open_in_browser
-      command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :#{headless.display} -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:449:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"  
+      command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:448:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"  
     else
       local_video_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
       if Rails.env.production?
-
         %x[wget #{@post.video.url} -q -O #{local_video_path}/1.mp4]
       end
       video_path = "#{local_video_path}/1.mp4"
-      command = "$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv \"#{@post.key.to_s}\" 2> #{Rails.root.join("log").join("stream").join(@post.id.to_s).to_s}"
+      if Rails.env.production?
+        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -f alsa -i hw:0,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -filter:v 'crop=800:448:0:72' -vcodec libx264 -crf 23 -pix_fmt yuv420p -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      else
+        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -f alsa -i hw:2,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -filter:v 'crop=800:448:0:72' -vcodec libx264 -crf 23 -pix_fmt yuv420p -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      end
+      #command = "$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv \"#{@post.key.to_s}\" 2> #{Rails.root.join("log").join("stream").join(@post.id.to_s).to_s}"
     end
+    driver,headless = @post.open_in_browser
     pid = Process.spawn(command)
     start_time = Time.now
     sleep(20)
