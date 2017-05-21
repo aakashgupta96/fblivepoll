@@ -15,6 +15,18 @@ body
   flex-direction: column;
   background: linear-gradient(to right, #bbbbbb, #cccccc, #eeeeee, #ffffff, #eeeeee, #cccccc, #bbbbbb);
 }
+html, body, .block 
+{
+    height: 100%;
+}
+#donation
+{
+  width: 100px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
+}
 #cover 
 {
   position: fixed;
