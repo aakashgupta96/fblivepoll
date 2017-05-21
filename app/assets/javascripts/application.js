@@ -59,6 +59,9 @@ $( document ).ready(function(){
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
+
+  })
+
   $(window).load(function(){
     $("#cover").fadeOut(200);
 });
