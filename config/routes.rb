@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get '/privacy' => 'extras#privacy'
   get '/terms' => 'extras#terms'
   get '/demo' => 'extras#demo'
-  get '/test' => 'extras#test'
+  #get '/test' => 'extras#test'
   get '/posts/:post_id' => 'users#show' 
   scope :polls do
     get '/:post_id/frame' => 'polls#frame', as: "frame"
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   end
 
   scope :admins do
+    get '/panel' => 'admins#panel', as: "admins_panel"
     get '/dashboard' => 'admins#dashboard', as: "admins_dashboard"
     post '/stop/:post_id' => 'admins#stop_post'
     post '/start/:post_id' => 'admins#start_post'
