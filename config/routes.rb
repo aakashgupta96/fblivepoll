@@ -12,19 +12,30 @@ Rails.application.routes.draw do
   get '/terms' => 'extras#terms'
   get '/demo' => 'extras#demo'
   get '/test' => 'extras#test'
-  
-  get '/polls/:post_id/frame' => 'polls#frame', as: "frame"
-  post '/polls/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
-  get '/polls/:post_id/submit' => 'polls#submit', as: "submit_poll"
-  
-  get '/loop_videos/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
+  get '/posts/:post_id' => 'users#show' 
+  scope :polls do
+    get '/:post_id/frame' => 'polls#frame', as: "frame"
+    post '/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
+    get '/:post_id/submit' => 'polls#submit', as: "submit_poll"
+  end  
 
-  get '/admins/dashboard' => 'admins#dashboard'
-  post '/admins/stop/:post_id' => 'admins#stop_post'
-  
-  post '/users/stop/:post_id' => 'users#stop_post'
-  post '/users/cancel/:post_id' => 'users#cancel_scheduled_post'
-  get '/users/posts' => 'users#posts', as: "myposts"
+  scope :loop_videos do 
+    get '/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
+  end
+
+  scope :admins do
+    get '/dashboard' => 'admins#dashboard', as: "admins_dashboard"
+    post '/stop/:post_id' => 'admins#stop_post'
+    post '/start/:post_id' => 'admins#start_post'
+    post '/destroy/:post_id' => 'admins#destroy_post'
+    post '/cancel/:post_id' => 'admins#cancel_scheduled_post'
+  end
+
+  scope :users do
+    post '/stop/:post_id' => 'users#stop_post'
+    post '/cancel/:post_id' => 'users#cancel_scheduled_post'
+    get '/posts' => 'users#posts', as: "myposts"
+  end
   #get '/editor/createFrame'
   #get '/editor/testFrame'
   
@@ -34,58 +45,6 @@ Rails.application.routes.draw do
   resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
 
 
-
-
-
   get "*path" => 'extras#invalid'
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-# Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  #get "*path" => redirect('/')
-  
 
 end

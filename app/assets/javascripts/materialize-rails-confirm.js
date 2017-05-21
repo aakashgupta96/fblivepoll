@@ -24,7 +24,7 @@ $(function() {
     glass = "<div id=\"glass1\" style=\" position:absolute; opacity: 0.5; background: black; width: 100%; height: 5000px; z-index: 100000000;\"></div>";
     message = void 0;
     message = link.attr("data-confirm");
-    html = "<div id=\"modal1000\" class=\"modal\" style=\"z-index: 100000003; display: block; opacity: 1; color: grey; transform: scaleX(1); top: 10%;\"> <div class=\"modal-content\"><h5>" + message + "</h5></div><div class=\"modal-footer\"><a class=\"modal-action modal-close waves-effect waves-red btn-flat close\">Cancel</a><a class=\"modal-action modal-close waves-effect waves-green btn-flat confirm\">OK</a></div></div>";
+    html = "<div id=\"modal1000\" class=\"modal\" style=\"z-index: 100000003; display: block; opacity: 1; color: grey; transform: scaleX(1); top: 10%;\"> <div class=\"modal-content\"><h5>" + message + "</h5></div><div class=\"modal-footer\"><a class=\"modal-action modal-close waves-effect waves-red btn-flat close\">Cancel</a><a class=\"modal-action modal-close waves-effect waves-green btn-flat confirm\">YES</a></div></div>";
     $("body").append(glass);
     $("body").append(html);
 

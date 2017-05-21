@@ -1,36 +1,9 @@
-<div class="white privacy-box card hoverable z-depth-4">
-  <table class="responsive-table striped">
-    <thead>
-        <tr>
-            <th data-field="title">Title</th>
-            <th data-field="caption">Caption</th>
-            <th data-field="status">Status</th>
-            <th data-field="link">Video Link</th>
-        		<th data-field="action">Action</th>	
-        </tr>
-    </thead>
-
-    <tbody>
-     	<% @posts.each do |post| %>
-    		<tr>
-         	<td><%= post.title %></td>
-         	<td><%= post.caption %></td>
-          <td><%= post.status.capitalize %></td>
-         	<td>
-            <% unless post.video_id.nil? %>
-              <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
-            <% end %>
-          </td>
-         	<td>
-            <% if post.status == "live" %>
-              <a href="/users/stop/<%=post.id%>" data-method="post" data-confirm="Are you sure?" class="btn">End Video</a>
-            <% elsif post.status == "scheduled" %>
-              <a href="/users/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure?" class="btn dull-purple">Cancel</a>
-            <% end %>
-
-          </td>
-       	</tr>
-  	  <% end %>
-    </tbody>
-  </table>
+<div class="row post-container white z-depth-3">
+  <% if @posts.count == 0 %>
+    <div class="note white-text"> No Posts Available for this page.</div>
+  <% end %>
+  <%= paginate @posts, window: 2%>
+  <% @posts.each do |post| %>
+    <%= render 'post' , :post => post %>
+  <%end%>
 </div>

@@ -1,5 +1,6 @@
 class Post < ActiveRecord::Base
 	
+	paginates_per 9
 	mount_uploader :audio, AudioUploader
 	mount_uploader :background, BackgroundUploader
 	mount_uploader :video, VideoUploader
@@ -81,7 +82,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def can_start?
-		return required_images_available? && worker_available?
+		return required_images_available? && worker_available? && !self.user.is_already_live?
 	end
 
 

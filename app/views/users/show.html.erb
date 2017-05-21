@@ -1,0 +1,62 @@
+<div class="flexbox post-show">
+  <div class="col s12 m6 l6">
+  	<div class="card z-depth-4">
+      <div class="card-content zero-padding">
+        <img src="/uploads/post/<%=@post.id%>/frame.png" class=" activator post-image">
+      </div>
+      <div class="card-tabs">
+        <ul class="tabs">
+          <li class="tab hide-on-small-only"><a href="#page<%=@post.id%>">Page</a></li>
+          <li class="tab"><a href="#status<%=@post.id%>">Status</a></li>
+          <li class="tab"><a href="#duration<%=@post.id%>">Duration</a></li>
+          <li class="tab hide-on-small-only"><a href="#video<%=@post.id%>">Video Link</a></li>
+          <li class="tab"><a href="#action<%=@post.id%>">Action</a></li>
+          <i class="activator material-icons right pointer" style="position: relative; top: 10px; right: 8px;">toc</i>
+        </ul>
+      </div>
+      <div class="card-content grey lighten-4">
+        <div id="page<%=@post.id%>" class="chip hide-on-small-only">
+          <img src="<%=@url%>">
+          <%=@name%>
+        </div>
+        <div id="status<%=@post.id%>"><%=@post.status.capitalize%></div>
+        <div id="duration<%=@post.id%>"><%= @post.duration.hour %> Hours : <%=@post.duration.min%> Minutes</div>
+        <div id="video<%=@post.id%>" class="hide-on-small-only">
+          <% unless @post.video_id.nil? %>
+            <a href="https://www.facebook.com/<%=@post.video_id%>" class="btn">Watch Video</a>
+          <% end %>
+        </div>
+        <div id="action<%=@post.id%>">
+          <% if @post.live %>
+            <a href="/users/stop/<%=@post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+          <% elsif @post.status == "scheduled" %>
+            <a href="/users/cancel/<%=@post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-reveal relative">
+        <p><span class="card-title grey-text text-darken-4 truncate bold"><span class="purple-text">Title: </span><%=@post.title.capitalize%><i class="material-icons right">close</i></span></p>
+        <p><span class="bolder purple-text">Caption: </span><%=@post.caption.capitalize%></p>
+        <p><span class="bolder purple-text">Page: </span>
+          <span class="chip"><img src="<%=@url%>">
+          <%=@name%></span>
+        </p>
+        <p><span class="bolder purple-text">Duration: </span><%= @post.duration.hour %> Hours : <%=@post.duration.min%> Minutes</p>
+        <p><span class="bolder purple-text">Status: </span><%=@post.status.capitalize%></p>
+        <% unless @post.video_id.nil? %>
+          <p>
+            <span class="bolder purple-text">Video Link: </span>
+            <a href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
+          </p>
+        <% end %>
+        <div class="absolute hide-on-small-only" style=" bottom: 10px;">
+        	<% if @post.live %>
+        		<a href="/users/stop/<%=@post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+        	<% elsif @post.status == "scheduled" %>
+        		<a href="/users/cancel/<%=@post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+        	<% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

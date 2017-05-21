@@ -1,0 +1,39 @@
+<div class="col s12 m6 l4 hoverable">
+	<div class="card">
+    <div class="card-content zero-padding">
+      <img src="/uploads/post/<%=post.id%>/frame.png" class=" activator post-image">
+    </div>
+    <div class="card-tabs">
+      <ul class="tabs">
+        <li class="tab"><a class="active" href="#title<%=post.id%>">Title</a></li>
+        <li class="tab"><a href="#user<%=post.id%>">User</a></li>
+        <li class="tab"><a href="#status<%=post.id%>">Status</a></li>
+        <i class="activator material-icons right pointer" style="position: relative; top: 10px; right: 8px;">toc</i>
+      </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+      <div id="title<%=post.id%>" class="truncate"><%=post.title.capitalize%></div>
+      <div id="user<%=post.id%>" class="truncate"><%=post.user.name.titleize%></div>
+      <div id="status<%=post.id%>" class="truncate"><%=post.status.capitalize%></div>
+    </div>
+    <div class="card-reveal relative">
+      <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>
+      <p class="truncate"><%=post.caption.capitalize%></p>
+      <p>Duration => <%= post.duration.hour %>hrs:<%=post.duration.min%>min</p>
+      <% unless post.video_id.nil? %>
+      <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
+      <% end %>
+      <div class="absolute" style=" bottom: 10px;">
+        <a href="/admins/destroy/<%=post.id%>" data-method="post" data-confirm="This will destroy this post from Database. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder black">Destroy</a>
+      	<% if post.live %>
+      		<a href="/admins/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+        <% else %>
+          <a href="/admins/start/<%=post.id%>" data-method="post" data-confirm="This will start this post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder greenish">Start Now</a>
+        <% end %>
+      	<% if post.status == "scheduled" %>
+      		<a href="/admins/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+      	<% end %>
+      </div>
+    </div>
+  </div>
+</div>

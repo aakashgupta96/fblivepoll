@@ -3,7 +3,14 @@ class UsersController < ApplicationController
   before_action :set_post, except: [:posts]
   before_action :authorize_user!, except: [:posts]
   def posts
-  	@posts = current_user.posts.order(created_at: :desc)
+  	@posts = current_user.posts.order(created_at: :desc).page(params[:page])
+  end
+
+  def show
+    response = HTTParty.get("https://graph.facebook.com/#{@post.page_id}?fields=name,picture{url}&access_token=#{@post.user.token}")
+    @url = response.parsed_response["picture"]["data"]["url"] rescue false
+    @name = response.parsed_response["name"]
+    return redirect_to myposts_path, notice: "Invalid operation for the selected post." if @post.nil?
   end
 
   def stop_post
@@ -18,7 +25,6 @@ class UsersController < ApplicationController
     else
       return redirect_to myposts_path, notice: "Invalid operation for the selected post"
     end
-
   end
 
   private

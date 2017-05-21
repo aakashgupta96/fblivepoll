@@ -59,12 +59,38 @@ main
 {
   background: radial-gradient(#0089ec,#4267b2,#421782);
 }
+.card:hover
+{
+  border-color: black;
+}
 #toast-container
 {
   right: auto !important;  
   bottom: auto !important;  
   top: 55px;
   left: 0%;
+}
+.post-container
+{
+  margin: 10px 5% 50px 5%;
+  padding: 30px 10px;
+}
+.btn-less-padding
+{
+  padding: 2px 10px 2px 10px !important; 
+}
+.margin-2
+{
+  margin: 2px;
+}
+.pointer
+{
+  cursor: pointer;
+}
+.paginator
+{
+  padding: 5px;
+  background-color: rgba(41,43,44,0.9);
 }
 .linear-gradient
 {
@@ -123,7 +149,19 @@ main
     }
   }
 }
-
+.post-image
+{
+  width: 100%;
+  height: 100%;
+}
+.post-show
+{
+  padding: 40px;
+}
+.zero-padding
+{
+  padding: 0px !important;
+}
 .terms-box
 {
   width: 80%;
@@ -233,6 +271,10 @@ footer a:hover
     left: 10px;
     width: 180px;
     height: 56px;
+  }
+  .post-show
+  {
+    padding: 20px;
   }
   .plugin
   {

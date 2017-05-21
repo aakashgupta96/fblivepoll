@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+
+gem 'kaminari'
 gem "sentry-raven"
 gem 'droplet_kit'
 gem 'fog'
