@@ -2,7 +2,11 @@
   <div class="col s12 m6 l6">
   	<div class="card z-depth-4">
       <div class="card-content zero-padding">
-        <img src="/uploads/post/<%=@post.id%>/frame.png" class=" activator post-image">
+        <% if @post.poll? %>
+          <img src="/uploads/post/<%=@post.id%>/frame.png" class=" activator post-image">
+        <% else %>
+          <img src="/videos/frame.jpg" class=" activator post-image" style="max-width: 800px;">
+        <% end %>
       </div>
       <div class="card-tabs">
         <ul class="tabs">
