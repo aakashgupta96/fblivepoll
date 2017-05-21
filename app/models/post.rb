@@ -141,7 +141,11 @@ class Post < ActiveRecord::Base
 
    def open_in_browser(browser = "firefox")
    	create_html
-    headless = Headless.new
+   	if browser == "firefox"
+   		headless = Headless.new
+   	else
+   		headless = Headless.new(display: rand(100))
+   	end
     headless.start
     attempts = 0
     begin
