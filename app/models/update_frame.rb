@@ -67,7 +67,7 @@ class UpdateFrame
       if Rails.env.production?
         command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -f alsa -i hw:0,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -filter:v 'crop=800:448:0:72' -vcodec libx264 -crf 23 -pix_fmt yuv420p -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       else
-        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -f alsa -i hw:2,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -filter:v 'crop=800:448:0:72' -vcodec libx264 -crf 23 -pix_fmt yuv420p -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -i 'public/silent.aac' -preset ultrafast -filter:v 'crop=800:448:0:72' -vcodec libx264 -crf 23 -pix_fmt yuv420p -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       end
       #command = "$HOME/bin/ffmpeg -re -fflags +genpts -stream_loop -1 -i #{video_path} -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -t 14400 -strict -2 -f flv \"#{@post.key.to_s}\" 2> #{Rails.root.join("log").join("stream").join(@post.id.to_s).to_s}"
     end

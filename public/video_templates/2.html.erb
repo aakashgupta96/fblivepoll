@@ -1,0 +1,271 @@
+<html>
+  <head>
+    <title>Loop Video Template 2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+  	<div class="container">
+	  	<canvas id="canvas" height="450" width="600"></canvas>
+	  </div>
+	  <video id="my-video" class="video-js" loop preload="auto" height="450" width="800" autoplay controls data-setup="{}">
+	    	<source src="1.mp4" type="video/mp4">
+	      <source src="1.mp4" type="video/ogg">
+	      <source src="1.mp4" type="video/webm">
+	  </video>
+	 	<!-- <div class="title">
+	 		<p>
+	 			This is the small title of video.
+	 		</p>
+	 	</div>
+	   --><!-- <div class="logo absolute">
+	  	<img src="small_logo.png" class="logo-img">
+	  </div>
+	   --><div class="like absolute">
+		  <div class="reaction-container">
+		  	<img src="../../../reactions/like.gif" class="reaction-image">
+		  </div>
+		  <div class="count_container">
+		  	<p class="like_count count">
+		  		192
+		  	</p>	
+		  </div>
+	  </div>
+	  <div class="haha absolute">
+		  <div class="reaction-container">
+		  	<img src="../../../reactions/haha.gif" class="reaction-image">
+		  </div>
+		  <div class="count_container">
+		  	<p class="haha_count count">
+		  		323
+		  	</p>	
+		  </div>
+	  </div>
+	  <div class="love absolute">
+		  <div class="reaction-container">
+		  	<img src="../../../reactions/love.gif" class="reaction-image">
+		  </div>
+		  <div class="count_container">
+		  	<p class="love_count count">
+		  		3123
+		  	</p>	
+		  </div>
+	  </div>
+	  <div class="wow absolute">
+		  <div class="reaction-container">
+		  	<img src="../../../reactions/wow.gif" class="reaction-image">
+		  </div>
+		  <div class="count_container">
+		  	<p class="wow_count count">
+		  		3232
+		  	</p>	
+		  </div>
+	  </div>
+	  <div class="sad absolute">
+		  <div class="reaction-container">
+		  	<img src="../../../reactions/sad.gif" class="reaction-image">
+		  </div>
+		  <div class="count_container">
+		  	<p class="sad_count count">
+		  		10
+		  	</p>	
+		  </div>
+	  </div>
+	  <div class="angry absolute">
+		  <div class="reaction-container">
+		  	<img src="../../../reactions/angry.gif" class="reaction-image">
+		  </div>
+		  <div class="count_container">
+		  	<p class="angry_count count">
+		  		1
+		  	</p>	
+		  </div>
+	  </div>
+	  
+  </body>
+
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      cursor: none;
+    }
+    body
+    {
+    	height: 450px;
+    	width: 800px;
+    	position: relative;
+    }
+    /*.title
+    {
+    	position: absolute;
+    	top: 0px;
+    	left: 100px;
+    	width: 600px;
+    	height: 48px;
+    	display: flex;
+    	justify-content: space-around;
+    	align-items: center;
+    }
+    .title p
+    {
+			white-space: nowrap; 
+    	text-overflow: ellipsis;
+    	width: 600px;	
+    	text-align: center;
+    	overflow: hidden;
+    	font-size: 24px;
+    	font-weight: bolder;
+    	color: white;
+    }
+    */#my-video
+    {
+    	display: none;
+    	overflow: hidden;
+    }
+    #canvas
+    {
+    	position: absolute;
+    }
+    .container
+    {
+    	height: 450px;
+    	width: 800px;
+    	display: flex;
+    	justify-content: space-around;
+    	align-items: center;
+    	background-color: black;
+    }
+    .count_container
+    {
+    	display: flex;
+    	justify-content: space-around;
+    	align-items: center;
+    	height: 35px;
+    	width: 88px;
+  		background-color: black;
+  		position: absolute;
+  		top: 60px;
+  		left: -21px;
+  		opacity: 1;
+  		border: 2px solid white;
+  		border-radius: 10px;
+    }
+    .logo
+    {
+    	bottom: 10px;
+    	left: 600px;
+    }
+    .logo-img
+    {
+    	width: 80px;
+    	height: 40px; 
+    }
+    .count
+    {
+    	color: white;
+    	font-size: 22px;
+    	font-weight: bolder;
+    }
+    .absolute
+    {
+    	position: absolute;
+    }
+    .reaction-container
+    {
+    	background: white;
+      border-radius: 50%;
+      height: 52px;
+      width: 52px;
+    	position: absolute;
+    	display: flex;
+    	justify-content: space-around;
+    	align-items: center;
+    }
+    .like
+    {
+    	top: 20px;
+    	left: 25px;
+    }
+    .love
+    {
+    	top: 20px;
+    	right: 75px;	
+    }
+    .haha
+    {
+    	top: 170px;
+    	left: 25px;
+    }
+    .wow
+    {
+    	top: 170px;
+    	right: 75px;
+    }
+    .sad
+    {
+    	top: 320px;
+    	left: 25px;
+    }
+    .angry
+    {
+    	top: 320px;
+    	right: 75px;
+    }
+    .reaction-image
+    {
+    	height: 50px;
+    }
+  </style>
+
+
+  <script>
+  	function updateVideo(){
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext( '2d' );
+    var myVideo = document.getElementById('my-video');
+    ctx.drawImage( myVideo, 0, 0, 600, 450 );
+		}
+		setInterval ( updateVideo, 24 );
+  </script>
+
+
+
+
+
+  <script>
+  	var postID = "<%= post.video_id %>";
+	    var access_token = "<%=post.page_access_token%>";
+	    var refreshTime = 3;
+	    var defaultCount = 0;
+	    var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+	    var code = 'reactions_' + e.toLowerCase();
+	      return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+	    }).join(',');
+	        
+	    var	v1 = $('.like_count'),
+	    	v2 = $('.love_count'),
+	      v3 = $('.haha_count'),
+	      v4 = $('.wow_count'),
+	      v5 = $('.sad_count'),
+	      v6 = $('.angry_count');
+
+	    function refreshCounts() {
+	      var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;
+	    	$.getJSON(url, function(res){
+	    		v1.text(defaultCount + res[postID].reactions_like.summary.total_count);
+	    		v2.text(defaultCount + res[postID].reactions_love.summary.total_count);
+	        v3.text(defaultCount + res[postID].reactions_haha.summary.total_count);
+	        v4.text(defaultCount + res[postID].reactions_wow.summary.total_count);
+	        v5.text(defaultCount + res[postID].reactions_sad.summary.total_count);
+	        v6.text(defaultCount + res[postID].reactions_angry.summary.total_count);
+	    	});
+	    }
+
+	    $(document).ready(function(){
+	        setInterval(refreshCounts, refreshTime * 1000);
+	        refreshCounts();
+	    });
+  </script>
+</html>
