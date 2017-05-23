@@ -110,10 +110,10 @@ class UpdateFrame
       end
       sleep(10)
     end
-    %x[kill -9 #{ffmpeg_id}] 
+    %x[kill -9 #{ffmpeg_id}]
+    driver.quit
+    headless.destroy  
     if @post.poll?
-      driver.quit
-      headless.destroy
       unless @post.audio.url.nil?
         %x[rm #{audio_path}]
       end

@@ -59,6 +59,11 @@ $( document ).ready(function(){
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
+    function hideDonation(e){
+      $("#donation").hide(500);
+      e.preventDefault();
+    };
+    $(".close-button").click(hideDonation);
 
   })
 

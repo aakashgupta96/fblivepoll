@@ -16,6 +16,9 @@ class ExtrasController < ApplicationController
 	def demo
 	end
 
+	def donation
+	end
+	
 	def test
 		@post = Post.last #Instance variable so that erb can access it
     @images = @post.images
