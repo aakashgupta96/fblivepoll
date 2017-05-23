@@ -32,6 +32,14 @@ class Post < ActiveRecord::Base
 		end
 	end
 
+	#Code for removing video files of published or other erroneous loop video posts
+	def remove_videos
+		Post.loop_video.where(live: false).where("status != 'scheduled'").each do |post|
+			post.remove_video = true
+			post.save
+		end
+	end
+	
 	def stop(status="published")
 		begin
       self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post")
@@ -121,7 +129,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def create_html
-		images = self.images#Prepare an html for the frame of this post
+		images = self.images #Prepare an html for the frame of this post
     if self.poll?
       erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
     else
