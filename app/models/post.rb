@@ -37,7 +37,7 @@ class Post < ActiveRecord::Base
 	end
 
 	#Code for removing video files of published or other erroneous loop video posts
-	def remove_videos
+	def self.remove_videos
 		Post.loop_video.where(live: false).where("status != 'scheduled'").each do |post|
 			post.remove_video = true
 			post.save
