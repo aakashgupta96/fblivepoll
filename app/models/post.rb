@@ -16,9 +16,10 @@ class Post < ActiveRecord::Base
 	enum category: [:poll, :loop_video]
 
 	scope :live,     ->{ where(live: true) }
-	scope :scheduled,->{ where(status: "scheduled")}
-	scope :published,->{ where(status: "published")}
-	
+	scope :scheduled,->{ where(status: "scheduled") }
+	scope :published,->{ where(status: "published") }
+	scope :deleted, ->{ where(status: "Deleted from FB") }
+	scope :cancelled, ->{ where(status: "Schedule cancelled") }
 	def self.update_statuses	
 		Post.where(status: "Deleted from FB").each do |p|
 			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"

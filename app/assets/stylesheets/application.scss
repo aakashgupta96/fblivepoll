@@ -19,6 +19,10 @@ html, body, .block
 {
     height: 100%;
 }
+.small-heading
+{
+  font-size: 24px;
+}
 #donation
 {
   width: 130px;
@@ -325,6 +329,33 @@ footer a:hover
   {
     height: 250px !important;
   }
+  #donation
+  {
+    width: 95%;
+    bottom: 3px;
+    left: 2%;
+    margin-bottom: 0px;
+    padding-top: 5px;
+    display: flex;
+    .donate-anchor
+    {
+      display: flex;
+      flex-direction: vertical;
+      justify-content: space-around;
+      width: 40%;
+      height: 100%;
+      min-width: 100px;
+    }
+    .donate-image
+    {
+      margin: 10% 0 0 0;
+      height: 60px;
+    }
+    .donation-message
+    {
+      font-size: 15px;
+    }
+  }
 }
 
 @media only screen and (max-width : 720px)
@@ -345,6 +376,10 @@ footer a:hover
         margin-right: 6px;
       }
     }
+  }
+  .small-heading
+  {
+    margin: 10px auto;
   }
 }
 
