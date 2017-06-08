@@ -16,12 +16,7 @@ class Post < ActiveRecord::Base
 	enum category: [:poll, :loop_video]
 	enum new_status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown]
 
-	scope :live,     ->{ where(live: true) }
-	scope :scheduled,->{ where(status: "scheduled") }
-	scope :published,->{ where(status: "published") }
-	scope :deleted, ->{ where(status: "Deleted from FB") }
-	scope :cancelled, ->{ where(status: "Schedule cancelled") }
-	scope :drafted, ->{ where(Status: "Drafted") }
+	scope :live, ->{ where(live: true) }
 	
 	def self.set_new_status
 		Post.all.each do |p|
