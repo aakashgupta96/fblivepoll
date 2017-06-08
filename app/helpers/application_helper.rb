@@ -24,7 +24,7 @@ module ApplicationHelper
 			"Streaming was interrupted due to network error"
 		elsif post.queued?
 			"Streaming is about to starting"
-		elsif post.live
+		elsif post.live?
 			"Live"
 		else
 			"Unknown and yet to be confirmed"
