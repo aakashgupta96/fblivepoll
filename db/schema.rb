@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527072108) do
+ActiveRecord::Schema.define(version: 20170608052814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20170527072108) do
     t.string   "live_id"
     t.string   "process_id"
     t.boolean  "reload_browser", default: false
+    t.integer  "new_status",     default: 0
   end
 
   create_table "templates", force: :cascade do |t|

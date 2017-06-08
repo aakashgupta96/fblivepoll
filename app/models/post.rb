@@ -14,12 +14,37 @@ class Post < ActiveRecord::Base
 	accepts_nested_attributes_for :images, allow_destroy: true
 
 	enum category: [:poll, :loop_video]
+	enum new_status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown]
 
 	scope :live,     ->{ where(live: true) }
 	scope :scheduled,->{ where(status: "scheduled") }
 	scope :published,->{ where(status: "published") }
 	scope :deleted, ->{ where(status: "Deleted from FB") }
 	scope :cancelled, ->{ where(status: "Schedule cancelled") }
+	scope :drafted, ->{ where(Status: "Drafted") }
+	
+	def self.set_new_status
+		Post.all.each do |p|
+			if p.status == "drafted"
+				p.drafted!
+			elsif p.status == "published"
+				p.published!
+			elsif p.status == "scheduled"
+				p.scheduled!
+			elsif p.status == "Stopped by user"
+				p.stopped_by_user!
+			elsif p.status == "Streaming stopped due to network error"
+				p.network_error!
+			elsif p.status == "Deleted from FB"
+				p.deleted_from_fb!
+			elsif p.status == "Facebook declined request"
+				p.request_declined!
+			else
+				p.unknown!
+			end
+		end
+	end
+
 	def self.update_statuses	
 		Post.where(status: "Deleted from FB").each do |p|
 			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
@@ -48,7 +73,7 @@ class Post < ActiveRecord::Base
 
 	#Code for removing video files of published or other erroneous loop video posts
 	def self.remove_videos
-		Post.loop_video.where(live: false).where("status != 'scheduled'").each do |post|
+		Post.loop_video.where(live: false).where("status != 'scheduled'").select{|post| post.video.url != nil}.each do |post|
 			post.remove_video = true
 			post.save
 		end
@@ -90,7 +115,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def cancel_scheduled
-		self.update(status: "Schedule cancelled") if status == "scheduled"
+		self.destroy if status == "scheduled"
 	end
 
 	def required_images_available?
