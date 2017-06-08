@@ -14,61 +14,39 @@ class Post < ActiveRecord::Base
 	accepts_nested_attributes_for :images, allow_destroy: true
 
 	enum category: [:poll, :loop_video]
-	enum new_status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown]
+	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live]
 
-	scope :live, ->{ where(live: true) }
-	
-	def self.set_new_status
-		Post.all.each do |p|
-			if p.status == "drafted"
-				p.drafted!
-			elsif p.status == "published"
-				p.published!
-			elsif p.status == "scheduled"
-				p.scheduled!
-			elsif p.status == "Stopped by user"
-				p.stopped_by_user!
-			elsif p.status == "Streaming stopped due to network error"
-				p.network_error!
-			elsif p.status == "Deleted from FB"
-				p.deleted_from_fb!
-			elsif p.status == "Facebook declined request"
-				p.request_declined!
-			else
-				p.unknown!
-			end
-		end
-	end
+	scope :ongoing, ->{ where(live: true) }
 
 	def self.update_statuses	
-		Post.where(status: "Deleted from FB").each do |p|
+		Post.deleted_from_fb.each do |p|
 			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
 			status = HTTParty.get(query)
-			p.update(status: "Post has been deleted or Streaming stopped due to network error") if status.parsed_response["#{p.video_id}"] != nil
+			p.unknown! if status.parsed_response["#{p.video_id}"] != nil
 		end
-		Post.where(status: "Stopped by user").each do |p|
+		Post.stopped_by_user.each do |p|
 			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
 			status = HTTParty.get(query)
 			if status.parsed_response["#{p.video_id}"].nil?
-				p.update(status: "Deleted from FB") 
+				p.deleted_from_fb! 
 			else
-				p.update(status: "published")
+				p.published!
 			end
 		end
-		Post.where(status: "Post has been deleted or Streaming stopped due to network error").each do |p|
+		Post.unknown.each do |p|
 			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
 			status = HTTParty.get(query)
 			if status.parsed_response["#{p.video_id}"].nil?
-				p.update(status: "Deleted from FB") 
+				p.deleted_from_fb! 
 			else
-				p.update(status: "Streaming stopped due to network error")
+				p.network_error!
 			end
 		end
 	end
 
 	#Code for removing video files of published or other erroneous loop video posts
 	def self.remove_videos
-		Post.loop_video.where(live: false).where("status != 'scheduled'").select{|post| post.video.url != nil}.each do |post|
+		Post.loop_video.where(live: false).select{|p| p.status != 'scheduled' && p.video.url != nil}.each do |post|
 			post.remove_video = true
 			post.save
 		end
@@ -94,12 +72,7 @@ class Post < ActiveRecord::Base
 		  #Resque.enqueue(NotifyAdmins,true,self.video_id)
 		  return true
 		rescue Exception => e
-			begin 
-				message =  "Facebook declined request with message #{e.message.split("message:").last.split(') ').second.split(',').first} "
-			rescue
-				message = "Facebook declined request"
-			end
-			self.update(status: message)
+			self.request_declined!
 			return false
 		end
 	end
@@ -110,7 +83,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def cancel_scheduled
-		self.destroy if status == "scheduled"
+		self.destroy if status.scheduled?
 	end
 
 	def required_images_available?

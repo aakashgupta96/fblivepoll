@@ -16,7 +16,7 @@ class AdminsController < ApplicationController
 	end
 
 	def cancel_scheduled_post
-		if @post.status == "scheduled"
+		if @post.scheduled?
       @post.cancel_scheduled
       return redirect_to admins_panel_path, notice: "Your scheduled post has been successfully cancelled"
     else

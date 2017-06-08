@@ -18,7 +18,7 @@
     <div class="card-content grey lighten-4">
       <div id="title<%=post.id%>" class="truncate"><%=post.title.capitalize%></div>
       <div id="user<%=post.id%>" class="truncate"><%=post.user.name.titleize%></div>
-      <div id="status<%=post.id%>" class="truncate"><%=post.status.capitalize%></div>
+      <div id="status<%=post.id%>" class="truncate"><%=status_message(post)%></div>
     </div>
     <div class="card-reveal relative">
       <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>

@@ -4,7 +4,7 @@ class StartStream
 
 	def self.perform(post_id)
 		post = Post.find(post_id)
-		post.update(status: "live")
+		post.live!
 		
 		if post.poll?
 			frame_path = "public/uploads/post/#{post.id}/frame.png"
@@ -42,7 +42,7 @@ class StartStream
 			#For streaming from url
 			#%x[ffmpeg -re -i "#{video_path}" -s 1280x720 -ac 2 -ar 44100 -codec:a aac -b:a 64k -pix_fmt yuv420p -profile:v high -vb 1500k -bufsize 6000k -maxrate 6000k -deinterlace -vcodec libx264 -preset veryfast -r 24 -g 48 -strict -2 -f flv "#{post.key}"]
 			%x[rm #{video_path}]
-			post.update(status: "published")
+			post.published!
 		end
 	end
 end

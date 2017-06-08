@@ -79,7 +79,7 @@ class PollsController < ApplicationController
           return redirect_to root_path, notice: "Facebook declined your request. Please visit My Post section to see the status." 
         end
       end
-      return redirect_to submit_poll_path(@post.id) if @post.status == "scheduled"
+      return redirect_to submit_poll_path(@post.id) if @post.scheduled?
       return redirect_to root_path, notice: "Sorry! All slots are taken. You can schedule your post and it will be posted after scheduled time as soon as a slot will be available OR try after sometime."
     else 
       return redirect_to frame_path(@post.id), notice: 'Error occured while saving post'

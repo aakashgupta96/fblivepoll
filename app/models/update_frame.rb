@@ -76,7 +76,7 @@ class UpdateFrame
     start_time = Time.now
     sleep(20)
     ffmpeg_id = %x[pgrep -P #{pid}]
-    @post.update(status: "live")
+    @post.live!
     query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
     nil_count = 0
     loop do
@@ -85,7 +85,7 @@ class UpdateFrame
         @post.update(reload_browser: false)
       end
       if (Process.exists?(ffmpeg_id) == false)
-        @post.stop("Post has been deleted or Streaming stopped due to network error") if @post.live
+        @post.stop("unknown") if @post.live
         break
       end
       begin
@@ -93,7 +93,7 @@ class UpdateFrame
         if status.parsed_response["#{@post.video_id}"].nil?
           nil_count += 1
           if nil_count > 3
-            @post.stop("Deleted from FB")
+            @post.stop("deleted_from_fb")
             break
           end
         else

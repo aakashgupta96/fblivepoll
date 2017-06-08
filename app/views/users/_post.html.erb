@@ -18,7 +18,7 @@
     <div class="card-content grey lighten-4">
       <div id="title<%=post.id%>" class="truncate"><%=post.title.capitalize%></div>
       <div id="caption<%=post.id%>" class="truncate"><%=post.caption.capitalize%></div>
-      <div id="status<%=post.id%>" class="truncate"><%=post.status.capitalize%></div>
+      <div id="status<%=post.id%>" class="truncate"><%=status_message(post)%></div>
     </div>
     <div class="card-reveal relative">
       <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>
@@ -26,7 +26,7 @@
       <div class="absolute" style=" bottom: 10px;">
       	<% if post.live %>
       		<a href="/users/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
-      	<% elsif post.status == "scheduled" %>
+      	<% elsif post.scheduled? %>
       		<a href="/users/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
       	<% end %>
       	<a href="/posts/<%=post.id%>" class="btn bold dull-purple">Show Full Post</a>

@@ -14,12 +14,12 @@ class UsersController < ApplicationController
   end
 
   def stop_post
-  	@post.stop("Stopped by user")
+  	@post.stop("stopped_by_user")
   	return redirect_to myposts_path, notice: "Live Video has been successfully stopped."
   end
 
   def cancel_scheduled_post
-    if @post.status == "scheduled"
+    if @post.scheduled?
       @post.cancel_scheduled
       return redirect_to myposts_path, notice: "Your scheduled post has been successfully cancelled"
     else

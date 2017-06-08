@@ -33,13 +33,15 @@ class User < ActiveRecord::Base
   def has_granted_permissions
     ret = HTTParty.get("https://graph.facebook.com/#{self.uid}/permissions?access_token=#{self.token}").parsed_response['data']
     pages_show_list = publish_pages = manage_pages = false
-    ret.each do |item|
-      if item["permission"] == "publish_pages" && item["status"] == "granted"
-        publish_pages = true
-      elsif item["permission"] == "manage_pages" && item["status"] == "granted"
-        manage_pages = true
-      elsif item["permission"] == "pages_show_list" && item["status"] == "granted"
-        pages_show_list = true
+    unless ret.nil? 
+      ret.each do |item|
+        if item["permission"] == "publish_pages" && item["status"] == "granted"
+          publish_pages = true
+        elsif item["permission"] == "manage_pages" && item["status"] == "granted"
+          manage_pages = true
+        elsif item["permission"] == "pages_show_list" && item["status"] == "granted"
+          pages_show_list = true
+        end
       end
     end
     return (publish_pages && manage_pages && pages_show_list)

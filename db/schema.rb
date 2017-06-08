@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608052814) do
+ActiveRecord::Schema.define(version: 20170608164439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(version: 20170608052814) do
     t.string   "key"
     t.string   "title"
     t.time     "duration"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "background"
     t.integer  "comparisons"
     t.string   "video_id"
@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(version: 20170608052814) do
     t.string   "page_id"
     t.boolean  "live",           default: false
     t.datetime "start_time"
-    t.string   "status",         default: "drafted"
     t.integer  "category"
     t.string   "video"
     t.string   "image"
@@ -85,7 +84,7 @@ ActiveRecord::Schema.define(version: 20170608052814) do
     t.string   "live_id"
     t.string   "process_id"
     t.boolean  "reload_browser", default: false
-    t.integer  "new_status",     default: 0
+    t.integer  "status",         default: 0
   end
 
   create_table "templates", force: :cascade do |t|

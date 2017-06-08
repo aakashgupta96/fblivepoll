@@ -23,7 +23,7 @@
           <img src="<%=@url%>">
           <%=@name%>
         </div>
-        <div id="status<%=@post.id%>"><%=@post.status.capitalize%></div>
+        <div id="status<%=@post.id%>"><%=status_message(@post)%></div>
         <div id="duration<%=@post.id%>"><%= @post.duration.hour %> Hours : <%=@post.duration.min%> Minutes</div>
         <div id="video<%=@post.id%>" class="hide-on-small-only">
           <% unless @post.video_id.nil? %>

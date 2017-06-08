@@ -19,7 +19,7 @@
         <tr>
           <td><%= post.title %></td>
           <td><%= post.user.name %></td>
-          <td><%= post.status.capitalize %></td>
+          <td><%= status_message(post) %></td>
           <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
           <td>
           <% unless post.video_id.nil? %>
@@ -37,7 +37,7 @@
           <a href="/admins/destroy/<%=post.id%>" data-method="post" data-confirm="This will destroy this post from Database. Are you sure you want to continue?" class="bolder">Destroy</a>
         </td>
         <td>
-          <% if post.status == "scheduled" %>
+          <% if post.scheduled? %>
           <a href="/admins/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder dull-purple">Cancel</a>
         <% end %>
         </td>
