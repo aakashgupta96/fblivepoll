@@ -474,7 +474,7 @@
         var new_image = document.createElement("img")
         new_image.src = source;
         layer1.children[0].children[0].attrs.image = new_image;
-        layer1.draw();
+        setTimeout(layer1.draw.bind(layer1),100);
       };
 
       var callChangeBackground = function(e)
