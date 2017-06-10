@@ -20,9 +20,9 @@ Rails.application.routes.draw do
     get '/:post_id/submit' => 'polls#submit', as: "submit_poll"
   end  
 
-  scope :loop_videos do 
-    get '/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
-  end
+  # scope :loop_videos do 
+  #   get '/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
+  # end
 
   scope :admins do
     get '/panel' => 'admins#panel', as: "admins_panel"
@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
 
   resources :polls, :except => [:edit , :show , :index , :update, :destroy]
-  resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
+  #resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
 
 
   get "*path" => 'extras#invalid'
