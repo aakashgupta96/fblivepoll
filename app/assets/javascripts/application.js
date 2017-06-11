@@ -73,15 +73,15 @@ $( document ).ready(function(){
   $(window).resize(function(){
   });
 function validateAudioFiles(inputFile) {
-    var maxExceededMessage = "This file exceeds the maximum allowed file size (50 MB)";
-    var extErrorMessage = "Only audio file with extension: .mp3, .m4a, .mp4a, .wma, .wav or .aac is allowed";
-    var allowedExtension = ["mp3", "m4a", "mp4a", "aac", "wma", "wav"];
-
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');
     var sizeExceeded = false;
     var extError = false;
 
+    var maxExceededMessage = "This file exceeds the maximum allowed file size " + parseInt(maxFileSize/(1024*1024)) + "MB.";
+    var extErrorMessage = "Only audio file with extension: .mp3, .m4a, .mp4a, .wma, .wav or .aac is allowed";
+    var allowedExtension = ["mp3", "m4a", "mp4a", "aac", "wma", "wav"];
+    
     $.each(inputFile.files, function() {
         if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
         extName = this.name.split('.').pop();
@@ -99,14 +99,14 @@ function validateAudioFiles(inputFile) {
 }
 
 function validateVideoFiles(inputFile) {
-    var maxExceededMessage = "This file exceeds the maximum allowed file size (1000 MB)";
-    var extErrorMessage = "Only video file with extension: .mp4, .m4v, .ogg, .ogv or .mpeg is allowed";
-    var allowedExtension = ["mp4", "m4v", "ogg", "ogv", "mpeg"];
-
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');
     var sizeExceeded = false;
     var extError = false;
+
+    var maxExceededMessage = "This file exceeds the maximum allowed file size " + parseInt(maxFileSize/(1024*1024)) + "MB.";
+    var extErrorMessage = "Only video file with extension: .mp4, .m4v, .ogg, .ogv or .mpeg is allowed";
+    var allowedExtension = ["mp4", "m4v", "ogg", "ogv", "mpeg"];
 
     $.each(inputFile.files, function() {
         if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
@@ -126,14 +126,15 @@ function validateVideoFiles(inputFile) {
 
 
 function validateImageFiles(inputFile) {
-    var maxExceededMessage = "This file exceeds the maximum allowed file size (20 MB)";
-    var extErrorMessage = "Only image file with extension: .jpg, .jpeg, .gif or .png is allowed";
-    var allowedExtension = ["jpg", "jpeg", "gif", "png"];
-
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');
     var sizeExceeded = false;
     var extError = false;
+
+    var maxExceededMessage = "This file exceeds the maximum allowed file size " + parseInt(maxFileSize/(1024*1024)) + "MB.";
+    var extErrorMessage = "Only image file with extension: .jpg, .jpeg, .gif or .png is allowed";
+    var allowedExtension = ["jpg", "jpeg", "gif", "png"];
+
 
     $.each(inputFile.files, function() {
         if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
