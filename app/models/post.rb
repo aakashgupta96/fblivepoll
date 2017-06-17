@@ -19,28 +19,32 @@ class Post < ActiveRecord::Base
 	scope :ongoing, ->{ where(live: true) }
 
 	def self.update_statuses	
-		Post.deleted_from_fb.each do |p|
-			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
-			status = HTTParty.get(query)
-			p.unknown! if status.parsed_response["#{p.video_id}"] != nil
-		end
-		Post.stopped_by_user.each do |p|
-			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
-			status = HTTParty.get(query)
-			if status.parsed_response["#{p.video_id}"].nil?
-				p.deleted_from_fb! 
-			else
-				p.published!
+		begin
+			Post.deleted_from_fb.each do |p|
+				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
+				status = HTTParty.get(query)
+				p.unknown! if status.parsed_response["#{p.video_id}"] != nil
 			end
-		end
-		Post.unknown.each do |p|
-			query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
-			status = HTTParty.get(query)
-			if status.parsed_response["#{p.video_id}"].nil?
-				p.deleted_from_fb! 
-			else
-				p.network_error!
+			Post.stopped_by_user.each do |p|
+				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
+				status = HTTParty.get(query)
+				if status.parsed_response["#{p.video_id}"].nil?
+					p.deleted_from_fb!
+				else
+					p.published!
+				end
 			end
+			Post.unknown.each do |p|
+				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
+				status = HTTParty.get(query)
+				if status.parsed_response["#{p.video_id}"].nil?
+					p.deleted_from_fb!
+				else
+					p.network_error!
+				end
+			end
+		rescue
+			# ignored
 		end
 	end
 
@@ -83,7 +87,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def cancel_scheduled
-		self.destroy if status.scheduled?
+		self.destroy if self.scheduled?
 	end
 
 	def required_images_available?
