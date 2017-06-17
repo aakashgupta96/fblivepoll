@@ -18,21 +18,25 @@ class Post < ActiveRecord::Base
 
 	scope :ongoing, ->{ where(live: true) }
 
+  def update_status
+    begin
+      query = "https://graph.facebook.com/v2.8/?ids=#{self.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{self.user.token}"
+      status = HTTParty.get(query)
+      if status.parsed_response["#{self.video_id}"].nil?
+        self.deleted_from_fb!
+      else
+        self.published!
+      end
+    rescue Exception => e
+      #Ignored
+      puts e.class,e.message
+    end
+  end
+
 	def self.update_statuses	
 		begin
-			Post.deleted_from_fb.each do |p|
-				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
-				status = HTTParty.get(query)
-				p.unknown! if status.parsed_response["#{p.video_id}"] != nil
-			end
 			Post.stopped_by_user.each do |p|
-				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
-				status = HTTParty.get(query)
-				if status.parsed_response["#{p.video_id}"].nil?
-					p.deleted_from_fb!
-				else
-					p.published!
-				end
+				p.update_status
 			end
 			Post.unknown.each do |p|
 				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
@@ -43,9 +47,10 @@ class Post < ActiveRecord::Base
 					p.network_error!
 				end
 			end
-		rescue
-			# ignored
-		end
+    rescue Exception => e
+      #Ignored
+      puts e.class,e.message
+    end
 	end
 
 	#Code for removing video files of published or other erroneous loop video posts
@@ -60,7 +65,7 @@ class Post < ActiveRecord::Base
 		begin
       self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post")
     rescue Exception => e
-      #puts e.class,e.message	
+      puts e.class,e.message
     end
     self.update(status: status, live: false)
 	end
@@ -76,7 +81,8 @@ class Post < ActiveRecord::Base
 		  #Resque.enqueue(NotifyAdmins,true,self.video_id)
 		  return true
 		rescue Exception => e
-			self.request_declined!
+			puts e.class,e.message
+      self.request_declined!
 			return false
 		end
 	end

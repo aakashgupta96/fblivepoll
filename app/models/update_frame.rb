@@ -93,7 +93,7 @@ class UpdateFrame
         if status.parsed_response["#{@post.video_id}"].nil?
           nil_count += 1
           if nil_count > 3
-            @post.stop("deleted_from_fb")
+            @post.stop("unknown")
             break
           end
         else
