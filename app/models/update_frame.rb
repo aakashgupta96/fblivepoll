@@ -15,6 +15,7 @@ class UpdateFrame
       if Rails.env.production?
         %x[wget #{@post.video.url} -q -O #{local_video_path}/1.mp4]
       end
+      video_path = "#{local_video_path}/1.mp4"
     end
 
     if Rails.env.production?
