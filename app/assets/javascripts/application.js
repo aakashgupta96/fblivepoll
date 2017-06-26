@@ -79,8 +79,8 @@ function validateAudioFiles(inputFile) {
     var extError = false;
 
     var maxExceededMessage = "This file exceeds the maximum allowed file size " + parseInt(maxFileSize/(1024*1024)) + "MB.";
-    var extErrorMessage = "Only audio file with extension: .mp3, .m4a, .mp4a, .wma, .wav or .aac is allowed";
-    var allowedExtension = ["mp3", "m4a", "mp4a", "aac", "wma", "wav"];
+    var extErrorMessage = "Only audio file with extension: .mp3 or .aac is allowed";
+    var allowedExtension = ["mp3","aac"];
     
     $.each(inputFile.files, function() {
         if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};

@@ -9,10 +9,12 @@
   <body>
     <% if Rails.env.production? %>
     <audio controls loop autoplay preload="auto">
+      <source src="<%= post.audio.url %>" type="audio/ogg">
       <source src="<%= post.audio.url %>" type="audio/mpeg">
     </audio>
     <% else %>
     <audio controls loop autoplay preload="auto">
+      <source src="audio.aac" type="audio/ogg">
       <source src="audio.aac" type="audio/mpeg">
     </audio>
     <% end %>
