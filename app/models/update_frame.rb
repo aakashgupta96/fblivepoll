@@ -45,19 +45,23 @@ class UpdateFrame
  
    
     if @post.poll?
-      if @post.audio.url.nil?
-        audio_path = "public/silent.aac"
+      # if @post.audio.url.nil?
+      #   audio_path = "public/silent.aac"
+      # else
+      #   local_audio_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
+      #   if Rails.env.production?
+      #     %x[$HOME/bin/ffmpeg -i "#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      #   else
+      #     %x[$HOME/bin/ffmpeg -i "#{Rails.root.to_s}/public/#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      #   end
+      #     %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/final.aac" -c copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
+      #     audio_path = "#{local_audio_path}/long.aac"
+      # end
+      if Rails.env.production?
+        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -f alsa -i hw:0,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:448:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"  
       else
-        local_audio_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
-        if Rails.env.production?
-          %x[$HOME/bin/ffmpeg -i "#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
-        else
-          %x[$HOME/bin/ffmpeg -i "#{Rails.root.to_s}/public/#{@post.audio.url}" -codec:a aac -ac 1 -ar 44100 -b:a 128k -y "#{local_audio_path}/final.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
-        end
-          %x[$HOME/bin/ffmpeg -stream_loop 10000 -i "#{local_audio_path}/final.aac" -c copy -t 14400 -y "#{local_audio_path}/long.aac" 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}]
-          audio_path = "#{local_audio_path}/long.aac"
+        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -i 'public/silent.aac' -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:448:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"  
       end
-      command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99 -i #{audio_path} -codec:a aac -ac 1 -ar 44100 -b:a 128k -r 24 -g 48 -vcodec libx264 -pix_fmt yuv420p -filter:v 'crop=800:448:0:72' -profile:v high -vb 2000k -bufsize 6000k -maxrate 6000k -deinterlace -preset veryfast -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"  
     else
       local_video_path = "#{Rails.root.to_s}/public/uploads/post/#{@post.id.to_s}"
       if Rails.env.production?
@@ -117,11 +121,7 @@ class UpdateFrame
     %x[kill -9 #{ffmpeg_id}]
     driver.quit
     headless.destroy  
-    if @post.poll?
-      unless @post.audio.url.nil?
-        %x[rm #{audio_path}]
-      end
-    else
+    if @post.loop_video?
       %x[rm -f #{video_path}]
     end
   end

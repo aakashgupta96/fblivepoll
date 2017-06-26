@@ -6,6 +6,15 @@
   </head>
    
   <body>
+  	<% if Rails.env.production? %>
+    <audio controls loop autoplay preload="auto">
+      <source src="<%= post.audio.url %>" type="audio/mpeg">
+    </audio>
+    <% else %>
+    <audio controls loop autoplay preload="auto">
+      <source src="audio.aac" type="audio/mpeg">
+    </audio>
+    <% end %>
   	<% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
