@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :posts, dependent: :destroy
   
-  enum role: [:member, :donor, :admin]
+  enum role: [:member, :donor, :admin, :premium]
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

@@ -1,7 +1,7 @@
 module LoopVideoHelper
 	
 	def hour_limit
-		if current_user.admin?
+		if current_user.admin? || current_user.premium?
 			3
 		elsif current_user.donor?
 			1
@@ -13,6 +13,8 @@ module LoopVideoHelper
 	def file_size_limit
 		if current_user.admin?
 			1000.megabytes
+		elsif current_user.premium?
+			500.megabytes
 		elsif current_user.donor?
 			200.megabytes
 		else
