@@ -73,7 +73,12 @@ class Post < ActiveRecord::Base
 	def start
 		begin
 			graph = graph_with_page_token
-			video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption} \nMade with: www.shurikenlive.com", title: self.title},"post")
+			if self.user.admin? || self.user.donor? || self.user.premium?
+				caption_suffix = ""
+			else
+				caption_suffix = "\nMade with: www.shurikenlive.com"
+			end
+			video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title},"post")
 			live_id = video["id"]
 		  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
 		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
