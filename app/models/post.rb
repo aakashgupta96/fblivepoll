@@ -79,7 +79,7 @@ class Post < ActiveRecord::Base
 				caption_suffix = "\nMade with: www.shurikenlive.com"
 			end
 
-			if  self.ambient? > 0
+			if  self.ambient?
 				video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title, stream_type: "AMBIENT"},"post")
 			else
 				video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title},"post")
