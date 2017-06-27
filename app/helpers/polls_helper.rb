@@ -1,7 +1,7 @@
 module PollsHelper
 	def hour_limit
 		if current_user.admin? || current_user.premium?
-			3
+			23
 		elsif current_user.donor?
 			1
 		else

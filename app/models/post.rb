@@ -78,7 +78,12 @@ class Post < ActiveRecord::Base
 			else
 				caption_suffix = "\nMade with: www.shurikenlive.com"
 			end
-			video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title},"post")
+
+			if  self.ambient? > 0
+				video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title, stream_type: "AMBIENT"},"post")
+			else
+				video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title},"post")
+			end
 			live_id = video["id"]
 		  video_id = graph.graph_call("#{video["id"]}?fields=video")["video"]["id"] 
 		  self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
@@ -194,6 +199,9 @@ class Post < ActiveRecord::Base
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
     [driver,headless]
-	end
+	 end
 
+  def ambient?
+		return (self.duration.to_i - (Time.at(0) + 30.years).to_i) >= 4.hours.to_i
+	end
 end
