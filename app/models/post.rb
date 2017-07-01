@@ -212,10 +212,10 @@ class Post < ActiveRecord::Base
 				query = "https://graph.facebook.com/v2.8/#{p.video_id}?fields=description&access_token=#{p.user.token}"
 				current_status = HTTParty.get(query).parsed_response["description"]
 				caption_suffix = "Made with: www.shurikenlive.com"
-				if current_status.match(caption_suffix.strip).nil?
+				if current_status.match(caption_suffix).nil?
 					new_caption =  "#{current_status} \n #{caption_suffix}"
-					query = "https://graph.facebook.com/v2.8/#{p.video_id}"
-					respeonse = HTTParty.post(query,:query => {"description" => "#{new_caption}", "access_token" => "#{p.user.token}"})
+					query = "https://graph.facebook.com/v2.8/#{p.live_id}"
+					response = HTTParty.post(query,:query => {"description" => "#{new_caption}", "access_token" => "#{p.user.token}"})
 				end
 			rescue Exception => e
 				puts e.message
