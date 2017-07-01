@@ -216,6 +216,7 @@ class Post < ActiveRecord::Base
 					new_caption =  "#{current_status} \n #{caption_suffix}"
 					query = "https://graph.facebook.com/v2.8/#{p.live_id}"
 					response = HTTParty.post(query,:query => {"description" => "#{new_caption}", "access_token" => "#{p.user.token}"})
+					self.update(caption: current_status)
 				end
 			rescue Exception => e
 				puts e.message
