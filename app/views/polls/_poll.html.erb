@@ -20,7 +20,9 @@
   </center>
   <div class="note white-text">Make sure that you don't upload any copyrighted content without permission otherwise your post will be deleted by facebook.</div>
   <div class="note white-text">Scheduling time of post is in <a href="http://www.thetimezoneconverter.com/" target="_blank">UTC Time Format / GMT Time Zone</a>.</div>
-  <div class="container-wide section">
+  <div class="note white-text">English language is preferred for all the inputs.</div>
+
+    <div class="container-wide section">
   <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {:multipart => true, id: "newPoll",class: "col s12"}) do |f| %>
   <div class="white z-depth-4"  style="padding: 40px 40px 30px 40px;">
     <%= f.hidden_field :template_id , value: @template.id%>
