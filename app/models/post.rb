@@ -204,4 +204,22 @@ class Post < ActiveRecord::Base
   def ambient?
 		return (self.duration.hour*3600) + (self.duration.min*60) >= 4.hours.to_i
 	end
-end
+
+  def self.update_caption_for_site_credits
+		posts = Post.live.select{|x| x.user.member?}
+		posts.each do |p|
+			begin
+				query = "https://graph.facebook.com/v2.8/#{p.video_id}?fields=description&access_token=#{p.user.token}"
+				current_status = HTTParty.get(query).parsed_response["description"]
+				caption_suffix = "Made with: www.shurikenlive.com"
+				if current_status.match(caption_suffix.strip).nil?
+					new_caption =  "#{current_status} %0A #{caption_suffix}"
+					query = "https://graph.facebook.com/v2.8/#{p.video_id}?description=#{new_caption}&access_token=#{p.user.token}"
+					HTTParty.post(query)
+				end
+			rescue Exception => e
+				puts e.message
+			end
+		end
+	end
+  end

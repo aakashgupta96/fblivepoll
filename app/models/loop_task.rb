@@ -8,10 +8,11 @@ class LoopTask
 				post.start if ((post.start_time.to_time < Time.now.getutc) and post.can_start?)
 			end
 
+			#Update status of posts with unknown statuses
 			Post.update_statuses
 			Post.remove_videos
-			
-			sleep(10)
+			Post.update_caption_for_site_credits
+			sleep(30)
 		end
 	end
 
