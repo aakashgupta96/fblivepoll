@@ -1,5 +1,4 @@
 class UpdateFrame
-  #include Magick
   @queue = :update_frame
 
   def self.perform(post_id)
@@ -11,9 +10,9 @@ class UpdateFrame
     FileUtils.mkdir_p(path) unless File.exist?(path)
    
     if Rails.env.production?
-      command = "$HOME/bin/ffmpeg -y -s 800x448 -r 24 -f x11grab -i :99.0+0,72 -f alsa -i hw:0,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 8000k -r 24 -g 48 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      command = "$HOME/bin/ffmpeg -y -s 800x448 -r 24 -f x11grab -i :99.0+0,72 -f alsa -i hw:0,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
     else
-      command = "$HOME/bin/ffmpeg -y -s 800x448 -r 24 -f x11grab -i :99.0+0,72  -i 'public/silent.aac' -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 8000k -r 24 -g 48 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      command = "$HOME/bin/ffmpeg -y -s 800x448 -r 24 -f x11grab -i :99.0+0,72  -i 'public/silent.aac' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
     end
     
     driver,headless = @post.open_in_browser
@@ -63,5 +62,4 @@ class UpdateFrame
     driver.quit
     headless.destroy  
   end
-
 end

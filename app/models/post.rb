@@ -18,20 +18,20 @@ class Post < ActiveRecord::Base
 
 	scope :ongoing, ->{ where(live: true) }
 
-  def update_status
-    begin
-      query = "https://graph.facebook.com/v2.8/?ids=#{self.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{self.user.token}"
-      status = HTTParty.get(query)
-      if status.parsed_response["#{self.video_id}"].nil?
-        self.deleted_from_fb!
-      else
-        self.published!
-      end
-    rescue Exception => e
-      #Ignored
-      puts e.class,e.message
-    end
-  end
+	def update_status
+		begin
+			query = "https://graph.facebook.com/v2.8/?ids=#{self.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
+			status = HTTParty.get(query)
+			if status.parsed_response["#{self.video_id}"].nil?
+				self.deleted_from_fb!
+			else
+				self.published!
+			end
+		rescue Exception => e
+			#Ignored
+			puts e.class,e.message
+		end
+	end
 
 	def self.update_statuses	
 		begin
@@ -39,7 +39,7 @@ class Post < ActiveRecord::Base
 				p.update_status
 			end
 			Post.unknown.each do |p|
-				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
+				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
 				status = HTTParty.get(query)
 				if status.parsed_response["#{p.video_id}"].nil?
 					p.deleted_from_fb!
@@ -201,11 +201,11 @@ class Post < ActiveRecord::Base
     [driver,headless]
 	 end
 
-  def ambient?
+	def ambient?
 		return (self.duration.hour*3600) + (self.duration.min*60) >= 4.hours.to_i
 	end
 
-  def self.update_caption_for_site_credits
+	def self.update_caption_for_site_credits
 		posts = Post.live.select{|x| x.user.member?}
 		posts.each do |p|
 			begin
@@ -223,4 +223,4 @@ class Post < ActiveRecord::Base
 			end
 		end
 	end
-  end
+end

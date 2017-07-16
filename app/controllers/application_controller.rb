@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   def check_slots
     if current_user.is_already_live?
       redirect_to root_path, notice: "You already have one ongoing live post. Please try after that live video ends."
+    elsif  current_user.has_scheduled_post?
+      redirect_to root_path, notice: "You already have one scheduled post. Please try after that post is published."
     elsif (params["post"]["scheduled"]=="on" || Post.new.worker_available?)
       true
     else

@@ -79,4 +79,8 @@ class User < ActiveRecord::Base
   def is_already_live?
     Post.live.where(user_id: self.id).empty? ? false : true
   end
+
+  def has_scheduled_post?
+    Post.scheduled.where(user_id: self.id).empty? ? false: true
+  end
 end
