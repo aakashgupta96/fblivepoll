@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get '/donation' => 'extras#donation'
   #get '/test' => 'extras#test'
   get '/posts/:post_id' => 'users#show' 
+
   scope :polls do
     get '/:post_id/frame' => 'polls#frame', as: "frame"
     post '/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   end  
 
   scope :loop_videos do 
+    get '/templates' => 'loop_videos#templates', as: "loop_video_templates"
     get '/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
   end
 
@@ -38,15 +40,12 @@ Rails.application.routes.draw do
     post '/cancel/:post_id' => 'users#cancel_scheduled_post'
     get '/posts' => 'users#posts', as: "myposts"
   end
+
   #get '/editor/createFrame'
   #get '/editor/testFrame'
-  
-
 
   resources :polls, :except => [:edit , :show , :index , :update, :destroy]
   resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
 
-
   get "*path" => 'extras#invalid'
-
 end
