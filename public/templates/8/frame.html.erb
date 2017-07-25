@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>Loop Video Template 1</title>
+  </head>
+
+  <body>
+    <% if Rails.env.production? %>
+      <% link = post.video.url %>
+    <% else %>
+      <% link = "1.mp4" %>
+    <% end %>
+    <body>
+    <div class="container">
+      <canvas id="canvas" height="450" width="800"></canvas>
+    </div>
+    <video id="my-video" class="video-js" loop preload="auto" autoplay width="800" height="450" data-setup="{}">
+      <source src="<%=link%>" type="video/mp4">
+      <source src="<%=link%>" type="video/ogg">
+      <source src="<%=link%>" type="video/webm">
+    </video>
+
+  </body>
+
+    <script>
+        function updateVideo(){
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext( '2d' );
+            var myVideo = document.getElementById('my-video');
+            ctx.drawImage( myVideo, 0, 0, 800, 450 );
+        }
+        setInterval ( updateVideo, 24 );
+    </script>
+
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      cursor: none;
+    }
+    body
+    {
+      height: 450px;
+      width: 800px;
+      position: relative;
+    }
+    #my-video
+    {
+      display: none;
+      overflow: hidden;
+    }
+    #canvas
+    {
+      position: absolute;
+    }
+    .container
+    {
+      height: 450px;
+      width: 800px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: black;
+    }
+  </style>
+</html>

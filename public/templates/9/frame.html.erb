@@ -6,13 +6,18 @@
   </head>
 
   <body>
+	<% if Rails.env.production? %>
+			<% link = post.video.url %>
+	<% else %>
+			<% link = "1.mp4" %>
+	<% end %>
   	<div class="container">
 	  	<canvas id="canvas" height="450" width="600"></canvas>
 	  </div>
 	  <video id="my-video" class="video-js" loop preload="auto" height="450" width="800" autoplay controls data-setup="{}">
-	    	<source src="1.mp4" type="video/mp4">
-	      <source src="1.mp4" type="video/ogg">
-	      <source src="1.mp4" type="video/webm">
+	    	<source src=<%= link %> type="video/mp4">
+	      <source src=<%= link %> type="video/ogg">
+	      <source src=<%= link %> type="video/webm">
 	  </video>
 	 	<!-- <div class="title">
 	 		<p>

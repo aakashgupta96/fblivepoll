@@ -24,6 +24,7 @@
         </ul>
       </div>
     <% end %>
+    <%= f.hidden_field :template_id , value: @template.id%>
     <div class="row" style="margin-bottom: 0px;">
       <div class="input-field col s12 l6">
         <%= f.text_field :title, required: true%>

@@ -162,11 +162,11 @@ class Post < ActiveRecord::Base
 
 	def create_html
 		images = self.images #Prepare an html for the frame of this post
-    if self.poll?
-      erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
-    else
-      erb_file = Rails.root.to_s + "/public/videos/loop_video_frame.html.erb"
-    end
+    #if self.poll?
+		erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
+    #else
+      #erb_file = Rails.root.to_s + "/public/videos/loop_video_frame.html.erb"
+    #end
     html_file = Rails.root.to_s + "/public/uploads/post/#{self.id}/frame.html" #=>"target file name"
     erb_str = File.read(erb_file)
     namespace = OpenStruct.new(post: self, images: images)

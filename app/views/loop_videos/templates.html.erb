@@ -1,0 +1,6 @@
+<h3 class="header grey-text text-darken-2 bolder center">Video Templates</h3>
+<div class="row post-container white z-depth-3">
+  <% @templates.each do |template| %>
+  <%= render 'template', template: template %>
+  <% end %>
+</div>

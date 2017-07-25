@@ -6,11 +6,13 @@ class LoopVideosController < ApplicationController
   before_action :check_slots, only: [:create]
 
   def templates
-
+    @templates = Template.loop_video.order(id: :desc)
   end
 
   def new
   	@post = Post.new
+    @template = Template.loop_video.find_by_id(params[:template])
+    return redirect_to '/#pluginCarousel', notice: "Invalid Selection of Template" if @template.nil?
     @pages = current_user.pages
   end
 
@@ -18,6 +20,7 @@ class LoopVideosController < ApplicationController
     @post = Post.new(post_params)
     @post.category = "loop_video"
     @post.user = current_user
+    @post.template = Template.loop_video.find_by_id(params[:post][:template_id])
     @post.status = "scheduled" if params["post"]["scheduled"]=="on"
 
     if @post.save

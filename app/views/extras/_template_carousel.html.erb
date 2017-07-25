@@ -1,0 +1,27 @@
+<div class="carousel-item white-text" href="#<%=template.id%>" style="padding: 30px;">
+  <center>
+    <div class="card sticky-action plugin hoverable">
+      <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="/templates/template<%=template.id%>.png">
+      </div>
+      <div class="card-content" style="padding: 10px 10px 0 10px !important;">
+        <span class="card-title activator grey-text text-darken-4 bolder relative" style="left: 20px;"><%=template.name.titleize%><i class="material-icons right">more_vert</i></span>
+      </div>
+      <% if template.poll? %>
+      <div class="card-action" style="padding: 10px !important;"><!-- <a class="btn waves-effect" href="/demo?template=1">Watch Video</a>  --><a class="btn waves-effect" href="/polls/new?template=<%=template.id%>">Try Now</a> </div>
+      <% else %>
+          <div class="card-action" style="padding: 10px !important;"><!-- <a class="btn waves-effect" href="/demo?template=1">Watch Video</a>  --><a class="btn waves-effect" href="/loop_videos/new?template=<%=template.id%>">Try Now</a> </div>
+      <% end %>
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4 bolder">Features<i class="material-icons right">close</i></span>
+        <ul class="black-text features">
+          <% template.features.each do |feature| %>
+            <li>
+            <i class="material-icons">play_arrow</i><%=feature.description%>
+          </li>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </center>
+</div>

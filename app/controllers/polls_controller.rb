@@ -1,21 +1,28 @@
 class PollsController < ApplicationController
 
-  before_action :set_post, except: [:new, :create]
+  before_action :set_post, except: [:new, :create, :templates]
   before_action :authenticate_user!
-  before_action :authorize_user! , except: [:new, :create]
+  before_action :authorize_user! , except: [:new, :create, :templates]
   before_action :check_slots, only: [:create]
   
   require 'base64'
   
   def new
     @post = Post.new
-    @template = Template.find_by_id(params[:template])
-    return redirect_to '/#pluginCarousel', notice: "Invalid Selection of Template" if @template.nil?
+    @template = Template.poll.find_by_id(params[:template])
+    return redirect_to poll_templates_path, notice: "Invalid Selection of Template" if @template.nil?
     @template.image_count.times {@post.images.build}
     @pages = current_user.pages
   end
 
+  def templates
+    @templates = Template.poll.order(id: :desc)
+  end
+
   def frame
+    if @post.template.id != 0
+      return redirect_to root_path , notice: "Invalid page request"
+    end
   end
 
   def save_canvas
@@ -37,7 +44,7 @@ class PollsController < ApplicationController
     File.open(File.join(path,"frame.png"),'wb') do |f|
       f.write image_data
     end
-    @post.template = Template.first
+    @post.template = Template.poll.first
     @post.image = File.open(File.join(path,"frame.png"))
     return save_and_redirect
   end
@@ -49,7 +56,7 @@ class PollsController < ApplicationController
     @post = Post.new(post_params)
     @post.category = "poll"
     @post.user = current_user
-    @post.template = Template.find_by_id(params[:post][:template_id])
+    @post.template = Template.poll.find_by_id(params[:post][:template_id])
     @post.status = "scheduled" if params["post"]["scheduled"]=="on"
     if @post.save
       return redirect_to frame_path(@post.id) if @post.template.id == 0

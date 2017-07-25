@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get '/posts/:post_id' => 'users#show' 
 
   scope :polls do
+    get '/templates' => 'polls#templates', as: "poll_templates"
     get '/:post_id/frame' => 'polls#frame', as: "frame"
     post '/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
     get '/:post_id/submit' => 'polls#submit', as: "submit_poll"

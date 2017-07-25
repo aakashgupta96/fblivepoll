@@ -4,7 +4,8 @@ class ExtrasController < ApplicationController
     redirect_to root_path, notice: "Page requested not found"
   end
 
-  def home    
+  def home
+		@templates = Template.all.order(id: :desc)
   end
   
 	def privacy
