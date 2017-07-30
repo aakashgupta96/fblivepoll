@@ -12,19 +12,17 @@
     <meta name="keywords" content="Fb,facebook,live,streaming,codingninjas,shuriken,shurikenlive,best,obs,script,poll,video,aakash,gupta,templates,GIF,reactions">
     <link rel="shortcut-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-4726706343331157",
-        enable_page_level_ads: true
-      });
-    </script>
 </head>
-
 
 <body>
   
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-4726706343331157",
+      enable_page_level_ads: true
+    });
+  </script>    
   <script>
     window.fbAsyncInit = function() {
       FB.init({
@@ -87,62 +85,56 @@
       </div>
     </div>
   </div>
-  <!-- <div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div>
-   --><nav class="radial-gradient">
-      <div class="nav-wrapper container-wide no-pad" id="nav-container">
-        <a href="/" class="brand-logo"><img src="/logo1.png" class="logo"></a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-          <li><a href="/" class="nav-option center-align">Home</a></li>
-          <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li>
-          <li style=" margin-right: 10px;">
-            <div class='dropdown-button waves-effect waves-light btn' data-activates='dropdown1'>
-              <i class="material-icons left relative" style="top: -13px;">videocam</i>Plugins<span class="newFeature">New</span>
-            </div>
-              <ul id='dropdown1' class='dropdown-content'>
-                <li><%= link_to "Live Polling", poll_templates_path%></li>
-                <li class="divider"></li>
-                <li><%= link_to "Stream Video", loop_video_templates_path%></li>
-              </ul>
-          </li>
+  <nav class="radial-gradient">
+    <div class="nav-wrapper container-wide no-pad" id="nav-container">
+      <a href="/" class="brand-logo"><img src="/logo1.png" class="logo"></a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/" class="nav-option center-align">Home</a></li>
+        <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li>
+        <li style=" margin-right: 10px;">
+          <div class='dropdown-button waves-effect waves-light btn' data-activates='dropdown1'>
+            <i class="material-icons left relative" style="top: -13px;">videocam</i>Plugins<span class="newFeature">New</span>
+          </div>
+            <ul id='dropdown1' class='dropdown-content'>
+              <li><%= link_to "Live Polling", poll_templates_path%></li>
+              <li class="divider"></li>
+              <li><%= link_to "Stream Video", loop_video_templates_path%></li>
+            </ul>
+        </li>
 
-          <% if user_signed_in? %>
-            <li>
-              <div class='dropdown-button waves-effect waves-light btn greenish' data-activates='dropdown2' style="max-width : 220px;">
-                <i class="material-icons left relative" style="top:-13px;">perm_identity</i><%=current_user.name.split.first %>
-              </div>
-              <ul id='dropdown2' class='dropdown-content'>
-                <li><%= link_to "My Posts", myposts_path%></li>
-                <li class="divider"></li>
-                <li><a href="/users/sign_out" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
-              </ul>
-            </li>
-          <% else %>
-            <li><a href="/users/auth/facebook" class="nav-option session_button waves-effect waves-light btn greenish row"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
-          <% end %>
-        </ul>
-        <ul class="side-nav" id="mobile-demo">
-          <li><a href="/">Home</a></li>
-          <li><a href="/demo">Watch Demo</a></li>
-          <% if user_signed_in? %>
-            <li><%= link_to "My Posts", myposts_path%></li>
-          <% end %>
+        <% if user_signed_in? %>
           <li>
-            <a href="/polls/templates" class="waves-effect waves-light btn">Live Polling</a>
-            <a href="/loop_videos/templates" class="waves-effect waves-light btn">Stream Video</a>
+            <div class='dropdown-button waves-effect waves-light btn greenish' data-activates='dropdown2' style="max-width : 220px;">
+              <i class="material-icons left relative" style="top:-13px;">perm_identity</i><%=current_user.name.split.first %>
+            </div>
+            <ul id='dropdown2' class='dropdown-content'>
+              <li><%= link_to "My Posts", myposts_path%></li>
+              <li class="divider"></li>
+              <li><a href="/users/sign_out" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
+            </ul>
           </li>
-          <% if user_signed_in? %>
-            <li><a href="/users/sign_out" class="waves-effect waves-light btn greenish" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
-          <% else %>
-            <li><a href="/users/auth/facebook" class="waves-effect waves-light btn greenish">Log In with FB</a></li>
-          <% end %>
-        </ul>
-      </div>
+        <% else %>
+          <li><a href="/users/auth/facebook" class="nav-option session_button waves-effect waves-light btn greenish row"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
+        <% end %>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <li><a href="/">Home</a></li>
+        <li><a href="/demo">Watch Demo</a></li>
+        <% if user_signed_in? %>
+          <li><%= link_to "My Posts", myposts_path%></li>
+        <% end %>
+        <li>
+          <a href="/polls/templates" class="waves-effect waves-light btn">Live Polling</a>
+          <a href="/loop_videos/templates" class="waves-effect waves-light btn">Stream Video</a>
+        </li>
+        <% if user_signed_in? %>
+          <li><a href="/users/sign_out" class="waves-effect waves-light btn greenish" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
+        <% else %>
+          <li><a href="/users/auth/facebook" class="waves-effect waves-light btn greenish">Log In with FB</a></li>
+        <% end %>
+      </ul>
+    </div>
   </nav>
   
   <% unless notice.nil? %>
@@ -171,6 +163,17 @@
 <main>
 <%= yield %>
 </main>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- text only -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4726706343331157"
+     data-ad-slot="5165773760"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 <footer class="page-footer radial-gradient">
     <div class="row">
