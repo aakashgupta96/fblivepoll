@@ -24,7 +24,7 @@
 
     <div class="container-wide section">
   <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {:multipart => true, id: "newPoll",class: "col s12"}) do |f| %>
-  <div class="white z-depth-4"  style="padding: 40px 40px 30px 40px;">
+  <div class="white z-depth-4"  style="padding: 35px;">
     <%= f.hidden_field :template_id , value: @template.id%>
     <div class="row" style="margin-bottom: 0px;">
       <div class="input-field col s12 l6">
