@@ -87,6 +87,10 @@ main
   width: 260px;
   height: 64px;
 }
+.page-heading
+{
+  font-size: 36px;
+}
 .note
 {
   font-size: 22px;
@@ -165,8 +169,7 @@ main
 }
 .privacy-box
 {
-  width: 80%;
-  margin: 10px 10% 50px 10%;
+  margin: 15px auto;
   padding: 30px;
   .policy-para
   {
@@ -178,6 +181,7 @@ main
   }
   ol
   {
+    -webkit-padding-start: 15px;
     list-style-type: disc;
     li
     {
@@ -209,8 +213,7 @@ main
 }
 .terms-box
 {
-  width: 80%;
-  margin: 10px 10% 50px 10%;
+  margin: 15px auto;
   padding: 30px;
   h5
   {
@@ -218,6 +221,7 @@ main
   }
   ol
   {
+    -webkit-padding-start: 15px;
     li
     {
       line-height: 25px;
