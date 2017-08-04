@@ -109,37 +109,38 @@
           },
 
           onAuthorize: function(data, actions) {
-
-              //console.log(error);
-              //console.log("Succesfully authenticated");
+            
               return actions.payment.execute().then(function(payment) {
                   <% if current_user.nil? %>
                   user_id = 1
                   <% else %>
                   user_id = <%= current_user.id %>;
                   <% end %>
+                  tx_id = payment.transactions[0].related_resources[0].sale.id;
                   payment_id = payment.id;
                   amount = payment.transactions[0].amount.total;
                   console.log(payment);
                   console.log(user_id);
                   console.log(payment_id);
+                  console.log(tx_id);
                   console.log(amount);
-                  // $.ajax({
-                  //     url: '/payments/create',
-                  //     method: "POST",
-                  //     data: {
-                  //         user_id: user_id,
-                  //         payment_id: payment_id,
-                  //         amount: amount
-                  //     },
-                  //     success: function(data) {
-                  //         console.log("success");
-                  //         console.log(data);
-                  //     },
-                  //     error: function(error) {
-                  //         console.log("error");
-                  //     }
-                  // });
+                  $.ajax({
+                      url: '/payments/create',
+                      method: "POST",
+                      data: {
+                          user_id: user_id,
+                          tx_id: tx_id,
+                          payment_id: payment_id,
+                          amount: amount
+                      },
+                      success: function(data) {
+                          console.log("success");
+                          console.log(data);
+                      },
+                      error: function(error) {
+                          console.log("error");
+                      }
+                  });
               });
           }
 

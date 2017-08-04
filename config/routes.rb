@@ -44,10 +44,7 @@ Rails.application.routes.draw do
 
   scope :payments do
     post '/create' => "payments#create",as: "create_payment"
-  end
-
-  scope :webhooks do
-    post '/newPayment' => "webhooks#new_payment"
+    post '/receiveIPN' => "webhooks#receive_IPN"
   end
 
   #get '/editor/createFrame'
