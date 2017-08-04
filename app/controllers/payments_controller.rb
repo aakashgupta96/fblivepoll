@@ -17,7 +17,7 @@ class PaymentsController < ApplicationController
     response = validate_IPN_notification(request.raw_post)
     case response
     when "VERIFIED"
-      puts 'worked'
+      Payment.update_payment(params)
     when "INVALID"
        puts 'did not work'
     else
