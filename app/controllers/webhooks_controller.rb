@@ -1,6 +1,7 @@
 class WebhooksController < ApplicationController
   protect_from_forgery :except => :new_payment
   def new_payment
+    puts params
     response = validate_IPN_notification(request.raw_post)
     case response
     when "VERIFIED"

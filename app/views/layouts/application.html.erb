@@ -124,22 +124,22 @@
                   console.log(user_id);
                   console.log(payment_id);
                   console.log(amount);
-                  $.ajax({
-                      url: '/payments/create',
-                      method: "POST",
-                      data: {
-                          user_id: user_id,
-                          payment_id: payment_id,
-                          amount: amount
-                      },
-                      success: function(data) {
-                          console.log("success");
-                          console.log(data);
-                      },
-                      error: function(error) {
-                          console.log("error");
-                      }
-                  });
+                  // $.ajax({
+                  //     url: '/payments/create',
+                  //     method: "POST",
+                  //     data: {
+                  //         user_id: user_id,
+                  //         payment_id: payment_id,
+                  //         amount: amount
+                  //     },
+                  //     success: function(data) {
+                  //         console.log("success");
+                  //         console.log(data);
+                  //     },
+                  //     error: function(error) {
+                  //         console.log("error");
+                  //     }
+                  // });
               });
           }
 
