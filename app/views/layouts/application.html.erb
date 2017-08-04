@@ -6,12 +6,13 @@
   <%= stylesheet_link_tag 'application', media: 'all'%>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <meta name="description" content="A tool for posting customized FB Live videos for polling purpose. We can help you make facebook live polls without using OBS or any other script. Just choose one of the awesome templates that we provide with the support of GIF images and fill some simple details related to your poll, and you are all set to post to your facebook page and boost your reach.">
-    <meta name="keywords" content="Fb,facebook,live,streaming,codingninjas,shuriken,shurikenlive,best,obs,script,poll,video,aakash,gupta,templates,GIF,reactions">
-    <link rel="shortcut-icon" href="favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta name="description" content="A tool for posting customized FB Live videos for polling purpose. We can help you make facebook live polls without using OBS or any other script. Just choose one of the awesome templates that we provide with the support of GIF images and fill some simple details related to your poll, and you are all set to post to your facebook page and boost your reach.">
+  <meta name="keywords" content="Fb,facebook,live,streaming,codingninjas,shuriken,shurikenlive,best,obs,script,poll,video,aakash,gupta,templates,GIF,reactions">
+  <link rel="shortcut-icon" href="favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 
 <body>
@@ -85,6 +86,62 @@
       </div>
     </div>
   </div>
+
+  <div id="paypal-button"></div>
+
+  <script>
+      paypal.Button.render({
+
+          env: 'sandbox', // Or 'sandbox',
+          client: {
+              sandbox: "AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R"
+          },
+
+          commit: true, // Show a 'Pay Now' button
+
+          payment: function(data, actions) {
+              return actions.payment.create({
+                  transactions: [
+                      {
+                          amount: { total: '10', currency: 'USD' }
+                      }
+                  ]
+              });
+          },
+
+          onAuthorize: function(data, actions) {
+
+              //console.log(error);
+              //console.log("Succesfully authenticated");
+              return actions.payment.execute().then(function(payment) {
+                  user_id = <%= current_user.id %>;
+                  payment_id = payment.id;
+                  amount = payment.transactions[0].amount.total;
+                  console.log(user_id);
+                  console.log(payment_id);
+                  console.log(amount);
+                  $.ajax({
+                      url: '/payments/create',
+                      method: "POST",
+                      data: {
+                          user_id: user_id,
+                          payment_id: payment_id,
+                          amount: amount
+                      },
+                      success: function(data) {
+                          console.log("success");
+                          console.log(data);
+                      },
+                      error: function(error) {
+                          console.log("error");
+                      }
+                  });
+              });
+          }
+
+      }, '#paypal-button');
+  </script>
+
   <nav class="radial-gradient">
     <div class="nav-wrapper container-wide no-pad" id="nav-container">
       <a href="/" class="brand-logo"><img src="/logo1.png" class="logo"></a>

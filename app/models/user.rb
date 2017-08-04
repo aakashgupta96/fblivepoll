@@ -2,10 +2,11 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable
-  devise :omniauthable, :omniauth_providers => [:facebook]
+  devise :omniauthable, omniauth_providers: [:facebook]
 
   has_many :posts, dependent: :destroy
-  
+  has_many :payments, dependent: :destroy
+
   enum role: [:member, :donor, :admin, :premium]
 
   def self.from_omniauth(auth)
