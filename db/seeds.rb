@@ -14,7 +14,7 @@ Feature.create(description: "Live Counting", template_id: 2)
 Feature.create(description: "Support of GIF images and reactions", template_id: 2)
 Feature.create(description: "Images will be resized automatically to fit in frame", template_id: 2)
 
-Template.create(id:3, name: "Professional Look",  path: "/templates/3", image_count: 3, needs_background: false, needs_image_names: true, tcategoryype: 0)
+Template.create(id:3, name: "Professional Look",  path: "/templates/3", image_count: 3, needs_background: false, needs_image_names: true, category: 0)
 Feature.create(description: "Live Counting", template_id: 3)
 Feature.create(description: "Support of GIF images and reactions", template_id: 3)
 Feature.create(description: "Stylish background", template_id: 3)
