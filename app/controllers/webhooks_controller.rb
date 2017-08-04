@@ -1,5 +1,6 @@
 class WebhooksController < ApplicationController
+  protect_from_forgery :except => :new_payment
   def new_payment
-    byebug
+    puts params
   end
 end
