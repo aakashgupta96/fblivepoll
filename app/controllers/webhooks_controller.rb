@@ -1,7 +1,6 @@
 class WebhooksController < ApplicationController
   protect_from_forgery :except => :new_payment
   def new_payment
-    byebug
     response = validate_IPN_notification(request.raw_post)
     case response
     when "VERIFIED"
@@ -15,10 +14,7 @@ class WebhooksController < ApplicationController
 
   protected 
 
-
-
   def validate_IPN_notification(raw)
-
     uri = URI.parse('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate')
     #uri = URI.parse('https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate')
     http = Net::HTTP.new(uri.host, uri.port)
