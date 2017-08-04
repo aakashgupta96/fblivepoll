@@ -1,5 +1,6 @@
 class WebhooksController < ApplicationController
-  def create_payment
+  protect_from_forgery :except => :recurly_notification
+  def new_payment
     byebug
   end
 end

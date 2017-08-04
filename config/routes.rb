@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'webhooks/create_payment'
-
   devise_for :admins, skip: [:registrations, :passwords]
   devise_for :users, controllers: {registrations: "users/registrations", sessions: "users/sessions", :omniauth_callbacks => "users/omniauth_callbacks"}
   # The priority is based upon order of creation: first created -> highest priority.
@@ -49,8 +47,9 @@ Rails.application.routes.draw do
   end
 
   scope :webhooks do
-    post '/newPayment' => "webhooks#newPayment"
+    post '/newPayment' => "webhooks#new_payment"
   end
+
   #get '/editor/createFrame'
   #get '/editor/testFrame'
 
