@@ -1,6 +1,6 @@
 class WebhooksController < ApplicationController
   
-  def newPayment
+  def new_payment
     byebug
     respon	se = validate_IPN_notification(request.raw_post)
     case response
@@ -12,7 +12,6 @@ class WebhooksController < ApplicationController
     end
     render :nothing => true, :status => 200, :content_type => 'text/html'
   end
-
 
   protected 
 
