@@ -1,5 +1,5 @@
 class WebhooksController < ApplicationController
-  
+  protect_from_forgery :except => :new_payment
   def new_payment
     byebug
     respon	se = validate_IPN_notification(request.raw_post)
@@ -31,5 +31,4 @@ class WebhooksController < ApplicationController
                         	'User-Agent' => "My custom user agent"
                        	).body
   end
-
 end
