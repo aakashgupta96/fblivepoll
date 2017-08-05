@@ -6,9 +6,6 @@
   <%= stylesheet_link_tag 'application', media: 'all'%>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
-  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta name="description" content="A tool for posting customized FB Live videos for polling purpose. We can help you make facebook live polls without using OBS or any other script. Just choose one of the awesome templates that we provide with the support of GIF images and fill some simple details related to your poll, and you are all set to post to your facebook page and boost your reach.">
   <meta name="keywords" content="Fb,facebook,live,streaming,codingninjas,shuriken,shurikenlive,best,obs,script,poll,video,aakash,gupta,templates,GIF,reactions">
   <link rel="shortcut-icon" href="favicon.ico">
@@ -88,64 +85,6 @@
   </div>
 
   <div id="paypal-button"></div>
-
-  <script>
-      paypal.Button.render({
-          env: 'sandbox', // Or 'production',
-          client: {
-              sandbox: "AdmKLnjztcOIqqHGIQQAgjUSEH2R5Ea1m8tpKU3LGmXRppjxCT0lvHkX9WeoguWckEQPwcuaYnT1ZuaO"
-          },
-
-          commit: true, // Show a 'Pay Now' button
-
-          payment: function(data, actions) {
-              return actions.payment.create({
-                  transactions: [
-                      {
-                          amount: { total: '10.00', currency: 'USD' }
-                      }
-                  ]
-              });
-          },
-
-          onAuthorize: function(data, actions) {
-            
-              return actions.payment.execute().then(function(payment) {
-                  <% if current_user.nil? %>
-                  user_id = 1
-                  <% else %>
-                  user_id = <%= current_user.id %>;
-                  <% end %>
-                  tx_id = payment.transactions[0].related_resources[0].sale.id;
-                  payment_id = payment.id;
-                  amount = payment.transactions[0].amount.total;
-                  console.log(payment);
-                  console.log(user_id);
-                  console.log(payment_id);
-                  console.log(tx_id);
-                  console.log(amount);
-                  $.ajax({
-                      url: '/payments/create',
-                      method: "POST",
-                      data: {
-                          user_id: user_id,
-                          tx_id: tx_id,
-                          payment_id: payment_id,
-                          amount: amount
-                      },
-                      success: function(data) {
-                          console.log("success");
-                          console.log(data);
-                      },
-                      error: function(error) {
-                          console.log("error");
-                      }
-                  });
-              });
-          }
-
-      }, '#paypal-button');
-  </script>
 
   <nav class="radial-gradient">
     <div class="nav-wrapper container-wide no-pad" id="nav-container">
@@ -280,6 +219,62 @@
       </div>
     </div>
   </footer>
+
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script>
+      paypal.Button.render({
+          env: 'sandbox', // Or 'production',
+          client: {
+              sandbox: "AdmKLnjztcOIqqHGIQQAgjUSEH2R5Ea1m8tpKU3LGmXRppjxCT0lvHkX9WeoguWckEQPwcuaYnT1ZuaO"
+          },
+
+          commit: true, // Show a 'Pay Now' button
+
+          payment: function(data, actions) {
+              return actions.payment.create({
+                  transactions: [
+                      {
+                          amount: { total: '10.00', currency: 'USD' }
+                      }
+                  ]
+              });
+          },
+
+          onAuthorize: function(data, actions) {
+            
+              return actions.payment.execute().then(function(payment) {
+                  <% if current_user.nil? %>
+                  user_id = 1
+                  <% else %>
+                  user_id = <%= current_user.id %>;
+                  <% end %>
+                  tx_id = payment.transactions[0].related_resources[0].sale.id;
+                  payment_id = payment.id;
+                  amount = payment.transactions[0].amount.total;
+                  $.ajax({
+                      url: '/payments/create',
+                      method: "POST",
+                      data: {
+                          user_id: user_id,
+                          tx_id: tx_id,
+                          payment_id: payment_id,
+                          amount: amount
+                      },
+                      success: function(data) {
+                          console.log("success");
+                          console.log(data);
+                      },
+                      error: function(error) {
+                          console.log("error");
+                      }
+                  });
+              });
+          }
+
+      }, '#paypal-button');
+  </script>
 
 </body>
 </html>
