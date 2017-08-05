@@ -83,8 +83,8 @@ main
 .logo
 {
   position: relative;
-  top: -3px;
-  width: 260px;
+  top: -2px;
+  width: 200px;
   height: 64px;
 }
 .page-heading
@@ -315,10 +315,7 @@ footer a:hover
 @media only screen and (max-width : 480px) {
   .logo
   {
-    position: relative;
-    top: 0px;
     left: 10px;
-    width: 180px;
     height: 56px;
   }
   .post-show
