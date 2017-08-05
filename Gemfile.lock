@@ -432,7 +432,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   koala
-  materialize-sass (~> 0.97.8)
+  materialize-sass
   mediaelement_rails
   mini_magick
   omniauth-facebook
