@@ -4,7 +4,7 @@
     </div>
   </div>
  
-    <div id="pluginCarousel" class="scrollspy carousel carousel-slider radial-gradient relative" data-indicators="true">
+    <div id="pluginCarousel" class="carousel carousel-slider radial-gradient relative" data-indicators="true">
     	<a class="absolute btn hide-on-small-only" id="nextCarousel" style="top: 50%;right:0%; z-index:10000;"><i class="material-icons">fast_forward</i></a>
     	<a class="absolute btn hide-on-small-only"  id="prevCarousel" style="top: 50%;left:0%; z-index:100000;"><i class="material-icons">fast_rewind</i></a>
 	    <% @templates.each do |template| %>
@@ -159,10 +159,10 @@
  
 
  <script>
- 	$(window).load(function(){
-    $('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
-	});
-  $(window).resize(function(){
-    $('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
-  });
+ // 	$(window).load(function(){
+ //    $('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
+	// });
+ //  $(window).resize(function(){
+ //    $('.carousel.carousel-slider').height($(".plugin")[0].getBoundingClientRect().height + 90);
+ //  });
  </script>

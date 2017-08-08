@@ -10,6 +10,12 @@ class ApplicationController < ActionController::Base
     '/admins/panel' 
   end
 
+  def worker_available?
+    queued_jobs = Resque.size("update_frame")
+    available_workers = Resque.workers.select{|worker|  worker.queues.first=="update_frame" && !worker.working?}.count
+    return available_workers > queued_jobs
+  end
+
   protected
 
   def check_slots
@@ -17,7 +23,7 @@ class ApplicationController < ActionController::Base
       redirect_to root_path, notice: "You already have one ongoing live post. Please try after that live video ends."
     elsif  current_user.has_scheduled_post?
       redirect_to root_path, notice: "You already have one scheduled post. Please try after that post is published."
-    elsif (params["post"]["scheduled"]=="on" || Post.new.worker_available?)
+    elsif (params["post"]["scheduled"]=="on" || worker_available?)
       true
     else
       redirect_to root_path, notice: "Sorry! All slots are taken. You can schedule your post and it will be posted after scheduled time as soon as a slot will be available OR try after sometime."

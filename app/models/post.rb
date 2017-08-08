@@ -115,12 +115,6 @@ class Post < ActiveRecord::Base
 		end
 	end
 
-	def worker_available?
-		queued_jobs = Resque.size("update_frame")
-		available_workers = Resque.workers.select{|worker|  worker.queues.first=="update_frame" && !worker.working?}.count
-		return available_workers > queued_jobs
-	end
-
 	def can_start?
 		return required_images_available? && worker_available? && !self.user.is_already_live?
 	end
@@ -156,6 +150,9 @@ class Post < ActiveRecord::Base
 		path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
     driver.save_screenshot("#{path}/frame.png")
+    self.image = File.open(File.join(path,"frame.png"))
+    self.save
+    FileUtils.rm("#{path}/frame.png")
     driver.quit
     headless.destroy
 	end

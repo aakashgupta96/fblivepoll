@@ -19,11 +19,9 @@
 // = require_tree
 
 
-$(function(){ $('.carousel.carousel-slider').carousel({full_width: true}); });
 $( document ).ready(function(){
     $('.parallax').parallax();
     $('.carousel.carousel-slider').carousel({fullWidth: true});
-    $('.scrollspy').scrollSpy();
     $(".button-collapse").sideNav();
     $('.dropdown-button').dropdown({
       inDuration: 400,
@@ -65,13 +63,12 @@ $( document ).ready(function(){
     };
     $(".close-button").click(hideDonation);
 
-  })
+})
 
-  $(window).load(function(){
+$(window).load(function(){
     $("#cover").fadeOut(200);
 });
-  $(window).resize(function(){
-  });
+
 function validateAudioFiles(inputFile) {
     var extName;
     var maxFileSize = $(inputFile).data('max-file-size');
@@ -150,9 +147,4 @@ function validateImageFiles(inputFile) {
         Materialize.toast(extErrorMessage, 5000);
         $(inputFile).val('');
     };
-};
-
-function validateReactions(x) {
-    console.log($('#'+x.id).val());
-    
 };

@@ -53,4 +53,16 @@ Feature.create(description: "Plays video in a loop", template_id: 9)
 Feature.create(description: "Recorded videos can be used to go Live", template_id: 9)
 Feature.create(description: "Live Reaction Counting", template_id: 9)
 
+UserTemplate.create(template_id: 0, user_role: User.roles["premium"])
+UserTemplate.create(template_id: 0, user_role: User.roles["ultimate"])
+UserTemplate.create(template_id: 0, user_role: User.roles["admin"])
+Template.where("id > 0 and id < 9").each do |template|
+	User.roles.each do |role,value|
+		UserTemplate.create(template_id: template.id, user_role: value)
+	end
+end
+UserTemplate.create(template_id: 9, user_role: User.roles["premium"])
+UserTemplate.create(template_id: 9, user_role: User.roles["ultimate"])
+UserTemplate.create(template_id: 9, user_role: User.roles["admin"])
+
 Admin.create(email: "aakash@shurikenlive.com", password: "rasenshuriken", password_confirmation: "rasenshuriken")

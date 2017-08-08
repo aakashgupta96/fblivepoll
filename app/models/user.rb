@@ -7,7 +7,17 @@ class User < ActiveRecord::Base
   has_many :posts, dependent: :destroy
   has_many :payments, dependent: :destroy
 
-  enum role: [:member, :donor, :admin, :premium]
+  enum role: [:member, :donor, :admin, :premium, :ultimate]
+  
+  MEMBER_POST_LIMIT = 1
+  DONOR_POST_LIMIT = 1
+  PREMIUM_POST_LIMIT = 1
+  ULTIMATE_POST_LIMIT = 2
+  ADMIN_POST_LIMIT = 10
+
+  def can_use_template(template)
+    UserTemplate.where(template_id: template.id, user_role: User.roles[self.role]).empty? ? false : true
+  end
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -78,7 +88,12 @@ class User < ActiveRecord::Base
   end
 
   def is_already_live?
-    Post.live.where(user_id: self.id).empty? ? false : true
+    live_users_posts = Post.live.where(user_id: self.id).count
+    if (self.member? and  live_users_posts < MEMBER_POST_LIMIT) || (self.donor? and  live_users_posts < DONOR_POST_LIMIT) || (self.premium? and  live_users_posts < PREMIUM_POST_LIMIT) || (self.ultimate? and  live_users_posts < ULTIMATE_POST_LIMIT) || (self.admin? and  live_users_posts < ADMIN_POST_LIMIT)
+      false
+    else 
+      true
+    end
   end
 
   def has_scheduled_post?

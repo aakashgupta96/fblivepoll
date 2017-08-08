@@ -76,6 +76,14 @@ html, body, .block
     z-index: 100;
   }
 }
+#pluginCarousel
+{
+  height: 600px !important;
+  .carousel-item
+  {
+    padding: 30px;
+  }
+}
 main
 {
   flex: 1 0 auto;
@@ -361,6 +369,14 @@ footer a:hover
   {
     width: 95%;
   }
+  #pluginCarousel
+  {
+    height: 400px !important;
+    .carousel-item
+    {
+      padding: 10px !important;
+    }
+  }
 }
 
 @media only screen and (max-width : 720px)
@@ -385,6 +401,14 @@ footer a:hover
   .small-heading
   {
     margin: 10px auto;
+  }
+  #pluginCarousel
+  {
+    height: 450px !important;
+    .carousel-item
+    {
+      padding: 20px;
+    }
   }
 }
 

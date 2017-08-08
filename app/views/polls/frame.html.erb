@@ -78,7 +78,7 @@
           </div>
       </div>
             
-      <a class="row col s12 waves-effect waves-light btn-large blue darken-3" href="#modal1">Add Reaction</a>
+      <a class="row col s12 waves-effect waves-light btn-large blue darken-3 modal-trigger" href="#modal1">Add Reaction</a>
             
       <div id="modal1" class="modal modal-fixed-footer">
         <div class="modal-content">
@@ -98,7 +98,7 @@
       </div>
 
       
-      <a class="row col s12 waves-effect waves-light btn-large blue darken-3" href="#modal2">Change Background</a>
+      <a class="row col s12 waves-effect waves-light btn-large blue darken-3 modal-trigger" href="#modal2">Change Background</a>
             
       <div id="modal2" class="modal modal-fixed-footer">
         <div class="modal-content">
@@ -164,6 +164,7 @@
     <script>
      
       $(document).ready(function(){
+        console.log("adding modal")
         $('.modal').modal();
       });
 

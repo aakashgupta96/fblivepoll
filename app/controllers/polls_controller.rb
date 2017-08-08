@@ -11,6 +11,7 @@ class PollsController < ApplicationController
     @post = Post.new
     @template = Template.poll.find_by_id(params[:template])
     return redirect_to poll_templates_path, notice: "Invalid Selection of Template" if @template.nil?
+    return redirect_to poll_templates_path, notice: "You need to be a PREMIUM Member to use this template." unless current_user.can_use_template(@template)
     @template.image_count.times {@post.images.build}
     @pages = current_user.pages
   end
@@ -46,6 +47,7 @@ class PollsController < ApplicationController
     end
     @post.template = Template.poll.first
     @post.image = File.open(File.join(path,"frame.png"))
+    FileUtils.rm("#{path}/frame.png")
     return save_and_redirect
   end
 
