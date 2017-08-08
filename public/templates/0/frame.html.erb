@@ -28,7 +28,7 @@
     </div>
     <% end %>
     <div class="wrapper">
-      <img src="<%=ENV['prefix']%><%=post.image.url%>" class="background">
+      <img src="<%=post.image.url%>" class="background">
       <% i=1 %>
       <% post.counters.each do |counter|%>
         <div class="absolute <%=counter.reaction%>">

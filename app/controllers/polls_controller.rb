@@ -46,6 +46,7 @@ class PollsController < ApplicationController
     end
     @post.template = Template.poll.first
     @post.image = File.open(File.join(path,"frame.png"))
+    FileUtils.rm("#{path}/frame.png")
     return save_and_redirect
   end
 

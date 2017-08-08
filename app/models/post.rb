@@ -156,6 +156,9 @@ class Post < ActiveRecord::Base
 		path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
     driver.save_screenshot("#{path}/frame.png")
+    self.image = File.open(File.join(path,"frame.png"))
+    self.save
+    FileUtils.rm("#{path}/frame.png")
     driver.quit
     headless.destroy
 	end
