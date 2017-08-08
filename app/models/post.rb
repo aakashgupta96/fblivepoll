@@ -4,7 +4,7 @@ class Post < ActiveRecord::Base
 	mount_uploader :audio, AudioUploader
 	mount_uploader :background, BackgroundUploader
 	mount_uploader :video, VideoUploader
-	mount_uploader :image, ImageUploader
+	mount_uploader :image, ScreenshotUploader
 	
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
