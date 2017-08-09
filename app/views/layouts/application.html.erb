@@ -13,14 +13,34 @@
 </head>
 
 <body>
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  
+  <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
     (adsbygoogle = window.adsbygoogle || []).push({
       google_ad_client: "ca-pub-4726706343331157",
       enable_page_level_ads: true
     });
   </script>    
-  
+
+   --><script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '241493676272963',
+        xfbml      : true,
+        version    : 'v2.9'
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+
   <div id="cover">
     <div class="preloader-wrapper big active">
       <div class="spinner-layer spinner-blue">
@@ -146,7 +166,7 @@
 <%= yield %>
 </main>
 
-<center>
+<!-- <center>
   <ins class="adsbygoogle"
        style="display:block"
        data-ad-client="ca-pub-4726706343331157"
@@ -156,7 +176,7 @@
   (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
 </center>
-<footer class="page-footer radial-gradient">
+ --><footer class="page-footer radial-gradient">
     <div class="row">
       <div class="row">
         <div class="col l5 m12 s12">
@@ -226,11 +246,11 @@
           onAuthorize: function(data, actions) {
             
               return actions.payment.execute().then(function(payment) {
-                  <% if current_user.nil? %>
+                  <%# if current_user.nil? %>
                   user_id = 1
-                  <% else %>
+                  <%# else %>
                   user_id = <%= current_user.id %>;
-                  <% end %>
+                  <%# end %>
                   tx_id = payment.transactions[0].related_resources[0].sale.id;
                   payment_id = payment.id;
                   amount = payment.transactions[0].amount.total;

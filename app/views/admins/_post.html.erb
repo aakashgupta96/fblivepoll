@@ -2,7 +2,7 @@
 	<div class="card">
     <div class="card-content zero-padding">
       <% if post.poll? %>
-        <img src="/uploads/post/<%=post.id%>/frame.png" class=" activator post-image">
+        <img src="<%=post.image.url%>" class=" activator post-image">
       <% else %>
         <img src="/videos/frame.png" class=" activator post-image">
       <% end %>
