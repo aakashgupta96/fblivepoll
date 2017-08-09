@@ -132,8 +132,9 @@ class Post < ActiveRecord::Base
 			graph = Koala::Facebook::API.new(self.user.token)
 			access_token = graph.get_page_access_token(self.page_id)
 		rescue Exception => e
-			attempts += 1
-			retry if attempts <= 3
+			puts e.message, e.class
+			#attempts += 1
+			#retry if attempts <= 1
 			#raise e
 		end
 	end
