@@ -18,6 +18,35 @@ class Post < ActiveRecord::Base
 
 	scope :ongoing, ->{ where(live: true) }
 
+	def self.update_screenshots
+		headless = Headless.new(display: rand(100))
+		headless.start
+		driver = Selenium::WebDriver.for :chrome
+		driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
+		driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,516)
+
+		Post.poll.where("template_id != 0").order(id: :desc).each do |post|
+			begin
+				post.create_html
+				driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{post.id}/frame.html"
+				sleep 0.1
+				path = File.join(Rails.root,'public','uploads','post',post.id.to_s)
+				FileUtils.mkdir_p(path) unless File.exist?(path)
+				driver.save_screenshot("#{path}/frame.png")
+				f = File.open(File.join(path,"frame.png"))
+				post.image = frame
+				post.save
+				f.close
+				FileUtils.rm("#{path}/frame.png")
+		  rescue Exception => e
+		  	byebug
+		  	puts e.message,e.class
+		  end
+		end
+		driver.quit
+		headless.destroy
+	end
+
 	def update_status
 		begin
 			query = "https://graph.facebook.com/v2.8/?ids=#{self.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
