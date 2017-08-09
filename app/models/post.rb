@@ -191,9 +191,12 @@ class Post < ActiveRecord::Base
 
    def open_in_browser(browser = "firefox")
    	create_html
+   	width = 800
    	if browser == "firefox"
+   		height = 521
    		headless = Headless.new
    	else
+   		height = 516
    		headless = Headless.new(display: rand(100))
    	end
     headless.start
