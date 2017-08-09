@@ -7,7 +7,7 @@ class ScreenshotUploader < CarrierWave::Uploader::Base
   # Choose what kind of storage to use for this uploader:
   #storage :file
   #storage :fog
-  process :to_jpeg => [800, 455]
+  process :to_jpeg => [800, 450]
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
