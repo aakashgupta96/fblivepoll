@@ -31,8 +31,8 @@ class ScreenshotUploader < CarrierWave::Uploader::Base
   def to_jpeg(width, height)
     manipulate! do |img|
       img.format("jpeg") do |c|
-        c.resize      "#{width}x#{height}>"
         c.resize      "#{width}x#{height}<"
+        c.resize      "#{width}x#{height}>"
       end
       img
     end

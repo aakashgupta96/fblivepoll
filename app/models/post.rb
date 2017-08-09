@@ -153,7 +153,7 @@ class Post < ActiveRecord::Base
     begin
     	f = File.open(File.join(path,"frame.png"))
     	self.image = f
-    	self.save
+    		self.save
     	FileUtils.rm("#{path}/frame.png")
     rescue
     	#ignore
@@ -185,12 +185,17 @@ class Post < ActiveRecord::Base
 
    def open_in_browser(browser = "firefox")
    	create_html
+   	headless = nil
    	if browser == "firefox"
    		headless = Headless.new
+   			height = 521
+   			width = 800
    	else
    		headless = Headless.new(display: rand(100))
+   			height = 516
+   			width = 800
    	end
-    headless.start
+   	headless.start
     attempts = 0
     begin
     	driver = Selenium::WebDriver.for browser.to_sym
@@ -201,7 +206,7 @@ class Post < ActiveRecord::Base
     end
     driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{self.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
-    driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
+    driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     [driver,headless]
 	 end
 
