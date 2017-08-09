@@ -210,7 +210,7 @@ class Post < ActiveRecord::Base
     end
     driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{self.id}/frame.html"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
-    driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,521)
+    driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     [driver,headless]
 	 end
 
