@@ -134,7 +134,7 @@ class Post < ActiveRecord::Base
 		rescue Exception => e
 			attempts += 1
 			retry if attempts <= 3
-			#raise e
+			raise e
 		end
 	end
 
