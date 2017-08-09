@@ -29,17 +29,16 @@ class Post < ActiveRecord::Base
 			begin
 				post.create_html
 				driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{post.id}/frame.html"
-				sleep 0.1
+				sleep 0.5
 				path = File.join(Rails.root,'public','uploads','post',post.id.to_s)
 				FileUtils.mkdir_p(path) unless File.exist?(path)
 				driver.save_screenshot("#{path}/frame.png")
 				f = File.open(File.join(path,"frame.png"))
-				post.image = frame
+				post.image = f
 				post.save
 				f.close
 				FileUtils.rm("#{path}/frame.png")
 		  rescue Exception => e
-		  	byebug
 		  	puts e.message,e.class
 		  end
 		end
@@ -161,10 +160,9 @@ class Post < ActiveRecord::Base
 			graph = Koala::Facebook::API.new(self.user.token)
 			access_token = graph.get_page_access_token(self.page_id)
 		rescue Exception => e
-			puts e.message, e.class
-			#attempts += 1
-			#retry if attempts <= 1
-			#raise e
+			attempts += 1
+			retry if attempts <= 1
+			raise e
 		end
 	end
 
