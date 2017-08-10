@@ -18,6 +18,34 @@ class Post < ActiveRecord::Base
 
 	scope :ongoing, ->{ where(live: true) }
 
+	def self.update_screenshots
+		headless = Headless.new(display: rand(100))
+		headless.start
+		driver = Selenium::WebDriver.for :chrome
+		driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
+		driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,516)
+
+		Post.poll.where("template_id != 0").order(id: :desc).each do |post|
+			begin
+				post.create_html
+				driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{post.id}/frame.html"
+				sleep 0.5
+				path = File.join(Rails.root,'public','uploads','post',post.id.to_s)
+				FileUtils.mkdir_p(path) unless File.exist?(path)
+				driver.save_screenshot("#{path}/frame.png")
+				f = File.open(File.join(path,"frame.png"))
+				post.image = f
+				post.save
+				f.close
+				FileUtils.rm("#{path}/frame.png")
+		  rescue Exception => e
+		  	puts e.message,e.class
+		  end
+		end
+		driver.quit
+		headless.destroy
+	end
+
 	def update_status
 		begin
 			query = "https://graph.facebook.com/v2.8/?ids=#{self.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
@@ -28,7 +56,6 @@ class Post < ActiveRecord::Base
 				self.published!
 			end
 		rescue Exception => e
-			#Ignored
 			puts e.class,e.message
 		end
 	end
@@ -48,7 +75,6 @@ class Post < ActiveRecord::Base
 				end
 			end
     rescue Exception => e
-      #Ignored
       puts e.class,e.message
     end
 	end
@@ -88,7 +114,6 @@ class Post < ActiveRecord::Base
 		  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
 			self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
 		  Resque.enqueue(UpdateFrame,self.id)
-		  #Resque.enqueue(NotifyAdmins,true,self.video_id)
 		  return true
 		rescue Exception => e
 			puts e.class,e.message
@@ -127,7 +152,7 @@ class Post < ActiveRecord::Base
 			access_token = graph.get_page_access_token(self.page_id)
 		rescue Exception => e
 			attempts += 1
-			retry if attempts <= 3
+			retry if attempts <= 1
 			raise e
 		end
 	end
@@ -153,12 +178,12 @@ class Post < ActiveRecord::Base
     begin
     	f = File.open(File.join(path,"frame.png"))
     	self.image = f
-    		self.save
-    	FileUtils.rm("#{path}/frame.png")
+    	self.save
     rescue
     	#ignore
     ensure
     	f.close
+    	FileUtils.rm("#{path}/frame.png")
     end
     driver.quit
     headless.destroy
@@ -166,34 +191,28 @@ class Post < ActiveRecord::Base
 
 	def create_html
 		images = self.images #Prepare an html for the frame of this post
-    #if self.poll?
-		erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
-    #else
-      #erb_file = Rails.root.to_s + "/public/videos/loop_video_frame.html.erb"
-    #end
-    html_file = Rails.root.to_s + "/public/uploads/post/#{self.id}/frame.html" #=>"target file name"
-    erb_str = File.read(erb_file)
-    namespace = OpenStruct.new(post: self, images: images)
-    result = ERB.new(erb_str)
-    result = result.result(namespace.instance_eval { binding })
-    path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
-    FileUtils.mkdir_p(path) unless File.exist?(path)
-    File.open(html_file, 'w') do |f|
-      f.write(result)
-    end
-   end
+	  erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
+	  html_file = Rails.root.to_s + "/public/uploads/post/#{self.id}/frame.html" #=>"target file name"
+	  erb_str = File.read(erb_file)
+	  namespace = OpenStruct.new(post: self, images: images)
+	  result = ERB.new(erb_str)
+	  result = result.result(namespace.instance_eval { binding })
+	  path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
+	  FileUtils.mkdir_p(path) unless File.exist?(path)
+	  File.open(html_file, 'w') do |f|
+	    f.write(result)
+	  end
+	end
 
-   def open_in_browser(browser = "firefox")
+  def open_in_browser(browser = "firefox")
    	create_html
-   	headless = nil
+   	width = 800
    	if browser == "firefox"
+   		height = 521
    		headless = Headless.new
-   			height = 521
-   			width = 800
    	else
+   		height = 516
    		headless = Headless.new(display: rand(100))
-   			height = 516
-   			width = 800
    	end
    	headless.start
     attempts = 0
@@ -208,7 +227,7 @@ class Post < ActiveRecord::Base
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     [driver,headless]
-	 end
+	end
 
 	def ambient?
 		return (self.duration.hour*3600) + (self.duration.min*60) >= 4.hours.to_i

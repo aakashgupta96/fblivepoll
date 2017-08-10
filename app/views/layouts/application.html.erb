@@ -10,10 +10,42 @@
   <meta name="keywords" content="Fb,facebook,live,streaming,codingninjas,shuriken,shurikenlive,best,obs,script,poll,video,aakash,gupta,templates,GIF,reactions">
   <link rel="shortcut-icon" href="favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
 </head>
 
 <body>
-  
+  <script>
+    // var clicked = false;
+    // document.getElementsByTagName("body")[0].addEventListener('click',function(){
+    //   if(!clicked)
+    //   {
+    //     clicked = true;
+    //     $.confirm({
+    //       useBootstrap: false,
+    //       theme: 'supervan',
+    //       title: 'Confirm!',
+    //       content: 'Simple confirm!',
+    //       buttons: {
+    //           confirm: function () {
+    //               $.alert('Confirmed!');
+    //           },
+    //           cancel: function () {
+    //               $.alert('Canceled!');
+    //           },
+    //           somethingElse: {
+    //               text: 'Something else',
+    //               btnClass: 'btn-blue',
+    //               keys: ['enter', 'shift'],
+    //               action: function(){
+    //                   $.alert('Something else?');
+    //               }
+    //           }
+    //       }
+    //     });
+    //   }
+    // })
+  </script>
   <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
     (adsbygoogle = window.adsbygoogle || []).push({
@@ -249,7 +281,7 @@
                   <%# if current_user.nil? %>
                   user_id = 1
                   <%# else %>
-                  user_id = <%= current_user.id %>;
+                  user_id = <%#= current_user.id %>;
                   <%# end %>
                   tx_id = payment.transactions[0].related_resources[0].sale.id;
                   payment_id = payment.id;
