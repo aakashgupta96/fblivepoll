@@ -11,7 +11,7 @@ class Payment < ActiveRecord::Base
       @user.donor!
     elsif self.amount == 15
       @user.premium!
-    elsif self.anmount == 20
+    elsif self.amount == 20
       @user.ultimate!
     end
   end
