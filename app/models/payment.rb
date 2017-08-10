@@ -9,8 +9,10 @@ class Payment < ActiveRecord::Base
     @user.update(subscription_date: Date.current, subscription_duration: 1)
     if self.amount == 10
       @user.donor!
-    elsif self.anmount == 20
+    elsif self.amount == 15
       @user.premium!
+    elsif self.anmount == 20
+      @user.ultimate!
     end
   end
 
