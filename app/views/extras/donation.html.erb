@@ -88,76 +88,83 @@
   </div>
 </div>  
 <!-- <div id="paypal-button"></div> -->
-
+</script>
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-  <script>
-      ['#donor-checkout' , '#premium-checkout' , '#ultimate-checkout'].forEach(function(selector){
-        var cost = $(selector).attr("data-cost");
-        paypal.Button.render({
-          env: 'sandbox', // Or 'production',
-          client: {
-              sandbox: "AdmKLnjztcOIqqHGIQQAgjUSEH2R5Ea1m8tpKU3LGmXRppjxCT0lvHkX9WeoguWckEQPwcuaYnT1ZuaO"
-          },
-          locale: 'en_US',
+<script>
+  ['#donor-checkout','#premium-checkout','#ultimate-checkout'].forEach(function(selector){
+    var cost = $(selector).attr("data-cost");
+    paypal.Button.render({
+      env: 'sandbox', // Or 'production',
+      client: {
+          sandbox: "AdmKLnjztcOIqqHGIQQAgjUSEH2R5Ea1m8tpKU3LGmXRppjxCT0lvHkX9WeoguWckEQPwcuaYnT1ZuaO"
+      },
+      locale: 'en_US',
 
-          style: {
-            color: "silver", 
-            shape: "rect",
-            size: "responsive",
-            label: 'checkout'
-          },
+      style: {
+        color: "silver", 
+        shape: "rect",
+        size: "responsive",
+        label: 'checkout'
+      },
 
-          commit: function(){
-            if(user_id != null)
-              return true;
-            else
-              return false;
-          }
-          , // Show a 'Pay Now' button
+      // Show a 'Pay Now' button
+      commit: true,
+      
+      payment: function(data, actions) {
+        if(user_id == null)
+        {
+          $.alert({
+              theme: "supervan",
+              useBootstrap: false,
+              title: "Alert!",
+              content: "Please sign-in to continue with your purchase."
+            }
+          );
+          return false;
+        }
+        else
+        {
+          return actions.payment.create({
+            transactions: [
+              {
+                amount: { total: cost, currency: 'USD' }
+              }
+            ]
+          });
+        }
+      },
 
-          payment: function(data, actions) {
-              return actions.payment.create({
-                  transactions: [
-                      {
-                          amount: { total: cost, currency: 'USD' }
-                      }
-                  ]
-              });
-          },
+      onAuthorize: function(data, actions) {
+        return actions.payment.execute().then(function(payment) {
+          tx_id = payment.transactions[0].related_resources[0].sale.id;
+          payment_id = payment.id;
+          amount = payment.transactions[0].amount.total;
+          $.ajax({
+              url: '/payments/create',
+              method: "POST",
+              data: {
+                  user_id: user_id,
+                  tx_id: tx_id,
+                  payment_id: payment_id,
+                  amount: amount
+              },
+              success: function(data) {
+                  console.log("success");
+                  console.log(data);
+              },
+              error: function(error) {
+                  console.log("error");
+              }
+          });
+        });
+      },
+      
+      onCancel: function(data, actions) {
+        // Show a cancel page or return to cart
+      }
 
-          onAuthorize: function(data, actions) {
-            
-              return actions.payment.execute().then(function(payment) {
-                  console.log("user id = " + user_id);
-                  tx_id = payment.transactions[0].related_resources[0].sale.id;
-                  payment_id = payment.id;
-                  amount = payment.transactions[0].amount.total;
-                  $.ajax({
-                      url: '/payments/create',
-                      method: "POST",
-                      data: {
-                          user_id: user_id,
-                          tx_id: tx_id,
-                          payment_id: payment_id,
-                          amount: amount
-                      },
-                      success: function(data) {
-                          console.log("success");
-                          console.log(data);
-                      },
-                      error: function(error) {
-                          console.log("error");
-                      }
-                  });
-              });
-          },
-          
-          onCancel: function(data, actions) {
-            // Show a cancel page or return to cart
-          }
-
-      },selector);
-    });
+    },selector);
+  });
   </script>
 
 <style>
