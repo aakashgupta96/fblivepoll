@@ -37,11 +37,11 @@ html, body, .block
     background-color: #fff;
     border-radius: 50%;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
-    height: 24px;
-    width: 24px;
+    height: 16px;
+    width: 16px;
     position: absolute;
-    top: -12px;
-    right: -12px;
+    top: -8px;
+    right: -8px;
     z-index: 1;
     transition: background-color .2s;
   }
@@ -357,8 +357,8 @@ footer a:hover
     }
     .donate-image
     {
-      margin: 10% 0 0 0;
-      height: 60px;
+      margin: 6% 10px 0 0;
+      height: 50px;
     }
     .donation-message
     {

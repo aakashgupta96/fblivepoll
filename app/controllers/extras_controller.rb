@@ -17,7 +17,7 @@ class ExtrasController < ApplicationController
 	def demo
 	end
 
-	def donation
+	def pricing
 	end
 
 end

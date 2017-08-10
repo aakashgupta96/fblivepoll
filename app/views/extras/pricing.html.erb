@@ -148,12 +148,29 @@
                   payment_id: payment_id,
                   amount: amount
               },
+              beforeSend: function() {
+                // setTimeout($.alert({
+                //   theme: "supervan",
+                //   useBootstrap: false,
+                //   title: 'Note',
+                //   content: 'Please do not refresh this page !!!'
+                // }),1);
+              },
               success: function(data) {
-                  console.log("success");
-                  console.log(data);
+                $.alert({
+                  theme: "supervan",
+                  useBootstrap: false,
+                  title: "Payment Success!",
+                  content: "Your account will get updated within few minutes. In case of any trouble or doubt, please contact us."
+                })
               },
               error: function(error) {
-                  console.log("error");
+                $.alert({
+                  theme: "supervan",
+                  useBootstrap: false,
+                  title: "Unsuccessful Payment!",
+                  content: "Payment was unsuccessful. In case of any trouble or doubt, please contact us."
+                })
               }
           });
         });

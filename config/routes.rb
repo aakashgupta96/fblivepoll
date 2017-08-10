@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get '/privacy' => 'extras#privacy'
   get '/terms' => 'extras#terms'
   get '/demo' => 'extras#demo'
-  get '/donation' => 'extras#donation'
+  get '/pricing' => 'extras#pricing'
   #get '/test' => 'extras#test'
   get '/posts/:post_id' => 'users#show' 
 

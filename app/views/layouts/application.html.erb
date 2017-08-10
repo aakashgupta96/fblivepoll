@@ -99,6 +99,7 @@
       <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a href="/" class="nav-option center-align">Home</a></li>
+        <li><a href="/pricing" class="nav-option center-align">Pricing</a></li>
         <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li>
         <li style=" margin-right: 10px;">
           <div class='dropdown-button waves-effect waves-light btn' data-activates='dropdown1'>
@@ -128,6 +129,7 @@
       </ul>
       <ul class="side-nav" id="mobile-demo">
         <li><a href="/">Home</a></li>
+        <li><a href="/pricing">Pricing</a></li>
         <li><a href="/demo">Watch Demo</a></li>
         <% if user_signed_in? %>
           <li><%= link_to "My Posts", myposts_path%></li>
@@ -162,8 +164,8 @@
 <% unless current_user_is_donor? %>  
 <div id="donation" class="absolute center-align z-depth-5 linear-gradient padding-5 card
 .">
-  <a href="" class="close-button"><i class="material-icons">close</i>
-  <a href="/donation" class="donate-anchor"><img src="/donate.png" class="donate-image"></a>
+  <a href="" class="close-button"><i class="fa fa-times relative" aria-hidden="true" style="top: -3px;"></i>
+  <a href="/pricing" class="donate-anchor"><img src="/paypal-silver.png" class="donate-image"><img class="donate-image hide-on-med-and-down" src="/paypal-logos.png"></a>
   <div class="donation-message">Donate for the future development of this project and enjoy <span class="bold">PREMIUM FEATURES.</span><br><a href="/donation" class="white-text">More Info...</a></div>
 </div>
 <% end %>
