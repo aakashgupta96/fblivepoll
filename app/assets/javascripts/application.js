@@ -18,7 +18,6 @@
 // = require materialize-rails-confirm.js
 // = require_tree
 
-
 $( document ).ready(function(){
     $('.parallax').parallax();
     $('.carousel.carousel-slider').carousel({fullWidth: true});

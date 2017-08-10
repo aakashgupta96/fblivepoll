@@ -16,35 +16,11 @@
 
 <body>
   <script>
-    // var clicked = false;
-    // document.getElementsByTagName("body")[0].addEventListener('click',function(){
-    //   if(!clicked)
-    //   {
-    //     clicked = true;
-    //     $.confirm({
-    //       useBootstrap: false,
-    //       theme: 'supervan',
-    //       title: 'Confirm!',
-    //       content: 'Simple confirm!',
-    //       buttons: {
-    //           confirm: function () {
-    //               $.alert('Confirmed!');
-    //           },
-    //           cancel: function () {
-    //               $.alert('Canceled!');
-    //           },
-    //           somethingElse: {
-    //               text: 'Something else',
-    //               btnClass: 'btn-blue',
-    //               keys: ['enter', 'shift'],
-    //               action: function(){
-    //                   $.alert('Something else?');
-    //               }
-    //           }
-    //       }
-    //     });
-    //   }
-    // })
+    <% if current_user %>
+    user_id = <%= current_user.id %>;
+    <% else %>
+    user_id = null; 
+    <% end %>
   </script>
   <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
@@ -116,8 +92,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div id="paypal-button"></div> -->
 
   <nav class="radial-gradient">
     <div class="nav-wrapper container-wide no-pad" id="nav-container">
@@ -255,59 +229,5 @@
 
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-  <script>
-      paypal.Button.render({
-          env: 'sandbox', // Or 'production',
-          client: {
-              sandbox: "AdmKLnjztcOIqqHGIQQAgjUSEH2R5Ea1m8tpKU3LGmXRppjxCT0lvHkX9WeoguWckEQPwcuaYnT1ZuaO"
-          },
-
-          commit: true, // Show a 'Pay Now' button
-
-          payment: function(data, actions) {
-              return actions.payment.create({
-                  transactions: [
-                      {
-                          amount: { total: '10.00', currency: 'USD' }
-                      }
-                  ]
-              });
-          },
-
-          onAuthorize: function(data, actions) {
-            
-              return actions.payment.execute().then(function(payment) {
-                  <%# if current_user.nil? %>
-                  user_id = 1
-                  <%# else %>
-                  user_id = <%#= current_user.id %>;
-                  <%# end %>
-                  tx_id = payment.transactions[0].related_resources[0].sale.id;
-                  payment_id = payment.id;
-                  amount = payment.transactions[0].amount.total;
-                  $.ajax({
-                      url: '/payments/create',
-                      method: "POST",
-                      data: {
-                          user_id: user_id,
-                          tx_id: tx_id,
-                          payment_id: payment_id,
-                          amount: amount
-                      },
-                      success: function(data) {
-                          console.log("success");
-                          console.log(data);
-                      },
-                      error: function(error) {
-                          console.log("error");
-                      }
-                  });
-              });
-          }
-
-      }, '#paypal-button');
-  </script>
- -->
 </body>
 </html>

@@ -24,7 +24,9 @@
               <li class="pricing-feature au"><i class="icon-close"></i>Premium Templates.</li>
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
-            <a href="/purchase" class="btn purchase-btn">Purchase</a>
+            <div class="flexbox">
+              <div id="donor-checkout" data-cost="10" class="purchase-button"></div>
+            </div>
           </div>
         </div>
 
@@ -49,7 +51,9 @@
               <li class="pricing-feature"><i class="icon-accept"></i>Premium Templates.</li>
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
-            <a href="/purchase" class="btn">Purchase</a>
+            <div class="flexbox">
+              <div id="premium-checkout" data-cost="15" class="purchase-button"></div>
+            </div>
           </div>
         </div>
 
@@ -73,14 +77,89 @@
               <li class="pricing-feature"><i class="icon-accept"></i>Premium Templates.</li>
               <li class="pricing-feature"><i class="icon-accept"></i>Multiple Live at Same Time.</li>
             </ul>
-            <a href="/purchase" class="btn">Purchase</a>
+            <div class="flexbox">
+              <div id="ultimate-checkout" data-cost="20" class="purchase-button"></div>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
   </div>
-</div>       
+</div>  
+<!-- <div id="paypal-button"></div> -->
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <script>
+      ['#donor-checkout' , '#premium-checkout' , '#ultimate-checkout'].forEach(function(selector){
+        var cost = $(selector).attr("data-cost");
+        paypal.Button.render({
+          env: 'sandbox', // Or 'production',
+          client: {
+              sandbox: "AdmKLnjztcOIqqHGIQQAgjUSEH2R5Ea1m8tpKU3LGmXRppjxCT0lvHkX9WeoguWckEQPwcuaYnT1ZuaO"
+          },
+          locale: 'en_US',
+
+          style: {
+            color: "silver", 
+            shape: "rect",
+            size: "responsive",
+            label: 'checkout'
+          },
+
+          commit: function(){
+            if(user_id != null)
+              return true;
+            else
+              return false;
+          }
+          , // Show a 'Pay Now' button
+
+          payment: function(data, actions) {
+              return actions.payment.create({
+                  transactions: [
+                      {
+                          amount: { total: cost, currency: 'USD' }
+                      }
+                  ]
+              });
+          },
+
+          onAuthorize: function(data, actions) {
+            
+              return actions.payment.execute().then(function(payment) {
+                  console.log("user id = " + user_id);
+                  tx_id = payment.transactions[0].related_resources[0].sale.id;
+                  payment_id = payment.id;
+                  amount = payment.transactions[0].amount.total;
+                  $.ajax({
+                      url: '/payments/create',
+                      method: "POST",
+                      data: {
+                          user_id: user_id,
+                          tx_id: tx_id,
+                          payment_id: payment_id,
+                          amount: amount
+                      },
+                      success: function(data) {
+                          console.log("success");
+                          console.log(data);
+                      },
+                      error: function(error) {
+                          console.log("error");
+                      }
+                  });
+              });
+          },
+          
+          onCancel: function(data, actions) {
+            // Show a cancel page or return to cart
+          }
+
+      },selector);
+    });
+  </script>
+
 <style>
 .dv .c {
     margin-left: -.75rem;
@@ -700,9 +779,3 @@ only screen and (max-device-width: 650px) and (orientation: landscape) {
     }
 }
 </style>
-<script>
-	$(document).ready(function(){
-		console.log($("#tabs-swipe-demo").length);
-		$("#tabs-swipe-demo").tabs({ 'swipeable' : true });
-	});
-</script>

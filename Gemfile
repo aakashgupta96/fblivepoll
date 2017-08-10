@@ -16,7 +16,7 @@ gem 'data-confirm-modal'
 gem 'devise'
 gem 'omniauth-facebook'
 gem 'unicorn'
-gem 'pg'
+gem 'pg', "0.20"
 gem 'redis', '~>3.2'
 gem "koala"
 gem 'resque',:require => "resque/server"
