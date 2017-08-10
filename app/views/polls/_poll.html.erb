@@ -26,7 +26,7 @@
   <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {:multipart => true, id: "newPoll",class: "col s12"}) do |f| %>
   <div class="white z-depth-4"  style="padding: 35px;">
     <%= f.hidden_field :template_id , value: @template.id%>
-    <div class="row" style="margin-bottom: 0px;">
+    <div class="row zero-margin">
       <div class="input-field col s12 l6">
         <%= f.text_field :title, required: true%>
         <%= f.label "Title / Heading" %>

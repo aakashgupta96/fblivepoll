@@ -177,7 +177,12 @@
       },
       
       onCancel: function(data, actions) {
-        // Show a cancel page or return to cart
+        $.alert({
+          theme: "supervan",
+          useBootstrap: false,
+          title: "Unsuccessful Payment!",
+          content: "Payment was unsuccessful. In case of any trouble or doubt, please contact us."
+        });
       }
 
     },selector);
@@ -643,7 +648,6 @@
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
-    line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
 }

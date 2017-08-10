@@ -164,6 +164,18 @@ main
   display: flex !important;
   justify-content: space-around;
   flex-wrap: wrap;
+  align-items: center;
+}
+.flexbox-vertical
+{
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.icon-descriptor
+{
+  margin-left: 5px;
 }
 .container-wide
 {
@@ -215,9 +227,17 @@ main
 {
   padding: 0px !important;
 }
+.zero-margin
+{
+  margin: 0px !important;
+}
 .padding-5
 {
   padding: 5px;
+}
+.side-padding-10
+{
+  padding: 0 10px;
 }
 .terms-box
 {
@@ -277,11 +297,18 @@ a:hover
 {
   cursor: pointer;
 }
-
-footer a:hover
+footer
 {
-  text-decoration: underline;
-  color: yellow !important;
+  .query-btn
+  {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+  }
+  a:hover
+  {
+    text-decoration: underline;
+  }
 }
 
 .plugin

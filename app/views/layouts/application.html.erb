@@ -188,43 +188,95 @@
     <div class="row">
       <div class="row">
         <div class="col l5 m12 s12">
-          <h5 class="white-text bolder">About Us</h5>
+          <h5 class="white-text bolder"><i class="fa fa-child" aria-hidden="true"></i><span class="icon-descriptor">About Us</span></h5>
           <p class="grey-text text-lighten-4">We are a team of college students working on this project. Any donation would help us in paying server charges, hosting bills and continue development on this project and is greatly appreciated. Contact us for more details.</p>
         </div>
 
-        <div class="col l2 m4 s6">
-          <h5 class="white-text bolder">Developed By</h5>
-          <ul>
+        <div class="col l2 m4 s6 flexbox-vertical">
+          <h5 class="white-text bolder"><i class="fa fa-gears" aria-hidden="true"></i><span class="icon-descriptor">Developed By</span></h5>
+          <ul class="flexbox-vertical">
             <li><a class="white-text" href="https://www.linkedin.com/in/aakash-gupta-876883124">Aakash Gupta</a></li>
             <li><a class="white-text" href="#">Apoorva Sharma</a></li>
           </ul>
         </div>
         
-        <div class="col l2 m4 s6">
-          <h5 class="white-text bolder">Guided By</h5>
-          <ul>
+        <div class="col l2 m4 s6 flexbox-vertical">
+          <h5 class="white-text bolder"><i class="fa fa-eye" aria-hidden="true"></i><span class="icon-descriptor">Guided By</span></h5>
+          <ul class="flexbox-vertical">
             <li><a class="white-text" href="https://in.linkedin.com/in/ankushsingla">Ankush Singla</a></li>
             <li><a class="white-text" href="https://in.linkedin.com/in/tushar-tuteja-00350613">Tushar Tuteja</a></li>
           </ul>
         </div>
-        <div class="col l3 m4 s12">
-          <h5 class="white-text bolder">Contact Us</h5>
+        <div class="col l3 m4 s12 flexbox-vertical">
+          <h5 class="white-text bolder"><i class="fa fa-phone" aria-hidden="true"></i><span class="icon-descriptor">Contact Us</span></h5>
           <ul>
-            <li class="white-text">
-              <i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:aakash@shurikenlive.com" class="white-text">aakash@shurikenlive.com</a>
+            <li>
+              <button data-target="ask" class="waves-effect waves-light btn modal-trigger">
+                <i class="fa fa-question-circle flexbox" aria-hidden="true">
+                  <span class="icon-descriptor" style="font-size: 15px;">
+                    Ask Question
+                  </span>
+                </i>
+              </button>
+              <div id="ask" class="modal grey-text text-darken-2">
+                <div class="modal-content">
+                  <div class="row">
+                    <form action="/extras/askQuestion" method="post" class="col s12">
+                      <div class="row zero-margin">
+                        <div class="input-field col m6 s12">
+                          <i class="material-icons prefix">account_circle</i>
+                          <input id="icon_name" type="text" class="validate">
+                          <label for="icon_name">Name</label>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <i class="material-icons prefix">phone</i>
+                          <input id="icon_telephone" type="tel" class="validate">
+                          <label for="icon_telephone">Telephone</label>
+                        </div>
+                      </div>
+                      <div class="row zero-margin">
+                        <div class="input-field col s12">
+                          <i class="material-icons prefix">email</i>
+                          <input id="icon_email" type="text" class="validate">
+                          <label for="icon_email">Email Id</label>
+                        </div>
+                      </div>
+                      <div class="row zero-margin">
+                        <div class="input-field col s12">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea id="icon_message" type="text" class="materialize-textarea"></textarea>
+                          <label for="icon_message">Message</label>
+                        </div>
+                      </div>
+                      <div class="row zero-margin">
+                        <div class="input-field col s12">
+                          <input type="submit" class="modal-action modal-close waves-effect waves-green btn col s12">
+                        </div>
+                      </div>                     
+                    </form>
+                  </div>
+                </div>
+              </div>
             </li>
-            <!--<li class="white-text">-->
-              <!--<i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:apoorva.11596@gmail.com" class="white-text">apoorva.11596@gmail.com</a>-->
-            <!--</li>-->
+            <!-- <li>
+              <i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:aakash@shurikenlive.com" class="white-text">aakash@shurikenlive.com</a>
+            </li> -->
           </ul>
         </div>
       </div>
     </div>
     <div class="footer-copyright">
-      <div class="container-extrawide">
-        © 2017 <span class="bolder">Shuriken Live</span>
-        <a class="white-text right" href="/terms" style="margin-left: 20px;">Terms and Conditions</a>
-        <a class="white-text right" href="/privacy">Privacy </a>
+      <div class="container-extrawide flexbox" style="justify-content: space-between;">
+        <div>
+          © 2017 <span class="bolder">Shuriken Live</span>
+        </div>
+        <div>
+          <a href="https://facebook.com/shurikenlive" class="white-text" style="margin-left: 10px;"><i class="fa fa-facebook-official" style="font-size: 24px;"><span class="icon-descriptor" style="font-size: 16px;">Follow Us</span></i></a>
+        </div>
+        <div class="flexbox">
+          <a class="white-text hide-on-small-only side-padding-10" href="/terms">Terms and Conditions</a>
+          <a class="white-text side-padding-10" href="/privacy">Privacy </a>
+        </div>
       </div>
     </div>
   </footer>

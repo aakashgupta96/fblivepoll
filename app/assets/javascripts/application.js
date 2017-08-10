@@ -19,12 +19,13 @@
 // = require_tree
 
 $( document ).ready(function(){
+    $('.modal').modal();
     $('.parallax').parallax();
     $('.carousel.carousel-slider').carousel({fullWidth: true});
     $(".button-collapse").sideNav();
     $('.dropdown-button').dropdown({
-      inDuration: 400,
-      outDuration: 600,
+      inDuration: 700,
+      outDuration: 700,
       constrain_width: true, // Does not change width of dropdown to that of the activator
       hover: true, // Activate on hover
       gutter: 0, // Spacing from edge
