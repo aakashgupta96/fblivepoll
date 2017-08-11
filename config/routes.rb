@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get '/pricing' => 'extras#pricing'
   #get '/test' => 'extras#test'
   get '/posts/:post_id' => 'users#show' 
+  post '/extras/ask_question' => 'extras#ask_question'
 
   scope :polls do
     get '/templates' => 'polls#templates', as: "poll_templates"

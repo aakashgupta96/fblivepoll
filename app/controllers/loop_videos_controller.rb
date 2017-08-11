@@ -13,7 +13,7 @@ class LoopVideosController < ApplicationController
   	@post = Post.new
     @template = Template.loop_video.find_by_id(params[:template])
     return redirect_to '/#pluginCarousel', notice: "Invalid Selection of Template" if @template.nil?
-    return redirect_to poll_templates_path, notice: "You need to be a PREMIUM Member to use this template." unless current_user.can_use_template(@template)
+    return redirect_to loop_video_templates_path, notice: "You need to be a PREMIUM Member to use this template." unless current_user.can_use_template(@template)
     @pages = current_user.pages
   end
 

@@ -1,11 +1,17 @@
 class NotifyAdmins
 	@queue = :notify_admins
-	@admins = ["aakash@shurikenlive.com","apoorva.11596@gmail.com"]
-	def self.perform(success=false,video_id=nil)
-		link = "www.facebook.com/#{video_id}"
+	@admins = ["support@shurikenlive.com","aakash@shurikenlive.com"]
+	
+
+	def self.perform(username,phone,user_email_id,message)
+		# link = "www.facebook.com/#{video_id}"
+		# @admins.each do |email|
+		# 	AdminMailer.new_post(email,link).deliver_now
+		# end
+		question_details = {username: username, phone: phone, user_email_id: user_email_id, message: message}
 		@admins.each do |email|
-			SuccessMailer.new_post(email,link).deliver_now if success
-			FailureMailer.new_post(email).deliver_now unless success
+			AdminMailer.new_question(email,question_details)
 		end
 	end
+
 end

@@ -5,11 +5,11 @@ Rails.application.configure do
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   CarrierWave.configure do |config|
-  config.ignore_integrity_errors = false
-  config.ignore_processing_errors = false
-  config.ignore_download_errors = false 
+    config.ignore_integrity_errors = false
+    config.ignore_processing_errors = false
+    config.ignore_download_errors = false 
   end
-config.cache_classes = false
+  config.cache_classes = false
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -29,7 +29,6 @@ config.cache_classes = false
   password:             ENV["GMAIL_PASSWORD"],
   address:              'smtp.gmail.com',
   port:                  587,
-  domain:               'gmail.com',
   authentication:       'plain',
   enable_starttls_auto:  true,
   } 

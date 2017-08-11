@@ -1,4 +1,4 @@
-Template.create(id:0, name: "Customizabe Template", path: "/templates/0", image_count: 0, needs_background: false, needs_image_names: false, category: 0)
+Template.create(id:0, name: "Custom Template", path: "/templates/0", image_count: 0, needs_background: false, needs_image_names: false, category: 0)
 Feature.create(description: "Live Counting", template_id: 0)
 Feature.create(description: "Still Png Reactions", template_id: 0)
 Feature.create(description: "Fully Customizable Frame", template_id: 0)

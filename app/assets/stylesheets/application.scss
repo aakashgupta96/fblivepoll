@@ -350,7 +350,17 @@ footer
   animation: display 1s ease-in 0s infinite alternate;
 }
 
-
+@media only screen and (max-width : 600px)
+{
+  .about-us
+  {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+  }
+}
 
 @media only screen and (max-width : 480px) {
   .logo
