@@ -18,12 +18,13 @@ $(function() {
 
   return $.rails.showConfirmDialog = function(link) {
     var message = link.attr("data-confirm");
-    console.log(message);
     $.confirm({
+      boxWidth: '80%',
       useBootstrap: false,
       theme: 'material',
       title: 'Confirm!',
       content: message,
+      draggable: true,
       buttons: {
           confirm: {
           	btnClass: "btn-dark",

@@ -278,7 +278,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.6)
       mime-types (>= 1.16, < 4)
-    materialize-sass (0.100.1)
+    materialize-sass (0.99.0)
       sass (~> 3.3)
     mediaelement_rails (0.8.2)
       jquery-rails (>= 1.0)
@@ -447,7 +447,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   koala
-  materialize-sass
+  materialize-sass (~> 0.99.0)
   mediaelement_rails
   mini_magick
   omniauth-facebook

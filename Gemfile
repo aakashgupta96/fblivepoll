@@ -7,7 +7,7 @@ gem 'droplet_kit'
 gem 'fog'
 gem 'process_exists'
 gem 'streamio-ffmpeg'
-gem 'materialize-sass'#, '~> 0.97.8'
+gem 'materialize-sass', '~>0.99.0' #'~> 0.97.8'
 gem "httparty"
 gem "headless"
 gem "selenium-webdriver"

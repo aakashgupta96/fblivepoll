@@ -44,6 +44,11 @@ html, body, .block
     right: -8px;
     z-index: 1;
     transition: background-color .2s;
+
+    i
+    {
+      top: -3px;
+    }
   }
   .donate-image
   {
@@ -390,6 +395,10 @@ footer
     .donation-message
     {
       font-size: 15px;
+    }
+    .close-button i
+    {
+      top: -2px;
     }
   }
   .container-wide

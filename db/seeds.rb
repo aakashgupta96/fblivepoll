@@ -47,7 +47,7 @@ Feature.create(description: "Live video streaming", template_id: 8)
 Feature.create(description: "Plays video in a loop", template_id: 8)
 Feature.create(description: "Recorded videos can be used to go Live", template_id: 8)
 
-Template.create(id:9, name: "Stream Video + Reaction Count", path: "/templates/9", image_count: 0, needs_background: false, needs_image_names: false, category: 1)
+Template.create(id:9, name: "Hybrid Video", path: "/templates/9", image_count: 0, needs_background: false, needs_image_names: false, category: 1)
 Feature.create(description: "Live video streaming", template_id: 9)
 Feature.create(description: "Plays video in a loop", template_id: 9)
 Feature.create(description: "Recorded videos can be used to go Live", template_id: 9)
