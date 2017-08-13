@@ -498,7 +498,7 @@ DEPENDENCIES
   mediaelement_rails
   mini_magick
   omniauth-facebook
-  pg (= 0.20)
+  pg (~> 0.20.0)
   process_exists
   rails (= 4.2.6)
   redis (~> 3.2)
