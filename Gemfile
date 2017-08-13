@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem 'activeadmin', github: 'activeadmin'
 gem 'kaminari'
 gem "sentry-raven"
 gem 'droplet_kit'

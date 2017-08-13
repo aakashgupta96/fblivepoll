@@ -28,14 +28,14 @@
       <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
       <% end %>
       <div class="absolute" style=" bottom: 10px;">
-        <a href="/admins/destroy/<%=post.id%>" data-method="post" data-confirm="This will destroy this post from Database. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder black">Destroy</a>
+        <a href="/moderators/destroy/<%=post.id%>" data-method="post" data-confirm="This will destroy this post from Database. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder black">Destroy</a>
       	<% if post.live %>
-      		<a href="/admins/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+      		<a href="/moderators/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
         <% else %>
-          <a href="/admins/start/<%=post.id%>" data-method="post" data-confirm="This will start this post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder greenish">Start Now</a>
+          <a href="/moderators/start/<%=post.id%>" data-method="post" data-confirm="This will start this post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder greenish">Start Now</a>
         <% end %>
       	<% if post.status == "scheduled" %>
-      		<a href="/admins/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+      		<a href="/moderators/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
       	<% end %>
       </div>
     </div>

@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
 
   enum role: [:member, :donor, :admin, :premium, :ultimate]
   
+  scope :banned, ->{ where(banned: true) }
+
   MEMBER_POST_LIMIT = 1
   DONOR_POST_LIMIT = 1
   PREMIUM_POST_LIMIT = 1
@@ -17,6 +19,14 @@ class User < ActiveRecord::Base
 
   def can_use_template(template)
     UserTemplate.where(template_id: template.id, user_role: User.roles[self.role]).empty? ? false : true
+  end
+
+  def ban!
+    self.update(banned: true)
+  end
+
+  def unban!
+    self.update(banned: false)
   end
 
   def self.from_omniauth(auth)

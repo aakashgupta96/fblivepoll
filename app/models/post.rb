@@ -14,7 +14,7 @@ class Post < ActiveRecord::Base
 	accepts_nested_attributes_for :images, allow_destroy: true
 
 	enum category: [:poll, :loop_video]
-	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live]
+	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled]
 
 	scope :ongoing, ->{ where(live: true) }
 
@@ -141,9 +141,14 @@ class Post < ActiveRecord::Base
 	end
 
 	def can_start?
-		return required_images_available? && worker_available? && !self.user.is_already_live?
+		return required_images_available? && Post.new.worker_available? && !self.user.is_already_live?
 	end
 
+	def worker_available?
+    queued_jobs = Resque.size("update_frame")
+    available_workers = Resque.workers.select{|worker|  worker.queues.first=="update_frame" && !worker.working?}.count
+    return available_workers > queued_jobs
+  end
 
 	def page_access_token
 		attempts = 0

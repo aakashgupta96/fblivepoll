@@ -9,7 +9,7 @@
   </script>
 </center>
  -->
-<div class="row"><%= link_to "Sign Out", destroy_admin_session_path, method: "delete",class: "btn col s4 m2 l1" %></div>
+<div class="row"><%= link_to "Sign Out", destroy_moderator_session_path, method: "delete",class: "btn col s4 m2 l1" %></div>
 <div class="white privacy-box card hoverable z-depth-4">
   <table class="responsive-table striped">
     <thead>
@@ -39,17 +39,17 @@
           </td>
           <td>
           <% if post.live %>
-            <a href="/admins/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End</a>
+            <a href="/moderators/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End</a>
           <% else %>
-            <a href="/admins/start/<%=post.id%>" data-method="post" data-confirm="This will start this post. Are you sure you want to continue?" class="bolder">Start</a>
+            <a href="/moderators/start/<%=post.id%>" data-method="post" data-confirm="This will start this post. Are you sure you want to continue?" class="bolder">Start</a>
           <% end %>
         </td>
         <td>
-          <a href="/admins/destroy/<%=post.id%>" data-method="post" data-confirm="This will destroy this post from Database. Are you sure you want to continue?" class="bolder">Destroy</a>
+          <a href="/moderators/destroy/<%=post.id%>" data-method="post" data-confirm="This will destroy this post from Database. Are you sure you want to continue?" class="bolder">Destroy</a>
         </td>
         <td>
           <% if post.scheduled? %>
-          <a href="/admins/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder dull-purple">Cancel</a>
+          <a href="/moderators/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder dull-purple">Cancel</a>
         <% end %>
         </td>
       </tr>

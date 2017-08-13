@@ -9,7 +9,7 @@
 	</script>
 </center>
  -->
-<div class="row"><%= link_to "Sign Out", destroy_admin_session_path, method: "delete",class: "btn col s4 m2 l1" %></div>
+<div class="row"><%= link_to "Sign Out", destroy_moderator_session_path, method: "delete",class: "btn col s4 m2 l1" %></div>
 <div class="row post-container white z-depth-3">
   <% if @posts.count == 0 %>
     <div class="note white-text"> No Posts Available for this page.</div>

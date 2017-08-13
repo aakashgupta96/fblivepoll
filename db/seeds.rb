@@ -65,4 +65,5 @@ UserTemplate.create(template_id: 9, user_role: User.roles["premium"])
 UserTemplate.create(template_id: 9, user_role: User.roles["ultimate"])
 UserTemplate.create(template_id: 9, user_role: User.roles["admin"])
 
-Admin.create(email: "aakash@shurikenlive.com", password: "rasenshuriken", password_confirmation: "rasenshuriken")
+Moderator.create(email: "aakash@shurikenlive.com", password: "rasenshuriken", password_confirmation: "rasenshuriken")
+AdminUser.create!(email: 'aakash@shurikenlive.com', password: 'rasenshuriken', password_confirmation: 'rasenshuriken')

@@ -7,7 +7,6 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Choose what kind of storage to use for this uploader:
   #storage :file
   #storage :fog
-  process :to_jpeg => [800, 455]
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
@@ -20,22 +19,6 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   def extension_whitelist
      %w(png jpg jpeg gif)
-  end
-
-  def filename
-    "frame" if original_filename
-  end
-
-  private
-
-  def to_jpeg(width, height)
-    manipulate! do |img|
-      img.format("jpeg") do |c|
-        c.resize      "#{width}x#{height}>"
-        c.resize      "#{width}x#{height}<"
-      end
-      img
-    end
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

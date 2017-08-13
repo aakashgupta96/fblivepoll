@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  devise_for :admins, skip: [:registrations, :passwords]
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+  devise_for :moderators, skip: [:registrations, :passwords]
   devise_for :users, controllers: {registrations: "users/registrations", sessions: "users/sessions", :omniauth_callbacks => "users/omniauth_callbacks"}
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -28,13 +30,13 @@ Rails.application.routes.draw do
     get '/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
   end
 
-  scope :admins do
-    get '/panel' => 'admins#panel', as: "admins_panel"
-    get '/dashboard' => 'admins#dashboard', as: "admins_dashboard"
-    post '/stop/:post_id' => 'admins#stop_post'
-    post '/start/:post_id' => 'admins#start_post'
-    post '/destroy/:post_id' => 'admins#destroy_post'
-    post '/cancel/:post_id' => 'admins#cancel_scheduled_post'
+  scope :moderators do
+    get '/panel' => 'moderators#panel', as: "moderators_panel"
+    get '/dashboard' => 'moderators#dashboard', as: "moderators_dashboard"
+    post '/stop/:post_id' => 'moderators#stop_post'
+    post '/start/:post_id' => 'moderators#start_post'
+    post '/destroy/:post_id' => 'moderators#destroy_post'
+    post '/cancel/:post_id' => 'moderators#cancel_scheduled_post'
   end
 
   scope :users do
