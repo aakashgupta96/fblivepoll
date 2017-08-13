@@ -12,7 +12,7 @@ class LoopTask
 			Post.update_statuses
 			Post.remove_videos
 			Post.update_caption_for_site_credits
-			sleep(30)
+			sleep(10)
 		end
 	end
 

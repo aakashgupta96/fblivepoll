@@ -117,6 +117,11 @@ main
 {
   background: radial-gradient(#0089ec,#4267b2,#421782);
 }
+
+.radial-gradient-grey
+{
+  background: radial-gradient(#616161, #615c5c, #3c3939, #0e0d0d);
+}
 .card:hover
 {
   border-color: black;
