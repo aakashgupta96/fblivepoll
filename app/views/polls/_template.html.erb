@@ -3,17 +3,17 @@
     <img class="activator" src="/templates/template<%=template.id%>.jpg">
   </div>
   <div class="card-content">
-    <center class="card-title activator grey-text text-darken-4 bolder relative" style="left: 20px;"><%=template.name.titleize%><i class="material-icons right">more_vert</i></center>
+    <center class="card-title activator grey-text text-darken-2 bolder relative" style="left: 20px;"><%=template.name.titleize%><i class="material-icons right">more_vert</i></center>
     <center><a href="/polls/new?template=<%=template.id%>" class="btn">Try now</a></center>
   </div>
-  <div class="card-reveal">
-    <span class="card-title grey-text text-darken-4 bolder">Features<i class="material-icons right">close</i></span>
-    <ul class="black-text features">
-      <% template.features.each do |f| %>
-          <li>
-            <i class="material-icons">play_arrow</i><%= f.description %>
-          </li>
-      <% end %>
-    </ul>
+  <div class="card-reveal" style="text-align: center;">
+    <span class="card-title grey-text text-darken-2 bolder"><span class="relative" style="left: 20px;">Features</span><i class="material-icons right">close</i></span>
+    <div class="collection flexbox-verical">
+      <% template.features.each do |feature| %>
+        <a class="collection-item grey-text text-darken-2">
+          <%=feature.description%>
+        </a>
+      <%end%>
+    </div>
   </div>
 </div>

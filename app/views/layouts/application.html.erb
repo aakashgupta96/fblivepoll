@@ -16,13 +16,6 @@
 </head>
 
 <body>
-  <script>
-    <% if current_user %>
-    user_id = <%= current_user.id %>;
-    <% else %>
-    user_id = null; 
-    <% end %>
-  </script>
   <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
     (adsbygoogle = window.adsbygoogle || []).push({
@@ -31,7 +24,8 @@
     });
   </script>    
 
-   --><script>
+   -->
+   <script>
     window.fbAsyncInit = function() {
       FB.init({
         appId      : '241493676272963',
@@ -98,15 +92,16 @@
     <div class="nav-wrapper container-wide no-pad" id="nav-container">
       <a href="/" class="brand-logo"><img src="/assets/logo.png" class="logo"></a>
       <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="/" class="nav-option center-align">Home</a></li>
-        <li><a href="/pricing" class="nav-option center-align">Pricing</a></li>
+      <ul class="right hide-on-med-and-down bolder">
+        <li><a href="/" class="nav-option center-align flexbox"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
+        <li><a href="/pricing" class="nav-option center-align flexbox"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="icon-descriptor">Pricing</span></a></li>
+        <li><a href="/faqs" class="nav-option center-align flexbox"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
         <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li>
-        <li style=" margin-right: 10px;">
-          <div class='dropdown-button waves-effect waves-light btn' data-activates='dropdown1'>
-            <i class="material-icons left relative" style="top: -13px;">videocam</i>Plugins<span class="newFeature">New</span>
+        <li style="margin-right: 10px; margin-top: 14px;">
+          <div class='dropdown-button waves-effect waves-light btn btn-less-padding flexbox' data-activates='dropdown1'>
+            <i class="material-icons">videocam</i><span class="icon-descriptor">Plugins<span class="newFeature">New</span></span>
           </div>
-            <ul id='dropdown1' class='dropdown-content'>
+            <ul id='dropdown1' class='dropdown-content' style="color: '#6ca4ec';">
               <li><%= link_to "Live Polling", poll_templates_path%></li>
               <li class="divider"></li>
               <li><%= link_to "Stream Video", loop_video_templates_path%></li>
@@ -114,9 +109,9 @@
         </li>
 
         <% if user_signed_in? %>
-          <li>
-            <div class='dropdown-button waves-effect waves-light btn greenish' data-activates='dropdown2' style="max-width : 220px;">
-              <i class="material-icons left relative" style="top:-13px;">perm_identity</i><%=current_user.name.split.first %>
+          <li style="margin-top: 14px;">
+            <div class='dropdown-button waves-effect waves-light btn btn-less-padding greenish flexbox' data-activates='dropdown2' style="max-width : 220px;">
+              <i class="material-icons">perm_identity</i><span class="icon-descriptor"><%=current_user.name.split.first %></span>
             </div>
             <ul id='dropdown2' class='dropdown-content'>
               <li><%= link_to "My Posts", myposts_path%></li>
@@ -125,24 +120,33 @@
             </ul>
           </li>
         <% else %>
-          <li><a href="/users/auth/facebook" class="nav-option session_button waves-effect waves-light btn greenish row"><i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i><span class="col s9 relative" style="left: 5px;">Log In</span></a></li>
+          <li style="margin-top: 16px;">
+            <a href="/users/auth/facebook" class="nav-option btn btn-less-padding waves-light waves-effect greenish flexbox">
+              <i class="fa fa-facebook-official" aria-hidden="true"></i><span class="icon-descriptor">Log In</span>
+            </a>
+            <!-- <a href="/users/auth/facebook" class="nav-option session_button waves-effect waves-light btn greenish row">
+              <i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i>
+              <span class="col s9 relative" style="left: 5px;">Log In</span>
+            </a> -->
+          </li>
         <% end %>
       </ul>
       <ul class="side-nav" id="mobile-demo">
-        <li><a href="/">Home</a></li>
-        <li><a href="/pricing">Pricing</a></li>
-        <li><a href="/demo">Watch Demo</a></li>
+        <li><a href="/"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
+        <li><a href="/pricing"><i class="material-icons">add_shopping_cart</i><span class="icon-descriptor">Pricing</span></a></li>
+        <li><a href="/faqs"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
+        <li><a href="/demo"><i class="material-icons">ondemand_video</i><span class="icon-descriptor">Watch Demo</span></a></li>
         <% if user_signed_in? %>
-          <li><%= link_to "My Posts", myposts_path%></li>
+          <li><%= link_to raw("<i class='material-icons'>dashboard</i><span class='icon-descriptor'>My Posts</span>"), myposts_path%></li>
         <% end %>
         <li>
-          <a href="/polls/templates" class="waves-effect waves-light btn">Live Polling</a>
-          <a href="/loop_videos/templates" class="waves-effect waves-light btn">Stream Video</a>
+          <a href="/polls/templates" class="waves-effect waves-light btn btn-less-padding">Live Polling</a>
+          <a href="/loop_videos/templates" class="waves-effect waves-light btn btn-less-padding">Stream Video</a>
         </li>
         <% if user_signed_in? %>
-          <li><a href="/users/sign_out" class="waves-effect waves-light btn greenish" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
+          <li><a href="/users/sign_out" class="waves-effect waves-light btn btn-less-padding greenish" data-confirm="Are you sure?" data-method="DELETE">Log Out</a></li>
         <% else %>
-          <li><a href="/users/auth/facebook" class="waves-effect waves-light btn greenish">Log In with FB</a></li>
+          <li><a href="/users/auth/facebook" class="waves-effect waves-light btn btn-less-padding greenish">Log In with FB</a></li>
         <% end %>
       </ul>
     </div>
@@ -157,8 +161,12 @@
    <% unless alert.nil? %>
    <div id= "alert" style="display: none;"><%=alert%></div>
    <script >
-     var x = document.getElementById("alert").innerHTML
-     alert(x)
+     $.alert({
+          theme: "supervan",
+          useBootstrap: false,
+          title: "Alert!",
+          content: document.getElementById("alert").innerHTML
+        });
    </script>
   <% end %>
 

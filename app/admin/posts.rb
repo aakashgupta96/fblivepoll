@@ -1,7 +1,7 @@
 ActiveAdmin.register Post do
 
 	config.per_page = 9
-
+  actions :all, except: [:new]
 	permit_params :title, :caption, :reload_browser, :duration, :live, :start_time, :status
 
 	scope :all, default: true

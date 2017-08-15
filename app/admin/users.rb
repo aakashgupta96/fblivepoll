@@ -1,5 +1,6 @@
 ActiveAdmin.register User do
 	
+	actions :all, except: [:new]
 	permit_params :role, :subscription_date, :subscription_duration, :banned
 	
 	scope :all, default: true
@@ -45,5 +46,25 @@ ActiveAdmin.register User do
     end
     active_admin_comments
   end
+
+  action_item :ban, only: :show do
+  	link_to 'Ban User', ban_admin_user_path(user), method: :post unless user.banned
+	end
+
+	action_item :unban, only: :show do
+  	link_to 'Unban User', unban_admin_user_path(user), method: :post if user.banned
+	end
+
+	member_action :ban, method: :post do
+    resource.ban!
+    redirect_to admin_user_path(resource), notice: "Banned!"
+  end
+
+  member_action :unban, method: :post do
+    resource.unban!
+    redirect_to admin_user_path(resource), notice: "Unbanned!"
+  end
+
+
 
 end

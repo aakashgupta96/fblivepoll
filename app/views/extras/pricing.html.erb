@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
 
-<div class="v valign-wrapper">
+<div class="pricing-page v valign-wrapper bolder">
   <div class="c ci">
     <div class="d iv jc offset-m1">
       <div class="c">
@@ -92,11 +92,27 @@
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <script>
   ['#donor-checkout','#premium-checkout','#ultimate-checkout'].forEach(function(selector){
+    <% if current_user and !current_user.banned %>
+      <% if current_user.member? %>
+        user_id = <%= current_user.id %>;
+      <% else %>
+        user_id = -2;
+      <% end %>
+    <% elsif current_user %>
+    user_id = -1;
+    <% else %>
+    user_id = null; 
+    <% end %>
     var cost = $(selector).attr("data-cost");
     paypal.Button.render({
-      env: 'sandbox', // Or 'production',
+      <% if Rails.env.production? %>
+        env: 'production',
+      <% else %>
+        env: 'sandbox',
+      <% end %>
       client: {
-          sandbox: "AdmKLnjztcOIqqHGIQQAgjUSEH2R5Ea1m8tpKU3LGmXRppjxCT0lvHkX9WeoguWckEQPwcuaYnT1ZuaO"
+          sandbox: "<%=ENV["DEV_PAYPAL_CLIENT_ID"]%>",
+          production: "<%=ENV["PROD_PAYPAL_CLIENT_ID"]%>"
       },
       locale: 'en_US',
 
@@ -111,19 +127,10 @@
       commit: true,
       
       payment: function(data, actions) {
-        if(user_id == null)
+        console.log("user id = " + user_id);
+        if(user_id >= 0 && user_id != null)
         {
-          $.alert({
-              theme: "supervan",
-              useBootstrap: false,
-              title: "Alert!",
-              content: "Please sign-in to continue with your purchase."
-            }
-          );
-          return false;
-        }
-        else
-        {
+          console.log("entering payment");
           return actions.payment.create({
             transactions: [
               {
@@ -131,6 +138,26 @@
               }
             ]
           });
+        }
+        else
+        {
+          message = "Please sign-in to continue with your purchase."
+          if(user_id == -1)
+          {
+            message = "You are temporarily banned! Please contact our support center for more information.";
+          }
+          else if(user_id == -2)
+          {
+            message = "You are already enrolled with a package. You can upgrade/downgrade to different package only after this subscription ends."
+          }
+          $.alert({
+              theme: "supervan",
+              useBootstrap: false,
+              title: "Alert!",
+              content: message
+            }
+          );
+          return false;
         }
       },
 
@@ -640,8 +667,8 @@
     color: #fff;
     transition: opacity .2s
 }
-[class^="icon-"],
-[class*=" icon-"] {
+pricing-page [class^="icon-"],
+pricing-page [class*=" icon-"] {
     font-family: 'simple-line-icons';
     speak: none;
     font-style: normal;

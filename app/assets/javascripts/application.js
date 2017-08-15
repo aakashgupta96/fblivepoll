@@ -23,6 +23,10 @@ $( document ).ready(function(){
     $('.parallax').parallax();
     $('.carousel.carousel-slider').carousel({fullWidth: true});
     $(".button-collapse").sideNav();
+    $('#faqs-section ul.tabs').tabs({
+        swipeable: true
+    });
+    $('.collapsible').collapsible('open',0);
     $('.dropdown-button').dropdown({
       inDuration: 700,
       outDuration: 700,

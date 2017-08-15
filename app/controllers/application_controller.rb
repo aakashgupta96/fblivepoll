@@ -5,11 +5,6 @@ class ApplicationController < ActionController::Base
   before_action :set_raven_context
   protect_from_forgery with: :exception
   
-  # def after_sign_in_path_for(resource)
-  #   return root_path if resource.class == User
-  #   '/admins/panel' 
-  # end
-
   protected
 
   def check_slots
@@ -41,11 +36,17 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user!
     redirect_to root_path, notice: "You need to sign in before continuing" unless user_signed_in?
+    check_user_if_banned
   end
 
   def authorize_user!
     redirect_to root_path, notice: "Unauthorized" unless current_user == @post.user
   end
+
+  def check_user_if_banned
+    redirect_to root_path, alert: "You are temporarily banned! Please contact our support center for more information." if current_user.banned
+  end
+
 
   private
 

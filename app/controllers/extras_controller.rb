@@ -14,6 +14,9 @@ class ExtrasController < ApplicationController
 	def terms
 	end
 
+	def faqs
+	end
+	
 	def demo
 	end
 
