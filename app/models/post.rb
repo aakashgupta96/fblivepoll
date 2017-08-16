@@ -5,6 +5,7 @@ class Post < ActiveRecord::Base
 	mount_uploader :background, BackgroundUploader
 	mount_uploader :video, VideoUploader
 	mount_uploader :image, ScreenshotUploader
+	mount_uploader :html, HtmlPageUploader
 	
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
@@ -196,26 +197,36 @@ class Post < ActiveRecord::Base
 
 	def create_html
 		images = self.images #Prepare an html for the frame of this post
-	  erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
-	  html_file = Rails.root.to_s + "/public/uploads/post/#{self.id}/frame.html" #=>"target file name"
-	  erb_str = File.read(erb_file)
-	  namespace = OpenStruct.new(post: self, images: images)
-	  result = ERB.new(erb_str)
-	  result = result.result(namespace.instance_eval { binding })
-	  path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
-	  FileUtils.mkdir_p(path) unless File.exist?(path)
-	  File.open(html_file, 'w') do |f|
-	    f.write(result)
-	  end
-	end
+    erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
+    html_file = Rails.root.to_s + "/public/uploads/post/#{self.id}/frame.html" #=>"target file name"
+    erb_str = File.read(erb_file)
+    namespace = OpenStruct.new(post: self, images: images)
+    result = ERB.new(erb_str)
+    result = result.result(namespace.instance_eval { binding })
+    path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
+    FileUtils.mkdir_p(path) unless File.exist?(path)
+    File.open(html_file, 'w') do |f|
+      f.write(result)
+    end
+    begin
+    	f = File.open(html_file)
+    	self.html = f
+    	self.save
+    rescue
+    	#ignore
+    ensure
+    	f.close
+    end
+   end
 
   def open_in_browser(browser = "firefox")
    	create_html
-   	width = 800
    	if browser == "firefox"
-   		height = 521
+   		width = 805
+   		height = 525
    		headless = Headless.new
    	else
+   		width = 800
    		height = 516
    		headless = Headless.new(display: rand(100))
    	end
@@ -228,7 +239,12 @@ class Post < ActiveRecord::Base
     	sleep(2) and retry if attempts <= 3
     	raise e
     end
-    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{self.id}/frame.html"
+    if Rails.env.production?
+    	prefix = nil
+    else
+    	prefix = "file://"+ Rails.root.to_s + "/public"
+    end
+    driver.navigate.to "#{prefix}#{self.html.url}"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     [driver,headless]

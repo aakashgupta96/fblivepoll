@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 20170813195020) do
     t.string   "process_id"
     t.boolean  "reload_browser", default: false
     t.integer  "status",         default: 0
+    t.string   "html"
   end
 
   create_table "templates", force: :cascade do |t|
