@@ -5,6 +5,7 @@ class Post < ActiveRecord::Base
 	mount_uploader :background, BackgroundUploader
 	mount_uploader :video, VideoUploader
 	mount_uploader :image, ScreenshotUploader
+	mount_uploader :html, HtmlPageUploader
 	
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
@@ -215,6 +216,15 @@ class Post < ActiveRecord::Base
     File.open(html_file, 'w') do |f|
       f.write(result)
     end
+    begin
+    	f = File.open(html_file)
+    	self.html = f
+    	self.save
+    rescue
+    	#ignore
+    ensure
+    	f.close
+    end
    end
 
    def open_in_browser(browser = "firefox")
@@ -236,7 +246,12 @@ class Post < ActiveRecord::Base
     	sleep(2) and retry if attempts <= 3
     	raise e
     end
-    driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{self.id}/frame.html"
+    if Rails.env.production?
+    	prefix = nil
+    else
+    	prefix = "file://"+ Rails.root.to_s + "/public"
+    end
+    driver.navigate.to "#{prefix}#{self.html.url}"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     [driver,headless]
