@@ -1,18 +1,4 @@
 module LoopVideoHelper
-	
-	def hour_limit
-		if current_user.admin?
-			23
-		elsif current_user.ultimate?
-			7
-		elsif current_user.premium?
-			3
-		elsif current_user.donor?
-			1
-		else
-			0
-		end
-	end
 
 	def file_size_limit
 		if current_user.admin? || current_user.ultimate?

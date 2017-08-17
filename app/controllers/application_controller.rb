@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user!
-    redirect_to root_path, notice: "You need to sign in before continuing" unless user_signed_in?
+    return redirect_to root_path, notice: "You need to sign in before continuing" unless user_signed_in?
     check_user_if_banned
   end
 
