@@ -110,7 +110,7 @@
 
         <% if user_signed_in? %>
           <li style="margin-top: 14px;">
-            <div class='dropdown-button waves-effect waves-light btn btn-less-padding greenish flexbox' data-activates='dropdown2' style="max-width : 220px;">
+            <div class='dropdown-button waves-effect waves-light btn btn-less-padding greenish flexbox' data-activates='dropdown2' style="max-width : 220px; flex-wrap: nowrap;">
               <i class="material-icons">perm_identity</i><span class="icon-descriptor"><%=current_user.name.split.first %></span>
             </div>
             <ul id='dropdown2' class='dropdown-content'>
