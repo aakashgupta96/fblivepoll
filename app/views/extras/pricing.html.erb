@@ -111,7 +111,7 @@
         env: 'production',
       <% end %>
       client: {
-          sandbox: "<%=ENV["PROD_PAYPAL_CLIENT_ID"]%>",
+          sandbox: "<%=ENV["DEV_PAYPAL_CLIENT_ID"]%>",
           production: "<%=ENV["PROD_PAYPAL_CLIENT_ID"]%>"
       },
       locale: 'en_US',
