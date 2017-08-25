@@ -108,7 +108,7 @@
       <% if Rails.env.production? %>
         env: 'production',
       <% else %>
-        env: 'production',
+        env: 'sandbox',
       <% end %>
       client: {
           sandbox: "<%=ENV["DEV_PAYPAL_CLIENT_ID"]%>",
