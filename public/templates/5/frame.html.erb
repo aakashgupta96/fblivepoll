@@ -22,11 +22,11 @@
     <% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
-        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
+        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="140" height="60">
       </b>
     </div>
     <% end %>
-    <div class="voteCover" style="background-image: url('<%=ENV['prefix']%><%=post.background.url%>'); background-size: 800px 450px;">
+    <div class="voteCover" style="background-image: url('<%=ENV['prefix']%><%=post.background.url%>'); background-size: 1280px 720px;">
       <div class="voteContent">
         <div class="question"><%=post.title%></div>
         <div class="voteOptionList">
@@ -161,8 +161,8 @@
     }
     body
     {
-      width: 800px;
-      height: 450px;
+      width: 1280px;
+      height: 720px;
       overflow: hidden;
     }
     @font-face {
@@ -389,8 +389,8 @@
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
     }
     .voteCover {
-        width: 799px;
-        height: 448px;
+        width: 1279px;
+        height: 718px;
         background: #f2f2f2;
         background-size: cover;
         position: relative;
@@ -413,8 +413,8 @@
         position: absolute;
         left: 0;
         top: 0;
-        width: 799px;
-        height: 448px;
+        width: 1279px;
+        height: 718px;
         background: rgba(0, 0, 0, 0.5);
         content: '';
     }
@@ -428,10 +428,10 @@
 
     .voteCover .voteContent .question {
         text-align: center;
-        font-size: 33px;
-        font-weight: 600;
+        font-size: 54px;
+        font-weight: 800;
         position: relative;
-        top: 10px;
+        top: 16px;
     }
 
     .voteCover .voteContent .voteOptionList {
@@ -447,8 +447,8 @@
         -webkit-align-items: center;
         -ms-flex-align: center;
         align-items: center;
-        height: 30px;
-        margin: 55px 0;
+        height: 48px;
+        margin: 88px 0;
     }
 
     .voteCover .voteContent .voteOptionList .voteOption .type {
@@ -460,7 +460,7 @@
     }
 
     .voteCover .voteContent .voteOptionList .voteOption .type .icon {
-        height: 67px;
+        height: 107px;
         border-radius: 50%;
         position: relative;
         display: -webkit-box;
@@ -494,12 +494,12 @@
     }
 
     .voteCover .voteContent .voteOptionList .voteOption .type .icon .count {
-        font-size: 25px;
+        font-size: 40px;
         font-weight: 600;
         position: absolute;
-        width: 60px;
+        width: 96px;
         left: 50%;
-        top: 15px;
+        top: 24px;
     }
 
     .voteCover .voteContent .voteOptionList .voteOption .line {
@@ -507,15 +507,15 @@
         -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
         flex-shrink: 0;
-        height: 30px;
+        height: 48px;
         background: #fff;
-        border-radius: 20px;
+        border-radius: 32px;
         position: relative;
     }
 
     .voteCover .voteContent .voteOptionList .voteOption .line .lineInc {
-        height: 30px;
-        border-radius: 18px;
+        height: 48px;
+        border-radius: 28px;
         position: relative;
     }
 
@@ -546,9 +546,9 @@
     .voteCover .voteContent .voteOptionList .voteOption .line .lineInc .imageCompare {
         position: absolute;
         right: -25px;
-        width: 60px;
-        height: 60px;
-        top: -8px;
+        width: 96px;
+        height: 96px;
+        top: -23px;
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -565,16 +565,16 @@
 
     .voteCover .voteContent .voteOptionList .voteOption .line .lineInc .imageCompare img {
         position: relative;
-        left: 25px;
-        min-width: 80px;
-        max-width: 150%;
-        min-height: 70px;
-        max-height: 85px;
+        left: 40px;
+        min-width: 128px;
+        max-width: 240%;
+        min-height: 112px;
+        max-height: 135px;
         border-radius: 20%;
     }
 
     .voteCover .voteContent .voteOptionList .voteOption .optionName {
-        font-size: 17px;
+        font-size: 27px;
         width: 19%;
         -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
@@ -600,28 +600,28 @@
     }
 
     @-webkit-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-moz-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-o-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-webkit-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @-moz-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @-o-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
 
     </style>

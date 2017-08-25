@@ -22,7 +22,7 @@
     <% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
-        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
+        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="140" height="60">
       </b>
     </div>
     <% end %>
@@ -33,35 +33,35 @@
         <div class="stars2"></div>
       </div>
     </div>
-
+    
     <div class="wrapper">
-      <center><h1 class="title"><%=post.title%></h1></center>
-      <img src="<%=ENV['prefix']%><%=images[0].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 0px; border: 10px solid white; -webkit-transform: rotate(-7deg);">
-      <img src="<%=ENV['prefix']%><%= images[1].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 200px; border: 10px solid white; -webkit-transform: rotate(13deg);">
-      <img src="<%=ENV['prefix']%><%= images[2].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 390px; border: 10px solid white; -webkit-transform: rotate(-16deg);">
-      <img src="<%=ENV['prefix']%><%= images[3].file.url %>" width="180px" height="180px" style="position: absolute; top: 120px; left: 590px; border: 10px solid white; -webkit-transform: rotate(19deg);">
-      <img src="../../../reactions/<%=images[0].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 80px;">
-      <img src="../../../reactions/<%=images[1].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 270px;">
-      <img src="../../../reactions/<%=images[2].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 460px;">
-      <img src="../../../reactions/<%=images[3].reaction%>.gif" width="70px" class="reactionImage" style="position: absolute; top: 310px; left: 650px;">
-      <div class="counter <%=images[0].reaction%>" style="position: absolute; top: 385px; left: 25px;">
+      <center><div class="title"><%=post.title%></div></center>
+      <img class="object-image" src="<%=ENV['prefix']%><%=images[0].file.url%>" style="left: 10px;-webkit-transform: rotate(-13deg);">
+      <img class="object-image" src="<%=ENV['prefix']%><%=images[1].file.url%>" style="left: 338px; -webkit-transform: rotate(13deg);">
+      <img class="object-image" src="<%=ENV['prefix']%><%=images[2].file.url%>" style="left: 626px; -webkit-transform: rotate(-13deg);">
+      <img class="object-image" src="<%=ENV['prefix']%><%=images[3].file.url%>" style="left: 954px; -webkit-transform: rotate(13deg);">
+      <img src="../../../reactions/<%=images[0].reaction%>.gif" width="80px" class="reactionImage" style="position: absolute; top: 510px; left: 140px;">
+      <img src="../../../reactions/<%=images[1].reaction%>.gif" width="80px" class="reactionImage" style="position: absolute; top: 510px; left: 440px;">
+      <img src="../../../reactions/<%=images[2].reaction%>.gif" width="80px" class="reactionImage" style="position: absolute; top: 510px; left: 750px;">
+      <img src="../../../reactions/<%=images[3].reaction%>.gif" width="80px" class="reactionImage" style="position: absolute; top: 510px; left: 1050px;">
+      <div class="counter <%=images[0].reaction%>" style="position: absolute; top: 600px; left: 40px;">
         <center>
-          <div style="font-size: 30px;" id="<%=images[0].reaction%>">0</div>
+          <div style="font-size: 48px;" id="<%=images[0].reaction%>">0</div>
         </center>
       </div>
-      <div class="counter <%=images[1].reaction%>" style="position: absolute; top: 385px; left: 215px;">
+      <div class="counter <%=images[1].reaction%>" style="position: absolute; top: 600px; left: 344px;">
         <center>  
-          <div style="font-size: 30px;" id="<%=images[1].reaction%>">0</div>
+          <div style="font-size: 48px;" id="<%=images[1].reaction%>">0</div>
         </center>
       </div>
-      <div class="counter <%=images[2].reaction%>" style="position: absolute; top: 385px; left: 405px;">
+      <div class="counter <%=images[2].reaction%>" style="position: absolute; top: 600px; left: 648px;">
         <center>
-          <div style="font-size: 30px;" id="<%=images[2].reaction%>">0</div>
+          <div style="font-size: 48px;" id="<%=images[2].reaction%>">0</div>
         </center>
       </div>
-      <div class="counter <%=images[3].reaction%>" style="position: absolute; top: 385px; left: 595px;">
+      <div class="counter <%=images[3].reaction%>" style="position: absolute; top: 600px; left: 954px;">
         <center>
-          <div style="font-size: 30px;" id="<%=images[3].reaction%>">0</div>
+          <div style="font-size: 48px;" id="<%=images[3].reaction%>">0</div>
         </center>
       </div>
     </div>
@@ -147,38 +147,36 @@
     }
 
     @-webkit-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-moz-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-o-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-webkit-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @-moz-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @-o-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     body{
     font-family: 'Merriweather', serif;
     }
-    html {
-      height: 450px;
-    }
-    html body {
-      width: 800px;
-      height: 450px;
+
+    body {
+      width: 1280px;
+      height: 720px;
       margin: 0;
       overflow: hidden;
     }
@@ -190,7 +188,14 @@
       height: 100%;
       background: linear-gradient(to bottom, #020107 0%, #201b46 100%);
     }
-
+    .object-image {
+      background-color: black;
+      position: absolute;
+      top: 212px;
+      border: 15px solid white;
+      width: 288px;
+      height: 288px;
+    }
     .stars {
       width: 1px;
       height: 1px;
@@ -216,7 +221,7 @@
       height: 3px;
       border-radius: 50%;
       position: absolute;
-      backgroud: transparent;
+      background: transparent;
       box-shadow: 1099px 1416px #FFF , 828px 1597px #FFF , 1674px 2141px #FFF , 146px 1307px #FFF , 2034px 953px #FFF , 150px 2105px #FFF , 2269px 702px #FFF , 515px 1045px #FFF , 530px 155px #FFF , 1376px 1023px #FFF , 2501px 1807px #FFF , 1296px 1551px #FFF , 1184px 826px #FFF , 979px 699px #FFF , 1501px 2395px #FFF , 322px 2442px #FFF , 376px 1594px #FFF , 867px 2128px #FFF , 24px 221px #FFF , 590px 1929px #FFF , 1540px 1px #FFF , 1702px 1721px #FFF , 1825px 246px #FFF , 2246px 27px #FFF , 828px 1863px #FFF , 1675px 497px #FFF , 1163px 730px #FFF , 2481px 2284px #FFF , 2097px 723px #FFF , 1165px 8px #FFF , 512px 1239px #FFF , 904px 1363px #FFF , 77px 2169px #FFF , 734px 719px #FFF , 2060px 1726px #FFF , 1079px 1952px #FFF , 740px 820px #FFF , 610px 154px #FFF , 1993px 2374px #FFF , 1295px 2317px #FFF , 1609px 2291px #FFF , 1225px 619px #FFF , 2327px 2392px #FFF , 675px 2535px #FFF , 1623px 509px #FFF , 2221px 206px #FFF , 2076px 1184px #FFF , 58px 1247px #FFF , 397px 464px #FFF , 1860px 2296px #FFF , 1945px 2405px #FFF , 713px 2439px #FFF , 641px 359px #FFF , 1567px 766px #FFF , 1794px 1225px #FFF , 1451px 2309px #FFF , 1435px 2214px #FFF , 776px 1796px #FFF , 199px 1665px #FFF , 1925px 2308px #FFF , 132px 2283px #FFF , 2112px 783px #FFF , 1662px 575px #FFF , 1591px 2380px #FFF , 438px 604px #FFF , 756px 260px #FFF , 686px 284px #FFF , 419px 2357px #FFF , 1772px 2196px #FFF , 1285px 1470px #FFF , 551px 1807px #FFF , 910px 1461px #FFF , 1742px 1013px #FFF , 14px 247px #FFF , 1265px 1032px #FFF , 2523px 2453px #FFF , 1923px 596px #FFF , 2219px 1006px #FFF , 392px 1326px #FFF , 96px 1066px #FFF , 1212px 748px #FFF , 2531px 550px #FFF , 2029px 985px #FFF , 27px 317px #FFF , 2295px 2556px #FFF , 1151px 2244px #FFF , 1391px 788px #FFF , 960px 1328px #FFF , 895px 1263px #FFF , 2363px 2045px #FFF , 926px 1624px #FFF , 2550px 471px #FFF , 2047px 1107px #FFF , 1331px 11px #FFF , 576px 136px #FFF , 2557px 587px #FFF , 2436px 508px #FFF , 2159px 1293px #FFF , 2332px 1551px #FFF , 54px 1314px #FFF , 1195px 1236px #FFF , 1574px 685px #FFF , 1385px 699px #FFF , 205px 1123px #FFF , 450px 232px #FFF , 554px 1027px #FFF , 2409px 779px #FFF , 1139px 2051px #FFF , 794px 469px #FFF , 2327px 2454px #FFF , 968px 68px #FFF , 2261px 1044px #FFF , 969px 2207px #FFF , 1350px 1803px #FFF , 280px 180px #FFF , 1222px 1525px #FFF , 638px 2246px #FFF , 1494px 1543px #FFF , 2177px 457px #FFF , 398px 370px #FFF , 1013px 2304px #FFF , 2226px 1553px #FFF , 246px 1328px #FFF , 1166px 401px #FFF , 1376px 2312px #FFF , 1525px 2356px #FFF , 1259px 1128px #FFF , 2442px 2001px #FFF , 2231px 2300px #FFF , 1770px 2046px #FFF , 1006px 242px #FFF , 860px 1315px #FFF , 1503px 161px #FFF , 2337px 2101px #FFF , 2141px 2378px #FFF , 1859px 984px #FFF , 1790px 775px #FFF , 351px 1352px #FFF , 2290px 2077px #FFF , 1705px 47px #FFF , 304px 1714px #FFF , 705px 523px #FFF , 157px 8px #FFF , 1549px 1073px #FFF , 1109px 102px #FFF , 323px 1976px #FFF , 220px 1561px #FFF , 2051px 231px #FFF , 1184px 2046px #FFF , 1418px 2488px #FFF , 2027px 1793px #FFF , 1690px 239px #FFF , 658px 728px #FFF , 1280px 1345px #FFF , 65px 2409px #FFF , 934px 2206px #FFF , 2079px 1341px #FFF , 889px 538px #FFF , 61px 1043px #FFF , 275px 2118px #FFF , 103px 1877px #FFF , 802px 256px #FFF , 1125px 2419px #FFF , 494px 1000px #FFF , 854px 1244px #FFF , 858px 1138px #FFF , 2263px 569px #FFF , 1818px 310px #FFF , 2190px 279px #FFF , 924px 2201px #FFF , 1394px 2459px #FFF , 1487px 2408px #FFF , 2535px 2314px #FFF , 1737px 525px #FFF , 684px 1000px #FFF , 1846px 2197px #FFF , 912px 1157px #FFF , 2542px 1534px #FFF , 1010px 909px #FFF , 1914px 49px #FFF , 1513px 1566px #FFF , 1608px 34px #FFF , 2372px 438px #FFF , 2363px 1296px #FFF , 1922px 23px #FFF , 1827px 1845px #FFF , 167px 562px #FFF , 1763px 2503px #FFF , 409px 1234px #FFF , 2549px 2100px #FFF , 1119px 1541px #FFF , 2496px 2165px #FFF , 1660px 1666px #FFF , 783px 489px #FFF , 480px 2422px #FFF , 2428px 1987px #FFF , 1017px 343px #FFF , 610px 126px #FFF , 1561px 979px #FFF , 2033px 284px #FFF;
     }
 
@@ -233,18 +238,19 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 800px;
-    height: 450px;
+    width: 1280px;
+    height: 720px;
     overflow: hidden;
     }
     .title{
     position: relative;
     color: white;
-    margin: 20px;
+    font-size: 50px;
+    margin: 32px;
     }
     .counter{
-    width: 175px;
-    height: 40px;
+    width: 280px;
+    height: 64px;
     background-color: white;
     border-radius: 5px;
     }

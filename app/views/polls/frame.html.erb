@@ -163,11 +163,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.min.js"></script>
     <script>
      
-      $(document).ready(function(){
-        console.log("adding modal")
-        $('.modal').modal();
-      });
-
       function update(activeAnchor) 
       {
         var group = activeAnchor.getParent();
@@ -392,7 +387,6 @@
 
       var sources = {
         background: "/backgrounds/default.jpg",
-        watermark: "/watermark.png"
       };
       loadImages(sources, initStage);
 
@@ -863,8 +857,6 @@
       //document.getElementById("submit_frame").addEventListener('click',sendImage);
       document.getElementById("background").addEventListener('change',addBackgrounfFile);
     </script>
-  
-
   
   </section>
 </main>

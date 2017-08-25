@@ -22,63 +22,63 @@
     <% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
-        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
+        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="140" height="60">
       </b>
     </div>
     <% end %>
     <div class="main">
       <div class="box">
-        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[0].file.url%>); background-size: 133px 320px;"></div>
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[0].file.url%>); background-size: 213px 512px;"></div>
         <div class="counters">
-          <div class="reaction1"></div>
-          <div class="name1"><%=images[0].name%></div>
-          <div class="count1">0</div>
-          <div class="votes1">VOTES</div>
+          <div class="reaction reaction1"></div>
+          <div class="name name1"><%=images[0].name%></div>
+          <div class="count count1">0</div>
+          <div class="votes votes1">VOTES</div>
         </div>
       </div>
       <div class="box">
-        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[1].file.url%>); background-size: 133px 320px;"></div>
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[1].file.url%>); background-size: 213px 512px;"></div>
         <div class="counter">
-          <div class="reaction2"></div>
-          <div class="name2"><%=images[1].name%></div>
-          <div class="count2">0</div>
-          <div class="votes2">VOTES</div>
+          <div class="reaction reaction2"></div>
+          <div class="name name2"><%=images[1].name%></div>
+          <div class="count count2">0</div>
+          <div class="votes votes2">VOTES</div>
         </div>
       </div>
       <div class="box">
-        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[2].file.url%>); background-size: 133px 320px;"></div>
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[2].file.url%>); background-size: 213px 512px;"></div>
         <div class="counters">
-          <div class="reaction3"></div>
-          <div class="name3"><%=images[2].name%></div>
-          <div class="count3">0</div>
-          <div class="votes3">VOTES</div>
+          <div class="reaction reaction3"></div>
+          <div class="name name3"><%=images[2].name%></div>
+          <div class="count count3">0</div>
+          <div class="votes votes3">VOTES</div>
         </div>
       </div>
       <div class="box">
-        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[3].file.url%>); background-size: 133px 320px;"></div>
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[3].file.url%>); background-size: 213px 512px;"></div>
         <div class="counter">
-          <div class="reaction4"></div>
-          <div class="name4"><%=images[3].name%></div>
-          <div class="count4">0</div>
-          <div class="votes4">VOTES</div>
+          <div class="reaction reaction4"></div>
+          <div class="name name4"><%=images[3].name%></div>
+          <div class="count count4">0</div>
+          <div class="votes votes4">VOTES</div>
         </div>
       </div>
       <div class="box">
-        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[4].file.url%>); background-size: 133px 320px;"></div>
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[4].file.url%>); background-size: 213px 512px;"></div>
         <div class="counters">
-          <div class="reaction5"></div>
-          <div class="name5"><%=images[4].name%></div>
-          <div class="count5">0</div>
-          <div class="votes5">VOTES</div>
+          <div class="reaction reaction5"></div>
+          <div class="name name5"><%=images[4].name%></div>
+          <div class="count count5">0</div>
+          <div class="votes votes votes5">VOTES</div>
         </div>
       </div>
       <div class="box">
-        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[5].file.url%>); background-size: 133px 320px;"></div>
+        <div class="image" style="background-image: url(<%=ENV['prefix']%><%=images[5].file.url%>); background-size: 213px 512px;"></div>
         <div class="counter">
-          <div class="reaction6"></div>
-          <div class="name6"><%=images[5].name%></div>
-          <div class="count6">0</div>
-          <div class="votes6">VOTES</div>
+          <div class="reaction reaction6"></div>
+          <div class="name name6"><%=images[5].name%></div>
+          <div class="count count6">0</div>
+          <div class="votes votes6">VOTES</div>
         </div>
       </div>
     </div>
@@ -133,14 +133,14 @@
     }
     body 
     {
-			width: 800px;
-      height: 450px;
+			width: 1280px;
+      height: 720px;
     	overflow: hidden;
 		}
 
 			.main {
-				width: 800px;
-				height: 450px;
+				width: 1280px;
+				height: 720px;
 				position: absolute;
 				padding: 0px;
 				left: 0px;
@@ -149,240 +149,136 @@
 
 			.box {
 				display: inline-block;
-				width: 132.58px;
-				height: 450px;
+				width: 213px;
+				height: 719px;
 				margin: -2px;
 			}
 
 			.counters {
 				width: 100%;
-				height: 130px;
-				margin-top: 1px;
+				height: 208px;
+				margin-top: 2px;
 				background-color: white;
 			}
 
 			.counter {
 				width: 100%;
-				height: 130px;
-				margin-top: 1px;
+				height: 208px;
+				margin-top: 2px;
 				background-color: #f0f0f0;
 			}
 
 			.image {
-				height: 320px;
-				width: 133.58px;
+				height: 512px;
+				width: 213px;
 				margin-top: 0px;
 			}
 
-			.reaction1 {
-				width: 50px;
-				height: 50px;
+			.reaction {
+				width: 80px;
+				height: 80px;
 				position: absolute;
 				z-index: 999;
-				top: 290px;
-				left: 41.6px;
+				top: 464px;
 				border-radius: 50%;
-				background-image: url(../../../reactions/<%=images[0].reaction%>.gif);
 				background-size: cover;
+			}
+
+			.reaction1 {
+				left: 67px;
+				background-image: url(../../../reactions/<%=images[0].reaction%>.gif);
 			}
 
 			.reaction2 {
-				width: 50px;
-				height: 50px;
-				position: absolute;
-				z-index: 999;
-				top: 290px;
-				left: 174.9px;
-				border-radius: 50%;
+				left: 280px;
 				background-image: url(../../../reactions/<%=images[1].reaction%>.gif);
-				background-size: cover;
 			}
 
 			.reaction3 {
-				width: 50px;
-				height: 50px;
-				position: absolute;
-				z-index: 999;
-				top: 290px;
-				left: 308.2px;
-				border-radius: 50%;
+				left: 493px;
 				background-image: url(../../../reactions/<%=images[2].reaction%>.gif);
-				background-size: cover;
 			}
 
 			.reaction4 {
-				width: 50px;
-				height: 50px;
-				position: absolute;
-				z-index: 999;
-				top: 290px;
-				left: 441.5px;
-				border-radius: 50%;
+				left: 707px;
 				background-image: url(../../../reactions/<%=images[3].reaction%>.gif);
-				background-size: cover;
 			}
 
 			.reaction5 {
-				width: 50px;
-				height: 50px;
-				position: absolute;
-				z-index: 999;
-				top: 290px;
-				left: 574.8px;
-				border-radius: 50%;
+				left: 920px;
 				background-image: url(../../../reactions/<%=images[4].reaction%>.gif);
-				background-size: cover;
 			}
 
 			.reaction6 {
-				width: 50px;
-				height: 50px;
-				position: absolute;
-				z-index: 999;
-				top: 290px;
-				left: 708.1px;
-				border-radius: 50%;
+				left: 1133px;
 				background-image: url(../../../reactions/<%=images[5].reaction%>.gif);
-				background-size: cover;
+			}
+
+			.name
+			{
+				width: 213px;
+				height: 48px;
+				position: absolute;
+				top: 544px;
+				z-index: 998;
+				font-size: 32px;
+				font-family: sans-serif;
+				text-align: center;
 			}
 
 			.name1 {
-				width: 133px;
-				height: 30px;
-				position: absolute;
-				top: 340px;
 				left: 0px;
-				z-index: 998;
-				font-size: 20px;
-				font-family: sans-serif;
-				text-align: center;
 			}
 
 			.name2 {
-				width: 133px;
-				height: 30px;
-				position: absolute;
-				top: 340px;
-				left: 133.3px;
-				z-index: 998;
-				font-size: 20px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 213px;
 			}
 
 			.name3 {
-				width: 133px;
-				height: 30px;
-				position: absolute;
-				top: 340px;
-				left: 266.6px;
-				z-index: 998;
-				font-size: 20px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 426px;
 			}
 
 			.name4 {
-				width: 133px;
-				height: 30px;
-				position: absolute;
-				top: 340px;
-				left: 399.9px;
-				z-index: 998;
-				font-size: 20px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 639px;
 			}
 
 			.name5 {
-				width: 133px;
-				height: 30px;
-				position: absolute;
-				top: 340px;
-				left: 533.2px;
-				z-index: 998;
-				font-size: 20px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 853px;
 			}
 
 			.name6 {
-				width: 133px;
-				height: 30px;
-				position: absolute;
-				top: 340px;
-				left: 666.5px;
-				z-index: 998;
-				font-size: 20px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 1066px;
 			}
 
 			.count1 {
-				width: 133px;
-				position: absolute;
-				top: 370px;
 				left: 0px;
-				z-index: 998;
-				font-size: 35px;
-				font-weight: bolder;
-				font-family: sans-serif;
-				text-align: center;
 			}
 
 			.count2 {
-				width: 133px;
-				position: absolute;
-				top: 370px;
-				left: 133.3px;
-				z-index: 998;
-				font-size: 35px;
-				font-weight: bolder;
-				font-family: sans-serif;
-				text-align: center;
+				left: 213px;
 			}
 
 			.count3 {
-				width: 133px;
-				position: absolute;
-				top: 370px;
-				left: 266.6px;
-				z-index: 998;
-				font-size: 35px;
-				font-weight: bolder;
-				font-family: sans-serif;
-				text-align: center;
+				left: 426px;
 			}
 
 			.count4 {
-				width: 133px;
-				position: absolute;
-				top: 370px;
-				left: 399.9px;
-				z-index: 998;
-				font-size: 35px;
-				font-weight: bolder;
-				font-family: sans-serif;
-				text-align: center;
+				left: 639px;
 			}
 
 			.count5 {
-				width: 133px;
-				position: absolute;
-				top: 370px;
-				left: 533.2px;
-				z-index: 998;
-				font-size: 35px;
-				font-weight: bolder;
-				font-family: sans-serif;
-				text-align: center;
+				left: 853px;
 			}
 
 			.count6 {
-				width: 133px;
+				left: 1066px;
+			}
+
+			.count
+			{
+				width: 213px;
 				position: absolute;
-				top: 370px;
-				left: 666.5px;
+				top: 592px;
 				z-index: 998;
 				font-size: 35px;
 				font-weight: bolder;
@@ -391,67 +287,36 @@
 			}
 
 			.votes1 {
-				width: 133px;
-				position: absolute;
-				top: 420px;
 				left: 0px;
-				z-index: 998;
-				font-size: 16px;
-				font-family: sans-serif;
-				text-align: center;
 			}
 
 			.votes2 {
-				width: 133px;
-				position: absolute;
-				top: 420px;
-				left: 133.3px;
-				z-index: 998;
-				font-size: 16px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 213px;
 			}
 
 			.votes3 {
-				width: 133px;
-				position: absolute;
-				top: 420px;
-				left: 266.6px;
-				z-index: 998;
-				font-size: 16px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 426px;
 			}
 
 			.votes4 {
-				width: 133px;
-				position: absolute;
-				top: 420px;
-				left: 399.9px;
-				z-index: 998;
-				font-size: 16px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 639px;
 			}
 
 			.votes5 {
-				width: 133px;
-				position: absolute;
-				top: 420px;
-				left: 533.2px;
-				z-index: 998;
-				font-size: 16px;
-				font-family: sans-serif;
-				text-align: center;
+				left: 853px;
 			}
 
 			.votes6 {
-				width: 133px;
+				left: 1066px;
+			}
+
+			.votes
+			{
+				width: 213px;
 				position: absolute;
-				top: 420px;
-				left: 666.5px;
+				top: 672px;
 				z-index: 998;
-				font-size: 16px;
+				font-size: 26px;
 				font-family: sans-serif;
 				text-align: center;
 			}
@@ -476,29 +341,30 @@
 			}
 
 			@-webkit-keyframes moveX {
-			  from { left: 0; } to { left: 705px; }
-			}
-			@-moz-keyframes moveX {
-			  from { left: 0; } to { left: 705px; }
-			}
-			@-o-keyframes moveX {
-			  from { left: 0; } to { left: 705px; }
-			}
-			@keyframes moveX {
-			  from { left: 0; } to { left: 705px; }
-			}
-			@-webkit-keyframes moveY {
-			  from { top: 0; } to { top: 395px; }
-			}
-			@-moz-keyframes moveY {
-			  from { top: 0; } to { top: 395px; }
-			}
-			@-o-keyframes moveY {
-			  from { top: 0; } to { top: 395px; }
-			}
-			@keyframes moveY {
-			  from { top: 0; } to { top: 395px; }
-			}
+	      from { left: 0; } to { left: 1270px; }
+	    }
+	    @-moz-keyframes moveX {
+	      from { left: 0; } to { left: 1270px; }
+	    }
+	    @-o-keyframes moveX {
+	      from { left: 0; } to { left: 1270px; }
+	    }
+	    @keyframes moveX {
+	      from { left: 0; } to { left: 1270px; }
+	    }
+	    @-webkit-keyframes moveY {
+	      from { top: 0; } to { top: 710px; }
+	    }
+	    @-moz-keyframes moveY {
+	      from { top: 0; } to { top: 710px; }
+	    }
+	    @-o-keyframes moveY {
+	      from { top: 0; } to { top: 710px; }
+	    }
+	    @keyframes moveY {
+	      from { top: 0; } to { top: 710px; }
+	    }
+	    
 
 		</style>
 		

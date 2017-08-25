@@ -12,9 +12,9 @@
 			<% link = "1.mp4" %>
 	<% end %>
   	<div class="container">
-	  	<canvas id="canvas" height="450" width="600"></canvas>
+	  	<canvas id="canvas" height="720" width="960"></canvas>
 	  </div>
-	  <video id="my-video" class="video-js" loop preload="auto" height="450" width="800" autoplay controls data-setup="{}">
+	  <video id="my-video" class="video-js" loop preload="auto" height="720" width="1280" autoplay controls data-setup="{}">
 	    	<source src=<%= link %> type="video/mp4">
 	      <source src=<%= link %> type="video/ogg">
 	      <source src=<%= link %> type="video/webm">
@@ -33,7 +33,7 @@
 		  </div>
 		  <div class="count_container">
 		  	<p class="like_count count">
-		  		192
+		  		0
 		  	</p>	
 		  </div>
 	  </div>
@@ -43,7 +43,7 @@
 		  </div>
 		  <div class="count_container">
 		  	<p class="haha_count count">
-		  		323
+		  		0
 		  	</p>	
 		  </div>
 	  </div>
@@ -53,7 +53,7 @@
 		  </div>
 		  <div class="count_container">
 		  	<p class="love_count count">
-		  		3123
+		  		0
 		  	</p>	
 		  </div>
 	  </div>
@@ -63,7 +63,7 @@
 		  </div>
 		  <div class="count_container">
 		  	<p class="wow_count count">
-		  		3232
+		  		0
 		  	</p>	
 		  </div>
 	  </div>
@@ -73,7 +73,7 @@
 		  </div>
 		  <div class="count_container">
 		  	<p class="sad_count count">
-		  		10
+		  		0
 		  	</p>	
 		  </div>
 	  </div>
@@ -83,7 +83,7 @@
 		  </div>
 		  <div class="count_container">
 		  	<p class="angry_count count">
-		  		1
+		  		0
 		  	</p>	
 		  </div>
 	  </div>
@@ -98,8 +98,8 @@
     }
     body
     {
-    	height: 450px;
-    	width: 800px;
+    	height: 720px;
+    	width: 1280px;
     	position: relative;
     }
     /*.title
@@ -135,8 +135,8 @@
     }
     .container
     {
-    	height: 450px;
-    	width: 800px;
+    	height: 720px;
+    	width: 1280px;
     	display: flex;
     	justify-content: space-around;
     	align-items: center;
@@ -147,15 +147,15 @@
     	display: flex;
     	justify-content: space-around;
     	align-items: center;
-    	height: 35px;
-    	width: 88px;
+    	height: 56px;
+    	width: 141px;
   		background-color: black;
   		position: absolute;
-  		top: 60px;
+  		top: 96px;
   		left: -21px;
   		opacity: 1;
   		border: 2px solid white;
-  		border-radius: 10px;
+  		border-radius: 16px;
     }
     .logo
     {
@@ -170,7 +170,7 @@
     .count
     {
     	color: white;
-    	font-size: 22px;
+    	font-size: 35px;
     	font-weight: bolder;
     }
     .absolute
@@ -180,47 +180,48 @@
     .reaction-container
     {
     	background: white;
-      border-radius: 50%;
-      height: 52px;
-      width: 52px;
+        border-radius: 50%;
+        height: 83px;
+        width: 83px;
     	position: absolute;
+        left: 10px;
     	display: flex;
     	justify-content: space-around;
     	align-items: center;
     }
     .like
     {
-    	top: 20px;
-    	left: 25px;
+    	top: 32px;
+    	left: 30px;
     }
     .love
     {
-    	top: 20px;
-    	right: 75px;	
+    	top: 32px;
+    	right: 130px;	
     }
     .haha
     {
-    	top: 170px;
-    	left: 25px;
+    	top: 272px;
+    	left: 30px;
     }
     .wow
     {
-    	top: 170px;
-    	right: 75px;
+    	top: 272px;
+    	right: 130px;
     }
     .sad
     {
-    	top: 320px;
-    	left: 25px;
+    	top: 512px;
+    	left: 30px;
     }
     .angry
     {
-    	top: 320px;
-    	right: 75px;
+    	top: 512px;
+    	right: 130px;
     }
     .reaction-image
     {
-    	height: 50px;
+    	height: 80px;
     }
   </style>
 
@@ -230,7 +231,7 @@
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext( '2d' );
     var myVideo = document.getElementById('my-video');
-    ctx.drawImage( myVideo, 0, 0, 600, 450 );
+    ctx.drawImage( myVideo, 0, 0, 960, 720 );
 		}
 		setInterval ( updateVideo, 24 );
   </script>

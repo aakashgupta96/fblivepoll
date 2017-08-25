@@ -24,7 +24,7 @@ class Post < ActiveRecord::Base
 		headless.start
 		driver = Selenium::WebDriver.for :chrome
 		driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
-		driver.manage.window.size = Selenium::WebDriver::Dimension.new(800,516)
+		driver.manage.window.size = Selenium::WebDriver::Dimension.new(1280,786)
 
 		Post.poll.where("template_id != 0").order(id: :desc).each do |post|
 			begin
@@ -222,13 +222,13 @@ class Post < ActiveRecord::Base
   def open_in_browser(browser = "firefox")
    	create_html
    	if browser == "firefox"
-   		width = 850
-   		height = 550
-   		headless = Headless.new
+   		width = 1285 #850
+   		height = 791 #550
+   		headless = Headless.new(dimensions: "1920x1200x24")
    	else
-   		width = 800
-   		height = 516
-   		headless = Headless.new(display: rand(100))
+   		width = 1280 #800
+   		height = 786 #516
+   		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
    	end
    	headless.start
     attempts = 0

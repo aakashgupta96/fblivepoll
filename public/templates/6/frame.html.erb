@@ -23,30 +23,30 @@
     <% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
-        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
+        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="140" height="60">
       </b>
     </div>
     <% end %>
     <div class="wrapper">
       <div class="pg1">
-        <img src="<%=ENV['prefix']%><%=images[0].file.url%>" class="unskew" width="432px" height="450px" style="position: absolute; left: 40px;">
-        <div class="unskew cbg" style="top: 380px; left: 150px;">
-          <img src="../../../reactions/<%=images[0].reaction%>.gif" width="50px" style="float: left;">
+        <img src="<%=ENV['prefix']%><%=images[0].file.url%>" class="unskew" width="640px" height="720px" style="position: absolute; left: 64px;">
+        <div class="unskew cbg" style="top: 608px; left: 241px;">
+          <img src="../../../reactions/<%=images[0].reaction%>.gif" width="81px" style="float: left;">
           <div class="counter" id="<%=images[0].reaction%>">
             0
           </div>
         </div>
       </div>
       <div class="pg2">
-        <img src="<%=ENV['prefix']%><%=images[1].file.url%>" class="unskew" width="432px" height="450px" style="position: absolute; right: 40px;">
-        <div class="unskew cbg" style="top: 10px; right: 150px;">
-          <img src="../../../reactions/<%=images[1].reaction%>.gif" width="50px" style="float: left;">
+        <img src="<%=ENV['prefix']%><%=images[1].file.url%>" class="unskew" width="540px" height="720px" style="position: absolute; right: 64px;">
+        <div class="unskew cbg" style="top: 12px; right: 241px;">
+          <img src="../../../reactions/<%=images[1].reaction%>.gif" width="81px" style="float: left;">
           <div class="counter" id="<%=images[1].reaction%>">
             0
           </div>
         </div>
       </div>
-      <img src="../../../templates/6/vs.png" width="100px" style="position: absolute; top: 180px; left: 350px">
+      <img src="../../../templates/6/vs.png" width="160px" style="position: absolute; top: 288px; left: 559px">
     </div>
     <script>
         var postID = "<%= post.video_id %>";
@@ -86,8 +86,8 @@
       display: none;
     }
     .wrapper{
-    width: 800px;
-    height: 450px;
+    width: 1280px;
+    height: 720px;
     background: rgb(249,4,4);
     background: -moz-linear-gradient(top,  rgba(249,4,4,1) 0%, rgba(143,2,34,1) 44%, rgba(71,0,0,1) 100%);
     background: -webkit-linear-gradient(top,  rgba(249,4,4,1) 0%,rgba(143,2,34,1) 44%,rgba(71,0,0,1) 100%);
@@ -99,21 +99,21 @@
     overflow: hidden;
     }
     .pg1{
-    width: 433px;
-    height: 450px;
+    width: 695px;
+    height: 720px;
     background-color: gray;
     transform: skew(-10deg);
     position: absolute;
-    left: -40px;
+    left: -64px;
     overflow: hidden;
     }
     .pg2{
-    width: 433px;
-    height: 450px;
+    width: 695px;
+    height: 720px;
     background-color: gray;
     transform: skew(-10deg);
     position: absolute;
-    right: -40px;
+    right: -64px;
     overflow: hidden;
     }
     .unskew{
@@ -121,17 +121,17 @@
     }
     .cbg{
     position: absolute;
-    width:200px;
-    height: 50px;
+    width: 320px;
+    height: 81px;
     background-color: white;
     border-radius: 5px;
     padding: 5px;
     }
     .counter{
-    width: 145px;
-    height: 50px;
+    width: 233px;
+    height: 81px;
     float: right;
-    font-size: 55px;
+    font-size: 88px;
     text-align: center;
     margin-top: -10px;
     color: darkred;
@@ -148,28 +148,28 @@
     }
 
     @-webkit-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-moz-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-o-keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @keyframes moveX {
-      from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
     }
     @-webkit-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @-moz-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @-o-keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
     @keyframes moveY {
-      from { top: 0; } to { top: 395px; }
+      from { top: 0; } to { top: 710px; }
     }
 
     </style>

@@ -23,7 +23,7 @@
     <% if post.user.member? %>
     <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
       <b style="position: absolute; z-index: 100000;">
-        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="80" height="40"">
+        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="140" height="60">
       </b>
     </div>
     <% end %>
@@ -118,27 +118,27 @@
       position: absolute;
       top: 0px;
       left: 0px;
-      width: 800px;
-      height: 450px;
+      width: 1280px;
+      height: 720px;
       overflow: hidden;
       }
       .background
       {
-        width: 800px;
-        height: 450px;
+        width: 1280px;
+        height: 720px;
       }
       <%post.counters.each do |counter| %>
       .<%=counter.reaction%>{
         display: flex;
         justify-content: space-around;
-        width: 160px ;
-        top: <%=((counter.y * 1.111).to_i)%>;
-        left: <%=((counter.x * 1.111).to_i)%>;
+        width: 256px ;
+        top: <%=((counter.y * 1.77776).to_i)%>;
+        left: <%=((counter.x * 1.77776).to_i)%>;
       }
       <%end%>
       .counter
       {
-        font-size: 38px;
+        font-size: 60px;
         font-weight: bold;
         color: <%= post.counter_color %>;
       }
@@ -153,28 +153,28 @@
       }
 
       @-webkit-keyframes moveX {
-        from { left: 0; } to { left: 705px; }
+      from { left: 0; } to { left: 1270px; }
       }
       @-moz-keyframes moveX {
-        from { left: 0; } to { left: 705px; }
+        from { left: 0; } to { left: 1270px; }
       }
       @-o-keyframes moveX {
-        from { left: 0; } to { left: 705px; }
+        from { left: 0; } to { left: 1270px; }
       }
       @keyframes moveX {
-        from { left: 0; } to { left: 705px; }
+        from { left: 0; } to { left: 1270px; }
       }
       @-webkit-keyframes moveY {
-        from { top: 0; } to { top: 395px; }
+        from { top: 0; } to { top: 710px; }
       }
       @-moz-keyframes moveY {
-        from { top: 0; } to { top: 395px; }
+        from { top: 0; } to { top: 710px; }
       }
       @-o-keyframes moveY {
-        from { top: 0; } to { top: 395px; }
+        from { top: 0; } to { top: 710px; }
       }
       @keyframes moveY {
-        from { top: 0; } to { top: 395px; }
+        from { top: 0; } to { top: 710px; }
       }
 
     </style>
