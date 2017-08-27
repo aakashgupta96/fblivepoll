@@ -15,20 +15,20 @@ class UsersController < ApplicationController
     response = HTTParty.get("https://graph.facebook.com/#{@post.page_id}?fields=name,picture{url}&access_token=#{@post.user.token}")
     @url = response.parsed_response["picture"]["data"]["url"] rescue false
     @name = response.parsed_response["name"]
-    return redirect_to myposts_path, notice: "Invalid operation for the selected post." if @post.nil?
+    return redirect_to myposts_path, notice: Constant::INVALID_OPERATION_MESSAGE if @post.nil?
   end
 
   def stop_post
   	@post.stop("stopped_by_user")
-  	return redirect_to myposts_path, notice: "Live Video has been successfully stopped."
+  	return redirect_to myposts_path, notice: Constant::POST_STOPPED_MESSAGE
   end
 
   def cancel_scheduled_post
     if @post.scheduled?
       @post.cancel_scheduled
-      return redirect_to myposts_path, notice: "Your scheduled post has been successfully cancelled"
+      return redirect_to myposts_path, notice: Constant::SCHEDULE_CANCELLED_MESSAGE
     else
-      return redirect_to myposts_path, notice: "Invalid operation for the selected post"
+      return redirect_to myposts_path, notice: Constant::INVALID_OPERATION_MESSAGE
     end
   end
 
@@ -36,10 +36,10 @@ class UsersController < ApplicationController
 
   def set_post
     @post = Post.find_by_id(params[:post_id]) 
-    return redirect_to root_path, notice: "Page requested not found" if @post.nil?
+    return redirect_to root_path, notice: Constant::PAGE_NOT_FOUND_MESSAGE if @post.nil?
   end
 
   def authorize_user!
-    redirect_to root_path, notice: "Unauthorized" unless current_user == @post.user
+    redirect_to root_path, notice: Constant::AUTHORIZATION_FAILED_MESSAGE unless current_user == @post.user
   end
 end

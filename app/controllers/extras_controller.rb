@@ -1,7 +1,7 @@
 class ExtrasController < ApplicationController
 	
 	def invalid
-    redirect_to root_path, notice: "Page requested not found"
+    redirect_to root_path, notice: Constant::PAGE_NOT_FOUND_MESSAGE
   end
 
   def home

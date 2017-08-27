@@ -10,8 +10,8 @@ class PollsController < ApplicationController
   def new
     @post = Post.new
     @template = Template.poll.find_by_id(params[:template])
-    return redirect_to poll_templates_path, notice: "Invalid Selection of Template" if @template.nil?
-    return redirect_to poll_templates_path, notice: "You need to be a PREMIUM Member to use this template." unless current_user.can_use_template(@template)
+    return redirect_to poll_templates_path, notice: Constant::INVALID_TEMPLATE_MESSAGE if @template.nil?
+    return redirect_to poll_templates_path, notice: Constant::UNAUTHORIZED_USER_FOR_TEMPLATE_MESSAGE unless current_user.can_use_template(@template)
     @template.image_count.times {@post.images.build}
     @pages = current_user.pages
   end
@@ -22,7 +22,7 @@ class PollsController < ApplicationController
 
   def frame
     if @post.template.id != 0
-      return redirect_to root_path , notice: "Invalid page request"
+      return redirect_to root_path , notice: Constant::PAGE_NOT_FOUND_MESSAGE
     end
   end
 
@@ -85,11 +85,11 @@ class PollsController < ApplicationController
         if @post.start 
           return redirect_to submit_poll_path(@post.id)
         else
-          return redirect_to root_path, notice: "Facebook declined your request. Please visit My Post section to see the status." 
+          return redirect_to root_path, alert: Constant::FB_DECLINED_REQUEST_MESSAGE
         end
       end
       return redirect_to submit_poll_path(@post.id) if @post.scheduled?
-      return redirect_to root_path, notice: "Sorry! All slots are taken. You can schedule your post and it will be posted after scheduled time as soon as a slot will be available OR try after sometime."
+      return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
     else 
       return redirect_to frame_path(@post.id), notice: 'Error occured while saving post'
     end

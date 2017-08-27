@@ -13,33 +13,33 @@ class ModeratorsController < ApplicationController
 
 	def start_post
 		@post.start
-		return redirect_to moderators_panel_path, notice: "Live Video has been pushed to QUEUE."
+		return redirect_to moderators_panel_path, notice: Constant::POST_PUSHED_MESSAGE
 	end
 
 	def cancel_scheduled_post
 		if @post.scheduled?
       @post.cancel_scheduled
-      return redirect_to moderators_panel_path, notice: "Your scheduled post has been successfully cancelled"
+      return redirect_to moderators_panel_path, notice: Constant::SCHEDULE_CANCELLED_MESSAGE
     else
-      return redirect_to moderators_panel_path, notice: "Invalid operation for the selected post"
+      return redirect_to moderators_panel_path, notice: Constant::INVALID_OPERATION_MESSAGE
     end
 	end
 
 	def destroy_post
 		@post.destroy
-		return redirect_to moderators_panel_path, notice: "Live Video has been successfully destroyed."
+		return redirect_to moderators_panel_path, notice: Constant::POST_DESTROYED_MESSAGE
 	end
 
 	def stop_post
 		@post.stop
-		return redirect_to moderators_panel_path, notice: "Live Video has been successfully stopped."
+		return redirect_to moderators_panel_path, notice: Constant::POST_STOPPED_MESSAGE
 	end
 
 	private
 
   def set_post
     @post = Post.find_by_id(params[:post_id]) 
-    return redirect_to moderators_panel_path, notice: "Page requested not found" if @post.nil?
+    return redirect_to moderators_panel_path, notice: Constant::PAGE_NOT_FOUND_MESSAGE if @post.nil?
   end
 
 end

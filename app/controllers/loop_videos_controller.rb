@@ -12,8 +12,8 @@ class LoopVideosController < ApplicationController
   def new
   	@post = Post.new
     @template = Template.loop_video.find_by_id(params[:template])
-    return redirect_to '/#pluginCarousel', notice: "Invalid Selection of Template" if @template.nil?
-    return redirect_to loop_video_templates_path, notice: "You need to be a PREMIUM Member to use this template." unless current_user.can_use_template(@template)
+    return redirect_to '/#pluginCarousel', notice: Constant::INVALID_TEMPLATE_MESSAGE if @template.nil?
+    return redirect_to loop_video_templates_path, notice: Constant::UNAUTHORIZED_USER_FOR_TEMPLATE_MESSAGE unless current_user.can_use_template(@template)
     @pages = current_user.pages
   end
 
@@ -29,11 +29,11 @@ class LoopVideosController < ApplicationController
         if @post.start 
           return redirect_to submit_loop_video_path(@post.id)
         else
-          return redirect_to root_path, notice: "Facebook declined your request. Please visit My Post section to see the status." 
+          return redirect_to root_path, alert: Constant::FB_DECLINED_REQUEST_MESSAGE
         end
       end
       return redirect_to submit_loop_video_path(@post.id) if @post.scheduled?
-      return redirect_to root_path, notice: "Sorry! All slots are taken. You can schedule your post and it will be posted after scheduled time as soon as a slot will be available OR try after sometime."
+      return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
     else 
       return redirect_to new_loop_video_path,notice: "Invalid Details"
     end

@@ -101,6 +101,11 @@ class User < ActiveRecord::Base
   end
 
   def has_scheduled_post?
-    Post.scheduled.where(user_id: self.id).empty? ? false: true
+    scheduled_posts = Post.scheduled.where(user_id: self.id).count
+    if (self.member? and  scheduled_posts < Constant::MEMBER_POST_LIMIT) || (self.donor? and  scheduled_posts < Constant::DONOR_POST_LIMIT) || (self.premium? and  scheduled_posts < Constant::PREMIUM_POST_LIMIT) || (self.ultimate? and  scheduled_posts < Constant::ULTIMATE_POST_LIMIT) || (self.admin? and  scheduled_posts < Constant::ADMIN_POST_LIMIT)
+      false
+    else 
+      true
+    end
   end
 end
