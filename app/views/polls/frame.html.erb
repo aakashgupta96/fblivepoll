@@ -633,6 +633,22 @@
       var addReaction = function(source)
       {
         var temp = $(this).data("value");
+        var groups = layer2.find("Group");
+        for(i=0;i<groups.length;i++)
+        {
+
+          if(groups[i].attrs.name == "counter" && groups[i].attrs.reaction == temp)
+          {
+            $.alert({
+              theme: "supervan",
+              boxWidth: width,
+              useBootstrap: false,
+              title: "Duplicate Reaction !",
+              content: "You have already added this reaction."
+            })
+            return;
+          }
+        }
         var new_image = document.createElement("img")
         new_image.src = "/reactions/"+temp+".png";
         
@@ -668,8 +684,6 @@
         addCounter(temp);
         
         layer2.draw();
-
-
         document.getElementById("close_add_image").click();
       };
       
@@ -848,7 +862,7 @@
               document.getElementById("data_form").submit();
               $.dialog(
               {
-                theme: "materialize",
+                theme: "supervan",
                 boxWidth: width,
                 useBootstrap: false,
                 title: "Submitting !!!",
