@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
 
   def is_already_live?
     live_users_posts = Post.live.where(user_id: self.id).count
-    if (self.member? and  live_users_posts < CONSTANT::MEMBER_POST_LIMIT) || (self.donor? and  live_users_posts < CONSTANT::CONSTANT::DONOR_POST_LIMIT) || (self.premium? and  CONSTANT::live_users_posts < PREMIUM_POST_LIMIT) || (self.ultimate? and  live_users_posts < CONSTANT::ULTIMATE_POST_LIMIT) || (self.admin? and  live_users_posts < CONSTANT::ADMIN_POST_LIMIT)
+    if (self.member? and  live_users_posts < Constant::MEMBER_POST_LIMIT) || (self.donor? and  live_users_posts < Constant::DONOR_POST_LIMIT) || (self.premium? and  live_users_posts < Constant::PREMIUM_POST_LIMIT) || (self.ultimate? and  live_users_posts < Constant::ULTIMATE_POST_LIMIT) || (self.admin? and  live_users_posts < Constant::ADMIN_POST_LIMIT)
       false
     else 
       true
