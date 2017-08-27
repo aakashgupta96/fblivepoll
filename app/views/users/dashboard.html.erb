@@ -1,0 +1,55 @@
+<div class="row container">
+  <div class="col s12 m10 offset-m1 l8 offset-l2">
+    <div class="card-panel dashboard_details hoverable">
+      <ul class="collection">
+			  <li class="collection-item avatar">
+			    <img src="/assets/package.png" alt="" class="circle">
+			    <span class="title bold">Package Purchased</span>
+			    <p>
+			    	<%=user_package_name(current_user)%>
+			    </p>
+			    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+			  </li>
+			  <% if current_user_is_donor? %>
+			  <li class="collection-item avatar">
+			    <i class="material-icons circle green">event_available</i>
+			    <span class="title bold">Subscription Purchased On</span>
+			    <p>
+			    <%=current_user.subscription_date.strftime("%B %d, %Y")%>
+			    </p>
+			    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+			  </li>
+			  <li class="collection-item avatar">
+			    <i class="material-icons circle red">event_busy</i>
+			    <span class="title bold">Subscription Valid Till</span>
+			    <p>
+			    	<%=(current_user.subscription_date+current_user.subscription_duration.days).strftime("%B %d, %Y")%>
+			    </p>
+			    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+			  </li>
+			  <% end %>
+			</ul>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+	<div class="col s10 offset-s1 m6 l4 center-align">
+		<div class="card-panel grey lighten-5 z-depth-1 hoverable">
+			<%= link_to raw('<img class="responsive-img" src="/assets/dashboard.png">'), myposts_path%>
+			<%= link_to "My Posts", myposts_path, class: "waves-effect waves-light btn" %>
+		</div>
+	</div>
+	<div class="col s10 offset-s1 m6 l4 center-align">
+		<div class="card-panel grey lighten-5 z-depth-1 hoverable">
+			<%= link_to raw('<img class="responsive-img" src="/assets/live_poll.png">'), poll_templates_path%>
+			<%= link_to "New Live Poll", poll_templates_path, class: "waves-effect waves-light btn" %>
+		</div>
+	</div>
+	<div class="col s10 offset-s1 m6 offset-m3 l4 center-align">
+		<div class="card-panel grey lighten-5 z-depth-1 hoverable">
+			<%= link_to raw('<img class="responsive-img" src="/assets/loop_video.png">'), loop_video_templates_path%>
+			<%= link_to "New Loop Video", loop_video_templates_path, class: "waves-effect waves-light btn" %>
+		</div>
+	</div>
+</div>

@@ -67,6 +67,10 @@ $( document ).ready(function(){
     };
     $(".close-button").click(hideDonation);
 
+    $('#question-form').on('submit',function(){
+      return validatePhoneNumber($("#icon_telephone").val()) && validateEmailId($("#icon_email").val());
+    });
+
 })
 
 $(window).load(function(){
@@ -152,3 +156,40 @@ function validateImageFiles(inputFile) {
         $(inputFile).val('');
     };
 };
+
+function validatePhoneNumber(phoneNumber) {
+  var pattern1 = /^\d{10}$/;
+  var pattern2 = /^([+])\(?([0-9]{2})\)?[- ]?([0-9]{10})$/;
+  if(phoneNumber.match(pattern1) || phoneNumber.match(pattern2))
+  {  
+    return true;  
+  }  
+  else  
+  {  
+    $.alert({
+      theme: "supervan",
+      useBootstrap: false,
+      title: "Invalid Details!",
+      content: "Phone Number entered is incorrect !!!"
+    })
+    return false;  
+  }  
+}
+
+function validateEmailId(emailId){
+  var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if(emailId.match(pattern))
+  {  
+    return true;  
+  }  
+  else  
+  {  
+    $.alert({
+      theme: "supervan",
+      useBootstrap: false,
+      title: "Invalid Details!",
+      content: "Email ID entered is incorrect !!!"
+    })
+    return false;  
+  }
+}

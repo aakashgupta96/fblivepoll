@@ -11,12 +11,6 @@ class User < ActiveRecord::Base
   
   scope :banned, ->{ where(banned: true) }
 
-  MEMBER_POST_LIMIT = 1
-  DONOR_POST_LIMIT = 1
-  PREMIUM_POST_LIMIT = 1
-  ULTIMATE_POST_LIMIT = 2
-  ADMIN_POST_LIMIT = 10
-
   def can_use_template(template)
     UserTemplate.where(template_id: template.id, user_role: User.roles[self.role]).empty? ? false : true
   end
@@ -99,7 +93,7 @@ class User < ActiveRecord::Base
 
   def is_already_live?
     live_users_posts = Post.live.where(user_id: self.id).count
-    if (self.member? and  live_users_posts < MEMBER_POST_LIMIT) || (self.donor? and  live_users_posts < DONOR_POST_LIMIT) || (self.premium? and  live_users_posts < PREMIUM_POST_LIMIT) || (self.ultimate? and  live_users_posts < ULTIMATE_POST_LIMIT) || (self.admin? and  live_users_posts < ADMIN_POST_LIMIT)
+    if (self.member? and  live_users_posts < CONSTANT::MEMBER_POST_LIMIT) || (self.donor? and  live_users_posts < CONSTANT::CONSTANT::DONOR_POST_LIMIT) || (self.premium? and  CONSTANT::live_users_posts < PREMIUM_POST_LIMIT) || (self.ultimate? and  live_users_posts < CONSTANT::ULTIMATE_POST_LIMIT) || (self.admin? and  live_users_posts < CONSTANT::ADMIN_POST_LIMIT)
       false
     else 
       true

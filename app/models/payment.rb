@@ -6,12 +6,12 @@ class Payment < ActiveRecord::Base
 
   def update_user_subscription
     @user = self.user
-    @user.update(subscription_date: Date.current, subscription_duration: 1)
-    if self.amount == 10
+    @user.update(subscription_date: Date.current, subscription_duration: 30)
+    if self.amount == CONSTANT::DONOR_COST
       @user.donor!
-    elsif self.amount == 15
+    elsif self.amount == CONSTANT::PREMIUM_COST
       @user.premium!
-    elsif self.amount == 20
+    elsif self.amount == CONSTANT::ULTIMATE_COST
       @user.ultimate!
     end
   end

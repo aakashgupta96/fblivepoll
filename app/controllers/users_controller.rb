@@ -1,9 +1,14 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, except: [:posts]
-  before_action :authorize_user!, except: [:posts]
+  before_action :set_post, except: [:posts, :dashboard]
+  before_action :authorize_user!, except: [:posts, :dashboard]
+  
   def posts
   	@posts = current_user.posts.order(created_at: :desc).page(params[:page])
+  end
+
+  def dashboard
+    
   end
 
   def show

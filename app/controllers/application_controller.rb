@@ -5,6 +5,14 @@ class ApplicationController < ActionController::Base
   before_action :set_raven_context
   protect_from_forgery with: :exception
   
+  def after_sign_in_path_for(resource)
+    if resource.class == User
+      dashboard_path
+    elsif resource.class  == Admin
+      root_path
+    end
+  end
+
   protected
 
   def check_slots
