@@ -18,7 +18,6 @@ $(function() {
 
   return $.rails.showConfirmDialog = function(link) {
     var width = Math.min(650,0.9*$(window).width());
-    console.log("width of box = " + width);
     var message = link.attr("data-confirm");
     $.confirm({
       boxWidth: width + "px",

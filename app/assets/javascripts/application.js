@@ -18,6 +18,8 @@
 // = require materialize-rails-confirm.js
 // = require_tree
 
+var width = Math.min(650,0.9*$(window).width());
+
 $( document ).ready(function(){
     $('.modal').modal();
     $('.parallax').parallax();

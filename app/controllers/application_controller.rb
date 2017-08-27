@@ -8,7 +8,9 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if resource.class == User
       dashboard_path
-    elsif resource.class  == Admin
+    elsif resource.class  == Moderator
+      moderators_panel_path
+    else
       root_path
     end
   end

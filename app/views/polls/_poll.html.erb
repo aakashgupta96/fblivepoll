@@ -6,130 +6,140 @@
     </div>
   </div>
 <% else %>
-  <!-- <h3 class="header grey-text text-darken-2 bolder center">Live Poll Details</h3>
-   -->
 <center>
   <div class="card plugin hoverable">
     <div class="card-image waves-effect waves-block waves-light">
       <img class="activator" src="/templates/template<%=@template.id%>.jpg">
     </div>
     <div class="card-content" style="padding: 10px !important;">
-      <span class="card-title activator grey-text text-darken-4 bolder relative" style="left: 20px; font-size: 30px;">Edit Template</span>
-      </div>
+      <span class="card-title activator grey-text text-darken-2 bolder relative" style="left: 20px; font-size: 30px;">
+        Edit Template
+      </span>
     </div>
-  </center>
-  <div class="note white-text">Make sure that you don't upload any copyrighted content without permission otherwise your post will be deleted by facebook.</div>
-  <div class="note white-text">Scheduling time of post is in <a href="http://www.thetimezoneconverter.com/" target="_blank">UTC Time Format / GMT Time Zone</a>.</div>
-  <div class="note white-text">English language is preferred for all the inputs.</div>
-
-    <div class="container-wide section">
-  <%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {:multipart => true, id: "newPoll",class: "col s12"}) do |f| %>
-  <div class="white z-depth-4"  style="padding: 35px;">
-    <%= f.hidden_field :template_id , value: @template.id%>
-    <div class="row zero-margin">
-      <div class="input-field col s12 l6">
-        <%= f.text_field :title, required: true%>
-        <%= f.label "Title / Heading" %>
-      </div>
-      <div class="input-field col s12 l6">
-        <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
-        <%= f.label :duration, "Duration ( Hrs : Min )" %>
-      </div>
-    </div>
-    
-    <div class="row">
-        <div class="input-field col s12">
-          <textarea id="post_caption" name="post[caption]" class="materialize-textarea" style="margin: 0px;"></textarea>
-          <label for="textarea1">Caption</label>
-        </div>
-    </div>
-
-    <div class="row">
-      <div class="col s12 l6">
-        <input type="checkbox" id="schedule" name="post[scheduled]"/>
-        <label for="schedule">Schedule Post</label>
-      </div>  
-      <div id="datetime" class="input-field col s12 l6" style="display: none;">
-        <%= f.datetime_select :start_time,{discard_year: true, datetime_separator: "",time_separator: "", ampm: true},{class: "col s6 l3"}%>
-        <%= f.label :start_time, "Scheduling Date and Time in GMT Time Zone" %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="file-field input-field col s12 m6 l6">
-        <div class="btn">
-          <span>Playback Audio</span>
-          <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 50.megabytes} }%>
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text">
-        </div>
-      </div>
-
-     <div class="input-field col s12 m6 l6">
-        <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
-        <%= f.label "Select Page" %>
-      </div>
-    </div>
-
-    <% if @template.needs_background %>
-      <div class="row">
-      <div class="file-field input-field col s12 m6 l6">
-        <div class="btn">
-          <span>Background Image</span>
-          <%= f.file_field :background, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 20.megabytes}, required: true}%>
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text">
-        </div>
-      </div>
-    </div>
-    <% end %>
   </div>
-    <% i = 1 %>
-    <div class="row">
-    <%= f.fields_for :images do |builder| %>
-      <div class="card col l6 m12 s12" style="padding: 10px 30px 10px 30px;">
-      <% if @template.needs_image_names %>
-        <div class="input-field col s12 l6">
-          <%= builder.label "Name for image #{i}" %>
-          <%= builder.text_field :name, required: true %>
-        </div>
-      <% end %>
-      <div class="row">
-        <div class="file-field input-field col s12 m6 l6">
-          <div class="btn">
-            <span>Add Image <%=i%></span>
-            <%= builder.file_field :file, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 15.megabytes}, required: true }%>
-          </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
-          </div>
-        </div>
-        <div class="input-field col s12 m6 l6">
-          <%=  builder.select(:reaction, [["Like","like",{class: "left circle", "data-icon" => "/reactions/like.gif"}],["Love","love",{class: "left circle", "data-icon" => "/reactions/love.gif"}],["Haha","haha",{class: "left circle", "data-icon" => "/reactions/haha.gif"}],["Wow","wow",{class: "left circle", "data-icon" => "/reactions/wow.gif"}],["Sad","sad",{class: "left circle", "data-icon" => "/reactions/sad.gif"}],["Angry","angry",{class: "left circle", "data-icon" => "/reactions/angry.gif"}]],{}, {class: "icons reactions"}) %>
-          <%= f.label "Select Reaction" %>
-        </div>
+  <button id="showInstructions" class="btn">Show Instructions</button>
+</center>
+  
+<div class="container-wide section">
+<%= form_for(@post,:url => url_for(:controller => 'polls', :action => 'create'),html: {:multipart => true, id: "newPoll",class: "col s12"}) do |f| %>
+<div class="white z-depth-4"  style="padding: 35px;">
+  <%= f.hidden_field :template_id , value: @template.id%>
+  <div class="row zero-margin">
+    <div class="input-field col s12 l6">
+      <%= f.text_field :title, required: true%>
+      <%= f.label "Title / Heading" %>
+    </div>
+    <div class="input-field col s12 l6">
+      <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
+      <%= f.label :duration, "Duration ( Hrs : Min )" %>
+    </div>
+  </div>
+  
+  <div class="row">
+      <div class="input-field col s12">
+        <textarea id="post_caption" name="post[caption]" class="materialize-textarea" style="margin: 0px;"></textarea>
+        <label for="textarea1">Caption</label>
       </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 l6">
+      <input type="checkbox" id="schedule" name="post[scheduled]"/>
+      <label for="schedule">Schedule Post</label>
+    </div>  
+    <div id="datetime" class="input-field col s12 l6" style="display: none;">
+      <%= f.datetime_select :start_time,{discard_year: true, datetime_separator: "",time_separator: "", ampm: true},{class: "col s6 l3"}%>
+      <%= f.label :start_time, "Scheduling Date and Time in GMT Time Zone" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="file-field input-field col s12 m6 l6">
+      <div class="btn">
+        <span>Playback Audio</span>
+        <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 50.megabytes} }%>
       </div>
-      <% i = i+1 %>
-    <% end %>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
     </div>
 
-    <div class="row">
-      <% if @template.id == 0 %>
-        <%= f.submit "Proceed to draw frame", {class: "col s12 btn"}%>
-      <% else %>
-        <%= f.submit "Submit", {class: "col s12 btn", data: {:confirm => 'Are you sure?'} }%>
-      <% end %>
+   <div class="input-field col s12 m6 l6">
+      <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
+      <%= f.label "Select Page" %>
     </div>
+  </div>
+
+  <% if @template.needs_background %>
+    <div class="row">
+    <div class="file-field input-field col s12 m6 l6">
+      <div class="btn">
+        <span>Background Image</span>
+        <%= f.file_field :background, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 20.megabytes}, required: true}%>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+  <% i = 1 %>
+  <div class="row">
+  <%= f.fields_for :images do |builder| %>
+    <div class="card col l6 m12 s12" style="padding: 10px 30px 10px 30px;">
+    <% if @template.needs_image_names %>
+      <div class="input-field col s12 l6">
+        <%= builder.label "Name for image #{i}" %>
+        <%= builder.text_field :name, required: true %>
+      </div>
+    <% end %>
+    <div class="row">
+      <div class="file-field input-field col s12 m6 l6">
+        <div class="btn">
+          <span>Add Image <%=i%></span>
+          <%= builder.file_field :file, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 15.megabytes}, required: true }%>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+      <div class="input-field col s12 m6 l6">
+        <%=  builder.select(:reaction, [["Like","like",{class: "left circle", "data-icon" => "/reactions/like.gif"}],["Love","love",{class: "left circle", "data-icon" => "/reactions/love.gif"}],["Haha","haha",{class: "left circle", "data-icon" => "/reactions/haha.gif"}],["Wow","wow",{class: "left circle", "data-icon" => "/reactions/wow.gif"}],["Sad","sad",{class: "left circle", "data-icon" => "/reactions/sad.gif"}],["Angry","angry",{class: "left circle", "data-icon" => "/reactions/angry.gif"}]],{}, {class: "icons reactions"}) %>
+        <%= f.label "Select Reaction" %>
+      </div>
+    </div>
+    </div>
+    <% i = i+1 %>
   <% end %>
   </div>
+
+  <div class="row">
+    <% if @template.id == 0 %>
+      <%= f.submit "Proceed to draw frame", {class: "col s12 btn"}%>
+    <% else %>
+      <%= f.submit "Submit", {class: "col s12 btn", data: {:confirm => 'Are you sure?'} }%>
+    <% end %>
+  </div>
+<% end %>
+</div>
  
 
 
   <script>
     $(document).ready(function() {
+      var showInstructions = function()
+      {
+        $.alert({
+          theme: "supervan",
+          boxWidth: width + "px",
+          useBootstrap: false,
+          title: "Instructions !!!",
+          content: "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>Make sure that you don't upload any copyrighted content without permission otherwise your post will be deleted by facebook.</li><li class='collection-item'>Scheduling time of post is in UTC Time Format / GMT Time Zone.Use <a href='http://www.thetimezoneconverter.com/'' target='_blank'>this link</a> to convert time accordingly.</li><li class='collection-item'>English language is preferred for all the inputs.</li></ul>"
+        })
+      };
+      showInstructions();
+      $("#showInstructions").on('click',showInstructions);
       $('select').material_select();
 
       $('#schedule').click(function(){
@@ -154,12 +164,32 @@
           }
           if(!valid)
           {
-            Materialize.toast("One reaction can't be selected for two or more images", 4000); 
+            setTimeout(function(){
+              $.dialog(
+              {
+                theme: "supervan",
+                boxWidth: width,
+                useBootstrap: false,
+                title: "Invalid Details !!!",
+                content: "One reaction can't be selected for two or more images."
+              });
+            },1);
             return false;
           }
           else
           {
-            Materialize.toast("Please wait while the files are being uploaded", 400000); 
+            setTimeout(function(){
+              $.dialog({
+                theme: "supervan",
+                boxWidth: width,
+                useBootstrap: false,
+                title: "Submitting !!!",
+                content: "Please wait while files are being uploaded. You will be automatically redirected.",
+                onOpenBefore: function () {
+                  $(".jconfirm-closeIcon").hide();
+                }
+              });
+            },1); 
             return true;
           }
       });

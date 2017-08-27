@@ -4,9 +4,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :moderators, skip: [:registrations, :passwords]
   devise_for :users, controllers: {registrations: "users/registrations", sessions: "users/sessions", :omniauth_callbacks => "users/omniauth_callbacks"}
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-  # You can have the root of your site routed with "root"
+  
   mount Resque::Server, :at => "/resque"
 
   root 'extras#home'

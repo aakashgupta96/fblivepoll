@@ -127,10 +127,8 @@
       commit: true,
       
       payment: function(data, actions) {
-        console.log("user id = " + user_id);
         if(user_id >= 0 && user_id != null)
         {
-          console.log("entering payment");
           return actions.payment.create({
             transactions: [
               {
@@ -176,16 +174,12 @@
                   amount: amount
               },
               beforeSend: function() {
-                // setTimeout($.alert({
-                //   theme: "supervan",
-                //   useBootstrap: false,
-                //   title: 'Note',
-                //   content: 'Please do not refresh this page !!!'
-                // }),1);
+                
               },
               success: function(data) {
                 $.alert({
                   theme: "supervan",
+                  boxWidth: width,
                   useBootstrap: false,
                   title: "Payment Success!",
                   content: "Your account will get updated within few minutes. In case of any trouble or doubt, please contact us."
@@ -194,6 +188,7 @@
               error: function(error) {
                 $.alert({
                   theme: "supervan",
+                  boxWidth: width,
                   useBootstrap: false,
                   title: "Unsuccessful Payment!",
                   content: "Payment was unsuccessful. In case of any trouble or doubt, please contact us."

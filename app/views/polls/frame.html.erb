@@ -1,5 +1,4 @@
 <main>
-  
   <section> 
   <center>
     <ins class="adsbygoogle"
@@ -17,31 +16,38 @@
   <div class="row section">
     <div class="col s12 m3 l3" style="display: flex; flex-direction: column; justify-content: space-around;">
 
-      <div class="col z-depth-5 white">
-        <h4 class="header center bolder">Counter Style</h4>
-        
-        <div class="row valign-wrapper zero-margin" style="height: 60px;">
-          <div class="inline col s6 valign bold" style="font-size: 20px;">Color</div>
-          <div class="input-field inline col s6 valign">
-            <input id="counterColor" class="jscolor">
-          </div>
-        </div>
-
-        <div class="row valign-wrapper" style="height: 60px;">
-          <div class="inline col s6 valign bold" style="font-size:  20px;">Text Color</div>
-          <div class="input-field inline col s6 valign">
-            <input id="counterTextColor" class="jscolor">
-          </div>
-        </div>
-
-        <div class="range-field row">
-          <div class="col s6 bold" style="font-size:  20px;">Opacity</div>
-          <input class="col s6" type="range" id="opacity" min="0" max="100" step="10" value="80"/>
-        </div>
-        <div class="range-field row">
-          <div class="col s6 bold" style="font-size:  20px;">Radius</div>
-          <input class="col s6" type="range" id="radius" min="0" max="20"/>
-        </div>
+      <div class="col z-depth-5 white grey-text text-darken-2">
+        <ul class="collection with-header center">
+          <li class="collection-header"><h5 class="bold">Counter Style</h5></li>
+          <li class="collection-item">
+            <div class="row valign-wrapper zero-margin" style="height: 40px;">
+              <div class="inline col s6 valign bold" style="font-size: 16px; text-align: left;">Color</div>
+              <div class="input-field inline col s6 valign">
+                <input id="counterColor" class="jscolor center grey-text text-darken-1">
+              </div>
+            </div>
+          </li>
+          <li class="collection-item">
+            <div class="row valign-wrapper zero-margin" style="height: 40px;">
+              <div class="inline col s6 valign bold" style="font-size: 16px; text-align: left;">Text Color</div>
+              <div class="input-field inline col s6 valign">
+                <input id="counterTextColor" class="jscolor center grey-text text-darken-1">
+              </div>
+            </div>
+          </li>
+          <li class="collection-item">
+            <div class="range-field row zero-margin">
+              <div class="col s12 bold center" style="font-size:  16px;">Opacity</div>
+              <input class="" type="range" id="opacity" min="0" max="100" step="10" value="80"/>
+            </div>
+          </li>
+          <li class="collection-item">
+            <div class="range-field row zero-margin">
+              <div class="col s12 bold center" style="font-size:  16px;">Radius</div>
+              <input class="" type="range" id="radius" min="0" max="20"/>
+            </div> 
+          </li>
+        </ul>
       </div>
       
       <div class="row">
@@ -71,6 +77,10 @@
 
 
     <div class="col l2 m2 s12 relative" style="right: 20px;">
+      <div class="row">
+        <button id="showInstructions" class="btn-large blue darken-3 col s12">View Instructions</button>
+      </div>
+      
       <div class="row file-field input-field">
           <div class="col s12 btn-large blue darken-3">
             <span>Add Image</span>
@@ -836,11 +846,20 @@
             callback: function(dataUrl) {
               document.getElementById("image_data").value = dataUrl;    
               document.getElementById("data_form").submit();
-          }
+              $.dialog(
+              {
+                theme: "materialize",
+                boxWidth: width,
+                useBootstrap: false,
+                title: "Submitting !!!",
+                content: "Please wait while files are being uploaded. You will be automatically redirected.",
+                onOpenBefore: function () {
+                  $(".jconfirm-closeIcon").hide();
+                }
+              });
+            }
           });
-        
       }
-
 
 
       $(".add_reaction").on("click",addReaction);
@@ -856,6 +875,25 @@
       $("#data_form").submit(sendImage);
       //document.getElementById("submit_frame").addEventListener('click',sendImage);
       document.getElementById("background").addEventListener('change',addBackgrounfFile);
+
+      $(document).ready(function(){
+        var showInstructions = function()
+        {
+          $.alert({
+            theme: "supervan",
+            boxWidth: width + "px",
+            useBootstrap: false,
+            title: "Instructions !!!",
+            content: "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>Wait patiently for images or text to get uploaded to canvas.</li><li class='collection-item'>To change position of an image or text, hover the image and then drag it.</li><li class='collection-item'>To resize an image, hover over the image and then use any of white bubbles at the corner of the image.</li><li class='collection-item'>To remove a text or image, hover over the image and then click the top-left red bubble of the image</li></ul>"
+          })
+        };
+        showInstructions();
+        $("#showInstructions").on('click',showInstructions);
+        var intervalId = setInterval(function(){
+          stage.draw();
+        },2000);
+      });
+
     </script>
   
   </section>

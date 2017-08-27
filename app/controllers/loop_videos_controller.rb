@@ -18,6 +18,7 @@ class LoopVideosController < ApplicationController
   end
 
   def create
+    byebug
     @post = Post.new(post_params)
     @post.category = "loop_video"
     @post.user = current_user
