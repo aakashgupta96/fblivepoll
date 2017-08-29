@@ -18,7 +18,9 @@ class LoopVideosController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+    temp = post_params
+    @post = Post.new(temp)
+    @post.start_time = DateTime.new(temp["start_time(1i)"].to_i,temp["start_time(2i)"].to_i,temp["start_time(3i)"].to_i,temp["start_time(4i)"].to_i,temp["start_time(5i)"].to_i,0,params["post"]["timezone"])
     @post.category = "loop_video"
     @post.user = current_user
     @post.template = Template.loop_video.find_by_id(params[:post][:template_id])

@@ -1,3 +1,5 @@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.6/jstz.min.js"></script>
+
 <% if @pages.count==0 %>
   <div class="card valign-wrapper center" style="height: 280px;">
     <div class="valign container">
@@ -47,9 +49,19 @@
       <input type="checkbox" id="schedule" name="post[scheduled]"/>
       <label for="schedule">Schedule Post</label>
     </div>  
-    <div id="datetime" class="input-field col s12 l6" style="display: none;">
+  </div>
+  <div  id="datetime" class="row" style="display: none;">
+    <div class="input-field col s12 l6">
+      <select id="timeZone" name="post[timezone]">
+        <% ActiveSupport::TimeZone.all.sort.each do |timezone| %>
+        <option value="<%=timezone.formatted_offset%>"><%=timezone%></option>
+        <%end%>
+      </select>
+      <label>Select TimeZone</label>
+    </div>
+    <div class="input-field col s12 l6">
       <%= f.datetime_select :start_time,{discard_year: true, datetime_separator: "",time_separator: "", ampm: true},{class: "col s6 l3"}%>
-      <%= f.label :start_time, "Scheduling Date and Time in GMT Time Zone" %>
+      <%= f.label :start_time, "Scheduling Date and Time" %>
     </div>
   </div>
 
@@ -135,13 +147,42 @@
           boxWidth: width + "px",
           useBootstrap: false,
           title: "Instructions !!!",
-          content: "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>Make sure that you don't upload any copyrighted content without permission otherwise your post will be deleted by facebook.</li><li class='collection-item'>Scheduling time of post is in UTC Time Format / GMT Time Zone.Use <a href='http://www.thetimezoneconverter.com/'' target='_blank'>this link</a> to convert time accordingly.</li><li class='collection-item'>English language is preferred for all the inputs.</li></ul>"
+          content: "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>Make sure that you don't upload any copyrighted content without permission otherwise your post will be deleted by facebook.</li><li class='collection-item'>Select your time zone for scheduling your posts carefully.</li><li class='collection-item'>English language is preferred for all the inputs.</li></ul>"
         })
       };
       showInstructions();
       $("#showInstructions").on('click',showInstructions);
       $('select').material_select();
 
+      //Setting time zone as user's time zone
+      var date = new Date();
+      var offset = date.getTimezoneOffset();
+      var sign = "-";
+      if(offset < 0)
+      {
+        sign = "+";
+      }
+      var offsetHours = Math.abs(parseInt(offset/60));
+      var includeZero = "";
+      if(offsetHours < 10)
+      {
+        includeZero = "0";
+      }
+      var offsetMinutes = Math.abs(offset) - offsetHours*60;
+      var prefix = "GMT"+sign+includeZero+offsetHours+":"+offsetMinutes;
+      console.log(prefix);
+      var list = $("#timeZone option");
+      for(var i=0;i<list.length;i++)
+      {
+        if(list[i].innerHTML.indexOf(prefix) !== -1)
+        {
+          $(list[i]).attr({selected: 'true'});
+          $("#timeZone").material_select();
+          break;
+        }
+      }
+
+      //Scheduling animation
       $('#schedule').click(function(){
         if( $(this).is(':checked') )
           $('#datetime').slideDown(300);
@@ -149,6 +190,7 @@
           $('#datetime').slideUp(300);
       });
 
+      //On form submission
       $('#newPoll').on('submit',function(){
           var valid = true;
           var select_tags = $(".reactions select");

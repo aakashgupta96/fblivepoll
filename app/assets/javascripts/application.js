@@ -18,9 +18,9 @@
 // = require materialize-rails-confirm.js
 // = require_tree
 
-var width = Math.min(650,0.9*$(window).width());
-
+var width;
 $( document ).ready(function(){
+    width = Math.min(650,0.9*$(window).width());
     $('.modal').modal();
     $('.parallax').parallax();
     $('.carousel.carousel-slider').carousel({fullWidth: true});
