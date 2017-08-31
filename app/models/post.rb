@@ -222,8 +222,8 @@ class Post < ActiveRecord::Base
   def open_in_browser(browser = "firefox")
    	create_html
    	if browser == "firefox"
-   		width = 1285 #850
-   		height = 791 #550
+   		width = 1290 #850
+   		height = 800 #550
    		headless = Headless.new(dimensions: "1920x1200x24")
    	else
    		width = 1280 #800
