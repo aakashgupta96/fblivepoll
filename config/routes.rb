@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   end
 
   scope :payments do
+    get '/create_instamojo' => 'payments#create_instamojo_payment', as: "create_instamojo_payment"
     post '/create' => "payments#create",as: "create_payment"
     post '/receiveIPN' => "payments#receive_IPN", as: "receive_IPN"
   end

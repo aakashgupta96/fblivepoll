@@ -2,6 +2,15 @@ class PaymentsController < ApplicationController
   
   protect_from_forgery :except => :receive_IPN
   
+  def create_instamojo_payment
+    headers = {
+      "X-Api-Key" => ENV["INSTAMOJO_KEY"], 
+      "X-Auth-Token" => ENV["INSTAMOJO_TOKEN"]
+    }
+    response = HTTParty.get("#{ENV['INSTAMOJO_API_BASE_URL']}/payments/#{params[:payment_id]}")
+    byebug
+  end
+
   def create
     payment = Payment.create(user_id: params[:user_id], payment_id: params[:payment_id], amount: params[:amount], tx_id: params[:tx_id])
     data = Hash.new

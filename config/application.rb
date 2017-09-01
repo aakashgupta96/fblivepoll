@@ -31,8 +31,14 @@ module Live
     end
     if Rails.env.production?
       ENV["domain"] = "https://www.shurikenlive.com"
+      ENV["INSTAMOJO_KEY"] = ENV["PROD_INSTAMOJO_KEY"]
+      ENV["INSTAMOJO_TOKEN"] = ENV["PROD_INSTAMOJO_TOKEN"]
+      ENV["INSTAMOJO_API_BASE_URL"] = ENV["PROD_INSTAMOJO_API_BASE"]
     else
       ENV["domain"] = "http://localhost:3000"
+      ENV["INSTAMOJO_KEY"] = ENV["DEV_INSTAMOJO_KEY"]
+      ENV["INSTAMOJO_TOKEN"] = ENV["DEV_INSTAMOJO_TOKEN"]
+      ENV["INSTAMOJO_API_BASE_URL"] = ENV["DEV_INSTAMOJO_API_BASE"]
     end
   end
 end
