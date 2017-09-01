@@ -7,11 +7,11 @@ class Payment < ActiveRecord::Base
   def update_user_subscription
     @user = self.user
     @user.update(subscription_date: Date.current, subscription_duration: 30)
-    if Constant::DONOR_COST.include?(self.amount)
+    if Constant::DONOR_ARRAY.include?(self.amount)
       @user.donor!
-    elsif Constant::PREMIUM_COST.include?(self.amount)
+    elsif Constant::PREMIUM_ARRAY.include?(self.amount)
       @user.premium!
-    elsif Constant::ULTIMATE_COST.include?(self.amount)
+    elsif Constant::ULTIMATE_ARRAY.include?(self.amount)
       @user.ultimate!
     end
   end

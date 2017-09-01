@@ -8,13 +8,12 @@ class PaymentsController < ApplicationController
       "X-Auth-Token" => ENV["INSTAMOJO_TOKEN"]
     }
     response = HTTParty.get("#{ENV['INSTAMOJO_API_BASE_URL']}/payments/#{params[:payment_id]}", headers: headers)
-    byebug
     if response.ok? && response.parsed_response["success"]
       payment = Payment.new(payment_params(response.parsed_response))
       payment.tx_id = payment.payment_id
       payment.user = User.find_by_email(response.parsed_response["payment"]["buyer_email"])
       if payment.save && payment.update_user_subscription
-        return redirect_to user_dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
+        return redirect_to dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
       else
         return redirect_to dashboard_path, alert: Constant::PAYMENT_FAILURE_MESSAGE
       end
