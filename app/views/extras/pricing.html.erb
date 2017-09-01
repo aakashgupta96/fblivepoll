@@ -27,7 +27,7 @@
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
             <div class="flexbox">
-              <a data-href="https://test.instamojo.com/aakash_gupta/donor-pack?data_email=dummy-email&data_readonly=data_email" class="btn checkout-btn">Pay Now</a>
+              <a data-href="<%=ENV['DONOR_PACK_URL']%>" class="btn checkout-btn">Pay Now</a>
               <!-- <div id="donor-checkout" data-cost="<%#=Constant::DONOR_COST%>" class="purchase-button"></div> -->
             </div>
           </div>
@@ -55,7 +55,7 @@
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
             <div class="flexbox">
-              <a data-href="https://test.instamojo.com/aakash_gupta/premium-pack?data_email=dummy-email&data_readonly=data_email" class="btn checkout-btn">Pay Now</a>
+              <a data-href="<%=ENV['PREMIUM_PACK_URL']%>" class="btn checkout-btn">Pay Now</a>
               <!-- <div id="premium-checkout" data-cost="<%#=Constant::PREMIUM_COST%>" class="purchase-button"></div> -->
             </div>
           </div>
@@ -83,7 +83,7 @@
             </ul>
             <div class="flexbox">
               <!-- <div id="ultimate-checkout" data-cost="<%#=Constant::ULTIMATE_COST%>" class="purchase-button"> -->
-              <a data-href="https://test.instamojo.com/aakash_gupta/ultimate-pack?data_email=dummy-email&data_readonly=data_email" class="btn checkout-btn">Pay Now</a>
+              <a data-href="<%=ENV['ULTIMATE_PACK_URL']%>" class="btn checkout-btn">Pay Now</a>
               </div>
             </div>
           </div>
