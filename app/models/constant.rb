@@ -6,9 +6,9 @@ class Constant < ActiveRecord::Base
   ULTIMATE_POST_LIMIT = 2
   ADMIN_POST_LIMIT = 10
 
-  DONOR_COST = 20
-  PREMIUM_COST = 30
-  ULTIMATE_COST = 40
+  DONOR_COST = [20,1300]
+  PREMIUM_COST = [30,1900]
+  ULTIMATE_COST = [40,2500]
   
   ALREADY_LIVE_MESSAGE = "You already have max. number of ongoing live post(s). Please try after that live video ends."
   ALREADY_SCHEDULED_MESSAGE = "You already have max. number of scheduled post(s)."
@@ -25,5 +25,7 @@ class Constant < ActiveRecord::Base
   POST_DESTROYED_MESSAGE = "Live Video has been successfully destroyed."
   SCHEDULE_CANCELLED_MESSAGE = "Your scheduled post has been successfully cancelled"
   INVALID_OPERATION_MESSAGE = "Invalid operation for the selected post"
+  PAYMENT_SUCCESS_MESSAGE = "Payment was successfully completed. Your account will get updated within few minutes. In case of any trouble or doubt, please contact us."
+  PAYMENT_FAILURE_MESSAGE = "Payment was unsuccessful. In case of any trouble or doubt, please contact us."
   
 end

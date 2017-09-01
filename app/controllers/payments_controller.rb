@@ -7,8 +7,20 @@ class PaymentsController < ApplicationController
       "X-Api-Key" => ENV["INSTAMOJO_KEY"], 
       "X-Auth-Token" => ENV["INSTAMOJO_TOKEN"]
     }
-    response = HTTParty.get("#{ENV['INSTAMOJO_API_BASE_URL']}/payments/#{params[:payment_id]}")
+    response = HTTParty.get("#{ENV['INSTAMOJO_API_BASE_URL']}/payments/#{params[:payment_id]}", headers: headers)
     byebug
+    if response.ok? && response.parsed_response["success"]
+      payment = Payment.new(payment_params(response.parsed_response))
+      payment.tx_id = payment.payment_id
+      payment.user = User.find_by_email(response.parsed_response["payment"]["buyer_email"])
+      if payment.save && payment.update_user_subscription
+        return redirect_to user_dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
+      else
+        return redirect_to dashboard_path, alert: Constant::PAYMENT_FAILURE_MESSAGE
+      end
+    else
+      return redirect_to dashboard_path, alert: Constant::PAYMENT_FAILURE_MESSAGE
+    end
   end
 
   def create
@@ -51,6 +63,10 @@ class PaymentsController < ApplicationController
                   				'Content-Length' => "#{raw.size}",
                         	'User-Agent' => "My custom user agent"
                        	).body
+  end
+
+  def payment_params payment
+    ActionController::Parameters.new(payment).require(:payment).permit(:payment_id, :amount)
   end
 
 end
