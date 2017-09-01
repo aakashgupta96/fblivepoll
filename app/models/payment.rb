@@ -1,5 +1,6 @@
 class Payment < ActiveRecord::Base
   belongs_to :user
+  validates :payment_id, uniqueness: true
   #after_create :update_user_subscription
 
   enum status: [:waiting_ipn, :pending, :failed, :denied, :refunded, :completed, :unknown]
