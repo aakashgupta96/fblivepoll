@@ -63,12 +63,6 @@ $( document ).ready(function(){
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    function hideDonation(e){
-      $("#donation").hide(500);
-      e.preventDefault();
-    };
-    $(".close-button").click(hideDonation);
-
     $('#question-form').on('submit',function(){
       return validatePhoneNumber($("#icon_telephone").val()) && validateEmailId($("#icon_email").val());
     });

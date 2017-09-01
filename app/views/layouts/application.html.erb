@@ -171,13 +171,25 @@
    </script>
   <% end %>
 
-<% unless current_user_is_donor? %>  
+<% unless current_user_is_donor? %>
 <div id="donation" class="absolute center-align z-depth-5 linear-gradient padding-5 card
 .">
   <a href="" class="close-button"><i class="fa fa-times relative" aria-hidden="true"></i></a>
   <a href="/pricing" class="donate-anchor"><img src="/paypal-silver.png" class="donate-image"><img class="donate-image hide-on-med-and-down" src="/paypal-logos.png"></a>
   <div class="donation-message">Donate for the future development of this project and enjoy <span class="bold">PREMIUM FEATURES.</span><br><a href="/donation" class="white-text">More Info...</a></div>
 </div>
+<script>
+  if(sessionStorage.donationClosed)
+  {
+    $("#donation").hide();
+  }
+  function hideDonation(e){
+    $("#donation").hide(500);
+    sessionStorage.setItem("donationClosed",true);
+    e.preventDefault();
+  };
+  $(".close-button").click(hideDonation);
+</script>
 <% end %>
 
 <main>
