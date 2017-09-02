@@ -1,9 +1,9 @@
-class UpdateFrame
-  @queue = :update_frame
+class StreamLive
+  @queue = :stream_live
 
   def self.perform(post_id)
     %x[pulseaudio -D]
-    @post = Post.find_by_id(post_id) #Instance variable so that erb can access it
+    @post = Post.find_by_id(post_id)
     path = File.join(Rails.root,'log','stream')
     FileUtils.mkdir_p(path) unless File.exist?(path)
     path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
