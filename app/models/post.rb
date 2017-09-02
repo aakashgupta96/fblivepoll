@@ -100,10 +100,10 @@ class Post < ActiveRecord::Base
 	def start
 		begin
 			graph = graph_with_page_token
-			if self.user.admin? || self.user.donor? || self.user.premium?
-				caption_suffix = ""
-			else
+			if self.user.member?
 				caption_suffix = "\nMade with: www.shurikenlive.com"
+			else
+				caption_suffix = ""
 			end
 
 			if  self.ambient?

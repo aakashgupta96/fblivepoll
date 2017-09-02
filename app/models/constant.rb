@@ -9,7 +9,7 @@ class Constant < ActiveRecord::Base
   DONOR_COST = 20
   PREMIUM_COST = 30
   ULTIMATE_COST = 40
-  DONOR_ARRAY = [10,20,1300]
+  DONOR_ARRAY = [20,1300]
   PREMIUM_ARRAY = [30,1900]
   ULTIMATE_ARRAY = [40,2500]
   
