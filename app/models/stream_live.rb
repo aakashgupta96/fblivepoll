@@ -20,15 +20,16 @@ class StreamLive
     start_time = Time.now
     sleep(20)
     ffmpeg_id = %x[pgrep -P #{pid}]
-    @post.live!
+    @post.live! if @post.live
     query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
     nil_count = 0
     loop do
+      @post.reload
       if @post.reload_browser
         driver.navigate.refresh
         @post.update(reload_browser: false)
       end
-      if (Process.exists?(ffmpeg_id) == false)
+      if ((Process.exists?(ffmpeg_id) == false) && !@post.stopped_by_user? && !@post.published?)
         @post.stop("unknown") if @post.live
         break
       end
@@ -46,7 +47,6 @@ class StreamLive
       rescue
         
       end
-      @post.reload
       elapsed_time = Time.now - start_time
       duration = (@post.duration-30.years).to_i
       if(elapsed_time >= duration)
