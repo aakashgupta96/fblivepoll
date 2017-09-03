@@ -15,7 +15,7 @@ class Post < ActiveRecord::Base
 	accepts_nested_attributes_for :images, allow_destroy: true
 
 	enum category: [:poll, :loop_video]
-	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled]
+	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
 
 	scope :ongoing, ->{ where(live: true) }
 
@@ -72,7 +72,13 @@ class Post < ActiveRecord::Base
 				if status.parsed_response["#{p.video_id}"].nil?
 					p.deleted_from_fb!
 				else
-					p.network_error!
+					query_with_user_token = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
+					status = HTTParty.get(query)
+					if status.ok?
+						p.network_error!
+					else
+						p.user_session_invalid!
+					end
 				end
 			end
     rescue Exception => e
