@@ -98,9 +98,22 @@ class Post < ActiveRecord::Base
 		begin
       self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post")
     rescue Exception => e
-      puts e.class,e.message
+    	puts e.class,e.message
     end
     self.update(status: status, live: false)
+	end
+
+	def live_on_fb?
+		query = "https://graph.facebook.com/v2.8/#{self.video_id}?fields=live_status&access_token=#{self.user.token}"
+		response = HTTParty.get(query)
+		return response.ok? && (response.parsed_response["live_status"] == "LIVE")
+	end
+
+	def ended_on_fb?
+		query = "https://graph.facebook.com/v2.8/#{self.video_id}?fields=live_status&access_token=#{self.user.token}"
+		response = HTTParty.get(query)
+		possible_values = ["PROCESSING","VOD", "LIVE_STOPPED"]
+		return response.ok? && possible_values.include?(response.parsed_response["live_status"])
 	end
 
 	def start
