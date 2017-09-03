@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   
-  protect_from_forgery :except => :receive_IPN
+  protect_from_forgery :except => :create_instamojo_payment
   
   def create_instamojo_payment
     headers = {

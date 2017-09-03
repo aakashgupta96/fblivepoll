@@ -32,6 +32,7 @@ ActiveAdmin.register Post do
   		row :start_time if post.scheduled?
   		row :image
   		row :video
+      row :video_id
     end
     active_admin_comments
   end

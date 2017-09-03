@@ -106,10 +106,10 @@ class Post < ActiveRecord::Base
 	def start
 		begin
 			graph = graph_with_page_token
-			if self.user.admin? || self.user.donor? || self.user.premium?
-				caption_suffix = ""
-			else
+			if self.user.member?
 				caption_suffix = "\nMade with: www.shurikenlive.com"
+			else
+				caption_suffix = ""
 			end
 
 			if  self.ambient?
@@ -120,7 +120,7 @@ class Post < ActiveRecord::Base
 			live_id = video["id"]
 		  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
 			self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
-		  Resque.enqueue(UpdateFrame,self.id)
+		  Resque.enqueue(StreamLive,self.id)
 		  return true
 		rescue Exception => e
 			puts e.class,e.message
@@ -152,8 +152,8 @@ class Post < ActiveRecord::Base
 	end
 
 	def worker_available?
-    queued_jobs = Resque.size("update_frame")
-    available_workers = Resque.workers.select{|worker|  worker.queues.first=="update_frame" && !worker.working?}.count
+    queued_jobs = Resque.size("stream_live")
+    available_workers = Resque.workers.select{|worker|  worker.queues.first=="stream_live" && !worker.working?}.count
     return available_workers > queued_jobs
   end
 
@@ -186,6 +186,7 @@ class Post < ActiveRecord::Base
 		driver,headless = open_in_browser("chrome")
 		path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
+    sleep 0.5
     driver.save_screenshot("#{path}/frame.png")
     begin
     	f = File.open(File.join(path,"frame.png"))
