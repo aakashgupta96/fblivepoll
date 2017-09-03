@@ -40,6 +40,8 @@ module ApplicationHelper
 			"Streaming is about to starting"
 		elsif post.live?
 			"Live"
+		elsif post.user_session_invalid?
+			"User's session was invalidated by Facebook."
 		else
 			"Unknown and yet to be confirmed"
 		end

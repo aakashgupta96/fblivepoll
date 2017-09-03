@@ -73,7 +73,7 @@ class Post < ActiveRecord::Base
 					p.deleted_from_fb!
 				else
 					query_with_user_token = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
-					status = HTTParty.get(query)
+					status = HTTParty.get(query_with_user_token)
 					if status.ok?
 						p.network_error!
 					else
