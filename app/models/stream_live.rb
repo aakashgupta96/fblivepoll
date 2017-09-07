@@ -34,6 +34,16 @@ class StreamLive
         #puts "entered inside loop"
         @post.reload
         
+        #Checking whether duration of post has completed or not
+        #puts "checking for elapsed time"
+        elapsed_time = Time.now - start_time
+        duration = (@post.duration-30.years).to_i
+        if(elapsed_time >= duration)
+          #puts "time completed"
+          @post.stop
+          break 
+        end
+
         #Checking if reloading browser is required
         if @post.reload_browser
           #puts "reloading browser"
@@ -82,16 +92,6 @@ class StreamLive
           end
         rescue
          #Ignored 
-        end
-
-        #Checking whether duration of post has completed or not
-        #puts "checking for elapsed time"
-        elapsed_time = Time.now - start_time
-        duration = (@post.duration-30.years).to_i
-        if(elapsed_time >= duration)
-          #puts "time completed"
-          @post.stop
-          break 
         end
 
         #Checking whether post is manually ended or not
