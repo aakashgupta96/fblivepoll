@@ -1,173 +1,174 @@
 <main>
   <section> 
-  <center>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-4726706343331157"
-         data-ad-slot="5921286380"
-         data-ad-format="auto"></ins>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </center>
-  <canvas id='textCanvas' style=" display: none;"></canvas>
+    <center>
+      <!-- page-top -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-4726706343331157"
+           data-ad-slot="5921286380"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </center>
+    <canvas id='textCanvas' style=" display: none;"></canvas>
   
-  <div class="note white-text">Just hit Refresh button in case your image does not load or any thing goes wrong.</div>
-  <div class="row section">
-    <div class="col s12 m3 l3" style="display: flex; flex-direction: column; justify-content: space-around;">
+    <div class="note white-text">Just hit Refresh button in case your image does not load or any thing goes wrong.</div>
+    <div class="row section">
+      <div class="col s12 m3 l3" style="display: flex; flex-direction: column; justify-content: space-around;">
 
-      <div class="col z-depth-5 white grey-text text-darken-2">
-        <ul class="collection with-header center">
-          <li class="collection-header"><h5 class="bold">Counter Style</h5></li>
-          <li class="collection-item">
-            <div class="row valign-wrapper zero-margin" style="height: 40px;">
-              <div class="inline col s6 valign bold" style="font-size: 16px; text-align: left;">Color</div>
-              <div class="input-field inline col s6 valign">
-                <input id="counterColor" class="jscolor center grey-text text-darken-1">
+        <div class="col z-depth-5 white grey-text text-darken-2">
+          <ul class="collection with-header center">
+            <li class="collection-header"><h5 class="bold">Counter Style</h5></li>
+            <li class="collection-item">
+              <div class="row valign-wrapper zero-margin" style="height: 40px;">
+                <div class="inline col s6 valign bold" style="font-size: 16px; text-align: left;">Color</div>
+                <div class="input-field inline col s6 valign">
+                  <input id="counterColor" class="jscolor center grey-text text-darken-1">
+                </div>
               </div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="row valign-wrapper zero-margin" style="height: 40px;">
-              <div class="inline col s6 valign bold" style="font-size: 16px; text-align: left;">Text Color</div>
-              <div class="input-field inline col s6 valign">
-                <input id="counterTextColor" class="jscolor center grey-text text-darken-1">
+            </li>
+            <li class="collection-item">
+              <div class="row valign-wrapper zero-margin" style="height: 40px;">
+                <div class="inline col s6 valign bold" style="font-size: 16px; text-align: left;">Text Color</div>
+                <div class="input-field inline col s6 valign">
+                  <input id="counterTextColor" class="jscolor center grey-text text-darken-1">
+                </div>
               </div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="range-field row zero-margin">
-              <div class="col s12 bold center" style="font-size:  16px;">Opacity</div>
-              <input class="" type="range" id="opacity" min="0" max="100" step="10" value="80"/>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="range-field row zero-margin">
-              <div class="col s12 bold center" style="font-size:  16px;">Radius</div>
-              <input class="" type="range" id="radius" min="0" max="20"/>
-            </div> 
-          </li>
-        </ul>
-      </div>
-      
-      <div class="row">
-        <div class="col s12">
-          <div class="card z-depth-5">
-            <div class="row">
-              <div class="input-field col s6">
-                  <input placeholder="Enter Text" id="addText" type="text">
+            </li>
+            <li class="collection-item">
+              <div class="range-field row zero-margin">
+                <div class="col s12 bold center" style="font-size:  16px;">Opacity</div>
+                <input class="" type="range" id="opacity" min="0" max="100" step="10" value="80"/>
               </div>
-              <div class="input-field col s6">
-                <input id="colorPallete" class="jscolor">
+            </li>
+            <li class="collection-item">
+              <div class="range-field row zero-margin">
+                <div class="col s12 bold center" style="font-size:  16px;">Radius</div>
+                <input class="" type="range" id="radius" min="0" max="20"/>
+              </div> 
+            </li>
+          </ul>
+        </div>
+        
+        <div class="row">
+          <div class="col s12">
+            <div class="card z-depth-5">
+              <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Enter Text" id="addText" type="text">
+                </div>
+                <div class="input-field col s6">
+                  <input id="colorPallete" class="jscolor">
+                </div>
               </div>
-            </div>
-            <div id="sample" style=" display: flex; flex-wrap: wrap; justify-content: space-around; font-size: 25px; font-weight: 900;text-align: center; max-width: 220px; overflow: hidden; padding: 10px;"></div>
-             
-            <div class="card-action">
-              <a id="addTextAnchor" class="btn" href="#" style="font-size: 14px;">Add Text</a>
+              <div id="sample" style=" display: flex; flex-wrap: wrap; justify-content: space-around; font-size: 25px; font-weight: 900;text-align: center; max-width: 220px; overflow: hidden; padding: 10px;"></div>
+               
+              <div class="card-action">
+                <a id="addTextAnchor" class="btn" href="#" style="font-size: 14px;">Add Text</a>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
 
+
+      <div class="col l7 m7 s12" id="container"></div>
+
+
+      <div class="col l2 m2 s12 relative" style="right: 20px;">
+        <div class="row">
+          <button id="showInstructions" class="btn-large blue darken-3 col s12">View Instructions</button>
+        </div>
+        
+        <div class="row file-field input-field">
+            <div class="col s12 btn-large blue darken-3">
+              <span>Add Image</span>
+              <input id="addImageFile" type="file">
+            </div>
+        </div>
+              
+        <a class="row col s12 waves-effect waves-light btn-large blue darken-3 modal-trigger" href="#modal1">Add Reaction</a>
+              
+        <div id="modal1" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <h4>Select Reaction</h4>
+            <div>
+              <a class="add_reaction" data-value="like"><img class="col" src="/reactions/like.png"></a>
+              <a class="add_reaction" data-value="love"><img class="col" src="/reactions/love.png"></a>
+              <a class="add_reaction" data-value="haha"><img class="col" src="/reactions/haha.png"></a>
+              <a class="add_reaction" data-value="wow"><img class="col" src="/reactions/wow.png"></a>
+              <a class="add_reaction" data-value="sad"><img class="col" src="/reactions/sad.png"></a>
+              <a class="add_reaction" data-value="angry"><img class="col" src="/reactions/angry.png"></a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a id="close_add_image" href="#!" class="btn modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+          </div>
+        </div>
+
+        
+        <a class="row col s12 waves-effect waves-light btn-large blue darken-3 modal-trigger" href="#modal2">Change Background</a>
+              
+        <div id="modal2" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <h4>Select Background</h4>
+            <div>
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>Add New Background</span>
+                  <input type="file" id="background">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text">
+                </div>
+              </div>
+
+              <div class="row">
+                <a class="change_background" data="default"><img class="col l3"  width="150" height="150" src="/backgrounds/default.jpg"></a>
+                <a class="change_background" data="1"><img class="col l3"  width="150" height="150" src="/backgrounds/1.jpg"></a>
+                <a class="change_background" data="2"><img class="col l3" width="150" height="150" src="/backgrounds/2.jpg"></a>
+                <a class="change_background" data="3"><img class="col l3" width="150" height="150" src="/backgrounds/3.jpg"></a>
+              </div>
+              
+              <div class="row">
+                <a class="change_background" data="4"><img class="col l3" width="150" height="150" src="/backgrounds/4.jpg"></a>
+                <a class="change_background" data="5"><img class="col l3" width="150" height="150" src="/backgrounds/5.jpg"></a>
+                <a class="change_background" data="6"><img class="col l3" width="150" height="150" src="/backgrounds/6.jpg"></a>
+                <a class="change_background" data="7"><img class="col l3" width="150" height="150" src="/backgrounds/7.jpg"></a>
+              </div>
+
+              <div class="row">
+                <a class="change_background" data="8"><img class="col l3" width="150" height="150" src="/backgrounds/8.jpg"></a>
+                <a class="change_background" data="9"><img class="col l3" width="150" height="150" src="/backgrounds/9.jpg"></a>
+                <a class="change_background" data="10"><img class="col l3" width="150" height="150" src="/backgrounds/10.jpg"></a>
+                <a class="change_background" data="11"><img class="col l3" width="150" height="150" src="/backgrounds/11.jpg"></a>
+              </div>
+
+              <div class="row">
+                <a class="change_background" data="12"><img class="col l3" width="150" height="150" src="/backgrounds/12.jpg"></a>
+                <a class="change_background" data="13"><img class="col l3" width="150" height="150" src="/backgrounds/13.jpg"></a>
+                <a class="change_background" data="14"><img class="col l3" width="150" height="150" src="/backgrounds/14.jpg"></a>
+                <a class="change_background" data="15"><img class="col l3" width="150" height="150" src="/backgrounds/15.jpg"></a>
+              </div>
+              
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a id="close_change_background" href="#!" class="btn modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+          </div>
+        </div>
+        <%= form_tag(save_canvas_path(@post.id), class: "row", id: "data_form")  do %> 
+
+          <input type="hidden" name="post_id" value="<%=@post.id%>">
+          <input id="color" type="hidden" name="color" value="#fffff">   
+          <input type="hidden" id="image_data" name="data_uri" value="">
+          <input id="submit_frame" data-confirm ="Are you sure?" type="submit" value=<%= @post.status=="scheduled" ? "Schedule" : "Submit" %> class="btn col s12"> 
+
+        <% end %>
+      </div>
     </div>
-
-
-    <div class="col l7 m7 s12" id="container"></div>
-
-
-    <div class="col l2 m2 s12 relative" style="right: 20px;">
-      <div class="row">
-        <button id="showInstructions" class="btn-large blue darken-3 col s12">View Instructions</button>
-      </div>
-      
-      <div class="row file-field input-field">
-          <div class="col s12 btn-large blue darken-3">
-            <span>Add Image</span>
-            <input id="addImageFile" type="file">
-          </div>
-      </div>
-            
-      <a class="row col s12 waves-effect waves-light btn-large blue darken-3 modal-trigger" href="#modal1">Add Reaction</a>
-            
-      <div id="modal1" class="modal modal-fixed-footer">
-        <div class="modal-content">
-          <h4>Select Reaction</h4>
-          <div>
-            <a class="add_reaction" data-value="like"><img class="col" src="/reactions/like.png"></a>
-            <a class="add_reaction" data-value="love"><img class="col" src="/reactions/love.png"></a>
-            <a class="add_reaction" data-value="haha"><img class="col" src="/reactions/haha.png"></a>
-            <a class="add_reaction" data-value="wow"><img class="col" src="/reactions/wow.png"></a>
-            <a class="add_reaction" data-value="sad"><img class="col" src="/reactions/sad.png"></a>
-            <a class="add_reaction" data-value="angry"><img class="col" src="/reactions/angry.png"></a>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a id="close_add_image" href="#!" class="btn modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-      </div>
-
-      
-      <a class="row col s12 waves-effect waves-light btn-large blue darken-3 modal-trigger" href="#modal2">Change Background</a>
-            
-      <div id="modal2" class="modal modal-fixed-footer">
-        <div class="modal-content">
-          <h4>Select Background</h4>
-          <div>
-            <div class="file-field input-field">
-              <div class="btn">
-                <span>Add New Background</span>
-                <input type="file" id="background">
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-              </div>
-            </div>
-
-            <div class="row">
-              <a class="change_background" data="default"><img class="col l3"  width="150" height="150" src="/backgrounds/default.jpg"></a>
-              <a class="change_background" data="1"><img class="col l3"  width="150" height="150" src="/backgrounds/1.jpg"></a>
-              <a class="change_background" data="2"><img class="col l3" width="150" height="150" src="/backgrounds/2.jpg"></a>
-              <a class="change_background" data="3"><img class="col l3" width="150" height="150" src="/backgrounds/3.jpg"></a>
-            </div>
-            
-            <div class="row">
-              <a class="change_background" data="4"><img class="col l3" width="150" height="150" src="/backgrounds/4.jpg"></a>
-              <a class="change_background" data="5"><img class="col l3" width="150" height="150" src="/backgrounds/5.jpg"></a>
-              <a class="change_background" data="6"><img class="col l3" width="150" height="150" src="/backgrounds/6.jpg"></a>
-              <a class="change_background" data="7"><img class="col l3" width="150" height="150" src="/backgrounds/7.jpg"></a>
-            </div>
-
-            <div class="row">
-              <a class="change_background" data="8"><img class="col l3" width="150" height="150" src="/backgrounds/8.jpg"></a>
-              <a class="change_background" data="9"><img class="col l3" width="150" height="150" src="/backgrounds/9.jpg"></a>
-              <a class="change_background" data="10"><img class="col l3" width="150" height="150" src="/backgrounds/10.jpg"></a>
-              <a class="change_background" data="11"><img class="col l3" width="150" height="150" src="/backgrounds/11.jpg"></a>
-            </div>
-
-            <div class="row">
-              <a class="change_background" data="12"><img class="col l3" width="150" height="150" src="/backgrounds/12.jpg"></a>
-              <a class="change_background" data="13"><img class="col l3" width="150" height="150" src="/backgrounds/13.jpg"></a>
-              <a class="change_background" data="14"><img class="col l3" width="150" height="150" src="/backgrounds/14.jpg"></a>
-              <a class="change_background" data="15"><img class="col l3" width="150" height="150" src="/backgrounds/15.jpg"></a>
-            </div>
-            
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a id="close_change_background" href="#!" class="btn modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-      </div>
-      <%= form_tag(save_canvas_path(@post.id), class: "row", id: "data_form")  do %> 
-
-        <input type="hidden" name="post_id" value="<%=@post.id%>">
-        <input id="color" type="hidden" name="color" value="#fffff">   
-        <input type="hidden" id="image_data" name="data_uri" value="">
-        <input id="submit_frame" data-confirm ="Are you sure?" type="submit" value=<%= @post.status=="scheduled" ? "Schedule" : "Submit" %> class="btn col s12"> 
-
-      <% end %>
-    </div>
-  </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/kineticjs/5.2.0/kinetic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.min.js"></script>
