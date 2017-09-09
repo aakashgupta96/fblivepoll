@@ -24,7 +24,7 @@ class ExtrasController < ApplicationController
 	end
 
 	def ask_question
-		Resque.enqueue(NotifyAdmins,params[:username],params[:phone],params[:email],params[:message])
+		Resque.enqueue(NewQuestion,params[:username],params[:phone],params[:email],params[:message])
     respond_to do |format|
       format.js
     end

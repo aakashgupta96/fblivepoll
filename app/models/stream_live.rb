@@ -25,7 +25,7 @@ class StreamLive
       #puts "ffmpeg id is #{ffmpeg_id}"
       if @post.live
         #puts "making status live of post now"
-        @post.live! 
+        @post.live!
       end
       query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
       nil_count = 0
@@ -95,10 +95,9 @@ class StreamLive
         end
 
         #Checking whether post is manually ended or not
-        # if (@post.live == false)
-        #   puts "live flag was found to be false"
-        #   break
-        # end
+        if (@post.live == false)
+          break
+        end
         sleep(10)
       end #End of inside loop
 

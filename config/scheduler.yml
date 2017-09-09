@@ -1,0 +1,27 @@
+start_scheduled_post:
+  every:
+    - "10s"
+  class: "StartScheduledPost"
+  queue: start_scheduled_post
+  description: "This will start a scheduled post if workers are available and post is eligible."
+
+queue_unknown_posts_for_updating_status:
+  every:
+    - "10s"
+  class: "UpdateStatuses"
+  queue: update_statuses
+  description: "This will hit facebook api and update status of post based on response."
+
+remove_videos_of_published_posts:
+  every:
+    - "1d"
+  class: "RemoveVideos"
+  queue: remove_videos
+  description: "This will remove video of posts that are no more required."
+
+update_captions_of_post:
+  every:
+    - "10s"
+  class: "UpdateCaptions"
+  queue: update_captions
+  description: "This will hit facebook api and update caption of a free user's post."

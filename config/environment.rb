@@ -19,4 +19,4 @@ ActionMailer::Base.smtp_settings = {
 }
 
 
-Resque.enqueue(LoopTask)
+#Resque.enqueue(LoopTask)

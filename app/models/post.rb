@@ -134,6 +134,7 @@ class Post < ActiveRecord::Base
 		  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
 			self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
 		  Resque.enqueue(StreamLive,self.id)
+		  Resque.enqueue(NewLive,self.id)
 		  return true
 		rescue Exception => e
 			puts e.class,e.message

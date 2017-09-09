@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'resque-scheduler'
 gem 'activeadmin', github: 'activeadmin'
 gem 'kaminari'
 gem "sentry-raven"
