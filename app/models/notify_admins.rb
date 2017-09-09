@@ -2,7 +2,7 @@ class NotifyAdmins
 	@queue = :notify_admins
 	@support = ["support@shurikenlive.com"]
 	@admins = ["aakash@shurikenlive.com"]
-	
+	@editors = ["fahadnasar579@gmail.com"]
 
 	def self.perform(username,phone,user_email_id,message)
 		# link = "www.facebook.com/#{video_id}"
