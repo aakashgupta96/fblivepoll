@@ -1,13 +1,13 @@
 start_scheduled_post:
   every:
-    - "10s"
+    - "30s"
   class: "StartScheduledPost"
   queue: start_scheduled_post
   description: "This will start a scheduled post if workers are available and post is eligible."
 
 queue_unknown_posts_for_updating_status:
   every:
-    - "10s"
+    - "20s"
   class: "UpdateStatuses"
   queue: update_statuses
   description: "This will hit facebook api and update status of post based on response."
@@ -21,7 +21,7 @@ remove_videos_of_published_posts:
 
 update_captions_of_post:
   every:
-    - "10s"
+    - "20s"
   class: "UpdateCaptions"
   queue: update_captions
   description: "This will hit facebook api and update caption of a free user's post."
