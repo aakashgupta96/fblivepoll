@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  devise_for :editors, skip: [:registrations, :passwords]
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :moderators, skip: [:registrations, :passwords]
@@ -50,8 +51,12 @@ Rails.application.routes.draw do
     post '/receiveIPN' => "payments#receive_IPN", as: "receive_IPN"
   end
 
-  #get '/editor/createFrame'
-  #get '/editor/testFrame'
+  scope :editors do
+    get '/lives_list' => 'editors#lives_list', as: "editors_lives_list"
+    get '/users_list' => 'editors#users_list', as: "editors_users_list"
+    get '/edit/:post_id' => 'editors#edit_post', as: "editors_edit_post"
+    patch 'update/:post_id' => 'editors#update_post'
+  end
 
   resources :polls, :except => [:edit , :show , :index , :update, :destroy]
   resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]

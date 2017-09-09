@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable
   devise :omniauthable, omniauth_providers: [:facebook]
 
+  paginates_per Constant::USER_PER_PAGE
+  
   has_many :posts, dependent: :destroy
   has_many :payments, dependent: :destroy
 

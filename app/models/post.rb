@@ -1,6 +1,6 @@
 class Post < ActiveRecord::Base
 	
-	paginates_per 9
+	paginates_per Constant::POST_PER_PAGE
 	mount_uploader :audio, AudioUploader
 	mount_uploader :background, BackgroundUploader
 	mount_uploader :video, VideoUploader
@@ -120,7 +120,7 @@ class Post < ActiveRecord::Base
 		begin
 			graph = graph_with_page_token
 			if self.user.member?
-				caption_suffix = "\nMade with: www.shurikenlive.com"
+				caption_suffix = "\n#{self.default_message}"
 			else
 				caption_suffix = ""
 			end
@@ -280,15 +280,16 @@ class Post < ActiveRecord::Base
 			begin
 				query = "https://graph.facebook.com/v2.8/#{p.video_id}?fields=description&access_token=#{p.user.token}"
 				current_status = HTTParty.get(query).parsed_response["description"]
-				caption_suffix = "Made with: www.shurikenlive.com"
+				caption_suffix = p.default_message
 				if current_status.match(caption_suffix).nil?
 					new_caption =  "#{current_status} \n #{caption_suffix}"
 					query = "https://graph.facebook.com/v2.8/#{p.live_id}"
 					response = HTTParty.post(query,:query => {"description" => "#{new_caption}", "access_token" => "#{p.user.token}"})
-					self.update(caption: current_status)
+					p.update(caption: current_status)
 				end
 			rescue Exception => e
 				puts e.message
+				byebug
 			end
 		end
 	end

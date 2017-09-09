@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
       dashboard_path
     elsif resource.class  == Moderator
       moderators_panel_path
+    elsif resource.class == Editor
+      editors_lives_list_path
     else
       root_path
     end

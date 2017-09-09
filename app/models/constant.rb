@@ -12,6 +12,9 @@ class Constant < ActiveRecord::Base
   DONOR_ARRAY = [20,1300]
   PREMIUM_ARRAY = [30,1900]
   ULTIMATE_ARRAY = [40,2500]
+
+  POST_PER_PAGE = 9
+  USER_PER_PAGE = 100
   
   ALREADY_LIVE_MESSAGE = "You already have max. number of ongoing live post(s). Please try after that live video ends."
   ALREADY_SCHEDULED_MESSAGE = "You already have max. number of scheduled post(s)."

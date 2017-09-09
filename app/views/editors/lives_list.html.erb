@@ -1,0 +1,48 @@
+<center>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4726706343331157"
+       data-ad-slot="5921286380"
+       data-ad-format="auto"></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</center>
+
+<div class="row">
+  <%= link_to "Sign Out", destroy_editor_session_path, method: "delete", class: "btn col s4 m2 l1" %>
+  <%= link_to "Users List", editors_users_list_path, class: "green btn col s4 m2 l1" %>
+</div>
+<div class="white privacy-box card hoverable z-depth-4">
+  <table class="responsive-table striped">
+    <thead>
+        <tr>
+            <th data-field="title">Title</th>
+            <th data-field="name">User Name</th>
+            <th data-field="status">Status</th>
+            <th data-field="duration">Duration</th>
+            <th data-field="link">Video Link</th>
+            <th data-field="action">Action</th> 
+        </tr>
+    </thead>
+
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr>
+          <td><%= post.title %></td>
+          <td><%= post.user.name %></td>
+          <td><%= status_message(post) %></td>
+          <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
+          <td>
+          <% unless post.video_id.nil? %>
+            <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
+          <% end %>
+          </td>
+          <td>
+            <a href="/editors/edit/<%=post.id%>" class="btn btn-less-padding margin-2 bolder">Edit</a>
+          </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
