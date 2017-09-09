@@ -289,7 +289,6 @@ class Post < ActiveRecord::Base
 				end
 			rescue Exception => e
 				puts e.message
-				byebug
 			end
 		end
 	end

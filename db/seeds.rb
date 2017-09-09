@@ -67,3 +67,4 @@ UserTemplate.create(template_id: 9, user_role: User.roles["admin"])
 
 Moderator.create(email: "aakash@shurikenlive.com", password: "rasenshuriken", password_confirmation: "rasenshuriken")
 AdminUser.create!(email: 'aakash@shurikenlive.com', password: 'rasenshuriken', password_confirmation: 'rasenshuriken')
+Editor.create!(email: 'aakash@shurikenlive.com', password: 'rasenshuriken', password_confirmation: 'rasenshuriken')
