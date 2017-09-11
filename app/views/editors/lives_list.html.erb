@@ -30,7 +30,7 @@
       <% @posts.each do |post| %>
         <tr>
           <td><%= post.title %></td>
-          <td><%= post.user.name %></td>
+          <td><a href="https://www.facebook.com/<%=post.user.uid%>"><%= post.user.name %></a></td>
           <td><%= status_message(post) %></td>
           <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
           <td>
