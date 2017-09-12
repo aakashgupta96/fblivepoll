@@ -46,6 +46,37 @@ class Post < ActiveRecord::Base
 		driver.quit
 		headless.destroy
 	end
+	
+	def self.get_total_reaction_count
+		temp = Hash.new()
+    attempts = 0
+    begin
+      graph = Koala::Facebook::API.new(ENV["FB_ACCESS_TOKEN"])
+      #response = graph.get_object('me?fields=accounts.limit(100){parent_page}')
+      #if response.nil? || response["accounts"].nil?
+      #	temp
+      #else
+      #	page_ids = response["accounts"]["data"]
+        ids = Array.new
+        byebug
+        self.each do |post| 
+          ids << post.video_id
+        end
+        query = "?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)"
+        response = graph.get_object(query)
+	      byebug
+	      response.each do |page_attrs|
+	        page_hash = {"name"=> page_attrs.second["name"], "id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
+	        temp << page_hash
+	      end
+	      temp
+	    #end
+    rescue Exception => e
+    	attempts += 1
+      retry if attempts <= 3
+      raise e 
+    end
+	end
 
 	def update_status
 		begin

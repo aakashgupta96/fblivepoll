@@ -19,8 +19,9 @@
         <tr>
             <th data-field="title">Title</th>
             <th data-field="name">User Name</th>
-            <th data-field="status">Status</th>
+            <th data-field="start_time">Start Time</th>
             <th data-field="duration">Duration</th>
+            <th data-field="total_reeactions">Total Reactions</th>
             <th data-field="link">Video Link</th>
             <th data-field="action">Action</th> 
         </tr>
@@ -31,7 +32,7 @@
         <tr>
           <td><%= post.title %></td>
           <td><a href="https://www.facebook.com/<%=post.user.uid%>"><%= post.user.name %></a></td>
-          <td><%= status_message(post) %></td>
+          <td><%= post.start_time.localtime.asctime %></td>
           <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
           <td>
           <% unless post.video_id.nil? %>
