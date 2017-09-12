@@ -5,6 +5,7 @@ class EditorsController < ApplicationController
 
   def lives_list
     @posts = Post.live
+    @reaction_hash = Post.get_live_with_reaction_count
   end
 
   def users_list

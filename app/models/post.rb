@@ -47,27 +47,25 @@ class Post < ActiveRecord::Base
 		headless.destroy
 	end
 	
-	def self.get_total_reaction_count
+	def self.get_live_with_reaction_count
 		temp = Hash.new()
+		return if Post.live.empty?
     attempts = 0
     begin
-      graph = Koala::Facebook::API.new(ENV["FB_ACCESS_TOKEN"])
       #response = graph.get_object('me?fields=accounts.limit(100){parent_page}')
       #if response.nil? || response["accounts"].nil?
       #	temp
       #else
       #	page_ids = response["accounts"]["data"]
         ids = Array.new
-        byebug
-        self.each do |post| 
+        Post.live.each do |post| 
           ids << post.video_id
         end
-        query = "?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)"
-        response = graph.get_object(query)
-	      byebug
-	      response.each do |page_attrs|
-	        page_hash = {"name"=> page_attrs.second["name"], "id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
-	        temp << page_hash
+        query = "https://graph.facebook.com/v2.8/?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+        response = HTTParty.get(query)
+        response.each do |video_id,value|
+	        #data_hash = {"id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
+	        temp[video_id.to_s] = value["reactions"]["summary"]["total_count"]
 	      end
 	      temp
 	    #end
