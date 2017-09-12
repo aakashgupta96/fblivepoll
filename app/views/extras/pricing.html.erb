@@ -228,6 +228,7 @@
  <script>
   $( document ).ready(function(){
     $(".checkout-btn").on("click",function(e){
+      console.log("called click");
       var emailId = null;
       <% if current_user and !current_user.banned %>
         emailId = "<%=current_user.email%>" ;
@@ -270,6 +271,7 @@
       }
       else
       {
+        console.log("reched destination");
         Instamojo.open($(this).attr("data-href").replace("dummy-email",emailId));
       }
     });
