@@ -52,23 +52,16 @@ class Post < ActiveRecord::Base
 		return if Post.live.empty?
     attempts = 0
     begin
-      #response = graph.get_object('me?fields=accounts.limit(100){parent_page}')
-      #if response.nil? || response["accounts"].nil?
-      #	temp
-      #else
-      #	page_ids = response["accounts"]["data"]
-        ids = Array.new
-        Post.live.each do |post| 
-          ids << post.video_id
-        end
-        query = "https://graph.facebook.com/v2.8/?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)&access_token=#{ENV['FB_ACCESS_TOKEN']}"
-        response = HTTParty.get(query)
-        response.each do |video_id,value|
-	        #data_hash = {"id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
-	        temp[video_id.to_s] = value["reactions"]["summary"]["total_count"]
-	      end
-	      temp
-	    #end
+      ids = Array.new
+      Post.live.each do |post| 
+        ids << post.video_id
+      end
+      query = "https://graph.facebook.com/v2.8/?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+      response = HTTParty.get(query)
+      response.each do |video_id,value|
+        temp[video_id.to_s] = value["reactions"]["summary"]["total_count"]
+      end
+      temp
     rescue Exception => e
     	attempts += 1
       retry if attempts <= 3
