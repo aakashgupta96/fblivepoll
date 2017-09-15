@@ -69,7 +69,7 @@
     <div class="file-field input-field col s12 m6 l6">
       <div class="btn">
         <span>Playback Audio</span>
-        <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: 50.megabytes} }%>
+        <%= f.file_field :audio, {class: 'file_select', onchange: "validateAudioFiles(this);", data: { max_file_size: audio_file_size_limit} }%>
       </div>
       <div class="file-path-wrapper">
         <input class="file-path validate" type="text">
@@ -110,7 +110,7 @@
       <div class="file-field input-field col s12 m6 l6">
         <div class="btn">
           <span>Add Image <%=i%></span>
-          <%= builder.file_field :file, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 15.megabytes}, required: true }%>
+          <%= builder.file_field :file, {class: 'file_select', onchange: "validateImageFiles(this);", data: { max_file_size: 20.megabytes}, required: true }%>
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text">

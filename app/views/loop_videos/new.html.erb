@@ -89,7 +89,7 @@
       <div class="file-field input-field col s12 m6 l6">
         <div class="btn">
           <span>Video</span>
-          <%= f.file_field :video, {class: 'file_select', onchange: "validateVideoFiles(this);", data: { max_file_size: file_size_limit}, required: true }%>
+          <%= f.file_field :video, {class: 'file_select', onchange: "validateVideoFiles(this);", data: { max_file_size: video_file_size_limit}, required: true }%>
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text">

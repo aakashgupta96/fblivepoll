@@ -12,7 +12,8 @@ class PaymentsController < ApplicationController
       payment = Payment.new(payment_params(response.parsed_response))
       payment.tx_id = payment.payment_id
       payment.user = User.find_by_email(response.parsed_response["payment"]["buyer_email"])
-      if payment.save && payment.update_user_subscription
+      payment.set_status(response.parsed_response["payment"]["status"])
+      if payment.save && payment.completed? && payment.update_user_subscription
         return redirect_to dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
       else
         return redirect_to dashboard_path, alert: Constant::PAYMENT_FAILURE_MESSAGE
@@ -33,7 +34,6 @@ class PaymentsController < ApplicationController
   end
 
   def receive_IPN
-    puts params
     response = validate_IPN_notification(request.raw_post)
     case response
     when "VERIFIED"
