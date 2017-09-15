@@ -16,6 +16,17 @@ class Payment < ActiveRecord::Base
       @user.ultimate!
     end
   end
+  
+  def set_status(received_text)
+    case received_text
+    when "Failed"
+      self.status = "failed"
+    when "Credit"
+      self.status = "completed"
+    else
+      self.status = "pending"
+    end
+  end
 
   def self.update_payment(params)
     payment = Payment.find_by_tx_id(params["txn_id"])

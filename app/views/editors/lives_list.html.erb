@@ -19,8 +19,9 @@
         <tr>
             <th data-field="title">Title</th>
             <th data-field="name">User Name</th>
-            <th data-field="status">Status</th>
+            <th data-field="start_time">Start Time</th>
             <th data-field="duration">Duration</th>
+            <th data-field="total_reeactions">Total Reactions</th>
             <th data-field="link">Video Link</th>
             <th data-field="action">Action</th> 
         </tr>
@@ -30,9 +31,10 @@
       <% @posts.each do |post| %>
         <tr>
           <td><%= post.title %></td>
-          <td><%= post.user.name %></td>
-          <td><%= status_message(post) %></td>
+          <td><a href="https://www.facebook.com/<%=post.user.uid%>"><%= post.user.name %></a></td>
+          <td><%= post.start_time.in_time_zone('New Delhi').strftime("%d %B %Y, %I:%M %p") %></td>
           <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
+          <td><%= @reaction_hash[post.video_id.to_s]%></td>
           <td>
           <% unless post.video_id.nil? %>
             <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>

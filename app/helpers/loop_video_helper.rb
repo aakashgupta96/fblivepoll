@@ -1,10 +1,10 @@
 module LoopVideoHelper
 
-	def file_size_limit
+	def video_file_size_limit
 		if current_user.admin? || current_user.ultimate?
 			2000.megabytes
 		elsif current_user.premium?
-			100.megabytes
+			1000.megabytes
 		elsif current_user.donor?
 			500.megabytes
 		else

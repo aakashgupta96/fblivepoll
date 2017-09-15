@@ -46,6 +46,28 @@ class Post < ActiveRecord::Base
 		driver.quit
 		headless.destroy
 	end
+	
+	def self.get_live_with_reaction_count
+		temp = Hash.new()
+		return if Post.live.empty?
+    attempts = 0
+    begin
+      ids = Array.new
+      Post.live.each do |post| 
+        ids << post.video_id
+      end
+      query = "https://graph.facebook.com/v2.8/?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+      response = HTTParty.get(query)
+      response.each do |video_id,value|
+        temp[video_id.to_s] = value["reactions"]["summary"]["total_count"]
+      end
+      temp
+    rescue Exception => e
+    	attempts += 1
+      retry if attempts <= 3
+      raise e 
+    end
+	end
 
 	def update_status
 		begin
