@@ -2,7 +2,7 @@ ActiveAdmin.register Post do
 
 	config.per_page = 9
   actions :all, except: [:new]
-	permit_params :title, :caption, :reload_browser, :duration, :live, :start_time, :status
+	permit_params :title, :caption, :reload_browser, :duration, :live, :start_time, :status, :counter_color, :default_message
 
 	scope :all, default: true
 	scope :poll
@@ -18,6 +18,9 @@ ActiveAdmin.register Post do
 	filter :title
 	filter :caption
 	filter :live
+  filter :user
+  filter :user_id
+  filter :page_id
 
 	show do
     attributes_table do
@@ -27,12 +30,15 @@ ActiveAdmin.register Post do
   		row :duration
   		row :user
   		row :page_id
+      row :video_id
    		row :live
   		row :category
   		row :start_time if post.scheduled?
   		row :image
   		row :video
-      row :video_id
+      row :template
+      row :default_message
+      row :status
     end
     active_admin_comments
   end
