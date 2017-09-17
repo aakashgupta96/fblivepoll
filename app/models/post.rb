@@ -184,7 +184,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def can_start?
-		return required_images_available? && Post.new.worker_available? && !self.user.is_already_live?
+		return required_images_available? && Post.new.worker_available? && self.user.has_live_post_in_limit?
 	end
 
 	def worker_available?

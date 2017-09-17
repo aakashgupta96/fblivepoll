@@ -19,15 +19,19 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def check_slots
-    if current_user.is_already_live?
-      redirect_to root_path, alert: Constant::ALREADY_LIVE_MESSAGE
-    elsif  current_user.has_scheduled_post?
-      redirect_to root_path, alert:  Constant::ALREADY_SCHEDULED_MESSAGE
-    elsif (params["post"]["scheduled"]=="on" || Post.new.worker_available?)
-      true
+  def check_slots_and_eligibility_of_user
+    if params["post"]["scheduled"] == "on" #User wants to schedule
+      if current_user.has_scheduled_post_in_limit?
+        return true
+      else
+        return redirect_to root_path, alert: Constant::ALREADY_SCHEDULED_MESSAGE
+      end
+    elsif current_user.has_live_post_in_limit? == false #User wants to go live right now but he has already reached his plan limit
+      return redirect_to root_path, alert: Constant::ALREADY_LIVE_MESSAGE
+    elsif Post.new.worker_available?
+      return true
     else
-      redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
+      return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
     end
   end
 
