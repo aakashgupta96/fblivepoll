@@ -107,7 +107,6 @@
 				})
 				.fail(function(data){
 					response = JSON.parse(data.responseText);
-					//alert('Error: ' + response.error.message);
 					clearInterval(interval);
 				});
 			}

@@ -53,10 +53,17 @@ Feature.create(description: "Plays video in a loop", template_id: 9)
 Feature.create(description: "Recorded videos can be used to go Live", template_id: 9)
 Feature.create(description: "Live Reaction Counting", template_id: 9)
 
+Template.create(id:10, name: "War Zone", path: "/templates/10", image_count: 2, needs_background: false, needs_image_names: false, category: 0)
+Feature.create(description: "Live Counting", template_id: 10)
+Feature.create(description: "Support of GIF Reactions", template_id: 10)
+Feature.create(description: "Both the images can be GIF", template_id: 10)
+Feature.create(description: "Background music can be added", template_id: 10)
+Feature.create(description: "Realtime comments will be shown with animations", template_id: 10)
+
 UserTemplate.create(template_id: 0, user_role: User.roles["premium"])
 UserTemplate.create(template_id: 0, user_role: User.roles["ultimate"])
 UserTemplate.create(template_id: 0, user_role: User.roles["admin"])
-Template.where("id > 0 and id < 9").each do |template|
+Template.where("id not in (0,9)").each do |template|
 	User.roles.each do |role,value|
 		UserTemplate.create(template_id: template.id, user_role: value)
 	end
