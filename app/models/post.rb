@@ -285,7 +285,7 @@ class Post < ActiveRecord::Base
     if Rails.env.production?
     	prefix = nil
     else
-    	prefix = "file://"+ Rails.root.to_s + "/public"
+    	prefix = "http://localhost:3000"
     end
     driver.navigate.to "#{prefix}#{self.html.url}"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)

@@ -22,16 +22,13 @@ class StreamLive
       sleep(20)
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
-      #puts "ffmpeg id is #{ffmpeg_id}"
       if @post.live
-        #puts "making status live of post now"
         @post.live!
       end
       query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
       nil_count = 0
       restart_process = false
       loop do
-        #puts "entered inside loop"
         @post.reload
         
         #Checking whether duration of post has completed or not
@@ -39,32 +36,27 @@ class StreamLive
         elapsed_time = Time.now - start_time
         duration = (@post.duration-30.years).to_i
         if(elapsed_time >= duration)
-          #puts "time completed"
           @post.stop
           break 
         end
 
         #Checking if reloading browser is required
         if @post.reload_browser
-          #puts "reloading browser"
           driver.navigate.refresh
           @post.update(reload_browser: false)
         end
         
         #Checking whether process has not ended unexpectedly
         if(ffmpeg_id.empty? || !Process.exists?(ffmpeg_id))
-          #puts "FFMPEG Process not found"
           if @post.live_on_fb?
             #Case 1 : Connection broke from our side => Respawn the process
             #puts "retrying"
             restart_process = true
           elsif @post.ended_on_fb?
-            #puts "live video ended manually"
             #Case 2 : Connection was closed by FB because video ended succesfully
             #Reasons can be 1. User used fb directly or used our panel or admin ended the video
             @post.stop
           else
-            #puts "live video deleted from fb"
             #Case 3 : Connection was closed by FB
             #Reasons can be 1. Session Invalidated 2. Deleted from FB 
             @post.stop("unknown")
@@ -72,14 +64,8 @@ class StreamLive
           break
         end
         
-        # if ((Process.exists?(ffmpeg_id) == false) && !@post.stopped_by_user? && !@post.published?)
-        #   @post.stop("unknown") if @post.live
-        #   break
-        # end
-
         #Checking whether post exists on fb and user token is valid or not (Seems redundant to me)
         begin
-          #puts "hitting api"
           status = HTTParty.get(query)
           if status.parsed_response["#{@post.video_id}"].nil?
             nil_count += 1
@@ -110,8 +96,9 @@ class StreamLive
         break
       end
     end
-    #puts "work ended"
     driver.quit
     headless.destroy
+    %x[pkill -9 firefox]
+    %x[pkill -9 geckodriver]
   end
 end
