@@ -3,8 +3,20 @@
     <img class="activator" src="/templates/template<%=template.id%>.jpg">
   </div>
   <div class="card-content">
-    <center class="card-title activator grey-text text-darken-2 bolder relative" style="left: 20px;"><%=template.name.titleize%><i class="material-icons right">more_vert</i></center>
-    <center><a href="/loop_videos/new?template=<%=template.id%>" class="btn">Try now</a></center>
+    <center class="card-title activator grey-text text-darken-2 bolder relative templateTitle" style="margin-bottom: 0px;">
+      <span><%=template.name.titleize%></span>
+      <i class="material-icons right hide-on-med-and-down">more_vert</i>
+    </center>
+    <center>
+      <% if template.premium? %>
+      <div class="grey-text text-darken-2 bold premiumTemplate">Premium</div>
+      <% else %>
+      <div class="grey-text text-darken-2 bold">Free</div>
+      <% end %>
+    </center>
+    <center>
+      <a href="/loop_videos/new?template=<%=template.id%>" class="btn">Try now</a>
+    </center>
   </div>
   <div class="card-reveal" style="text-align: center;">
     <span class="card-title grey-text text-darken-2 bolder"><span class="relative" style="left: 20px;">Features</span><i class="material-icons right">close</i></span>
