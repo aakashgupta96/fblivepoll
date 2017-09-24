@@ -1,12 +1,12 @@
 <html>
-	
-	<head>
-		<title>Frame Page Template 10</title>
+  
+  <head>
+    <title>Frame Page Template 10</title>
     <meta http-equiv="Content-Type" content="text/html">
     <meta charset="UTF-8">
     <meta http-equiv="Content-Language" content="de,fr,it,en,hi,pa"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<link rel="stylesheet" href="./template10_files/jquery-ui.css">
+    <link rel="stylesheet" href="./template10_files/jquery-ui.css">
 </head>
 
 <body>       
@@ -30,32 +30,29 @@
     <% end %>
     <div class="wrapper">
       <div class="pg1">
-        <img src="<%=ENV['prefix']%><%=images[0].file.url%>" width="640px" height="720px" style="position: absolute; left: 64px;">
-        <div class="unskew cbg" style="top: 12px; left: 200px;">
-          <img src="../../../reactions/<%=images[0].reaction%>.gif" width="81px" style="float: left;">
+        <img src="<%=ENV['prefix']%><%=images[0].file.url%>" width="640px" height="720px" style="position: absolute;">
+        <div class="name_box">
+          <%=images[0].name%>
+        </div>
+        <img src="../../../reactions/<%=images[0].reaction%>.gif" width="81px" class="reactionImage">
+        <div class="counterBox">
           <div class="counter" id="<%=images[0].reaction%>">
             0
           </div>
         </div>
       </div>
       <div class="pg2">
-        <img src="<%=ENV['prefix']%><%=images[1].file.url%>" width="640px" height="720px" style="position: absolute; right: 64px;">
-        <div class="unskew cbg" style="top: 12px; right: 200px;">
-          <img src="../../../reactions/<%=images[1].reaction%>.gif" width="81px" style="float: left;">
+        <img src="<%=ENV['prefix']%><%=images[1].file.url%>" width="640px" height="720px" style="position: absolute;">
+        <div class="name_box">
+          <%=images[1].name%>
+        </div>
+        <img src="../../../reactions/<%=images[1].reaction%>.gif" width="81px" class="reactionImage">
+        <div class="counterBox">
           <div class="counter" id="<%=images[1].reaction%>">
             0
           </div>
         </div>
       </div>
-      <div class="shoutbox">
-				<div id="picture">
-					<div id="thumb"></div>
-				</div>
-				<p>
-					<strong id="name"></strong>
-					<span id="comment"></span>
-				</p>
-			</div>
     </div>
     <script>
       var postID = "<%= post.video_id %>";
@@ -67,51 +64,20 @@
           return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
       }).join(',');
 
-      var	v1 = $('#<%=images[0].reaction%>'),
-      	v2 = $('#<%=images[1].reaction%>');
+      var v1 = $('#<%=images[0].reaction%>'),
+        v2 = $('#<%=images[1].reaction%>');
 
       function refreshCounts() {
           var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;
-      	$.getJSON(url, function(res){
-      		v1.text(defaultCount + res[postID].reactions_<%=images[0].reaction%>.summary.total_count);
-      		v2.text(defaultCount + res[postID].reactions_<%=images[1].reaction%>.summary.total_count);
-      	});
+        $.getJSON(url, function(res){
+          v1.text(defaultCount + res[postID].reactions_<%=images[0].reaction%>.summary.total_count);
+          v2.text(defaultCount + res[postID].reactions_<%=images[1].reaction%>.summary.total_count);
+        });
       }
-      var shoutboxUrl = 'https://graph.facebook.com/v2.8/' + postID + '?fields=comments.limit(1).order(reverse_chronological){message,from{name,id}}&access_token=' + access_token,
-			lastCommentId = null;
-
-			function shoutboxUpdate(){
-				$.getJSON(shoutboxUrl, function(response){
-					if(response.comments) {
-						var comment =  response.comments.data[0];					
-						if(comment.id === lastCommentId)
-							return;
-
-						lastCommentId = comment.id;
-						var message = comment.message,
-						name = comment.from.name,
-						image = '<img src="https://graph.facebook.com/v2.8/' + comment.from.id +'/picture?width=128&height=128">';
-						
-						$('#thumb').html(image);
-						$('#name').text(name);
-						$('#comment').text(message);
-						$('.shoutbox').addClass('show-shoutbox');
-						setTimeout(function(){
-							$('.shoutbox').removeClass('show-shoutbox');
-						}, 5 * 1000);
-					}
-				})
-				.fail(function(data){
-					response = JSON.parse(data.responseText);
-					clearInterval(shoutboxInterval);
-				});
-			}
 
       $(document).ready(function(){
           setInterval(refreshCounts, refreshTime * 1000);
           refreshCounts();
-          shoutboxUpdate();
-					setInterval(shoutboxUpdate, 6 * 1000);
       });
     </script>
     <style>
@@ -135,93 +101,73 @@
     overflow: hidden;
     }
     .pg1{
-    width: 703px;
+    width: 639px;
     height: 720px;
     background-color: black;
     position: absolute;
-    left: -64px;
+    left: 0px;
     overflow: hidden;
     }
     .pg2{
-    width: 703px;
+    width: 639px;
     height: 720px;
     background-color: black;
     position: absolute;
-    right: -64px;
+    right: 0px;
     overflow: hidden;
     }
-    .cbg{
-    position: absolute;
-    width: 320px;
-    height: 81px;
-    background-color: white;
-    border-radius: 5px;
-    padding: 5px;
+    .name_box
+    {
+      position: relative;
+      left: 80px;
+      top: 50px;
+      width: 440px;
+      min-height: 50px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 2px solid white;
+      border-radius: 4px;
+      text-align: center;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      line-height: 50px;
+      font-size: 50px;
+      font-weight: 500;
     }
-    .counter{
-    width: 233px;
-    height: 81px;
-    float: right;
-    font-size: 80px;
-    text-align: center;
-    margin-top: -5px;
-    color: darkred;
-    font-family: 'Teko', sans-serif;
+    .reactionImage
+    {
+      background: white;
+      border-radius: 50%;
+      position: relative;
+      left: 280px;
+      top: 458px;
     }
-
-    .shoutbox {
-		position: absolute;
-		bottom: -100%;
-		left: 0;
-		width: 100%;
-		background: #0275d8;
-		display: table;
-		padding: 1rem 2rem;
-		transition: 1s;
-		text-align: left;
-		}
-
-		.show-shoutbox {
-			bottom: 0;
-		}
-
-		#picture {
-			display: table-cell;
-			vertical-align: top;
-			width: 4.4rem;
-		}
-
-		#thumb {
-			background: #fff;
-			border-radius: 0.4rem;
-			padding: 0.2rem;
-			width: 4.4rem;
-			height: 4.4rem;
-		}
-
-		#thumb img {
-			border-radius: 0.4rem;
-			max-width: 100%;
-			display: block;
-		}
-
-		.shoutbox p {
-			display: table-cell;
-			vertical-align: top;
-			color: #fff;
-			padding-left: 1rem;
-		}
-
-		#name {
-      font-size: 22px;
-			display: block;
-			padding-bottom: 0.25rem;
-		}
-
-		#comment {
-      font-size: 20px;
-			color: #eee;
-		}
+    .counterBox
+    {
+      position: relative;
+      left: 180px;
+      top: 460px;
+      width: 240px;
+      min-height: 50px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 2px solid white;
+      border-radius: 4px;
+      text-align: center;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      line-height: 50px;
+      font-size: 50px;
+      font-weight: 500;
+    }
+    
+    .counter
+    {
+      width: 233px;
+      height: 81px;
+      float: right;
+      font-size: 70px;
+      text-align: center;
+      color: white;
+    }
 
     .random b {
       position: absolute;

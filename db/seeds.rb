@@ -60,6 +60,12 @@ Feature.create(description: "Both the images can be GIF", template_id: 10)
 Feature.create(description: "Background music can be added", template_id: 10)
 Feature.create(description: "Realtime comments will be shown with animations", template_id: 10)
 
+Template.create(id:11, name: "Full Background", path: "/templates/11", image_count: 2, needs_background: false, needs_image_names: true, category: 0)
+Feature.create(description: "Live Counting", template_id: 11)
+Feature.create(description: "Support of GIF Reactions", template_id: 11)
+Feature.create(description: "Both the images can be GIF", template_id: 11)
+Feature.create(description: "Background music can be added", template_id: 11)
+
 UserTemplate.create(template_id: 0, user_role: User.roles["premium"])
 UserTemplate.create(template_id: 0, user_role: User.roles["ultimate"])
 UserTemplate.create(template_id: 0, user_role: User.roles["admin"])
