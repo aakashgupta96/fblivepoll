@@ -3,7 +3,7 @@ class LoopVideosController < ApplicationController
   before_action :set_post, except: [:new, :create, :templates]
   before_action :authenticate_user!
   before_action :authorize_user! , except: [:new, :create, :templates]
-  before_action :check_slots, only: [:create]
+  before_action :check_slots_and_eligibility_of_user, only: [:create]
 
   def templates
     @templates = Template.loop_video.order(id: :desc)

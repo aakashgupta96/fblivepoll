@@ -184,7 +184,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def can_start?
-		return required_images_available? && Post.new.worker_available? && !self.user.is_already_live?
+		return required_images_available? && Post.new.worker_available? && self.user.has_live_post_in_limit?
 	end
 
 	def worker_available?
@@ -285,7 +285,11 @@ class Post < ActiveRecord::Base
     if Rails.env.production?
     	prefix = nil
     else
-    	prefix = "file://"+ Rails.root.to_s + "/public"
+    	if browser == "firefox"
+    		prefix = "http://localhost:3000"
+    	else
+    		prefix = "file://#{Rails.root.to_s}/public"
+    	end
     end
     driver.navigate.to "#{prefix}#{self.html.url}"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)

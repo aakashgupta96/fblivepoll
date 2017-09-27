@@ -93,21 +93,29 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_already_live?
+  def has_live_post_in_limit?
     live_users_posts = Post.live.where(user_id: self.id).count
-    if (self.member? and  live_users_posts < Constant::MEMBER_POST_LIMIT) || (self.donor? and  live_users_posts < Constant::DONOR_POST_LIMIT) || (self.premium? and  live_users_posts < Constant::PREMIUM_POST_LIMIT) || (self.ultimate? and  live_users_posts < Constant::ULTIMATE_POST_LIMIT) || (self.admin? and  live_users_posts < Constant::ADMIN_POST_LIMIT)
-      false
-    else 
+    if  (self.member? and  live_users_posts < Constant::MEMBER_POST_LIMIT) ||
+        (self.donor? and  live_users_posts < Constant::DONOR_POST_LIMIT) ||
+        (self.premium? and  live_users_posts < Constant::PREMIUM_POST_LIMIT) ||
+        (self.ultimate? and  live_users_posts < Constant::ULTIMATE_POST_LIMIT) ||
+        (self.admin? and  live_users_posts < Constant::ADMIN_POST_LIMIT)
       true
+    else 
+      false
     end
   end
 
-  def has_scheduled_post?
+  def has_scheduled_post_in_limit?
     scheduled_posts = Post.scheduled.where(user_id: self.id).count
-    if (self.member? and  scheduled_posts < Constant::MEMBER_POST_LIMIT) || (self.donor? and  scheduled_posts < Constant::DONOR_POST_LIMIT) || (self.premium? and  scheduled_posts < Constant::PREMIUM_POST_LIMIT) || (self.ultimate? and  scheduled_posts < Constant::ULTIMATE_POST_LIMIT) || (self.admin? and  scheduled_posts < Constant::ADMIN_POST_LIMIT)
-      false
-    else 
+    if  (self.member? and  scheduled_posts < Constant::MEMBER_SCHEDULED_POST_LIMIT) ||
+        (self.donor? and  scheduled_posts < Constant::DONOR_SCHEDULED_POST_LIMIT) ||
+        (self.premium? and  scheduled_posts < Constant::PREMIUM_SCHEDULED_POST_LIMIT) ||
+        (self.ultimate? and  scheduled_posts < Constant::ULTIMATE_SCHEDULED_POST_LIMIT) ||
+        (self.admin? and  scheduled_posts < Constant::ADMIN_SCHEDULED_POST_LIMIT)
       true
+    else 
+      false
     end
   end
 end

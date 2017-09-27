@@ -360,7 +360,7 @@ footer
 }
 @keyframes display {
     from {opacity: 1;}
-    to {opacity: 0.5;}
+    to {opacity: 0.3;}
 }
 .newFeature{
   position:relative;
@@ -369,6 +369,17 @@ footer
   left: 4px; 
   font-weight: 900;
   animation: display 1s ease-in 0s infinite alternate;
+}
+
+.premiumTemplate
+{
+  animation: display 1s ease-in 0s infinite alternate; 
+}
+
+.templateTitle
+{
+  position: relative;
+  left: 20px;  
 }
 
 @media only screen and (max-width : 600px)
@@ -445,6 +456,10 @@ footer
       padding: 10px !important;
     }
   }
+  .templateTitle
+  {
+    font-size: 20px !important;
+  } 
 }
 
 @media only screen and (max-width : 720px)
@@ -478,6 +493,14 @@ footer
       padding: 20px;
     }
   }
+}
+
+@media only screen and (max-width: 992px)
+{
+  .templateTitle
+  {
+    left: 0px;
+  }  
 }
 
 @media only screen and (max-width : 1080px)

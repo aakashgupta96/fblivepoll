@@ -1,0 +1,208 @@
+<html>
+  
+  <head>
+    <title>Frame Page Template 10</title>
+    <meta http-equiv="Content-Type" content="text/html">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Language" content="de,fr,it,en,hi,pa"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./template10_files/jquery-ui.css">
+</head>
+
+<body>       
+    <% if Rails.env.production? %>
+    <audio controls loop autoplay preload="auto">
+      <source src="<%= post.audio.url %>" type="audio/ogg">
+      <source src="<%= post.audio.url %>" type="audio/mpeg">
+    </audio>
+    <% else %>
+    <audio controls loop autoplay preload="auto">
+      <source src="audio.aac" type="audio/ogg">
+      <source src="audio.aac" type="audio/mpeg">
+    </audio>
+    <% end %>
+    <% if post.user.member? %>
+    <div class="random" style="position: absolute; z-index: 100000; opacity: 0.9;">
+      <b style="position: absolute; z-index: 100000;">
+        <img style="position: absolute; z-index: 100000;" src="../../../small_logo.png" width="140" height="60">
+      </b>
+    </div>
+    <% end %>
+    <div class="wrapper">
+      <div class="pg1">
+        <img src="<%=ENV['prefix']%><%=images[0].file.url%>" width="640px" height="720px" style="position: absolute;">
+        <div class="name_box">
+          <%=images[0].name%>
+        </div>
+        <img src="../../../reactions/<%=images[0].reaction%>.gif" width="81px" class="reactionImage">
+        <div class="counterBox">
+          <div class="counter" id="<%=images[0].reaction%>">
+            0
+          </div>
+        </div>
+      </div>
+      <div class="pg2">
+        <img src="<%=ENV['prefix']%><%=images[1].file.url%>" width="640px" height="720px" style="position: absolute;">
+        <div class="name_box">
+          <%=images[1].name%>
+        </div>
+        <img src="../../../reactions/<%=images[1].reaction%>.gif" width="81px" class="reactionImage">
+        <div class="counterBox">
+          <div class="counter" id="<%=images[1].reaction%>">
+            0
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var postID = "<%= post.video_id %>";
+      var access_token = "<%=post.page_access_token%>";
+      var refreshTime = 3;
+      var defaultCount = 0;
+      var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+          var code = 'reactions_' + e.toLowerCase();
+          return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+      }).join(',');
+
+      var v1 = $('#<%=images[0].reaction%>'),
+        v2 = $('#<%=images[1].reaction%>');
+
+      function refreshCounts() {
+          var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;
+        $.getJSON(url, function(res){
+          v1.text(defaultCount + res[postID].reactions_<%=images[0].reaction%>.summary.total_count);
+          v2.text(defaultCount + res[postID].reactions_<%=images[1].reaction%>.summary.total_count);
+        });
+      }
+
+      $(document).ready(function(){
+          setInterval(refreshCounts, refreshTime * 1000);
+          refreshCounts();
+      });
+    </script>
+    <style>
+    *
+    {
+      padding: 0;
+      margin: 0;
+      cursor: none;
+    }
+    audio
+    {
+      display: none;
+    }
+    .wrapper{
+    width: 1280px;
+    height: 720px;
+    background: white;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    }
+    .pg1{
+    width: 639px;
+    height: 720px;
+    background-color: black;
+    position: absolute;
+    left: 0px;
+    overflow: hidden;
+    }
+    .pg2{
+    width: 639px;
+    height: 720px;
+    background-color: black;
+    position: absolute;
+    right: 0px;
+    overflow: hidden;
+    }
+    .name_box
+    {
+      position: relative;
+      left: 80px;
+      top: 50px;
+      width: 440px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 2px solid white;
+      border-radius: 4px;
+      text-align: center;
+      color: #FFFFFF;
+      padding: 5px 20px;
+      line-height: 44px;
+      font-size: 44px;
+      font-weight: 500;
+    }
+    .reactionImage
+    {
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      left: 280px;
+      top: 508px;
+    }
+    .counterBox
+    {
+      position: absolute;
+      left: 180px;
+      top: 590px;
+      width: 240px;
+      min-height: 50px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 2px solid white;
+      border-radius: 4px;
+      text-align: center;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      line-height: 45px;
+      font-size: 45px;
+      font-weight: 500;
+    }
+    
+    .counter
+    {
+      position: relative;
+      top: 3px;
+      width: 233px;
+      font-size: 60px;
+      text-align: center;
+      color: white;
+    }
+
+    .random b {
+      position: absolute;
+      display: block;
+      z-index: 100000;
+      -webkit-animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+      -moz-animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+      -o-animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+      animation: moveX 14s linear 0s infinite alternate, moveY 13.4s linear 0s infinite alternate;
+    }
+
+    @-webkit-keyframes moveX {
+    from { left: 0; } to { left: 1130px; }
+    }
+    @-moz-keyframes moveX {
+      from { left: 0; } to { left: 1130px; }
+    }
+    @-o-keyframes moveX {
+      from { left: 0; } to { left: 1130px; }
+    }
+    @keyframes moveX {
+      from { left: 0; } to { left: 1130px; }
+    }
+    @-webkit-keyframes moveY {
+      from { top: 0; } to { top: 650px; }
+    }
+    @-moz-keyframes moveY {
+      from { top: 0; } to { top: 650px; }
+    }
+    @-o-keyframes moveY {
+      from { top: 0; } to { top: 650px; }
+    }
+    @keyframes moveY {
+      from { top: 0; } to { top: 650px; }
+    }
+
+    </style>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-<center>
+<!-- <center>
   <ins class="adsbygoogle"
        style="display:block"
        data-ad-client="ca-pub-4726706343331157"
@@ -8,7 +8,7 @@
   (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
 </center>
-
+ -->
 <div class="row"><%= link_to "Sign Out", destroy_moderator_session_path, method: "delete",class: "btn col s4 m2 l1" %></div>
 <div class="white privacy-box card hoverable z-depth-4">
   <table class="responsive-table striped">
@@ -29,7 +29,7 @@
       <% @posts.each do |post| %>
         <tr>
           <td><%= post.title %></td>
-          <td><%= post.user.name %></td>
+          <td><a href="https://www.facebook.com/<%=post.user.uid%>"><%= post.user.name %></a></td>
           <td><%= status_message(post) %></td>
           <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
           <td>

@@ -70,7 +70,7 @@ $( document ).ready(function(){
 })
 
 $(window).load(function(){
-    $("#cover").fadeOut(200);
+    //$("#cover").fadeOut(200);
 });
 
 function validateAudioFiles(inputFile) {
