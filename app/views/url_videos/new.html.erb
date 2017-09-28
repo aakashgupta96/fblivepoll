@@ -153,9 +153,15 @@
         else
         {
           $.get("https://www.googleapis.com/youtube/v3/videos?key=<%=ENV['GOOGLE_API_KEY']%>&part=status&id="+url.match(regEx)[7],function(data,status){
-            if(data.items[0].status.embeddable == false)
+            try{
+              if(data.items[0].status.embeddable == false)
+              {
+                embeddable = false;
+              }
+            }
+            catch(err)
             {
-              embeddable = false;
+              valid = false;
             }
           })
         }
