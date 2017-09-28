@@ -74,7 +74,7 @@
     <div class="row">
       <%= f.fields_for :link do |builder| %>
       <div class="input-field col s12">
-        <%= builder.label "Video URL" %>
+        <%= builder.label :url, "Shareable Video URL" %>
         <%= builder.text_field :url, required: true %>
       </div>
       <% end %>
@@ -143,28 +143,48 @@
         jQuery.ajaxSetup({async:false});
         var valid = true;
         var embeddable = true;
+        var content = null;
+        url = $("#post_link_attributes_url").val();
         //Validating url if embeddable or not
-        regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/ ;
-        url = $("#post_link_attributes_url").val()
-        if(url.match(regEx) == null || url.match(regEx)[7] == undefined || url.match(regEx)[7] == null)
+        if($("#post_template_id").val() == 12)
         {
-          valid = false;
-        }
-        else
-        {
-          $.get("https://www.googleapis.com/youtube/v3/videos?key=<%=ENV['GOOGLE_API_KEY']%>&part=status&id="+url.match(regEx)[7],function(data,status){
-            try{
-              if(data.items[0].status.embeddable == false)
-              {
-                embeddable = false;
+          regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/ ;
+          if(url.match(regEx) == null || url.match(regEx)[7] == undefined || url.match(regEx)[7] == null)
+          {
+            valid = false;
+          }
+          else
+          {
+            $.get("https://www.googleapis.com/youtube/v3/videos?key=<%=ENV['GOOGLE_API_KEY']%>&part=status&id="+url.match(regEx)[7],function(data,status){
+              try{
+                if(data.items[0].status.embeddable == false)
+                {
+                  embeddable = false;
+                }
               }
-            }
-            catch(err)
-            {
-              valid = false;
-            }
-          });
+              catch(err)
+              {
+                valid = false;
+              }
+            });
+          }
+          content = "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>http://youtu.be/xxxxxxxxxxx</li><li class='collection-item'>http://www.youtube.com/watch?v=xxxxxxxxxxxx</li><li class='collection-item'>http://www.youtube.com/embed/xxxxxxxxxxx?rel=0</li><li class='collection-item'>http://www.youtube.com/v/xxxxxxxxxxxx?fs=1&amp;hl=en_US&amp;rel=0</li><li class='collection-item'>http://www.youtube.com/user/some_user_name#p/a/u/1/xxxxxxxxxx</li></ul>"
         }
+        else if ($("#post_template_id").val() == 13)
+        {
+          patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/,/https:\/\/www\.dropbox\.com\/s\/(.*)\/.*/,/https:\/\/1drv\.ms\/v\/s!(.*?)/]
+          valid = false;
+          for(var i=0;i<patterns.length;i++)
+          { 
+            if(url.match(patterns[i]))
+            { 
+              valid = true;
+              break;
+            } 
+          }
+          content = "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>https://1drv.ms/v/s!xxxxxxxxxxxxxxxxxx</li><li class='collection-item'>https://www.dropbox.com/s/xxxxxxxxxxxxxx/filename.mp4?dl=0</li><li class='collection-item'>https://www.dropbox.com/s/xxxxxxxxxxxxxx/filename.mp4?dl=1</li><li class='collection-item'>https://www.dropbox.com/s/xxxxxxxxxxxxxx/filename.mp4</li><li class='collection-item'>https://drive.google.com/open?id=xxxxxxxxxxxxxxxxxxxxxx</li><li class='collection-item'>https://drive.google.com/file/d/xxxxxxxxxxxxxxxxxxxxx/view?usp=sharing</li></ul>"
+        }
+
         if(!valid)
         {
           setTimeout(function(){
@@ -173,8 +193,8 @@
               theme: "supervan",
               boxWidth: width,
               useBootstrap: false,
-              title: "Invalid Details !!!",
-              content: "Entered URL is incorrect."
+              title: "Invalid Video URL! Allowed formats are ",
+              content: content
             });
           },1);
           return false;

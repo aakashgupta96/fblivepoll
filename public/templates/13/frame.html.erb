@@ -4,11 +4,7 @@
   </head>
 
   <body>
-    <% if Rails.env.production? %>
-      <% link = post.video.url %>
-    <% else %>
-      <% link = "1.mp4" %>
-    <% end %>
+    <% link = post.get_file_url %>
     <div class="container">
       <canvas id="canvas" height="720" width="1280"></canvas>
     </div>

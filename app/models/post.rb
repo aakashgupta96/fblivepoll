@@ -321,4 +321,58 @@ class Post < ActiveRecord::Base
 			end
 		end
 	end
+
+	def from_google_drive?
+		return false unless self.url_video?
+		url = self.link.url
+		patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
+		patterns.each do |pattern|
+			return true unless (url =~ pattern).nil?
+		end	
+		return false
+	end
+
+	def from_dropbox?
+		return false unless self.url_video?
+		url = self.link.url
+		pattern = /https:\/\/www\.dropbox\.com\/s\/(.*)\/.*/
+		if (url =~ pattern).nil?
+			false
+		else
+			true
+		end
+	end
+
+	def from_onedrive?
+		return false unless self.url_video?
+		url = self.link.url
+		patterns = [/https:\/\/1drv\.ms\/v\/s!(.*?)/]
+		patterns.each do |pattern|
+			return true unless (url =~ pattern).nil?
+		end	
+		return false
+	end
+
+	def get_file_url
+		if from_google_drive?
+			patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
+			patterns.each do |pattern|
+				if self.link.url.match pattern
+					return "https://drive.google.com/uc?export=download&id=" + self.link.url.match(pattern)[1]
+				end
+			end	
+		elsif from_dropbox?
+			self.link.url.split("?").first + "?dl=1"
+		elsif from_onedrive?
+			begin
+				res = Net::HTTP.get_response(URI('https://1drv.ms/v/s!AhXFt2vhgtQFgzu8Bk8irsOcYQml'))
+				res['location'].gsub("redir","download")
+			rescue
+				false
+			end
+		else
+			self.link.url
+		end
+	end
+
 end
