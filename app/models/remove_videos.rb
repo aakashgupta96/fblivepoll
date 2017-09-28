@@ -4,5 +4,5 @@ class RemoveVideos
 	def self.perform(args=nil)
 	  Post.remove_videos
 	end
-
+	
 end

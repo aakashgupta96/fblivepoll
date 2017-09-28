@@ -31,3 +31,9 @@ clean_up_erroneous_post:
     - "1d"
   class: "DestroyErroneousPosts"
   queue: "destroy_erroneous_posts"
+
+end_subscription_of_users:
+  every:
+    - "1d"
+  class: "ExpireSubscription"
+  queue: "expire_subscription"

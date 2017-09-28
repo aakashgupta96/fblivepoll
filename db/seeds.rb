@@ -74,11 +74,11 @@ Feature.create(description: "LIVE Streaming URL from YouTube can also be used.",
 Feature.create(description: "No need to upload video on our site.", template_id: 12)
 
 Template.create(id:13, name: "Cloud Storage To FB", path: "/templates/13", image_count: 0, needs_background: false, needs_image_names: false, category: 2)
-Feature.create(description: "Live video streaming", template_id: 12)
-Feature.create(description: "Plays video in a loop", template_id: 12)
-Feature.create(description: "Recorded videos can be used to go Live", template_id: 12)
-Feature.create(description: "No need to upload video on our site", template_id: 12)
-Feature.create(description: "Shareable link from drive or cloud storage can be used directly to go Live", template_id: 12)
+Feature.create(description: "Live video streaming", template_id: 13)
+Feature.create(description: "Plays video in a loop", template_id: 13)
+Feature.create(description: "Recorded videos can be used to go Live", template_id: 13)
+Feature.create(description: "No need to upload video on our site", template_id: 13)
+Feature.create(description: "Shareable link from drive or cloud storage can be used directly to go Live", template_id: 13)
 
 Template.where("id not in (0,4,5,9,10,11,12,13)").each do |template|
 	User.roles.each do |role,value|

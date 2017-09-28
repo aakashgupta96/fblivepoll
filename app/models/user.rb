@@ -47,6 +47,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.expire_subscription
+    paid_users = User.donor + User.premium + User.ultimate
+    paid_users.each do |u|
+      u.member! if Time.now > (u.subscription_date + u.subscription_duration)
+    end
+  end
+
   def has_granted_permissions
     ret = HTTParty.get("https://graph.facebook.com/#{self.uid}/permissions?access_token=#{self.token}").parsed_response['data']
     pages_show_list = publish_pages = manage_pages = false
