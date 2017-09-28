@@ -5,12 +5,14 @@
         <img class="activator" src="/templates/template<%=template.id%>.jpg">
       </div>
       <div class="card-content" style="padding: 10px 10px 0 10px !important;">
-        <span class="card-title activator grey-text text-darken-2 bolder" ><span class="relative" style="left: 20px;"><%=template.name.titleize%></span><i class="material-icons right">more_vert</i></span>
+        <span class="card-title activator grey-text text-darken-2 bolder" ><span class="relative" style="left: 20px;"><%=template.name%></span><i class="material-icons right">more_vert</i></span>
       </div>
       <% if template.poll? %>
-      <div class="card-action" style="padding: 10px !important;"><!-- <a class="btn waves-effect" href="/demo?template=1">Watch Video</a>  --><a class="btn waves-effect" href="/polls/new?template=<%=template.id%>">Try Now</a> </div>
+        <div class="card-action" style="padding: 10px !important;"><a class="btn waves-effect" href="/polls/new?template=<%=template.id%>">Try Now</a> </div>
+      <% elsif template.loop_video? %>
+        <div class="card-action" style="padding: 10px !important;"><a class="btn waves-effect" href="/loop_videos/new?template=<%=template.id%>">Try Now</a> </div>
       <% else %>
-          <div class="card-action" style="padding: 10px !important;"><!-- <a class="btn waves-effect" href="/demo?template=1">Watch Video</a>  --><a class="btn waves-effect" href="/loop_videos/new?template=<%=template.id%>">Try Now</a> </div>
+        <div class="card-action" style="padding: 10px !important;"><a class="btn waves-effect" href="/url_videos/new?template=<%=template.id%>">Try Now</a> </div>
       <% end %>
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-2 bolder"><span class="relative" style="left: 20px;">Features</span><i class="material-icons right">close</i></span>

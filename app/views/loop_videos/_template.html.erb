@@ -4,7 +4,7 @@
   </div>
   <div class="card-content">
     <center class="card-title activator grey-text text-darken-2 bolder relative templateTitle" style="margin-bottom: 0px;">
-      <span><%=template.name.titleize%></span>
+      <span><%=template.name%></span>
       <i class="material-icons right hide-on-med-and-down">more_vert</i>
     </center>
     <center>
@@ -15,7 +15,11 @@
       <% end %>
     </center>
     <center>
-      <a href="/loop_videos/new?template=<%=template.id%>" class="btn">Try now</a>
+      <% if template.loop_video? %>
+        <a href="/loop_videos/new?template=<%=template.id%>" class="btn">Try now</a>
+      <% elsif template.url_video? %>
+        <a href="/url_videos/new?template=<%=template.id%>" class="btn">Try now</a>
+      <% end %>
     </center>
   </div>
   <div class="card-reveal" style="text-align: center;">

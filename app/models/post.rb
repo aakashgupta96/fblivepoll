@@ -11,10 +11,12 @@ class Post < ActiveRecord::Base
 	has_many :counters, dependent: :destroy
 	belongs_to :user
 	belongs_to :template
+	has_one :link, dependent: :destroy
 
 	accepts_nested_attributes_for :images, allow_destroy: true
+	accepts_nested_attributes_for :link, allow_destroy: true
 
-	enum category: [:poll, :loop_video]
+	enum category: [:poll, :loop_video, :url_video]
 	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
 
 	scope :ongoing, ->{ where(live: true) }
@@ -175,7 +177,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def required_images_available?
-		return true if self.loop_video?
+		return true unless self.poll? 
 		if self.template.id == 0
 		  self.image.url != nil
 		else

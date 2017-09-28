@@ -66,13 +66,20 @@ Feature.create(description: "Support of GIF Reactions", template_id: 11)
 Feature.create(description: "Both the images can be GIF", template_id: 11)
 Feature.create(description: "Background music can be added", template_id: 11)
 
-Template.where("id not in (0,4,5,9,10,11)").each do |template|
+Template.create(id:12, name: "YouTube To FB", path: "/templates/12", image_count: 0, needs_background: false, needs_image_names: false, category: 2)
+Feature.create(description: "Live video streaming", template_id: 12)
+Feature.create(description: "Plays video in a loop", template_id: 12)
+Feature.create(description: "YouTube videos can be used to go Live", template_id: 12)
+Feature.create(description: "LIVE Streaming URL from YouTube can also be used.", template_id: 12)
+Feature.create(description: "No need to upload video on our site.", template_id: 12)
+
+Template.where("id not in (0,4,5,9,10,11,12)").each do |template|
 	User.roles.each do |role,value|
 		UserTemplate.create(template_id: template.id, user_role: value)
 	end
 end
 
-Template.where("id in (0,4,5,9,10,11)").each do |template|
+Template.where("id in (0,4,5,9,10,11,12)").each do |template|
 	UserTemplate.create(template_id: template.id, user_role: User.roles["premium"])
 	UserTemplate.create(template_id: template.id, user_role: User.roles["ultimate"])
 	UserTemplate.create(template_id: template.id, user_role: User.roles["admin"])

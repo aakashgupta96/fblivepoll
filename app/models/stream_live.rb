@@ -14,7 +14,6 @@ class StreamLive
     else
       command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99.0+0,72 -i 'public/silent.aac' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2500k -r 24 -g 48 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key.split(':80').join}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
     end
-    
     driver,headless = @post.open_in_browser
     start_time = Time.now
     loop do #For respawning process on connection error
@@ -98,7 +97,8 @@ class StreamLive
     end
     driver.quit
     headless.destroy
-    %x[pkill -9 firefox]
-    %x[pkill -9 geckodriver]
+    firefoxPids = %x[pidof firefox]
+    target_ids = firefoxPids.strip
+    %x[kill -9 #{target_ids}]
   end
 end

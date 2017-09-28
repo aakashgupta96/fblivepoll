@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'url_video/new'
+
+  get 'url_video/create'
+
   devise_for :editors, skip: [:registrations, :passwords]
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -60,6 +64,7 @@ Rails.application.routes.draw do
 
   resources :polls, :except => [:edit , :show , :index , :update, :destroy]
   resources :loop_videos, :except => [:edit , :show , :index , :update, :destroy]
+  resources :url_videos, :except => [:edit , :show , :index , :update, :destroy]
 
   get "*path" => 'extras#invalid'
 end
