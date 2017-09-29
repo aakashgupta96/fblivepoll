@@ -80,13 +80,13 @@ Feature.create(description: "Recorded videos can be used to go Live", template_i
 Feature.create(description: "No need to upload video on our site", template_id: 13)
 Feature.create(description: "Shareable link from drive or cloud storage can be used directly to go Live", template_id: 13)
 
-Template.where("id not in (0,4,5,9,10,11,12,13)").each do |template|
+Template.where("id not in (0,4,5,9,10,11,12,13,14)").each do |template|
 	User.roles.each do |role,value|
 		UserTemplate.create(template_id: template.id, user_role: value)
 	end
 end
 
-Template.where("id in (0,4,5,9,10,11,12,13)").each do |template|
+Template.where("id in (0,4,5,9,10,11,12,13,14)").each do |template|
 	UserTemplate.create(template_id: template.id, user_role: User.roles["premium"])
 	UserTemplate.create(template_id: template.id, user_role: User.roles["ultimate"])
 	UserTemplate.create(template_id: template.id, user_role: User.roles["admin"])

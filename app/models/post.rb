@@ -55,7 +55,7 @@ class Post < ActiveRecord::Base
     attempts = 0
     begin
       ids = Array.new
-      Post.live.each do |post| 
+      Post.live.where("template_id NOT IN (?)",Constant::RTMP_TEMPLATE_IDS).each do |post| 
         ids << post.video_id
       end
       query = "https://graph.facebook.com/v2.8/?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)&access_token=#{ENV['FB_ACCESS_TOKEN']}"
