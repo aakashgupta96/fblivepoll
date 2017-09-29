@@ -47,7 +47,7 @@ class StreamLive
         
         #Checking whether process has not ended unexpectedly
         if(ffmpeg_id.empty? || !Process.exists?(ffmpeg_id))
-          if @post.live_on_fb?
+          if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id) || @post.live_on_fb?
             #Case 1 : Connection broke from our side => Respawn the process
             #puts "retrying"
             restart_process = true
@@ -64,19 +64,21 @@ class StreamLive
         end
         
         #Checking whether post exists on fb and user token is valid or not (Seems redundant to me)
-        begin
-          status = HTTParty.get(query)
-          if status.parsed_response["#{@post.video_id}"].nil?
-            nil_count += 1
-            if nil_count > 3
-              @post.stop("unknown")
-              break
+        unless Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
+          begin
+            status = HTTParty.get(query)
+            if status.parsed_response["#{@post.video_id}"].nil?
+              nil_count += 1
+              if nil_count > 3
+                @post.stop("unknown")
+                break
+              end
+            else
+              nil_count = 0
             end
-          else
-            nil_count = 0
+          rescue
+           #Ignored 
           end
-        rescue
-         #Ignored 
         end
 
         #Checking whether post is manually ended or not

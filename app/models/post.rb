@@ -12,10 +12,10 @@ class Post < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :template
 	has_one :link, dependent: :destroy
-
+	
 	accepts_nested_attributes_for :images, allow_destroy: true
 	accepts_nested_attributes_for :link, allow_destroy: true
-
+	
 	enum category: [:poll, :loop_video, :url_video]
 	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
 
@@ -120,7 +120,7 @@ class Post < ActiveRecord::Base
 	
 	def stop(status="published")
 		begin
-      self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post")
+      self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post") unless Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
     rescue Exception => e
     	puts e.class,e.message
     end
@@ -141,29 +141,37 @@ class Post < ActiveRecord::Base
 	end
 
 	def start
-		begin
-			graph = graph_with_page_token
-			if self.user.member?
-				caption_suffix = "\n#{self.default_message}"
-			else
-				caption_suffix = ""
-			end
-
-			if  self.ambient?
-				video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title, stream_type: "AMBIENT"},"post")
-			else
-				video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title},"post")
-			end
-			live_id = video["id"]
-		  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
-			self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
-		  Resque.enqueue(StreamLive,self.id)
+		if Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
+			self.update(live: true, status: "queued")
+			Resque.enqueue(StreamLive,self.id)
 		  Resque.enqueue(NewLive,self.id)
 		  return true
-		rescue Exception => e
-			puts e.class,e.message
-      self.request_declined!
-			return false
+		else
+			begin
+				graph = graph_with_page_token
+				if self.user.member?
+					caption_suffix = "\n#{self.default_message}"
+				else
+					caption_suffix = ""
+				end
+
+				if  self.ambient?
+					video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title, stream_type: "AMBIENT"},"post")
+				else
+					video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title},"post")
+				end
+				live_id = video["id"]
+			  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
+				self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
+			 
+			  Resque.enqueue(StreamLive,self.id)
+			  Resque.enqueue(NewLive,self.id)
+			  return true
+			rescue Exception => e
+				puts e.class,e.message
+	      self.request_declined!
+				return false
+			end
 		end
 	end
 
@@ -304,7 +312,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def self.update_caption_for_site_credits
-		posts = Post.live.select{|x| x.user.member?}
+		posts = Post.live.select{|x| ((x.user.member?)&&(!Constant::RTMP_TEMPLATE_IDS.include?(x.template.id)))}
 		posts.each do |p|
 			begin
 				query = "https://graph.facebook.com/v2.8/#{p.video_id}?fields=description&access_token=#{p.user.token}"

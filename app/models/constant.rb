@@ -21,6 +21,8 @@ class Constant < ActiveRecord::Base
 
   POST_PER_PAGE = 9
   USER_PER_PAGE = 100
+
+  RTMP_TEMPLATE_IDS = [14]
   
   ALREADY_LIVE_MESSAGE = "You already have max. number of ongoing live post(s). Please try after that live video ends."
   ALREADY_SCHEDULED_MESSAGE = "You already have max. number of scheduled post(s)."
