@@ -5,14 +5,14 @@ class Payment < ActiveRecord::Base
 
   enum status: [:waiting_ipn, :pending, :failed, :denied, :refunded, :completed, :unknown]
 
-  def update_user_subscription
+  def update_user_subscription(plan_name)
     @user = self.user
     @user.update(subscription_date: Date.current, subscription_duration: 30)
-    if Constant::DONOR_ARRAY.include?(self.amount)
+    if Constant::DONOR_ARRAY.include?(plan_name)
       @user.donor!
-    elsif Constant::PREMIUM_ARRAY.include?(self.amount)
+    elsif Constant::PREMIUM_ARRAY.include?(plan_name)
       @user.premium!
-    elsif Constant::ULTIMATE_ARRAY.include?(self.amount)
+    elsif Constant::ULTIMATE_ARRAY.include?(plan_name)
       @user.ultimate!
     end
   end

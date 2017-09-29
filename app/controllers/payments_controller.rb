@@ -13,7 +13,7 @@ class PaymentsController < ApplicationController
       payment.tx_id = payment.payment_id
       payment.user = User.find_by_email(response.parsed_response["payment"]["buyer_email"])
       payment.set_status(response.parsed_response["payment"]["status"])
-      if payment.save && payment.completed? && payment.update_user_subscription
+      if payment.save && payment.completed? && payment.update_user_subscription(response.parsed_response["payment"]["link_title"])
         return redirect_to dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
       else
         return redirect_to dashboard_path, alert: Constant::PAYMENT_FAILURE_MESSAGE
