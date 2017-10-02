@@ -1,4 +1,4 @@
-class Post < ActiveRecord::Base
+	class Post < ActiveRecord::Base
 	
 	paginates_per Constant::POST_PER_PAGE
 	mount_uploader :audio, AudioUploader
@@ -278,15 +278,21 @@ class Post < ActiveRecord::Base
    		width = 1290 #850
    		height = 800 #550
    		headless = Headless.new(dimensions: "1920x1200x24")
+   		options = Selenium::WebDriver::Firefox::Options.new
    	else
    		width = 1280 #800
    		height = 786 #516
+   		profile = Selenium::WebDriver::Firefox::Profile.new
+   		profile["toolkit.telemetry.enabled"] = false
+   		profile["toolkit.telemetry.prompted"] = 2
+   		profile["toolkit.telemetry.rejected"] = true
+   		options = Selenium::WebDriver::Firefox::Options.new(profile: profile)
    		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
    	end
    	headless.start
     attempts = 0
     begin
-    	driver = Selenium::WebDriver.for browser.to_sym
+    	driver = Selenium::WebDriver.for browser.to_sym, options: options
     rescue Exception => e
     	attempts += 1
     	sleep(2) and retry if attempts <= 3
@@ -301,6 +307,7 @@ class Post < ActiveRecord::Base
     		prefix = "file://#{Rails.root.to_s}/public"
     	end
     end
+
     driver.navigate.to "#{prefix}#{self.html.url}"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
