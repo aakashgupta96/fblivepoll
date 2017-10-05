@@ -278,7 +278,7 @@
    		width = 1290 #850
    		height = 800 #550
    		headless = Headless.new(dimensions: "1920x1200x24")
-   		options = Selenium::WebDriver::Firefox::Options.new
+   		options = Selenium::WebDriver::Chrome::Options.new
    	else
    		width = 1280 #800
    		height = 786 #516
