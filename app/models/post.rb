@@ -277,16 +277,16 @@
    	if browser == "firefox"
    		width = 1290 #850
    		height = 800 #550
-   		headless = Headless.new(dimensions: "1920x1200x24")
-   		options = Selenium::WebDriver::Chrome::Options.new
-   	else
-   		width = 1280 #800
-   		height = 786 #516
    		profile = Selenium::WebDriver::Firefox::Profile.new
    		profile["toolkit.telemetry.enabled"] = false
    		profile["toolkit.telemetry.prompted"] = 2
    		profile["toolkit.telemetry.rejected"] = true
    		options = Selenium::WebDriver::Firefox::Options.new(profile: profile)
+   		headless = Headless.new(dimensions: "1920x1200x24")
+   	else
+   		width = 1280 #800
+   		height = 786 #516
+   		options = Selenium::WebDriver::Chrome::Options.new
    		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
    	end
    	headless.start
