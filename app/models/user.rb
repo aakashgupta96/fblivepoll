@@ -125,4 +125,15 @@ class User < ActiveRecord::Base
       false
     end
   end
+
+  def try_premium
+    unless (self.premium_tried || self.premium? || self.ultimate? || self.admin?)
+      self.subscription_duration = 1
+      self.subscription_date = Date.current
+      self.role = "premium"
+      self.premium_tried = true
+      self.save
+    end
+  end
+
 end

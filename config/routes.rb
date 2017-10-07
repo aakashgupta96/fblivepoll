@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     post '/stop/:post_id' => 'users#stop_post'
     post '/cancel/:post_id' => 'users#cancel_scheduled_post'
     get '/posts' => 'users#posts', as: "myposts"
+    get '/try_premium' => 'users#try_premium'
   end
 
   scope :payments do

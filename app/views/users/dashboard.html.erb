@@ -1,19 +1,19 @@
-<!-- <center>
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-4726706343331157"
-       data-ad-slot="5921286380"
-       data-ad-format="auto"></ins>
-  <script>
-  (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</center>
- --><div class="row container">
+<div class="row container">
   <div class="col s12 m10 offset-m1 l8 offset-l2">
     <div class="card-panel dashboard_details hoverable">
       <ul class="collection">
+      	<% unless current_user.premium_tried %>
 			  <li class="collection-item avatar">
-			    <img src="/assets/package.png" alt="" class="circle">
+			    <i class="material-icons circle cyan">card_giftcard</i>
+			    <span class="title bold">Try Premium Plan</span>
+			    <p>
+			    	<a id="offer_button" href="/users/try_premium" class="btn btn-less-padding" data-confirm="This is a one time offer which has a validity for only 1 Day. Are you sure you want to continue?" data-method="GET"> Get Offer Now</a>	
+			    </p>
+			    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+			  </li>
+			  <% end %>
+			  <li class="collection-item avatar">
+			    <img src="/assets/package.png" class="circle">
 			    <span class="title bold">Package Purchased</span>
 			    <p>
 			    	<%=user_package_name(current_user)%>
@@ -63,3 +63,26 @@
 		</div>
 	</div>
 </div>
+<% unless current_user.premium_tried %>
+<script>
+	if(!sessionStorage.getItem("premiumTrialMessageShown"))
+	{
+		$.confirm({
+      theme: "supervan",
+      boxWidth: width,
+      useBootstrap: false,
+      title: "FREE OFFER !",
+      content: "Try our PREMIUM PLAN for FREE for 1 DAY.",
+      buttons: {
+        "Try Now": function () {
+          $("#offer_button").click();
+        },
+        "Dismiss": function () {
+           //console.log("Cancelled");
+        },
+    	}
+    });
+		sessionStorage.setItem("premiumTrialMessageShown",true);
+	}
+</script>
+<% end %>

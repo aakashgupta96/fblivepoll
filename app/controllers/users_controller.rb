@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, except: [:posts, :dashboard]
-  before_action :authorize_user!, except: [:posts, :dashboard]
+  before_action :set_post, except: [:posts, :dashboard, :try_premium]
+  before_action :authorize_user!, except: [:posts, :dashboard, :try_premium]
   
   def posts
   	@posts = current_user.posts.order(created_at: :desc).page(params[:page])
@@ -9,6 +9,14 @@ class UsersController < ApplicationController
 
   def dashboard
     
+  end
+
+  def try_premium
+    if current_user.try_premium
+      redirect_to dashboard_path, alert: "Trial period activated for 1 day."
+    else
+      redirect_to dashboard_path, alert: "You have already tried this one time offer."
+    end
   end
 
   def show
