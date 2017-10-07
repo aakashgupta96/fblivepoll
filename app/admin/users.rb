@@ -1,7 +1,7 @@
 ActiveAdmin.register User do
 	
 	actions :all, except: [:new]
-	permit_params :role, :subscription_date, :subscription_duration, :banned
+	permit_params :role, :subscription_date, :subscription_duration, :banned, :premium_tried
 	
 	scope :all, default: true
 	scope("Free Users") {|scope| scope.member}
