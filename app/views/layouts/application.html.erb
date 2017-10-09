@@ -29,15 +29,6 @@
     ga('send', 'pageview');
   </script> 
   
-  <!--Code for adsense page level ads-->
-  <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-      google_ad_client: "ca-pub-4726706343331157",
-      enable_page_level_ads: true
-    });
-  </script>    
- -->
   <!-- Facebook analytics -->
    <script>
     window.fbAsyncInit = function() {
@@ -58,50 +49,6 @@
      }(document, 'script', 'facebook-jssdk'));
   </script>
 
-  <!-- <div id="cover">
-    <div class="preloader-wrapper big active">
-      <div class="spinner-layer spinner-blue">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-
-      <div class="spinner-layer spinner-red">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-
-      <div class="spinner-layer spinner-yellow">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-
-      <div class="spinner-layer spinner-green">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
-  </div>
- -->
   <nav class="radial-gradient">
     <div class="nav-wrapper container-wide no-pad" id="nav-container">
       <a href="/" class="brand-logo"><img src="/assets/logo.png" class="logo"></a>
@@ -138,10 +85,6 @@
             <a href="/users/auth/facebook" class="nav-option btn waves-light waves-effect greenish flexbox btn-less-padding" style="flex-wrap: nowrap;">
               <i class="fa fa-facebook-official left" style="font-size: 28px;" aria-hidden="true"></i><span>Log In</span>
             </a>
-            <!-- <a href="/users/auth/facebook" class="nav-option session_button waves-effect waves-light btn greenish row">
-              <i class="fa fa-facebook-official col s2 relative" aria-hidden="true" style="font-size: 30px; bottom: 14px; right: 30px; "></i>
-              <span class="col s9 relative" style="left: 5px;">Log In</span>
-            </a> -->
           </li>
         <% end %>
       </ul>
@@ -185,45 +128,14 @@
    </script>
   <% end %>
 
-<% unless current_user_is_donor? %>
-<!-- <div id="donation" class="absolute center-align z-depth-5 linear-gradient padding-5 card">
-  <a href="" class="close-button"><i class="fa fa-times relative" aria-hidden="true"></i></a>
-  <div class="flexbox">
-    <a href="https://www.instamojo.com/@aakashgupta/" rel="im-checkout" data-behaviour="remote" data-style="dark" data-text="Donate Now"></a>
+  <div class="container-wide section white card hoverable" style="margin: 10px auto">
+    <div class="grey-text text-darken-2 center-align bold" style="font-size: 20px;">Interested in Buying or Selling Facebook Pages? <a href="https://www.facebook.com/shurikenlivepages" target="_blank" class="btn btn-less-padding" style="margin-left: 10px;">Contact US</a></div>
   </div>
-  <div class="donation-message relative" style="top: -20px;">For the future development of this project and enjoy <span class="bold">PREMIUM FEATURES.</span><br><a href="/pricing" class="white-text">More Info...</a></div>
-</div>
-<script>
-  if(sessionStorage.donationClosed)
-  {
-    $("#donation").hide();
-  }
-  function hideDonation(e){
-    $("#donation").hide(500);
-    sessionStorage.setItem("donationClosed",true);
-    e.preventDefault();
-  };
-  $(".close-button").click(hideDonation);
-</script> -->
-<% end %>
-<div class="container-wide section white card hoverable" style="margin: 10px auto">
-  <div class="grey-text text-darken-2 center-align bold" style="font-size: 20px;">Interested in Buying or Selling Facebook Pages? <a href="https://www.facebook.com/shurikenlivepages" target="_blank" class="btn btn-less-padding" style="margin-left: 10px;">Contact US</a></div>
-</div>
-<main>
-<%= yield %>
-</main>
+  <main>
+    <%= yield %>
+  </main>
 
-<!-- <center>
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-4726706343331157"
-       data-ad-slot="5165773760"
-       data-ad-format="auto"></ins>
-  <script>
-  (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</center>
- --><footer class="page-footer radial-gradient">
+  <footer class="page-footer radial-gradient">
     <div class="row">
       <div class="row">
         <div class="col l4 m12 s12 about-us">
@@ -295,9 +207,6 @@
                 </div>
               </div>
             </li>
-            <!-- <li>
-              <i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:aakash@shurikenlive.com" class="white-text">aakash@shurikenlive.com</a>
-            </li> -->
           </ul>
         </div>
       </div>

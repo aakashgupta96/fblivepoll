@@ -28,6 +28,7 @@ class StreamLive
       nil_count = 0
       restart_process = false
       loop do
+        closeAnyFirefoxMessage
         @post.reload
         
         #Checking whether duration of post has completed or not
@@ -103,4 +104,10 @@ class StreamLive
     target_ids = firefoxPids.strip
     %x[kill -9 #{target_ids}]
   end
+
+  def closeAnyFirefoxMessage
+    %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width-10} 100 click 1]
+    %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width+10} #{height+10} click 1]
+  end
+
 end
