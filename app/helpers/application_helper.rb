@@ -37,7 +37,7 @@ module ApplicationHelper
 		elsif post.network_error?
 			"Streaming was interrupted due to network error"
 		elsif post.queued?
-			"Streaming is about to starting"
+			"Streaming is about to start"
 		elsif post.live?
 			"Live"
 		elsif post.user_session_invalid?

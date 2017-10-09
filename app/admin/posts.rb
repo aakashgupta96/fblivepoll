@@ -2,11 +2,12 @@ ActiveAdmin.register Post do
 
 	config.per_page = 9
   actions :all, except: [:new]
-	permit_params :title, :caption, :reload_browser, :duration, :live, :start_time, :status, :counter_color, :default_message
+	permit_params :title, :caption, :reload_browser, :duration, :live, :start_time, :status, :counter_color, :default_message, :page_id
 
 	scope :all, default: true
 	scope :poll
 	scope :loop_video
+  scope :url_video
 	scope :queued
 	scope :published
 	scope :scheduled
@@ -35,10 +36,11 @@ ActiveAdmin.register Post do
   		row :category
   		row :start_time if post.scheduled?
   		row :image
-  		row :video
+  		row :video if post.loop_video?
       row :template
       row :default_message
       row :status
+      row :link if post.url_video?
     end
     active_admin_comments
   end
