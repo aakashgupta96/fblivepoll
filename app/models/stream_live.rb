@@ -106,8 +106,12 @@ class StreamLive
   end
 
   def self.close_any_firefox_message
-    %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width-10} 100 click 1]
-    %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width+10} #{height+10} click 1]
+    begin
+      %x[DISPLAY=':99' xdotool mousemove 1280 100 click 1]
+      %x[DISPLAY=':99' xdotool mousemove 1290 800 click 1]
+    rescue
+      #Ignore
+    end
   end
 
 end
