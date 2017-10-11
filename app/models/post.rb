@@ -369,6 +369,17 @@
 		return false
 	end
 
+	def from_youtube?
+		return false unless self.url_video?
+		url = self.link.url
+		pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
+		if (url =~ pattern).nil?
+			false
+		else
+			true
+		end
+	end
+
 	def get_file_url
 		if from_google_drive?
 			patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
@@ -386,6 +397,10 @@
 			rescue
 				false
 			end
+		elsif from_youtube?
+			pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
+			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g https://www.youtube.com/watch?v=#{self.link.url.match(pattern)[7]} --no-warnings]
+			download_url.strip
 		else
 			self.link.url
 		end

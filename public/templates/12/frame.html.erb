@@ -2,36 +2,27 @@
   <head>
     <title>YouTube to FB</title>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video-js.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
   </head>
 
   <body>
-    <% regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/ %>
-    <% video_id = post.link.url.match(regEx)[7]%>
-	 	<div class="wrapper">
-      <iframe width="1280" height="720" src="https://www.youtube.com/embed/<%=video_id%>?playlist=<%=video_id%>&autoplay=1&loop=1&controls=0&vq=hd720&iv_load_policy=3&rel=0" frameborder="0" allowfullscreen>
-	 		</iframe>
-      <div class="hide-cursor"></div>
-    </div>
+    <% video_url = post.get_file_url%>
+	 	<video id="video" width=1280 height=720 class="video-js vjs-default-skin" data-setup='{ "controls": false, "autoplay": true, "preload": "auto"}'>
+      <source src="<%=video_url%>" type="video/mp4">
+    </video>
+    
+    <script>
+      var player = videojs('video');
+      player.play();
+    </script>
+    <style>
+      *{
+        padding: 0;
+        margin: 0;
+      }
+    </style>
   </body>
 
-  <style>
-  	* {
-      cursor: none !important;
-      padding: 0;
-      margin: 0;
-    }
-    .wrapper {
-    	position: relative;
-		}
-
-	.hide-cursor {
-	  position: absolute;
-	  top: 0;
-	  bottom: 0;
-	  right: 0;
-	  left: 0;
-	  cursor: none;
-	  z-index: 100;
-	}
-  </style>
 </html>

@@ -133,7 +133,7 @@
     $('#video_form').on('submit',function(){
       jQuery.ajaxSetup({async:false});
       var valid = true;
-      var embeddable = true;
+      var live = false;
       var content = null;
       url = $("#post_link_attributes_url").val();
       //Validating url if embeddable or not
@@ -146,11 +146,11 @@
         }
         else
         {
-          $.get("https://www.googleapis.com/youtube/v3/videos?key=<%=ENV['GOOGLE_API_KEY']%>&part=status&id="+url.match(regEx)[7],function(data,status){
+          $.get("https://www.googleapis.com/youtube/v3/videos?key=<%=ENV['GOOGLE_API_KEY']%>&part=snippet&id="+url.match(regEx)[7],function(data,status){
             try{
-              if(data.items[0].status.embeddable == false)
+              if(data.items[0].snippet.liveBroadcastContent == "live")
               {
-                embeddable = false;
+                live = true;
               }
             }
             catch(err)
@@ -190,7 +190,7 @@
         },1);
         return false;
       }
-      else if(!embeddable)
+      else if(live)
       {
         setTimeout(function(){
           $.dialog(
@@ -199,7 +199,7 @@
             boxWidth: width,
             useBootstrap: false,
             title: "Invalid Details !!!",
-            content: "Selected video can't be used to go live as the rights are reserved by the publishing channel."
+            content: "LIVE Videos of YouTube can't be used to go Live on Facebook."
           });
         },1);
         return false;
