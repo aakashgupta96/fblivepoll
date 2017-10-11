@@ -50,26 +50,79 @@
         </div>
       </div>
       <div class="card-reveal relative">
-        <p><span class="card-title grey-text text-darken-4 truncate bold"><span class="purple-text">Title: </span><%=@post.title.capitalize%><i class="material-icons right">close</i></span></p>
-        <p><span class="bolder purple-text">Caption: </span><%=@post.caption.capitalize%></p>
-        <p><span class="bolder purple-text">Page: </span>
-          <span class="chip"><img src="<%=@url%>">
-          <%=@name%></span>
-        </p>
-        <p><span class="bolder purple-text">Duration: </span><%= @post.duration.hour %> Hours : <%=@post.duration.min%> Minutes</p>
-        <p><span class="bolder purple-text">Status: </span><%=@post.status.capitalize%></p>
-        <% unless @post.video_id.nil? %>
-          <p>
-            <span class="bolder purple-text">Video Link: </span>
-            <a href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
-          </p>
-        <% end %>
+        <p class="card-title grey-text text-darken-1 bold" style="text-align: center;"><span class="relative" style="left: 20px">Details</span><i class="material-icons right">close</i></p>
+        <ul class="collection">
+          <% if @post.live %>
+            <li class="collection-item avatar">
+              <i class="material-icons circle red">fitness_center</i>
+              <span class="title">Action</span>
+              <p>
+                <a href="/users/stop/<%=@post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+              </p>
+              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            </li>
+          <% elsif @post.status == "scheduled" %>
+            <li class="collection-item avatar">
+              <i class="material-icons circle red">fitness_center</i>
+              <span class="title">Action</span>
+              <p>
+                <a href="/users/cancel/<%=@post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+              </p>
+              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            </li>
+          <% end %>
+          <li class="collection-item avatar">
+            <i class="material-icons circle brown">label</i>
+            <span class="title">Title</span>
+            <p>
+              <%=@post.title.capitalize%>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <i class="material-icons circle blue ">art_track</i>
+            <span class="title">Caption</span>
+            <p>
+              <%=@post.caption.capitalize%>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <img src="<%=@url%>" alt="" class="circle">
+            <span class="title">Page</span>
+            <p>
+              <%=@name%>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <i class="material-icons circle red">play_arrow</i>
+            <span class="title">Duration</span>
+            <p>
+              <%=@post.duration.hour %> Hours : <%=@post.duration.min%> Minutes
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <i class="material-icons circle green">play_arrow</i>
+            <span class="title">Status</span>
+            <p>
+              <%=status_message(@post)%>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <i class="material-icons circle cyan">play_arrow</i>
+            <span class="title">Video Link</span>
+            <p>
+              <a href="https://www.facebook.com/<%=@post.video_id%>" target="_blank">Watch Video</a>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+        </ul>        
+        
         <div class="absolute hide-on-small-only" style=" bottom: 10px;">
-        	<% if @post.live %>
-        		<a href="/users/stop/<%=@post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
-        	<% elsif @post.status == "scheduled" %>
-        		<a href="/users/cancel/<%=@post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
-        	<% end %>
+        	
         </div>
       </div>
     </div>
