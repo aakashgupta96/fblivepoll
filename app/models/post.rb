@@ -399,7 +399,7 @@
 			end
 		elsif from_youtube?
 			pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
-			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g https://www.youtube.com/watch?v=#{self.link.url.match(pattern)[7]} --no-warnings]
+			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g https://www.youtube.com/watch?v=#{self.link.url.match(pattern)[7]}]
 			download_url.strip
 		else
 			self.link.url
