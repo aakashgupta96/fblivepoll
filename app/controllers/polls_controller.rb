@@ -13,7 +13,7 @@ class PollsController < ApplicationController
     return redirect_to poll_templates_path, notice: Constant::INVALID_TEMPLATE_MESSAGE if @template.nil?
     return redirect_to poll_templates_path, notice: Constant::UNAUTHORIZED_USER_FOR_TEMPLATE_MESSAGE unless current_user.can_use_template(@template)
     @template.image_count.times {@post.images.build}
-    @pages = current_user.pages
+    set_user_pages
   end
 
   def templates

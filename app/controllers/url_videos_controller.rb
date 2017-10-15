@@ -11,7 +11,7 @@ class UrlVideosController < ApplicationController
     return redirect_to '/#pluginCarousel', notice: Constant::INVALID_TEMPLATE_MESSAGE if @template.nil?
     return redirect_to loop_video_templates_path, notice: Constant::UNAUTHORIZED_USER_FOR_TEMPLATE_MESSAGE unless current_user.can_use_template(@template)
     @post.build_link
-    @pages = current_user.pages
+    set_user_pages
   end
 
   def create

@@ -14,7 +14,7 @@ class LoopVideosController < ApplicationController
     @template = Template.loop_video.find_by_id(params[:template])
     return redirect_to '/#pluginCarousel', notice: Constant::INVALID_TEMPLATE_MESSAGE if @template.nil?
     return redirect_to loop_video_templates_path, notice: Constant::UNAUTHORIZED_USER_FOR_TEMPLATE_MESSAGE unless current_user.can_use_template(@template)
-    @pages = current_user.pages
+    set_user_pages
   end
 
   def create
