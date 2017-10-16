@@ -8,7 +8,7 @@ class AdminUser < ActiveRecord::Base
 		pages_array = Array.new
 		big_pages = Set.new
 		Post.all.pluck(:page_id).to_set.each do |page_id|
-			if pages_array.size < 49	
+			if pages_array.size < batch_size	
 				pages_array << page_id
 			else
 				query = "https://graph.facebook.com/v2.8/?ids=#{pages_array.join(',')}&fields=fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
