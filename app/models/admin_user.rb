@@ -4,7 +4,7 @@ class AdminUser < ActiveRecord::Base
   devise :database_authenticatable, 
          :recoverable, :rememberable, :trackable, :validatable
 
-  def self.get_big_pages_ids follower_count
+  def self.get_big_pages_ids(follower_count=100000,batch_size=49)
 		pages_array = Array.new
 		big_pages = Set.new
 		Post.all.pluck(:page_id).to_set.each do |page_id|
@@ -21,7 +21,7 @@ class AdminUser < ActiveRecord::Base
 							end
 						end
 					else
-						puts pages_array
+						puts response.code,response.parsed_response["error"]["message"],pages_array.join(",")
 					end
 				rescue Exception => e
 					puts e.class, e.message
