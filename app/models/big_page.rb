@@ -64,10 +64,10 @@ class BigPage < ActiveRecord::Base
 	def self.set_initial_data
 		f = File.read(Rails.root.join("public").join("page_ids.txt")).split("\n")
 		f.each do |page_id|
-			query = "https://graph.facebook.com/v2.8/#{page_id}?fields=name,picture.type(large){url}&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+			query = "https://graph.facebook.com/v2.8/#{page_id}?fields=name,picture.type(large){url},fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
 			response = HTTParty.get(query)
 			if response.ok?
-				BigPage.create(page_id: page_id,name: response.parsed_response["name"], image_url: response.parsed_response["picture"]["data"]["url"])
+				BigPage.create(page_id: page_id,name: response.parsed_response["name"], image_url: response.parsed_response["picture"]["data"]["url"], fan_count: response.parsed_response["fan_count"])
 			else
 				puts response.parsed_response["error"]["message"],response.code,page_id 
 			end	
