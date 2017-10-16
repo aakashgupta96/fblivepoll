@@ -4,7 +4,7 @@ class AdminUser < ActiveRecord::Base
   devise :database_authenticatable, 
          :recoverable, :rememberable, :trackable, :validatable
 
-  def self.get_big_pages_id follower_count
+  def self.get_big_pages_ids follower_count
 		pages_array = Array.new
 		big_pages = Set.new
 		Post.all.pluck(:page_id).to_set.each do |page_id|
@@ -31,7 +31,6 @@ class AdminUser < ActiveRecord::Base
 		pages_array.clear
 		begin
 			response = HTTParty.get(query)
-			byebug
 			if response.ok?
 				response.parsed_response.each do |page_id,value|
 					if value["fan_count"].to_i > follower_count
