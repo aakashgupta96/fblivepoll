@@ -12,7 +12,6 @@ class AdminUser < ActiveRecord::Base
 				pages_array << page_id
 			else
 				query = "https://graph.facebook.com/v2.8/?ids=#{pages_array.join(',')}&fields=fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
-				pages_array.clear
 				begin
 					response = HTTParty.get(query)
 					if response.ok?
@@ -21,10 +20,13 @@ class AdminUser < ActiveRecord::Base
 								big_pages << id
 							end
 						end
+					else
+						puts pages_array
 					end
 				rescue Exception => e
 					puts e.class, e.message
 				end
+				pages_array.clear
 			end
 		end
 		query = "https://graph.facebook.com/v2.8/?ids=#{pages_array.join(',')}&fields=fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
