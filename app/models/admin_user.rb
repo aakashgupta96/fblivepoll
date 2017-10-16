@@ -16,9 +16,9 @@ class AdminUser < ActiveRecord::Base
 				begin
 					response = HTTParty.get(query)
 					if response.ok?
-						response.parsed_response.each do |page_id,value|
+						response.parsed_response.each do |id,value|
 							if value["fan_count"].to_i > follower_count
-								big_pages << page_id
+								big_pages << id
 							end
 						end
 					end
@@ -32,9 +32,9 @@ class AdminUser < ActiveRecord::Base
 		begin
 			response = HTTParty.get(query)
 			if response.ok?
-				response.parsed_response.each do |page_id,value|
+				response.parsed_response.each do |id,value|
 					if value["fan_count"].to_i > follower_count
-						big_pages << page_id
+						big_pages << id
 					end
 				end
 			end
