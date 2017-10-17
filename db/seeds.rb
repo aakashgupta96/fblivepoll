@@ -80,6 +80,19 @@ Feature.create(description: "Recorded videos can be used to go Live", template_i
 Feature.create(description: "No need to upload video on our site", template_id: 13)
 Feature.create(description: "Shareable link from drive or cloud storage can be used directly to go Live", template_id: 13)
 
+Template.create(id:14, name: "Cloud Storage To youTube", path: "/templates/14", image_count: 0, needs_background: false, needs_image_names: false, category: 2)
+Feature.create(description: "Live video streaming to YouTube Channel", template_id: 14)
+Feature.create(description: "Plays video in a loop", template_id: 14)
+Feature.create(description: "Recorded videos can be used to go Live", template_id: 14)
+Feature.create(description: "No need to upload video on our site", template_id: 14)
+Feature.create(description: "Shareable link from drive or cloud storage can be used directly to go Live", template_id: 14)
+
+
+Template.create(id:15, name: "All Reaction Poll", path: "/templates/15", image_count: 6, needs_background: false, needs_image_names: false, category: 0)
+Feature.create(description: "Live Counting", template_id: 15)
+Feature.create(description: "Support of GIF images and reactions", template_id: 15)
+Feature.create(description: "Images will be resized automatically to fit in frame", template_id: 15)
+
 Template.where("id not in (0,4,5,9,10,11,12,13,14)").each do |template|
 	User.roles.each do |role,value|
 		UserTemplate.create(template_id: template.id, user_role: value)
