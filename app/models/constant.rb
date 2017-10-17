@@ -21,6 +21,7 @@ class Constant < ActiveRecord::Base
 
   POST_PER_PAGE = 9
   USER_PER_PAGE = 100
+  BIGPAGES_PER_PAGE = 20
 
   RTMP_TEMPLATE_IDS = [14]
   

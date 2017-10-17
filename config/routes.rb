@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get '/faqs' => 'extras#faqs'
   get '/posts/:post_id' => 'users#show' 
   get '/dashboard' => 'users#dashboard', as: "dashboard"
+  get '/clients' => 'extras#clients', as: "clients"
   post '/extras/ask_question' => 'extras#ask_question'
 
   scope :polls do

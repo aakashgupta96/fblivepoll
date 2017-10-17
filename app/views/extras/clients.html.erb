@@ -1,0 +1,11 @@
+<div id="clients" class="row">
+	<h3 class="bolder center grey-text text-darken-3"><i class="material-icons" style="font-size: 35px;">mood</i> OUR CLIENTS</h3>
+	<div class="container-wide">
+		<%= paginate @clients, window: 3%>
+	</div>
+	<div class="row">
+		<% @clients.each do |client| %>
+			<%= render 'client', client: client%>
+		<% end %>
+	</div>
+</div>

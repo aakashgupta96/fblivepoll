@@ -1,4 +1,6 @@
 class BigPage < ActiveRecord::Base
+	
+	paginates_per Constant::BIGPAGES_PER_PAGE
 
 	def self.get_big_pages_ids(follower_count=100000,batch_size=49)
 		pages_array = Array.new

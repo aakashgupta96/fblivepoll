@@ -6,11 +6,16 @@ class ExtrasController < ApplicationController
 
   def home
 		@templates = Template.all.order(id: :desc)
+		@clients = BigPage.order(fan_count: :desc).first(8)
   end
   
 	def privacy
 	end
-	
+		
+	def clients
+		@clients = BigPage.order(fan_count: :desc).page(params[:page])
+	end
+
 	def terms
 	end
 
