@@ -2,7 +2,7 @@
   <div class="col s12 m10 offset-m1 l8 offset-l2">
     <div class="card-panel dashboard_details hoverable">
       <ul class="collection">
-      	<% unless current_user.premium_tried %>
+      	<% if current_user.eligible_to_try_premium? %>
 			  <li class="collection-item avatar">
 			    <i class="material-icons circle cyan">card_giftcard</i>
 			    <span class="title bold">Try Premium Plan</span>
@@ -63,7 +63,7 @@
 		</div>
 	</div>
 </div>
-<% unless current_user.premium_tried %>
+<% if current_user.eligible_to_try_premium? %>
 <script>
 	if(!sessionStorage.getItem("premiumTrialMessageShown"))
 	{
