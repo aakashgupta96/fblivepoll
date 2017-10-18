@@ -23,7 +23,7 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def create
+  def paypal_create
     payment = Payment.create(user_id: params[:user_id], payment_id: params[:payment_id], amount: params[:amount], tx_id: params[:tx_id])
     data = Hash.new
     data["payment_id"] = payment.payment_id
@@ -31,6 +31,15 @@ class PaymentsController < ApplicationController
     data["amount"] = payment.amount
     data["user_id"] = payment.user_id
     render json: data
+  end
+
+  def verify_paypal_payment
+    payment = Payment.find_by_payment_id(params['payment_id'])
+    if payment.verify_from_paypal
+      return redirect_to dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
+    else
+      return redirect_to dashboard_path, alert: Constant::PAYMENT_FAILURE_MESSAGE
+    end
   end
 
   def receive_IPN

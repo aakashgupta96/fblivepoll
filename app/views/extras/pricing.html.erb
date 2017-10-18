@@ -1,4 +1,83 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
+
+<div id="donor-pack-modal" class="modal">
+  <div class="modal-content">
+    <h4 class="grey-text text-darken-1 center">Select Payment Method</h4>
+    <ul class="collection">
+    <li class="collection-item avatar">
+      <img src="/instamojo_logo.png" alt="" class="circle">
+      <div class="row zero-margin">
+        <a data-href="<%=ENV['DONOR_PACK_URL']%>" class="title col s10 offset-s1 btn checkout-btn">Instamojo</a>
+      </div>
+      <p class="center">
+        Recommended for Indian Users. </br>
+        Supports Debit/Credit Cards, Internet Banking, E-Wallets and UPI.
+      </p>
+    </li>
+    <li class="collection-item avatar">
+      <img src="/paypal_logo.png" alt="" class="circle">
+      <div id="donor-checkout" data-cost="<%=Constant::DONOR_COST%>" data-plan="<%=Constant::DONOR_PLAN_NAME%>" class="purchase-button"></div>
+      <p class="center">
+        Recommended for International Users. </br>
+        Supports Debit/Credit Cards and PayPal wallet.
+      </p>
+    </li>
+  </ul>
+  </div>
+</div>
+
+<div id="premium-pack-modal" class="modal">
+  <div class="modal-content">
+    <h4 class="grey-text text-darken-1 center">Select Payment Method</h4>
+    <ul class="collection">
+    <li class="collection-item avatar">
+      <img src="/instamojo_logo.png" alt="" class="circle">
+      <div class="row zero-margin">
+        <a data-href="<%=ENV['PREMIUM_PACK_URL']%>" class="title col s10 offset-s1 btn checkout-btn">Instamojo</a>
+      </div>
+      <p class="center">
+        Recommended for Indian Users. </br>
+        Supports Debit/Credit Cards, Internet Banking, E-Wallets and UPI.
+      </p>
+    </li>
+    <li class="collection-item avatar">
+      <img src="/paypal_logo.png" alt="" class="circle">
+      <div id="premium-checkout" data-cost="<%=Constant::PREMIUM_COST%>" data-plan="<%=Constant::PREMIUM_PLAN_NAME%>" class="purchase-button"></div>
+      <p class="center">
+        Recommended for International Users. </br>
+        Supports Debit/Credit Cards and PayPal wallet.
+      </p>
+    </li>
+  </ul>
+  </div>
+</div>
+
+<div id="ultimate-pack-modal" class="modal">
+  <div class="modal-content">
+    <h4 class="grey-text text-darken-1 center">Select Payment Method</h4>
+    <ul class="collection">
+    <li class="collection-item avatar">
+      <img src="/instamojo_logo.png" alt="" class="circle">
+      <div class="row zero-margin">
+        <a data-href="<%=ENV['ULTIMATE_PACK_URL']%>" class="title col s10 offset-s1 btn checkout-btn">Instamojo</a>
+      </div>
+      <p class="center">
+        Recommended for Indian Users. </br>
+        Supports Debit/Credit Cards, Internet Banking, E-Wallets and UPI.
+      </p>
+    </li>
+    <li class="collection-item avatar">
+      <img src="/paypal_logo.png" alt="" class="circle">
+      <div id="ultimate-checkout" data-cost="<%=Constant::ULTIMATE_COST%>" data-plan="<%=Constant::ULTIMATE_PLAN_NAME%>" class="purchase-button"></div>
+      <p class="center">
+        Recommended for International Users. </br>
+        Supports Debit/Credit Cards and PayPal wallet.
+      </p>
+    </li>
+  </ul>
+  </div>
+</div>
+
 <div class="pricing-page v valign-wrapper bolder">
   <div class="c ci">
     <div class="d iv jc offset-m1">
@@ -24,8 +103,7 @@
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
             <div class="flexbox">
-              <a data-href="<%=ENV['DONOR_PACK_URL']%>" class="btn checkout-btn">Pay Now</a>
-              <!-- <div id="donor-checkout" data-cost="<%#=Constant::DONOR_COST%>" class="purchase-button"></div> -->
+              <a href="#donor-pack-modal" class="waves-effect waves-light btn modal-trigger">Pay Now</a>
             </div>
           </div>
         </div>
@@ -52,8 +130,7 @@
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
             <div class="flexbox">
-              <a data-href="<%=ENV['PREMIUM_PACK_URL']%>" class="btn checkout-btn">Pay Now</a>
-              <!-- <div id="premium-checkout" data-cost="<%#=Constant::PREMIUM_COST%>" class="purchase-button"></div> -->
+              <a href="#premium-pack-modal" class="waves-effect waves-light btn modal-trigger">Pay Now</a>
             </div>
           </div>
         </div>
@@ -79,9 +156,7 @@
               <li class="pricing-feature"><i class="icon-accept"></i>Multiple Live at Same Time.</li>
             </ul>
             <div class="flexbox">
-              <!-- <div id="ultimate-checkout" data-cost="<%#=Constant::ULTIMATE_COST%>" class="purchase-button"> -->
-              <a data-href="<%=ENV['ULTIMATE_PACK_URL']%>" class="btn checkout-btn">Pay Now</a>
-              </div>
+              <a href="#ultimate-pack-modal" class="waves-effect waves-light btn modal-trigger">Pay Now</a>
             </div>
           </div>
         </div>
@@ -92,7 +167,7 @@
 </div>  
 <!-- <div id="paypal-button"></div> -->
 </script>
-<!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <script>
   ['#donor-checkout','#premium-checkout','#ultimate-checkout'].forEach(function(selector){
     <% if current_user and !current_user.banned %>
@@ -107,6 +182,7 @@
     user_id = null; 
     <% end %>
     var cost = $(selector).attr("data-cost");
+    var packageName = $(selector).attr("data-plan")
     paypal.Button.render({
       <% if Rails.env.production? %>
         env: 'production',
@@ -125,17 +201,26 @@
         size: "responsive",
         label: 'checkout'
       },
-
       // Show a 'Pay Now' button
       commit: true,
       
       payment: function(data, actions) {
-        if(user_id >= 0 && user_id != null)
+        if(user_id > 0 && user_id != null)
         {
           return actions.payment.create({
             transactions: [
               {
-                amount: { total: cost, currency: 'USD' }
+                amount: { total: cost, currency: 'USD' },
+                item_list: {
+                  items: [
+                    {
+                      "quantity": "1",
+                      "name": packageName,
+                      "price": cost,
+                      "currency": "USD",
+                    }
+                  ]
+                }
               }
             ]
           });
@@ -168,7 +253,7 @@
           payment_id = payment.id;
           amount = payment.transactions[0].amount.total;
           $.ajax({
-              url: '/payments/create',
+              url: '/payments/paypal/create',
               method: "POST",
               data: {
                   user_id: user_id,
@@ -180,13 +265,19 @@
                 
               },
               success: function(data) {
-                $.alert({
-                  theme: "supervan",
-                  boxWidth: width,
-                  useBootstrap: false,
-                  title: "Payment Success!",
-                  content: "Your account will get updated within few minutes. In case of any trouble or doubt, please contact us."
-                })
+                setTimeout(function(){
+                  $.dialog({
+                    theme: "supervan",
+                    boxWidth: width,
+                    useBootstrap: false,
+                    title: "Waiting For Payment Confimation !!!",
+                    content: "Please wait while we confirm payment status. You will be automatically redirected.",
+                    onOpenBefore: function () {
+                      $(".jconfirm-closeIcon").hide();
+                    }
+                  });
+                },1);
+                window.location = window.location.origin + "/payments/paypal/verify/" + payment_id;
               },
               error: function(error) {
                 $.alert({
@@ -213,11 +304,10 @@
     },selector);
   });
   </script>
- -->
+
  <script>
   $( document ).ready(function(){
     $(".checkout-btn").on("click",function(e){
-      console.log("called click");
       var emailId = null;
       <% if current_user and !current_user.banned %>
         emailId = "<%=current_user.email%>" ;

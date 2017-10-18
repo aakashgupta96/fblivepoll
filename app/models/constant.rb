@@ -15,6 +15,9 @@ class Constant < ActiveRecord::Base
   DONOR_COST = 20
   PREMIUM_COST = 30
   ULTIMATE_COST = 40
+  DONOR_PLAN_NAME = "Donor Pack"
+  PREMIUM_PLAN_NAME = "Premium Pack"
+  ULTIMATE_PLAN_NAME = "Ultimate Pack"
   DONOR_ARRAY = [20,1300,"Donor Pack"]
   PREMIUM_ARRAY = [30,1900,"Premium Pack"]
   ULTIMATE_ARRAY = [40,2500,"Ultimate Pack"]

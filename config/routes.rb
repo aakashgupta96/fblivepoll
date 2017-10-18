@@ -53,8 +53,11 @@ Rails.application.routes.draw do
 
   scope :payments do
     get '/create_instamojo' => 'payments#create_instamojo_payment', as: "create_instamojo_payment"
-    post '/create' => "payments#create",as: "create_payment"
     post '/receiveIPN' => "payments#receive_IPN", as: "receive_IPN"
+    scope :paypal do
+      post '/create' => "payments#paypal_create",as: "create_paypal_payment"
+      get '/verify/:payment_id' => 'payments#verify_paypal_payment'
+    end
   end
 
   scope :editors do
