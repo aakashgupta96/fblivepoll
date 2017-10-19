@@ -28,8 +28,8 @@
   <%= f.hidden_field :template_id , value: @template.id%>
   <div class="row zero-margin">
     <div class="input-field col s12 l6">
-      <%= f.text_field :title, required: true%>
-      <%= f.label "Title / Heading" %>
+      <%= f.text_field :title, required: true, "data-length": 50, "maxlength": 50%>
+      <%= f.label :title, "Title / Heading" %>
     </div>
     <div class="input-field col s12 l6">
       <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
@@ -78,7 +78,7 @@
 
    <div class="input-field col s12 m6 l6">
       <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
-      <%= f.label "Select Page" %>
+      <%= f.label :page_id, "Select Page" %>
     </div>
   </div>
 
