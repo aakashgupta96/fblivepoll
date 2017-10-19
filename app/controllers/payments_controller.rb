@@ -12,7 +12,7 @@ class PaymentsController < ApplicationController
       payment = Payment.new(payment_params(response.parsed_response))
       payment.tx_id = payment.payment_id
       payment.user = User.find_by_email(response.parsed_response["payment"]["buyer_email"])
-      payment.set_status(response.parsed_response["payment"]["status"])
+      payment.set_status_from_instamojo(response.parsed_response["payment"]["status"])
       if payment.save && payment.completed? && payment.update_user_subscription(response.parsed_response["payment"]["link_title"])
         return redirect_to dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
       else

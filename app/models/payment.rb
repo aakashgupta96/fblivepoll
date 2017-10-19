@@ -38,7 +38,7 @@ class Payment < ActiveRecord::Base
     }
     response = HTTParty.get("#{ENV['PAYPAL_API_BASE_URL']}/payments/payment/#{self.payment_id}", headers: headers)
     payment_status = response.parsed_response["state"]
-    update_payment_status(payment_status)
+    set_status_from_paypal(payment_status)
     if response.ok? & self.completed?
       plan_name = response.parsed_response["transactions"].first["item_list"]["items"].first["name"]
       update_user_subscription(plan_name)
@@ -48,7 +48,7 @@ class Payment < ActiveRecord::Base
     end
   end
 
-  def set_status(received_text)
+  def set_status_from_instamojo(received_text)
     case received_text
     when "Failed"
       self.status = "failed"
@@ -59,7 +59,7 @@ class Payment < ActiveRecord::Base
     end
   end
 
-  def update_payment_status(payment_status)
+  def set_status_from_paypal(payment_status)
     return unless self.waiting_ipn?
     case payment_status
     when "approved"
