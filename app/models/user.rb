@@ -40,7 +40,8 @@ class User < ActiveRecord::Base
   end
 
   def eligible_to_try_premium?
-    self.member? and !self.premium_tried
+    return false #disabling this feature
+    #self.member? and !self.premium_tried
   end
 
   def self.new_with_session(params, session)
