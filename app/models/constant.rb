@@ -45,5 +45,6 @@ class Constant < ActiveRecord::Base
   INVALID_OPERATION_MESSAGE = "Invalid operation for the selected post"
   PAYMENT_SUCCESS_MESSAGE = "Payment was successfully completed. Your account will get updated within few minutes. In case of any trouble or doubt, please contact us."
   PAYMENT_FAILURE_MESSAGE = "Payment was unsuccessful. In case of any trouble or doubt, please contact us."
-  
+  INELIGIBLE_FOR_FREE_TRIAL_MESSAGE = "You are ineligible to try our free Premium Plan trial offer."
+
 end

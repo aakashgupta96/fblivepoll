@@ -132,7 +132,7 @@ class User < ActiveRecord::Base
   end
 
   def try_premium
-    unless (self.premium_tried || self.premium? || self.ultimate? || self.admin?)
+    if eligible_to_try_premium?
       self.subscription_duration = 1
       self.subscription_date = Date.current
       self.role = "premium"

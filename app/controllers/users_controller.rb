@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     if current_user.try_premium
       redirect_to dashboard_path, alert: "Trial period activated for 1 day."
     else
-      redirect_to dashboard_path, alert: "You have already tried this one time offer."
+      redirect_to dashboard_path, alert: Constant::INELIGIBLE_FOR_FREE_TRIAL_MESSAGE
     end
   end
 
