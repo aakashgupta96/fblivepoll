@@ -8,13 +8,22 @@ class StreamLive
     FileUtils.mkdir_p(path) unless File.exist?(path)
     path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
-   
+    
+    youtube_live = @post.youtube_live_to_fb?
     if Rails.env.production?
-      command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99.0+0,72 -f alsa -i hw:0,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2500k -r 24 -g 48 -async 1 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      if youtube_live
+        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2500k -r 24 -g 48 -async 1 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      else
+        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99.0+0,72 -f alsa -i hw:0,1 -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2500k -r 24 -g 48 -async 1 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      end
     else
-      command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99.0+0,72 -i 'public/silent.aac' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2500k -r 24 -g 48 -async 1 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key.split(':80').join}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      if youtube_live
+        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2500k -r 24 -g 48 -async 1 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      else
+        command = "$HOME/bin/ffmpeg -y -s 1280x720 -r 24 -f x11grab -i :99.0+0,72 -i 'public/silent.aac' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2500k -r 24 -g 48 -async 1 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key.split(':80').join}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+      end
     end
-    driver,headless = @post.open_in_browser
+    driver,headless = @post.open_in_browser unless youtube_live
     # retry_count = 0
     # begin 
     #   driver,headless = @post.open_in_browser
@@ -35,7 +44,7 @@ class StreamLive
       nil_count = 0
       restart_process = false
       loop do
-        close_any_firefox_message
+        close_any_firefox_message unless @post.youtube_live_to_fb? 
         @post.reload
         
         #Checking whether duration of post has completed or not
@@ -48,7 +57,7 @@ class StreamLive
         end
 
         #Checking if reloading browser is required
-        if @post.reload_browser
+        if !youtube_live && @post.reload_browser
           driver.navigate.refresh
           @post.update(reload_browser: false)
         end
@@ -105,8 +114,8 @@ class StreamLive
         break
       end
     end
-    driver.quit
-    headless.destroy
+    driver.quit unless youtube_live
+    headless.destroy unless youtube_live
     firefoxPids = %x[pidof firefox]
     target_ids = firefoxPids.strip
     %x[kill -9 #{target_ids}]

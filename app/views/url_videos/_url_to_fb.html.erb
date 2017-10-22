@@ -146,18 +146,18 @@
         }
         else
         {
-          $.get("https://www.googleapis.com/youtube/v3/videos?key=<%=ENV['GOOGLE_API_KEY']%>&part=snippet&id="+url.match(regEx)[7],function(data,status){
-            try{
-              if(data.items[0].snippet.liveBroadcastContent == "live")
-              {
-                live = true;
-              }
-            }
-            catch(err)
-            {
-              valid = false;
-            }
-          });
+          // $.get("https://www.googleapis.com/youtube/v3/videos?key=<%=ENV['GOOGLE_API_KEY']%>&part=snippet&id="+url.match(regEx)[7],function(data,status){
+          //   try{
+          //     if(data.items[0].snippet.liveBroadcastContent == "live")
+          //     {
+          //       live = true;
+          //     }
+          //   }
+          //   catch(err)
+          //   {
+          //     valid = false;
+          //   }
+          // });
         }
         content = "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>http://youtu.be/xxxxxxxxxxx</li><li class='collection-item'>http://www.youtube.com/watch?v=xxxxxxxxxxxx</li><li class='collection-item'>http://www.youtube.com/embed/xxxxxxxxxxx?rel=0</li><li class='collection-item'>http://www.youtube.com/v/xxxxxxxxxxxx?fs=1&amp;hl=en_US&amp;rel=0</li><li class='collection-item'>http://www.youtube.com/user/some_user_name#p/a/u/1/xxxxxxxxxx</li></ul>"
       }

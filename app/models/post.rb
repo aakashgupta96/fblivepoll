@@ -381,6 +381,17 @@
 		end
 	end
 
+	def youtube_live_to_fb?
+		if from_youtube?
+			pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
+			query = "https://www.googleapis.com/youtube/v3/videos?key=#{ENV['GOOGLE_API_KEY']}&part=snippet&id=#{self.link.url.match(pattern)[7]}"
+			response = HTTParty.get(query)
+			return (response.ok? && response.parsed_response["items"][0]["snippet"]["liveBroadcastContent"] == "live")
+		else
+			return false
+		end
+	end
+
 	def get_file_url
 		if from_google_drive?
 			patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
