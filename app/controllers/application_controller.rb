@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def check_slots_and_eligibility_of_user
+  def check_slots_and_concurrent_eligibility_of_user
     if params["post"]["scheduled"] == "on" #User wants to schedule
       if current_user.has_scheduled_post_in_limit?
         return true
@@ -32,6 +32,14 @@ class ApplicationController < ActionController::Base
       return true
     else
       return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
+    end
+  end
+
+  def check_for_eligibility_of_free_posts
+    if current_user.can_make_free_video?
+      return true
+    else
+      return redirect_to dashboard_path, alert: Constant::FREE_VIDEO_LIMIT_REACHED_MESSAGE
     end
   end
 
