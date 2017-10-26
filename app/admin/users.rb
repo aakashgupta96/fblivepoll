@@ -1,7 +1,7 @@
 ActiveAdmin.register User do
 	
 	actions :all, except: [:new]
-	permit_params :role, :subscription_date, :subscription_duration, :banned, :premium_tried
+	permit_params :role, :subscription_date, :subscription_duration, :banned, :premium_tried, :free_videos_left
 	
 	scope :all, default: true
 	scope("Free Users") {|scope| scope.member}
@@ -43,7 +43,8 @@ ActiveAdmin.register User do
    		row :created_at
   		row :subscription_date
   		row :subscription_duration
-    end
+  		row :free_videos_left if user.member?
+  	end
     active_admin_comments
   end
 
