@@ -114,6 +114,7 @@ class StreamLive
         break
       end
     end
+    @post.user.update(free_videos_left: @post.user.free_videos_left - 1)
     driver.quit unless youtube_live
     headless.destroy unless youtube_live
     firefoxPids = %x[pidof firefox]

@@ -46,5 +46,6 @@ class Constant < ActiveRecord::Base
   PAYMENT_SUCCESS_MESSAGE = "Payment was successfully completed. Your account will get updated within few minutes. In case of any trouble or doubt, please contact us."
   PAYMENT_FAILURE_MESSAGE = "Payment was unsuccessful. In case of any trouble or doubt, please contact us."
   INELIGIBLE_FOR_FREE_TRIAL_MESSAGE = "You are ineligible to try our free Premium Plan trial offer."
-
+  FREE_VIDEO_LIMIT_REACHED_MESSAGE = "You have reached the limit of free trial account. To make more lives, visit our PRICING page and SUBSCRIBE to any of the plans you want."
+  
 end

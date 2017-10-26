@@ -3,7 +3,8 @@ class PollsController < ApplicationController
   before_action :set_post, except: [:new, :create, :templates]
   before_action :authenticate_user!
   before_action :authorize_user! , except: [:new, :create, :templates]
-  before_action :check_slots_and_eligibility_of_user, only: [:create]
+  before_action :check_slots_and_concurrent_eligibility_of_user, only: [:create]
+  before_action :check_for_eligibility_of_free_posts, only: [:new, :create]
   
   require 'base64'
   

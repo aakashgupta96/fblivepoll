@@ -17,6 +17,14 @@ class User < ActiveRecord::Base
     UserTemplate.where(template_id: template.id, user_role: User.roles[self.role]).empty? ? false : true
   end
 
+  def can_make_free_video?
+    if self.member?
+      return self.free_videos_left > 0
+    else
+      return true
+    end
+  end
+
   def ban!
     self.update(banned: true)
   end

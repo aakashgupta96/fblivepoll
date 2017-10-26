@@ -20,6 +20,16 @@
 			    </p>
 			    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
 			  </li>
+			  <% if current_user.member? %>
+			  <li class="collection-item avatar">
+			    <i class="material-icons circle cyan">card_giftcard</i>
+			    <span class="title bold">Free Trials Left</span>
+			    <p>
+			   		<%=current_user.free_videos_left%>
+			    </p>
+			    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+			  </li>
+			  <% end %>
 			  <% if current_user_is_donor? %>
 			  <li class="collection-item avatar">
 			    <i class="material-icons circle green">event_available</i>
