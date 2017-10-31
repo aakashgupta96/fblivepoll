@@ -25,6 +25,7 @@ ActiveAdmin.register User do
 		column :email
 		column :role
 		column :uid
+		column :free_videos_left
 		column :subscription_date
 		column :subscription_duration
 		column :banned
@@ -65,7 +66,5 @@ ActiveAdmin.register User do
     resource.unban!
     redirect_to admin_user_path(resource), notice: "Unbanned!"
   end
-
-
 
 end
