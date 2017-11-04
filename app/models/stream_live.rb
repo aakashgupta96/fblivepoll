@@ -24,13 +24,6 @@ class StreamLive
       end
     end
     driver,headless = @post.open_in_browser unless youtube_live
-    # retry_count = 0
-    # begin 
-    #   driver,headless = @post.open_in_browser
-    # rescue Exception => e
-    #   retry_count++
-    #   retry if
-    # end
     start_time = Time.now
     loop do #For respawning process on connection error
       pid = Process.spawn(command)
@@ -114,7 +107,7 @@ class StreamLive
         break
       end
     end
-    @post.user.update(free_videos_left: @post.user.free_videos_left - 1)
+    @post.user.update(free_videos_left: @post.user.free_videos_left - 1) if @post.user.member?
     driver.quit unless youtube_live
     headless.destroy unless youtube_live
     firefoxPids = %x[pidof firefox]

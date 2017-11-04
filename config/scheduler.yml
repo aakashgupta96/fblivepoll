@@ -34,6 +34,6 @@ clean_up_erroneous_post:
 
 end_subscription_of_users:
   every:
-    - "1d"
+    - "4h"
   class: "ExpireSubscription"
   queue: "expire_subscription"
