@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
     attempts = 0
     begin
       graph = Koala::Facebook::API.new(self.token)
-      response = graph.get_object('me?fields=accounts.limit(100){parent_page}')
+      response = graph.get_object('me?fields=accounts.limit(500){parent_page}')
       if response.nil? || response["accounts"].nil?
       	temp
       else
