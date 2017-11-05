@@ -106,9 +106,11 @@
               <li class="pricing-feature au"><i class="icon-close"></i>Premium Templates.</li>
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
+            <% if current_user.nil? or current_user.member? or current_user.donor? %>
             <div class="flexbox">
               <a href="#donor-pack-modal" class="pay-now-btn waves-effect waves-light btn modal-trigger">Pay Now</a>
             </div>
+            <% end %>
           </div>
         </div>
 
@@ -133,9 +135,11 @@
               <li class="pricing-feature"><i class="icon-accept"></i>Premium Templates.</li>
               <li class="pricing-feature au"><i class="icon-close"></i>Multiple Live at Same Time.</li>
             </ul>
+            <% if current_user.nil? or current_user.member? or current_user.premium? %>
             <div class="flexbox">
               <a href="#premium-pack-modal" class="pay-now-btn waves-effect waves-light btn modal-trigger">Pay Now</a>
             </div>
+            <% end %>
           </div>
         </div>
 
@@ -159,9 +163,11 @@
               <li class="pricing-feature"><i class="icon-accept"></i>Premium Templates.</li>
               <li class="pricing-feature"><i class="icon-accept"></i>Multiple Live at Same Time.</li>
             </ul>
+            <% if current_user.nil? or current_user.member? or current_user.ultimate? %>
             <div class="flexbox">
               <a href="#ultimate-pack-modal" class="pay-now-btn waves-effect waves-light btn modal-trigger">Pay Now</a>
             </div>
+            <% end %>
           </div>
         </div>
 
@@ -175,11 +181,11 @@
 <script>
   ['#donor-checkout','#premium-checkout','#ultimate-checkout'].forEach(function(selector){
     <% if current_user and !current_user.banned %>
-      <% if current_user.member? %>
+      <%# if current_user.member? %>
         user_id = <%= current_user.id %>;
-      <% else %>
-        user_id = -2;
-      <% end %>
+      <%# else %>
+        //user_id = -2;
+      <%# end %>
     <% elsif current_user %>
     user_id = -1;
     <% else %>
@@ -315,11 +321,11 @@
       var emailId = null;
       <% if current_user and !current_user.banned %>
         emailId = "<%=current_user.email%>" ;
-        <% if current_user.member? %>
+        <%# if current_user.member? %>
           user_id = <%= current_user.id %>;
-        <% else %>
-          user_id = -2;
-        <% end %>
+        <%# else %>
+          //user_id = -2;
+        <%# end %>
       <% elsif current_user %>
         user_id = -1;
       <% else %>
@@ -354,7 +360,7 @@
       }
       else
       {
-        console.log("reched destination");
+        // console.log("reched destination");
         Instamojo.open($(this).attr("data-href").replace("dummy-email",emailId));
       }
     });

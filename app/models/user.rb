@@ -59,11 +59,14 @@ class User < ActiveRecord::Base
       end
     end
   end
+  def subscription_expired?
+    return (self.member? or (Time.now > self.subscription_date + self.subscription_duration))
+  end
 
   def self.expire_subscription
     paid_users = User.donor + User.premium + User.ultimate
     paid_users.each do |u|
-      u.member! if Time.now > (u.subscription_date + u.subscription_duration)
+      u.member! if u.subscription_expired?
     end
   end
 

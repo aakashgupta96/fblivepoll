@@ -5,15 +5,19 @@ class Payment < ActiveRecord::Base
 
   enum status: [:waiting_ipn, :pending, :failed, :expired, :refunded, :completed, :unknown, :cancelled]
 
-  def update_user_subscription(plan_name)
+  def update_user_subscription(plan_name,duration)
     user = self.user
-    user.update(subscription_date: Date.current, subscription_duration: 30)
-    if Constant::DONOR_PLAN_NAME == plan_name
-      user.donor!
-    elsif Constant::PREMIUM_PLAN_NAME == plan_name
-      user.premium!
-    elsif Constant::ULTIMATE_PLAN_NAME == plan_name
-      user.ultimate!
+    if user.subscription_expired?
+      user.update(subscription_date: Date.current, subscription_duration: duration)
+      if Constant::DONOR_PLAN_NAME == plan_name
+        user.donor!
+      elsif Constant::PREMIUM_PLAN_NAME == plan_name
+        user.premium!
+      elsif Constant::ULTIMATE_PLAN_NAME == plan_name
+        user.ultimate!
+      end
+    else
+      user.update(subscription_duration: user.subscription_duration + duration) #Continuing with same plan and adding more days to plan
     end
   end
   
@@ -41,7 +45,7 @@ class Payment < ActiveRecord::Base
     set_status_from_paypal(payment_status)
     if response.ok? & self.completed?
       plan_name = response.parsed_response["transactions"].first["item_list"]["items"].first["name"]
-      update_user_subscription(plan_name)
+      update_user_subscription(plan_name,30)
       return true
     else
       return false

@@ -13,7 +13,8 @@ class PaymentsController < ApplicationController
       payment.tx_id = payment.payment_id
       payment.user = User.find_by_email(response.parsed_response["payment"]["buyer_email"])
       payment.set_status_from_instamojo(response.parsed_response["payment"]["status"])
-      if payment.save && payment.completed? && payment.update_user_subscription(response.parsed_response["payment"]["link_title"])
+      payment_object = response.parsed_response["payment"]
+      if payment.save && payment.completed? && payment.update_user_subscription(payment_object["link_title"], payment_object["variants"].first["validity-in-days"].to_i)
         return redirect_to dashboard_path, alert: Constant::PAYMENT_SUCCESS_MESSAGE
       else
         return redirect_to dashboard_path, alert: Constant::PAYMENT_FAILURE_MESSAGE
