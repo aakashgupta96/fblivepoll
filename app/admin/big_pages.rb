@@ -1,15 +1,27 @@
 ActiveAdmin.register BigPage do
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
-# permit_params :list, :of, :attributes, :on, :model
-#
-# or
-#
-# permit_params do
-#   permitted = [:permitted, :attributes]
-#   permitted << :other if params[:action] == 'create' && current_user.admin?
-#   permitted
-# end
+	
+	actions :all
+	
+	index do
+		selectable_column
+		column :id
+		column :name
+		column :page_id
+		column :image_url
+		column :fan_count
+		actions
+	end
+
+	show do
+    attributes_table do
+      row :id
+  		row :name
+  		row :page_id
+  		row :image_url
+  		row :fan_count
+  		row :created_at
+  	end
+    active_admin_comments
+  end
 
 end
