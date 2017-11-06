@@ -18,7 +18,7 @@ class PollsController < ApplicationController
   end
 
   def templates
-    @templates = Template.poll.order(id: :desc)
+    @templates = ordered_templates_accoding_to_user(Template.poll)
   end
 
   def frame

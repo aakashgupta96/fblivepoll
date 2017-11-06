@@ -79,6 +79,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def ordered_templates_accoding_to_user(templates)
+    if current_user.nil? or current_user.member? or current_user.donor?
+      Template.free(templates).order(id: :desc) + Template.premium(templates).order(id: :desc)
+    else
+      Template.premium(templates).order(id: :desc) + Template.free(templates).order(id: :desc)
+    end
+  end
+
   private
 
   def set_raven_context

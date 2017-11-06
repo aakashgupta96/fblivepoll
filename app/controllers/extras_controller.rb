@@ -5,7 +5,7 @@ class ExtrasController < ApplicationController
   end
 
   def home
-		@templates = Template.all.order(id: :desc)
+		@templates = ordered_templates_accoding_to_user(Template.all)
 		@clients = BigPage.order(fan_count: :desc).first(8)
   end
   
