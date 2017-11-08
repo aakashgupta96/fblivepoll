@@ -1,6 +1,7 @@
 	class Post < ActiveRecord::Base
 	
 	paginates_per Constant::POST_PER_PAGE
+
 	mount_uploader :audio, AudioUploader
 	mount_uploader :background, BackgroundUploader
 	mount_uploader :video, VideoUploader
@@ -20,6 +21,12 @@
 	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
 
 	scope :ongoing, ->{ where(live: true) }
+
+	before_save :set_default_values
+
+	def set_default_values
+		self.default_message = Constant::DEFAULT_PROMOTION_MESSAGE
+	end
 
 	def self.update_screenshots
 		headless = Headless.new(display: rand(100))
