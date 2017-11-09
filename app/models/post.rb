@@ -158,7 +158,7 @@
 			begin
 				graph = graph_with_page_token
 				if self.user.member?
-					caption_suffix = "\n#{self.default_message}"
+					caption_suffix = "\n #{self.default_message}"
 				else
 					caption_suffix = ""
 				end
@@ -207,7 +207,7 @@
 
 	def worker_available?
     queued_jobs = Resque.size("stream_live")
-    available_workers = Resque.workers.select{|worker|  worker.queues.first=="stream_live" && !worker.working?}.count
+    available_workers = Resque.workers.select{|worker|  worker.queues.include?("stream_live") && !worker.working?}.count
     return available_workers > queued_jobs
   end
 
