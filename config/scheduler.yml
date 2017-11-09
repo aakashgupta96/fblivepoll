@@ -15,6 +15,7 @@ queue_unknown_posts_for_updating_status:
 remove_videos_of_published_posts:
   every:
     - "1d"
+    - :first_in: "60s"
   class: "RemoveVideos"
   queue: remove_videos
   description: "This will remove video of posts that are no more required."
@@ -29,6 +30,7 @@ update_captions_of_post:
 clean_up_erroneous_post:
   every:
     - "1d"
+    - :first_in: "60s"
   class: "DestroyErroneousPosts"
   queue: "destroy_erroneous_posts"
 
