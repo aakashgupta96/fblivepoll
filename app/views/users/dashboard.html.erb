@@ -19,6 +19,9 @@
 			    	<%=user_package_name(current_user)%>
 			    </p>
 			    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+			    <% if current_user.member? %>
+			    <a href="/pricing" class="btn">View Offers</a>
+			    <% end %>
 			  </li>
 			  <% if current_user.member? %>
 			  <li class="collection-item avatar">
