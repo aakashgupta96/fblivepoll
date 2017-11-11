@@ -4,11 +4,11 @@ class ModeratorsController < ApplicationController
 	before_action :set_post, except: [:dashboard, :panel]
 
 	def dashboard
-		@posts = Post.order(created_at: :desc).page(params[:page])
+		@posts = Post.order(created_at: :desc).page(params[:page]).includes(:user)
 	end
 
 	def panel
-		@posts = Post.order(created_at: :desc).first(100)
+		@posts = Post.order(created_at: :desc).limit(100).includes(:user)
 	end
 
 	def start_post

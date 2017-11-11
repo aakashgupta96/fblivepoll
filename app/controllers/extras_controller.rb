@@ -6,7 +6,7 @@ class ExtrasController < ApplicationController
 
   def home
 		@templates = ordered_templates_accoding_to_user(Template.all)
-		@clients = BigPage.order(fan_count: :desc).first(8)
+		@clients = BigPage.order(fan_count: :desc).limit(8)
   end
   
 	def privacy

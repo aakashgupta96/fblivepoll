@@ -393,7 +393,7 @@
 			pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
 			query = "https://www.googleapis.com/youtube/v3/videos?key=#{ENV['GOOGLE_API_KEY']}&part=snippet&id=#{self.link.url.match(pattern)[7]}"
 			response = HTTParty.get(query)
-			return (response.ok? && response.parsed_response["items"][0]["snippet"]["liveBroadcastContent"] == "live")
+			return (response.ok? && response.parsed_response["items"][0]["snippet"]["liveBroadcastContent"] == "live") rescue false
 		else
 			return false
 		end

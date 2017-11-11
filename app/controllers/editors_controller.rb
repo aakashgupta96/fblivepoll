@@ -4,7 +4,7 @@ class EditorsController < ApplicationController
   before_action :set_post, except: [:lives_list, :users_list]
 
   def lives_list
-    @posts = Post.live.order(id: :desc)
+    @posts = Post.live.order(id: :desc).includes(:user)
     @reaction_hash = Post.get_live_with_reaction_count
   end
 
