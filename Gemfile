@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'Instamojo-rb', '~> 1.1'
 gem 'resque-scheduler'
 gem 'activeadmin', github: 'activeadmin'
 gem 'kaminari'

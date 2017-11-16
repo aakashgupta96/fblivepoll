@@ -83,4 +83,9 @@ class Payment < ActiveRecord::Base
     end
   end
 
+  def instamojo_api
+    api = Instamojo::API.new()
+
+  end
+
 end

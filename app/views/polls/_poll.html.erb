@@ -98,7 +98,7 @@
 </div>
   <% i = 1 %>
   <div class="row">
-  <%= f.fields_for :images do |builder| %>
+  <%= f.fields_for :images, @post.images do |builder| %>
     <div class="card col l6 m12 s12" style="padding: 10px 30px 10px 30px;">
     <% if @template.needs_image_names %>
       <div class="input-field col s12 l6">

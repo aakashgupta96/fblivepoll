@@ -1,6 +1,7 @@
 ActiveAdmin.register User do
 	
 	actions :all, except: [:new]
+
 	permit_params :role, :subscription_date, :subscription_duration, :banned, :premium_tried, :free_videos_left
 	
 	scope :all, default: true
@@ -57,6 +58,11 @@ ActiveAdmin.register User do
   	link_to 'Unban User', unban_admin_user_path(user), method: :post if user.banned
 	end
 
+	action_item :login_as, only: :show do
+		link_to "Sign In", login_as_admin_user_path(user)
+	end
+
+
 	member_action :ban, method: :post do
     resource.ban!
     redirect_to admin_user_path(resource), notice: "Banned!"
@@ -65,6 +71,12 @@ ActiveAdmin.register User do
   member_action :unban, method: :post do
     resource.unban!
     redirect_to admin_user_path(resource), notice: "Unbanned!"
+  end
+
+  member_action :login_as, :method => :get do
+    user = User.find(params[:id])
+    bypass_sign_in user
+    redirect_to dashboard_path 
   end
 
 end
