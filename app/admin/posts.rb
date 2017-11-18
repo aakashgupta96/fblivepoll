@@ -53,7 +53,7 @@ ActiveAdmin.register Post do
     #link_to image_tag(post.image.url, {style: "width: 250px;"}), admin_post_path(post)
 	end
 
-  action_item :update_screenshot do 
+  action_item :update_screenshot, only: :show do 
     link_to 'Update Screenshot', update_screenshot_admin_post_path(post), method: :post if post.poll?
   end
 
