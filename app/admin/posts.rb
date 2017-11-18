@@ -53,6 +53,10 @@ ActiveAdmin.register Post do
     #link_to image_tag(post.image.url, {style: "width: 250px;"}), admin_post_path(post)
 	end
 
+  action_item :update_screenshot do 
+    link_to 'Update Screenshot', update_screenshot_admin_post_path(post), method: :post if post.poll?
+  end
+
 	action_item :stop, only: :show do
   	link_to 'Stop', stop_admin_post_path(post), method: :post if post.live
 	end
@@ -65,7 +69,12 @@ ActiveAdmin.register Post do
   	link_to 'Cancel Schedule', cancel_schedule_admin_post_path(post), method: :post if post.scheduled?
 	end
 
-	member_action :stop, method: :post do
+	member_action :update_screenshot, method: :post do 
+    resource.take_screenshot_of_frame
+    redirect_to admin_post_path(resource)
+  end
+
+  member_action :stop, method: :post do
     resource.stop
     redirect_to admin_post_path(resource), notice: "Stopped!"
   end
