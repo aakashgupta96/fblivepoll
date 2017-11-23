@@ -281,6 +281,7 @@
    end
 
   def open_in_browser(browser = "firefox")
+  	browser = "chrome"
    	create_html
    	if browser == "firefox"
    		width = 1290 #850
