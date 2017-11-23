@@ -295,6 +295,7 @@
    		width = 1280 #800
    		height = 786 #516
    		options = Selenium::WebDriver::Chrome::Options.new
+   		options.add_argument("--no-sandbox")
    		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
    	end
    	headless.start
