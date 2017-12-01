@@ -432,20 +432,23 @@
 		begin
 			attempts = 0
 			url = "https://www.facebook.com/" + self.video_id
-			graph = Koala::Facebook::API.new(self.user.token)
+			user_graph = Koala::Facebook::API.new(self.user.token)
 			page_ids.each do |page_id|
 				begin
-					access_token = graph.get_page_access_token(page_id)
+					access_token = user_graph.get_page_access_token(page_id)
 					graph = Koala::Facebook::API.new(access_token)
 					response = graph.put_wall_post("",link: url)
 					self.shared_posts << SharedPost.create(shared_post_id: response["id"])
 				rescue Exception => e
+					byebug
+					puts e.message
 					attempts += 1
 					retry if attempts <= 3
 					raise e
 				end
 			end
 		rescue Exception => e
+			puts e.message
 			return false
 		end
 		return true
