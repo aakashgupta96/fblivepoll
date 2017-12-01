@@ -51,9 +51,6 @@ class PollsController < ApplicationController
     FileUtils.rm("#{path}/frame.png")
     return save_and_redirect
   end
-
-  def submit
-  end
   
   def create
     temp = post_params
@@ -90,12 +87,12 @@ class PollsController < ApplicationController
     if @post.save
       if (@post.status != "scheduled" and @post.can_start?)
         if @post.start 
-          return redirect_to submit_poll_path(@post.id)
+          return redirect_to submit_post_path(@post.id)
         else
           return redirect_to root_path, alert: Constant::FB_DECLINED_REQUEST_MESSAGE
         end
       end
-      return redirect_to submit_poll_path(@post.id) if @post.scheduled?
+      return redirect_to submit_post_path(@post.id) if @post.scheduled?
       return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
     else 
       return redirect_to frame_path(@post.id), notice: 'Error occured while saving post'

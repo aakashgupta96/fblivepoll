@@ -19,13 +19,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    response = HTTParty.get("https://graph.facebook.com/#{@post.page_id}?fields=name,picture{url}&access_token=#{@post.user.token}")
-    @url = response.parsed_response["picture"]["data"]["url"] rescue false
-    @name = response.parsed_response["name"]
-    return redirect_to myposts_path, notice: Constant::INVALID_OPERATION_MESSAGE if @post.nil?
-  end
-
   def stop_post
   	@post.stop("stopped_by_user")
   	return redirect_to myposts_path, notice: Constant::POST_STOPPED_MESSAGE

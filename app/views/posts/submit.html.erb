@@ -1,14 +1,4 @@
-<!-- <center>
-	<ins class="adsbygoogle"
-	     style="display:block"
-	     data-ad-client="ca-pub-4726706343331157"
-	     data-ad-slot="5921286380"
-	     data-ad-format="auto"></ins>
-	<script>
-	(adsbygoogle = window.adsbygoogle || []).push({});
-	</script>
-</center>
- --><div class="row">
+<div class="row">
 	<div class="center-align">
 		<h4 class="header red-text">
 			<% if @post.status == "scheduled" %>
@@ -25,7 +15,11 @@
 			<div class="row">
 					<div class="card hoverable z-depth-5">
 					  <div class="card-image">
-					    <img src="<%=@post.image.url%>">
+					  	<% if @post.poll? %>
+					    	<img src="<%=@post.image.url%>">
+					    <% else %>
+					    	<img src="/videos/frame.png">
+					 		<% end %>
 				    </div>
 					  <div class="card-content">
 					    <p><%=@post.caption%></p>
@@ -33,6 +27,7 @@
 				    <div class="card-action">
 					    <% unless @post.status == "scheduled" %>
 					    	<a class="btn" href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
+					    	<a class="btn" href="/posts/<%=@post.id%>/share"> Share on Pages</a>
 					    <% else %>
 					    	<%= link_to "My Posts", myposts_path, class: "btn"%>
 					    <% end %>

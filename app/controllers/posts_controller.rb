@@ -15,5 +15,15 @@ class PostsController < ApplicationController
   	@post.share_on(selected_pages)
   	return redirect_to "/posts/#{@post.id}", notice: "Post shared successfully"
   end
+
+  def show
+    response = HTTParty.get("https://graph.facebook.com/#{@post.page_id}?fields=name,picture{url}&access_token=#{@post.user.token}")
+    @url = response.parsed_response["picture"]["data"]["url"] rescue false
+    @name = response.parsed_response["name"]
+    return redirect_to myposts_path, notice: Constant::INVALID_OPERATION_MESSAGE if @post.nil?
+  end
+
+  def submit
+  end
   
 end

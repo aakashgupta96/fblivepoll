@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   get '/demo' => 'extras#demo'
   get '/pricing' => 'extras#pricing'
   get '/faqs' => 'extras#faqs'
-  get '/posts/:post_id' => 'users#show' 
   get '/dashboard' => 'users#dashboard', as: "dashboard"
   get '/clients' => 'extras#clients', as: "clients"
   post '/extras/ask_question' => 'extras#ask_question'
@@ -26,7 +25,8 @@ Rails.application.routes.draw do
   scope :posts do
     get '/:post_id/share' => 'posts#share_select'
     post '/:post_id/share' => 'posts#share'
-    #get '/:post_id' => 'posts#show'
+    get '/:post_id/submit' => 'posts#submit', as: "submit_post"
+    get '/:post_id' => 'posts#show', as: "show_post"
   end
 
   scope :polls do

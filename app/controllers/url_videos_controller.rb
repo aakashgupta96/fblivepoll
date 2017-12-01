@@ -35,7 +35,7 @@ class UrlVideosController < ApplicationController
           return redirect_to root_path, alert: Constant::FB_DECLINED_REQUEST_MESSAGE
         end
       end
-      return redirect_to submit_loop_video_path(@post.id) if @post.scheduled?
+      return redirect_to submit_post_path(@post.id) if @post.scheduled?
       return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
     else 
       return redirect_to new_loop_video_path,notice: "Invalid Details"
