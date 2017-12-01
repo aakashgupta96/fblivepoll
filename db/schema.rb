@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026145632) do
+ActiveRecord::Schema.define(version: 20171201185834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,13 @@ ActiveRecord::Schema.define(version: 20171026145632) do
     t.integer  "status",          default: 0
     t.string   "html"
     t.text     "default_message", default: "To make something like this, visit www.shurikenlive.com"
+  end
+
+  create_table "shared_posts", force: :cascade do |t|
+    t.string   "shared_post_id"
+    t.integer  "post_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "templates", force: :cascade do |t|

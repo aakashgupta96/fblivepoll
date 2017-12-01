@@ -10,6 +10,7 @@
 	
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
+	has_many :shared_posts, dependent: :destroy
 	belongs_to :user
 	belongs_to :template
 	has_one :link, dependent: :destroy
@@ -436,7 +437,8 @@
 				begin
 					access_token = graph.get_page_access_token(page_id)
 					graph = Koala::Facebook::API.new(access_token)
-					abc = graph.put_wall_post("",link: url)
+					response = graph.put_wall_post("",link: url)
+					self.shared_posts << SharedPost.create(shared_post_id: response["id"])
 				rescue Exception => e
 					attempts += 1
 					retry if attempts <= 3
