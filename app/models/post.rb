@@ -428,20 +428,25 @@
 	end
 
 	def share_on(page_ids)
-		attempts = 0
-		url = "https://www.facebook.com/" + self.video_id
-		graph = Koala::Facebook::API.new(self.user.token)
-		page_ids.each do |page_id|
-			begin
-				access_token = graph.get_page_access_token(page_id)
-				graph = Koala::Facebook::API.new(access_token)
-				abc = graph.put_wall_post("",link: url)
-			rescue Exception => e
-				attempts += 1
-				retry if attempts <= 3
-				raise e
+		begin
+			attempts = 0
+			url = "https://www.facebook.com/" + self.video_id
+			graph = Koala::Facebook::API.new(self.user.token)
+			page_ids.each do |page_id|
+				begin
+					access_token = graph.get_page_access_token(page_id)
+					graph = Koala::Facebook::API.new(access_token)
+					abc = graph.put_wall_post("",link: url)
+				rescue Exception => e
+					attempts += 1
+					retry if attempts <= 3
+					raise e
+				end
 			end
+		rescue Exception => e
+			return false
 		end
+		return true
 	end
 
 end

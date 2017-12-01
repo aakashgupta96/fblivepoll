@@ -12,8 +12,11 @@ class PostsController < ApplicationController
   	params["page"].each do |page_id,value|
   		selected_pages << page_id if value == "on"
   	end unless params["page"].nil?
-  	@post.share_on(selected_pages)
-  	return redirect_to "/posts/#{@post.id}", notice: "Post shared successfully"
+  	if @post.share_on(selected_pages)
+  	 return redirect_to "/posts/#{@post.id}", notice: "Post shared successfully"
+    else
+      return redirect_to "/posts/#{@post.id}", notice: "There occurred some error while sharing post."
+    end
   end
 
   def show

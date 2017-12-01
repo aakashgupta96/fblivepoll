@@ -108,7 +108,9 @@
             <span class="title">Video Link</span>
             <p>
               <a href="https://www.facebook.com/<%=@post.video_id%>" target="_blank">Watch Video</a>
-              <a href="/posts/<%=@post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
+              <% unless @post.scheduled? %>
+                <a href="/posts/<%=@post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
+              <% end %>
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>

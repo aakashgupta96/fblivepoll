@@ -33,12 +33,10 @@ Rails.application.routes.draw do
     get '/templates' => 'polls#templates', as: "poll_templates"
     get '/:post_id/frame' => 'polls#frame', as: "frame"
     post '/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
-    get '/:post_id/submit' => 'polls#submit', as: "submit_poll"
   end  
 
   scope :loop_videos do 
     get '/templates' => 'loop_videos#templates', as: "loop_video_templates"
-    get '/:post_id/submit' => 'loop_videos#submit', as: "submit_loop_video"
   end
 
   scope :moderators do
