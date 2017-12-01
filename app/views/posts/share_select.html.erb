@@ -1,0 +1,72 @@
+<div class="header page-heading grey-text text-darken-2 bolder center">
+	Select Pages
+</div>
+<div class="row container-wide white z-depth-3">
+  <%= form_tag("/posts/" + @post.id.to_s + "/share", class: "row zero-margin") do %>
+  	<% @pages.each do |page| %>
+	    <div class="card col s12 m3 l2 relative unchecked page">
+	    	<input type="checkbox" class="checkbox" name="page[<%=page['id']%>]"/>
+		   	<div id="<%=page['id']%>" class="flexbox-vertical label">
+		   		<center><img src="<%=page['image']%>" class="circle responsive-image" width=80></center>
+		   		<center class="page_name bold truncate"><%=page['name']%></center>
+		   	</div>
+	    </div>
+		<% end %>
+		<input type="submit" class="btn col s12" data-confirm="Are you sure?">
+	<%end%>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$(".label").click(function(){
+			if($(this).prev().attr('checked'))
+			{
+				$(this).prev().attr('checked', false);
+			}
+			else
+			{
+				$(this).prev().attr('checked', true);	
+			}
+			$(this).parent().toggleClass("unchecked checked", 'slow', "easeOutSine");
+		});
+	});
+</script>
+
+<style>
+	form
+	{
+		padding: 20px;
+	}
+	.label
+	{
+		padding: 5px 0;
+		overflow: hidden;
+		align-items: normal !important;
+	}
+	.label:hover
+	{
+		cursor: pointer;
+	}
+	.page
+	{ 
+		margin: 5px 3%;
+		-webkit-transition: background 250ms; /* Safari */
+		transition: background 250ms;
+	}
+	.unchecked
+	{
+		background: white;
+		color: #57585a;
+	}
+	.checked
+	{
+		background: #98d66c;
+		color: white;
+	}
+	@media only screen and (max-width : 992px) {
+		.page
+		{
+			margin: 5px 8%;
+		}
+	}
+</style>

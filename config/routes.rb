@@ -23,6 +23,12 @@ Rails.application.routes.draw do
   get '/clients' => 'extras#clients', as: "clients"
   post '/extras/ask_question' => 'extras#ask_question'
 
+  scope :posts do
+    get '/:post_id/share' => 'posts#share_select'
+    post '/:post_id/share' => 'posts#share'
+    #get '/:post_id' => 'posts#show'
+  end
+
   scope :polls do
     get '/templates' => 'polls#templates', as: "poll_templates"
     get '/:post_id/frame' => 'polls#frame', as: "frame"

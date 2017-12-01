@@ -24,7 +24,10 @@
       <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>
       <p><%=post.caption.capitalize%></p>
       <div class="absolute" style=" bottom: 10px;">
-      	<% if post.live %>
+      	<% unless post.scheduled? %>
+          <a href="/posts/<%=post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
+        <% end %>
+        <% if post.live %>
       		<a href="/users/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
       	<% elsif post.scheduled? %>
       		<a href="/users/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>

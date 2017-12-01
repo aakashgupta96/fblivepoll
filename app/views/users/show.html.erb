@@ -31,6 +31,9 @@
           <% end %>
         </div>
         <div id="action<%=@post.id%>">
+          <% unless @post.scheduled? %>
+            <a href="/posts/<%=@post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
+          <% end %>
           <% if @post.live %>
             <a href="/users/stop/<%=@post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
           <% elsif @post.status == "scheduled" %>
@@ -105,6 +108,7 @@
             <span class="title">Video Link</span>
             <p>
               <a href="https://www.facebook.com/<%=@post.video_id%>" target="_blank">Watch Video</a>
+              <a href="/posts/<%=@post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>
