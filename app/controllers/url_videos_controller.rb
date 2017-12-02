@@ -30,7 +30,7 @@ class UrlVideosController < ApplicationController
     if @post.save
       if (@post.status != "scheduled" and @post.can_start?)
         if @post.start 
-          return redirect_to submit_loop_video_path(@post.id)
+          return redirect_to submit_post_path(@post.id)
         else
           return redirect_to root_path, alert: Constant::FB_DECLINED_REQUEST_MESSAGE
         end
