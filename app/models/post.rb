@@ -401,6 +401,36 @@
 		end
 	end
 
+	def fb_live_to_fb?
+		return false unless self.url_video?
+		url = self.link.url
+		pattern = /^.*(https:)\/\/(www|m)\.(facebook\.com)\/(([a-zA-Z0-9]*)\/videos\/)?([0-9]*).*/
+		post_id = url.match(pattern)[6] rescue nil
+		if post_id.nil? || post_id.empty?
+			false
+		else
+			query = "https://graph.facebook.com/v2.8/#{post_id}?fields=live_status&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+			response = HTTParty.get(query)
+			return response.ok? && (response.parsed_response["live_status"] == "LIVE")
+		end
+	end
+
+	def periscope_to_fb?
+		return false unless self.url_video?
+		url = self.link.url
+		pattern = /https?:\/\/(?:www\.)?(?:periscope|pscp)\.tv\/[^\/]+\/([a-zA-Z0-9]*[^\/?#])/
+		if (url =~ pattern).nil?
+			false
+		else
+			true
+		end
+	end
+
+	def source_file_is_live?
+		return youtube_live_to_fb? || periscope_to_fb? #|| fb_live_to_fb?
+	end
+
+
 	def get_file_url
 		if from_google_drive?
 			patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
@@ -418,11 +448,8 @@
 			rescue
 				false
 			end
-		elsif from_youtube?
-			pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
-			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g https://www.youtube.com/watch?v=#{self.link.url.match(pattern)[7]}]
-			download_url.strip
 		else
+			#download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4,dash_hd_src' -g #{self.link.url} ]
 			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{self.link.url} ]
 			download_url.strip
 		end
@@ -440,7 +467,6 @@
 					response = graph.put_wall_post("",link: url)
 					self.shared_posts << SharedPost.create(shared_post_id: response["id"])
 				rescue Exception => e
-					byebug
 					puts e.message
 					attempts += 1
 					retry if attempts <= 3
@@ -455,6 +481,7 @@
 	end
 
 	def self.validate_url(url)
+		#download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4,dash_hd_src' -g #{url}]
 		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{url}]
 		download_url.strip!
 		if (download_url.empty? || Post.from_google_drive(url))
