@@ -35,4 +35,8 @@ class ExtrasController < ApplicationController
     end
 	end
 
+	def validate_url
+		render :json => Post.validate_url(params[:source_url])
+  end
+
 end

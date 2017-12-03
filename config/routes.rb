@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   post '/extras/ask_question' => 'extras#ask_question'
 
   scope :posts do
+    get '/validate_url' => 'extras#validate_url'
     get '/:post_id/share' => 'posts#share_select'
     post '/:post_id/share' => 'posts#share'
     get '/:post_id/submit' => 'posts#submit', as: "submit_post"

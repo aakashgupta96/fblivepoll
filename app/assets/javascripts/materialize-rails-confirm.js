@@ -30,12 +30,13 @@ $(function() {
           confirm: {
           	btnClass: "btn-dark",
           	action: function () {
+              this.$body.hide();
           		return $.rails.confirmed(link);
           	}
         	},
           cancel: {
           	action: function () {
-              //Ignore
+              this.$body.hide();
           	}
           }
       }

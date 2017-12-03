@@ -413,7 +413,7 @@
 			self.link.url.split("?").first + "?dl=1"
 		elsif from_onedrive?
 			begin
-				res = Net::HTTP.get_response(URI('https://1drv.ms/v/s!AhXFt2vhgtQFgzu8Bk8irsOcYQml'))
+				res = Net::HTTP.get_response(URI(self.link.url))
 				res['location'].gsub("redir","download")
 			rescue
 				false
@@ -423,7 +423,8 @@
 			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g https://www.youtube.com/watch?v=#{self.link.url.match(pattern)[7]}]
 			download_url.strip
 		else
-			self.link.url
+			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{self.link.url} ]
+			download_url.strip
 		end
 	end
 
@@ -451,6 +452,24 @@
 			return false
 		end
 		return true
+	end
+
+	def self.validate_url(url)
+		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{url}]
+		download_url.strip!
+		if (download_url.empty? || Post.from_google_drive(url))
+			return false
+		else
+			return true
+		end
+	end
+
+	def self.from_google_drive(url)
+		patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
+		patterns.each do |pattern|
+			return true unless (url =~ pattern).nil?
+		end
+		return false
 	end
 
 end

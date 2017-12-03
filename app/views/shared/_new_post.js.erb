@@ -1,0 +1,48 @@
+var showInstructions = function()
+{
+  $.alert({
+    theme: "supervan",
+    boxWidth: width + "px",
+    useBootstrap: false,
+    title: "Instructions !!!",
+    content: "<%=content%>"
+  })
+};
+showInstructions();
+$("#showInstructions").on('click',showInstructions);
+
+$('select').material_select();
+
+//Setting time zone as user's time zone
+var date = new Date();
+var offset = date.getTimezoneOffset();
+var sign = "-";
+if(offset < 0)
+{
+  sign = "+";
+}
+var offsetHours = Math.abs(parseInt(offset/60));
+var includeZero = "";
+if(offsetHours < 10)
+{
+  includeZero = "0";
+}
+var offsetMinutes = Math.abs(offset) - offsetHours*60;
+var prefix = "GMT"+sign+includeZero+offsetHours+":"+offsetMinutes;
+var list = $("#timeZone option");
+for(var i=0;i<list.length;i++)
+{
+  if(list[i].innerHTML.indexOf(prefix) !== -1)
+  {
+    $(list[i]).attr({selected: 'true'});
+    $("#timeZone").material_select();
+    break;
+  }
+}
+
+$('#schedule').click(function(){
+  if( $(this).is(':checked') )
+    $('#datetime').slideDown(300);
+  else
+    $('#datetime').slideUp(300);
+});

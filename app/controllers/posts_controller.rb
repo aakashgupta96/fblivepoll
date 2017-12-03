@@ -28,5 +28,5 @@ class PostsController < ApplicationController
 
   def submit
   end
-  
+
 end

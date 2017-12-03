@@ -33,9 +33,7 @@ class StreamLive
       sleep(20)
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
-      if @post.live
-        @post.live!
-      end
+      @post.live! if @post.live
       query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
       nil_count = 0
       restart_process = false
@@ -113,9 +111,9 @@ class StreamLive
     @post.user.update(free_videos_left: @post.user.free_videos_left - 1) if @post.user.member?
     driver.quit unless youtube_live
     headless.destroy unless youtube_live
-    # firefoxPids = %x[pidof firefox]
-    # target_ids = firefoxPids.strip
-    # %x[kill -9 #{target_ids}]
+    firefoxPids = %x[pidof firefox]
+    target_ids = firefoxPids.strip
+    %x[kill -9 #{target_ids}]
   end
 
   def self.close_any_firefox_message(display)

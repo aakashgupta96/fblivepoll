@@ -1,6 +1,6 @@
 class Template < ActiveRecord::Base
 	has_many :posts
-	has_many :features
+	has_many :features, dependent: :destroy
 
 	enum category: [:poll, :loop_video, :url_video]
 

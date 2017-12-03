@@ -81,55 +81,10 @@
 
 <script>
   $(document).ready(function() {
-    var showInstructions = function()
-    {
-      $.alert({
-        theme: "supervan",
-        boxWidth: width + "px",
-        useBootstrap: false,
-        title: "Instructions !!!",
-        content: "<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>Make sure you enter correct RTMP/RTSP link.</li><li class='collection-item'>This plugin will stream your video in a loop so that video starts again as soon as it ends, for the selected time duration.</li><li class='collection-item'>Don't upload any copyrighted content without permission otherwise your post will be deleted by facebook. Also, videos with bad encoding may not be posted properly.</li><li class='collection-item'>Select your time zone for scheduling your posts carefully.</li></ul>"
-      })
-    };
-    showInstructions();
-    $("#showInstructions").on('click',showInstructions);
+    <% content = raw("<ul class='collection grey-text text-darken-2 bold'><li class='collection-item'>Make sure you enter correct RTMP/RTSP link.</li><li class='collection-item'>This plugin will stream your video in a loop so that video starts again as soon as it ends, for the selected time duration.</li><li class='collection-item'>Don't upload any copyrighted content without permission otherwise your post will be deleted by facebook. Also, videos with bad encoding may not be posted properly.</li><li class='collection-item'>Select your time zone for scheduling your posts carefully.</li></ul>") %>
     
-    $('select').material_select();
-
-    //Setting time zone as user's time zone
-    var date = new Date();
-    var offset = date.getTimezoneOffset();
-    var sign = "-";
-    if(offset < 0)
-    {
-      sign = "+";
-    }
-    var offsetHours = Math.abs(parseInt(offset/60));
-    var includeZero = "";
-    if(offsetHours < 10)
-    {
-      includeZero = "0";
-    }
-    var offsetMinutes = Math.abs(offset) - offsetHours*60;
-    var prefix = "GMT"+sign+includeZero+offsetHours+":"+offsetMinutes;
-    var list = $("#timeZone option");
-    for(var i=0;i<list.length;i++)
-    {
-      if(list[i].innerHTML.indexOf(prefix) !== -1)
-      {
-        $(list[i]).attr({selected: 'true'});
-        $("#timeZone").material_select();
-        break;
-      }
-    }
-
-    $('#schedule').click(function(){
-      if( $(this).is(':checked') )
-        $('#datetime').slideDown(300);
-      else
-        $('#datetime').slideUp(300);
-    });
-
+    <%= render '/shared/new_post.js', content: content%>
+    
     $('#video_form').on('submit',function(){
       jQuery.ajaxSetup({async:false});
       var valid = true;
