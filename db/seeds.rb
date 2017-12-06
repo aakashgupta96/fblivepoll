@@ -73,8 +73,8 @@ Feature.create(description: "YouTube videos can be used to go Live", template_id
 Feature.create(description: "LIVE Streaming URL from YouTube can also be used.", template_id: 12)
 Feature.create(description: "No need to upload video on our site.", template_id: 12)
 
-Template.create(id:14, name: "Cloud Storage To youTube", path: "/templates/14", image_count: 0, needs_background: false, needs_image_names: false, category: 2)
-Feature.create(description: "Live video streaming to YouTube Channel", template_id: 14)
+Template.create(id:14, name: "URL To RTMP", path: "/templates/14", image_count: 0, needs_background: false, needs_image_names: false, category: 2)
+Feature.create(description: "Live video streaming to Social Media Platforms using RTMP URL", template_id: 14)
 Feature.create(description: "Plays video in a loop", template_id: 14)
 Feature.create(description: "Recorded videos can be used to go Live", template_id: 14)
 Feature.create(description: "No need to upload video on our site", template_id: 14)

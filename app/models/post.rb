@@ -81,6 +81,10 @@
 	end
 
 	def update_status
+		if Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
+			self.published!
+			return
+		end
 		begin
 			query = "https://graph.facebook.com/v2.8/?ids=#{self.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
 			status = HTTParty.get(query)
@@ -100,6 +104,10 @@
 				p.update_status
 			end
 			Post.unknown.each do |p|
+				if Constant::RTMP_TEMPLATE_IDS.include?(p.template.id)
+					p.published!
+					next
+				end
 				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
 				status = HTTParty.get(query)
 				if status.parsed_response["#{p.video_id}"].nil?
@@ -143,10 +151,14 @@
 	end
 
 	def ended_on_fb?
-		query = "https://graph.facebook.com/v2.8/#{self.video_id}?fields=live_status&access_token=#{self.user.token}"
-		response = HTTParty.get(query)
-		possible_values = ["PROCESSING","VOD", "LIVE_STOPPED"]
-		return response.ok? && possible_values.include?(response.parsed_response["live_status"])
+		unless Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
+			query = "https://graph.facebook.com/v2.8/#{self.video_id}?fields=live_status&access_token=#{self.user.token}"
+			response = HTTParty.get(query)
+			possible_values = ["PROCESSING","VOD", "LIVE_STOPPED"]
+			return response.ok? && possible_values.include?(response.parsed_response["live_status"])
+		else
+			return true
+		end
 	end
 
 	def start
