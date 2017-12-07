@@ -1,14 +1,3 @@
-<!-- <center>
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-4726706343331157"
-       data-ad-slot="5921286380"
-       data-ad-format="auto"></ins>
-  <script>
-  (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</center>
- -->
 <div class="row">
   <%= link_to "Sign Out", destroy_editor_session_path, method: "delete", class: "btn col s4 m2 l1" %>
   <%= link_to "Users List", editors_users_list_path, class: "green btn col s4 m2 l1" %>
@@ -34,7 +23,7 @@
           <td><a href="https://www.facebook.com/<%=post.user.uid%>"><%= post.user.name %></a></td>
           <td><%= post.start_time.in_time_zone('New Delhi').strftime("%d %B %Y, %I:%M %p") %></td>
           <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
-          <td><%= @reaction_hash[post.video_id.to_s]%></td>
+          <td><%= @reaction_hash[post.video_id.to_s] %></td>
           <td>
           <% unless post.video_id.nil? %>
             <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
