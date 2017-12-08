@@ -314,6 +314,8 @@
    	headless.start
     attempts = 0
     begin
+    	client = Selenium::WebDriver::Remote::Http::Default.new
+  		client.timeout = 120
     	driver = Selenium::WebDriver.for browser.to_sym, options: options
     rescue Exception => e
     	attempts += 1
