@@ -1,5 +1,5 @@
 class AdminMailer < ApplicationMailer
-	default from: "liveshuriken@gmail.com"
+	default from: "support@shurikenlive.com"
 
 	def new_post(email_id,link)
 		@link = link
