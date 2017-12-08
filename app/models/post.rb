@@ -253,7 +253,7 @@
 		driver,headless = open_in_browser("chrome")
 		path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
-    sleep 0.5
+    sleep 1
     driver.save_screenshot("#{path}/frame.png")
     begin
     	f = File.open(File.join(path,"frame.png"))

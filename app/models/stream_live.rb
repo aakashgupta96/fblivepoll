@@ -73,24 +73,6 @@ class StreamLive
           end
           break
         end
-        
-        #Checking whether post exists on fb and user token is valid or not (Seems redundant to me)
-        unless Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
-          begin
-            status = HTTParty.get(query)
-            if status.parsed_response["#{@post.video_id}"].nil?
-              nil_count += 1
-              if nil_count > 3
-                @post.stop("unknown")
-                break
-              end
-            else
-              nil_count = 0
-            end
-          rescue
-           #Ignored 
-          end
-        end
 
         #Checking whether post is manually ended or not
         if (@post.live == false)
