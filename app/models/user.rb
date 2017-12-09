@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
     end
   end
   def subscription_expired?
-    return (self.member? or (Time.now > self.subscription_date + self.subscription_duration))
+    return (self.member? or (Time.now.to_date > self.subscription_date + self.subscription_duration))
   end
 
   def self.expire_subscription
