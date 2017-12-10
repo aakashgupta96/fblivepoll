@@ -38,7 +38,7 @@ class StreamLive
       nil_count = 0
       restart_process = false
       loop do
-        #close_any_firefox_message(headless.display) unless source_live
+        #oclose_any_firefox_message(headless.display) unless source_live
         @post.reload
         
         #Checking whether duration of post has completed or not
@@ -93,9 +93,11 @@ class StreamLive
     @post.user.update(free_videos_left: @post.user.free_videos_left - 1) if @post.user.member?
     driver.quit unless source_live
     headless.destroy unless source_live
-    # chromePids = %x[pidof chrome]
-    # target_ids = chromePids.strip
-    # %x[kill -9 #{target_ids}]
+    if Rails.env.production?
+      chromePids = %x[pidof chrome]
+      target_ids = chromePids.strip
+      %x[kill -9 #{target_ids}]
+    end
   end
 
   def self.close_any_firefox_message(display)
