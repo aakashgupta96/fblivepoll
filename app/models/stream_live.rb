@@ -38,7 +38,7 @@ class StreamLive
       nil_count = 0
       restart_process = false
       loop do
-        close_any_firefox_message(headless.display) unless source_live
+        #close_any_firefox_message(headless.display) unless source_live
         @post.reload
         
         #Checking whether duration of post has completed or not
