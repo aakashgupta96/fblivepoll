@@ -3,6 +3,9 @@
     <title>Loop Video Template 2</title>
     <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video-js.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
   </head>
 
   <body>
@@ -12,22 +15,21 @@
 			<% link = "1.mp4" %>
 	<% end %>
   	<div class="container">
-	  	<canvas id="canvas" height="720" width="960"></canvas>
-	  </div>
-	  <video id="my-video" class="video-js" loop preload="auto" height="720" width="1280" autoplay controls data-setup="{}">
-	    	<source src=<%= link %> type="video/mp4">
-	      <source src=<%= link %> type="video/ogg">
-	      <source src=<%= link %> type="video/webm">
-	  </video>
-	 	<!-- <div class="title">
-	 		<p>
-	 			This is the small title of video.
-	 		</p>
-	 	</div>
-	   --><!-- <div class="logo absolute">
-	  	<img src="small_logo.png" class="logo-img">
-	  </div>
-	   --><div class="like absolute">
+        <div class="video-box">
+            <video loop id="video" width=960 height=720 class="video-js vjs-default-skin" data-setup='{ "controls": false, "autoplay": true, "preload": "auto"}'>
+                <source src="<%=link%>" type="video/mp4">
+                <source src="<%=link%>" type="video/ogg">
+                <source src="<%=link%>" type="video/webm">
+            </video>
+            
+            <script>
+              var player = videojs('video',{width: 960});
+              player.play();
+            </script>    
+        </div>
+	  	
+	</div>
+	  <div class="like absolute">
 		  <div class="reaction-container">
 		  	<img src="../../../reactions/like.gif" class="reaction-image">
 		  </div>
@@ -102,36 +104,15 @@
     	width: 1280px;
     	position: relative;
     }
-    /*.title
+    .video-box
     {
-    	position: absolute;
-    	top: 0px;
-    	left: 100px;
-    	width: 600px;
-    	height: 48px;
-    	display: flex;
-    	justify-content: space-around;
-    	align-items: center;
+        width: 960px;
+        height: 720px;
     }
-    .title p
-    {
-			white-space: nowrap; 
-    	text-overflow: ellipsis;
-    	width: 600px;	
-    	text-align: center;
-    	overflow: hidden;
-    	font-size: 24px;
-    	font-weight: bolder;
-    	color: white;
-    }
-    */#my-video
+    #my-video
     {
     	display: none;
     	overflow: hidden;
-    }
-    #canvas
-    {
-    	position: absolute;
     }
     .container
     {
@@ -226,7 +207,7 @@
   </style>
 
 
-  <script>
+  <!-- <script>
   	function updateVideo(){
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext( '2d' );
@@ -234,7 +215,7 @@
     ctx.drawImage( myVideo, 0, 0, 960, 720 );
 		}
 		setInterval ( updateVideo, 24 );
-  </script>
+  </script> -->
 
 
 
