@@ -3,6 +3,9 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <title>Loop Video Template 1</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video-js.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
   </head>
 
   <body>
@@ -11,7 +14,24 @@
     <% else %>
       <% link = "1.mp4" %>
     <% end %>
-    <div class="container">
+    <video loop id="video" width=1280 height=720 class="video-js vjs-default-skin" data-setup='{ "controls": false, "autoplay": true, "preload": "auto"}'>
+      <source src="<%=link%>" type="video/mp4">
+      <source src="<%=link%>" type="video/ogg">
+      <source src="<%=link%>" type="video/webm">
+    </video>
+    
+    <script>
+      var player = videojs('video');
+      player.play();
+    </script>
+    <style>
+      *{
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+
+    <!-- <div class="container">
       <canvas id="canvas" height="720" width="1280"></canvas>
     </div>
     <video id="my-video" class="video-js" loop preload="auto" autoplay width="1280" height="720" data-setup="{}">
@@ -62,5 +82,5 @@
       align-items: center;
       background-color: black;
     }
-  </style>
+  </style> -->
 </html>
