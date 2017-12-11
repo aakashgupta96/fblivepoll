@@ -10,7 +10,11 @@ class StreamLive
     FileUtils.mkdir_p(path) unless File.exist?(path)
     
     source_live = @post.source_file_is_live?
-    driver,headless = @post.open_in_browser("chrome") unless source_live
+    unless source_live
+        driver,headless = @post.open_in_browser("chrome") 
+        driver.navigate.to "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
+        sleep(5)
+      end
     if Rails.env.production?
       if source_live
         command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
@@ -25,14 +29,15 @@ class StreamLive
       end
     end
     start_time = Time.now
+    to_fix_alsa = true
     loop do #For respawning process on connection error
       pid = Process.spawn(command)
       #Logic to navigate to post.html after ffmpeg process has started
-      # if (!source_live and to_fix_alsa)
-      #   sleep(5)
-      #   driver.navigate.to @post.html.url 
-      #   to_fix_alsa = false
-      # end
+      if (!source_live and to_fix_alsa)
+        sleep(5)
+        driver.navigate.to @post.html.url 
+        to_fix_alsa = false
+      end
       sleep(20)
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
