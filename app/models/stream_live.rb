@@ -13,6 +13,7 @@ class StreamLive
     unless source_live
       driver,headless = @post.open_in_browser("chrome") 
       driver.navigate.to "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
+      sleep(5)
     end
     if Rails.env.production?
       if source_live
@@ -32,6 +33,7 @@ class StreamLive
     loop do #For respawning process on connection error
       pid = Process.spawn(command)
       if (!source_live and to_fix_alsa)
+        sleep(5)
         driver.navigate.to @post.html.url 
         to_fix_alsa = false
       end
