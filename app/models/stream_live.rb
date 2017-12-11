@@ -27,11 +27,14 @@ class StreamLive
         command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -i 'public/silent.aac' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -async 1 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -f flv '#{@post.key.split(':80').join}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       end
     end
-    sleep(3)
-    driver.navigate.to @post.html.url unless source_live
+    to_fix_alsa = true
     start_time = Time.now
     loop do #For respawning process on connection error
       pid = Process.spawn(command)
+      if (!source_live and to_fix_alsa)
+        driver.navigate.to @post.html.url 
+        to_fix_alsa = false
+      end
       sleep(20)
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
