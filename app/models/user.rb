@@ -163,7 +163,12 @@ class User < ActiveRecord::Base
     else #No slot is available for user
       if self.member?
         return false
-      else #Trying to make slot for premium user
+      else
+        #Checking if any worker is in closing phase
+        Resque.workers.select{|worker|  worker.queues.include?("stream_live") && worker.working?}.each do |worker|
+          return true if Post.live.find_by_id(worker.job["payload"]["args"].first).nil?
+        end
+        #Trying to make slot for premium user
         posts = Post.live.joins(:user).where(users: {role: "member"})
         post_with_earliest_start_time = posts.where(started_at: posts.minimum(:started_at))
         if post_with_earliest_start_time.empty?
