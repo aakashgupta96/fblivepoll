@@ -161,7 +161,6 @@ class User < ActiveRecord::Base
     if available_workers > queued_jobs
       return true
     else #No slot is available for user
-      byebug
       if self.member?
         return false
       else #Trying to make slot for premium user
