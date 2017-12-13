@@ -218,12 +218,6 @@
 		return required_images_available? && Post.new.worker_available? && self.user.has_live_post_in_limit?
 	end
 
-	def worker_available?
-    queued_jobs = Resque.size("stream_live")
-    available_workers = Resque.workers.select{|worker|  worker.queues.include?("stream_live") && !worker.working?}.count
-    return available_workers > queued_jobs
-  end
-
 	def page_access_token
 		attempts = 0
 		begin
@@ -296,17 +290,14 @@
   def open_in_browser(browser = "firefox")
   	create_html
    	if browser == "firefox"
-   		width = 1290 #850
-   		height = 800 #550
-   		profile = Selenium::WebDriver::Firefox::Profile.new
-   		profile["toolkit.telemetry.enabled"] = false
-   		profile["toolkit.telemetry.prompted"] = 2
-   		profile["toolkit.telemetry.rejected"] = true
-   		options = Selenium::WebDriver::Firefox::Options.new(profile: profile)
+   		width = 1290
+   		height = 800
+   		#profile = Selenium::WebDriver::Firefox::Profile.new; profile["toolkit.telemetry.enabled"] = false;profile["toolkit.telemetry.prompted"] = 2;profile["toolkit.telemetry.rejected"] = true
+   		options = Selenium::WebDriver::Firefox::Options.new #(profile: profile)
    		headless = Headless.new(dimensions: "1920x1200x24")
    	else
-   		width = 1280 #800
-   		height = 786 #516
+   		width = 1280
+   		height = 786
    		options = Selenium::WebDriver::Chrome::Options.new
    		options.add_argument("--no-sandbox")
    		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
@@ -314,16 +305,23 @@
    	headless.start
     attempts = 0
     begin
-    	client = Selenium::WebDriver::Remote::Http::Default.new
-  		client.open_timeout = 120
-  		client.read_timeout = 120
+    	client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 120, read_timeout: 120)
     	driver = Selenium::WebDriver.for browser.to_sym, options: options
     rescue Exception => e
     	attempts += 1
     	sleep(2) and retry if attempts <= 3
     	raise e
     end
-    if Rails.env.production?
+    prefix = get_html_url_prefix(browser)
+    driver.navigate.to "#{prefix}#{self.html.url}"
+    driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
+    driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
+    %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width+10} #{height+10}]
+    [driver,headless]
+	end
+
+	def get_html_url_prefix(browser)
+		if Rails.env.production?
     	prefix = nil
     else
     	if browser == "firefox"
@@ -332,12 +330,6 @@
     		prefix = "file://#{Rails.root.to_s}/public"
     	end
     end
-
-    driver.navigate.to "#{prefix}#{self.html.url}"
-    driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
-    driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
-    %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width+10} #{height+10}]
-    [driver,headless]
 	end
 
 	def ambient?

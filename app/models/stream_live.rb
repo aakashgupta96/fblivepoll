@@ -29,13 +29,15 @@ class StreamLive
       end
     end
     start_time = Time.now
+    @post.update(started_at: start_time)
     to_fix_alsa = true
     loop do #For respawning process on connection error
       pid = Process.spawn(command)
       #Logic to navigate to post.html after ffmpeg process has started
       if (!source_live and to_fix_alsa)
-        sleep(5)
-        driver.navigate.to @post.html.url 
+        sleep(3)
+        prefix = @post.get_html_url_prefix("chrome")
+        driver.navigate.to "#{prefix}#{@post.html.url}"
         to_fix_alsa = false
       end
       sleep(20)

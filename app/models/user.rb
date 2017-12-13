@@ -155,4 +155,26 @@ class User < ActiveRecord::Base
     end
   end
 
+  def worker_available?
+    queued_jobs = Resque.size("stream_live")
+    available_workers = Resque.workers.select{|worker|  worker.queues.include?("stream_live") && !worker.working?}.count
+    if available_workers > queued_jobs
+      return true
+    else #No slot is available for user
+      byebug
+      if self.member?
+        return false
+      else #Trying to make slot for premium user
+        posts = Post.live.joins(:user).where(users: {role: "member"})
+        post_with_earliest_start_time = posts.where(started_at: posts.minimum(:started_at))
+        if post_with_earliest_start_time.empty?
+          return false
+        else
+          post_with_earliest_start_time.first.stop
+          return true
+        end
+      end
+    end
+  end
+
 end

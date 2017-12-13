@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
       end
     elsif current_user.has_live_post_in_limit? == false #User wants to go live right now but he has already reached his plan limit
       return redirect_to root_path, alert: Constant::ALREADY_LIVE_MESSAGE
-    elsif Post.new.worker_available?
+    elsif current_user.worker_available?
       return true
     else
       return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
