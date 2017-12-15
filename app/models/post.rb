@@ -215,9 +215,7 @@
 	end
 
 	def can_start?
-		response = required_images_available? && self.user.worker_available? && self.user.has_live_post_in_limit?
-		puts "can start returned #{response}"
-		return response
+		return required_images_available? && self.user.worker_available? && self.user.has_live_post_in_limit?
 	end
 
 	def page_access_token

@@ -2,7 +2,6 @@ class StreamLive
   @queue = :stream_live
 
   def self.perform(post_id)
-    #%x[pulseaudio -D]
     @post = Post.find_by_id(post_id)
     path = File.join(Rails.root,'log','stream')
     FileUtils.mkdir_p(path) unless File.exist?(path)
@@ -17,9 +16,9 @@ class StreamLive
       end
     if Rails.env.production?
       if source_live
-        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f flv '#{@post.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       else
-        command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -color_range 2 -vb 2000k -r 24 -g 48 -f flv '#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -color_range 2 -vb 2000k -r 24 -g 48 -f flv '#{@post.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       end
     else
       if source_live
@@ -35,7 +34,7 @@ class StreamLive
       pid = Process.spawn(command)
       #Logic to navigate to post.html after ffmpeg process has started
       if (!source_live and to_fix_alsa)
-        sleep(3)
+        sleep(5)
         prefix = @post.get_html_url_prefix("chrome")
         driver.navigate.to "#{prefix}#{@post.html.url}"
         to_fix_alsa = false
