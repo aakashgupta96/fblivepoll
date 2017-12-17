@@ -439,27 +439,27 @@
 
 
 	def get_file_url
-		if from_google_drive?
-			patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
-			patterns.each do |pattern|
-				if self.link.url.match pattern
-					return "https://drive.google.com/uc?export=download&id=" + self.link.url.match(pattern)[1]
-				end
-			end	
-		elsif from_dropbox?
-			self.link.url.split("?").first + "?dl=1"
-		elsif from_onedrive?
-			begin
-				res = Net::HTTP.get_response(URI(self.link.url))
-				res['location'].gsub("redir","download")
-			rescue
-				false
-			end
-		else
+		# if from_google_drive?
+		# 	patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
+		# 	patterns.each do |pattern|
+		# 		if self.link.url.match pattern
+		# 			return "https://drive.google.com/uc?export=download&id=" + self.link.url.match(pattern)[1]
+		# 		end
+		# 	end	
+		# elsif from_dropbox?
+		# 	self.link.url.split("?").first + "?dl=1"
+		# elsif from_onedrive?
+		# 	begin
+		# 		res = Net::HTTP.get_response(URI(self.link.url))
+		# 		res['location'].gsub("redir","download")
+		# 	rescue
+		# 		false
+		# 	end
+		# else
 			#download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4,dash_hd_src' -g #{self.link.url} ]
 			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{self.link.url} ]
 			download_url.strip
-		end
+		# end
 	end
 
 	def share_on(page_ids)
@@ -488,7 +488,7 @@
 	end
 
 	def self.validate_url(url)
-		#download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4,dash_hd_src' -g #{url}]
+		#download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4,dash_hd_src' -g #{url}] #For support of FB live videos as surce video
 		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{url}]
 		download_url.strip!
 		if (download_url.empty? || Post.from_google_drive(url))
