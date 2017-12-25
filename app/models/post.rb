@@ -305,8 +305,8 @@
    	headless.start
     attempts = 0
     begin
-    	client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 30, read_timeout: 30)
-    	driver = Selenium::WebDriver.for browser.to_sym, options: options
+    	client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 120, read_timeout: 120)
+    	driver = Selenium::WebDriver.for browser.to_sym, options: options, http_client: client
     rescue Exception => e
     	attempts += 1
     	sleep(2) and retry if attempts <= 3
