@@ -2,6 +2,18 @@ class BigPage < ActiveRecord::Base
 	
 	paginates_per Constant::BIGPAGES_PER_PAGE
 
+	def self.update_pages_info
+		all.each do |bp|
+			query = "https://graph.facebook.com/v2.8/#{bp.page_id}?fields=name,picture.type(large){url},fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+			response = HTTParty.get(query)
+			if response.ok?
+				bp.update(name: response.parsed_response["name"], image_url: response.parsed_response["picture"]["data"]["url"], fan_count: response.parsed_response["fan_count"])
+			else
+				puts response.parsed_response["error"]["message"],response.code,bp.page_id 
+			end	
+		end
+	end
+
 	def self.get_big_pages_ids(follower_count=100000,batch_size=49)
 		pages_array = Array.new
 		big_pages = Set.new

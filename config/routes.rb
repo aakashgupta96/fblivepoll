@@ -27,7 +27,10 @@ Rails.application.routes.draw do
     get '/:post_id/share' => 'posts#share_select'
     post '/:post_id/share' => 'posts#share'
     get '/:post_id/submit' => 'posts#submit', as: "submit_post"
+    get '/:post_id/select_pages' => 'posts#select_pages', as: "select_pages"
+    post '/:post_id/submit_pages' => 'posts#submit_pages', as: "submit_pages"
     get '/:post_id' => 'posts#show', as: "show_post"
+    
   end
 
   scope :polls do

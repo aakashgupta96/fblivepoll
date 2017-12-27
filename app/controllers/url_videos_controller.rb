@@ -28,6 +28,17 @@ class UrlVideosController < ApplicationController
       @post.start_time = DateTime.now
     end
     if @post.save
+      return save_and_redirect if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
+      return redirect_to select_pages_path(@post.id)
+    else 
+      return redirect_to new_loop_video_path,notice: "Invalid Details"
+    end
+  end
+
+  private
+
+  def save_and_redirect
+    if @post.save
       if (@post.status != "scheduled" and @post.can_start?)
         if @post.start 
           return redirect_to submit_post_path(@post.id)
@@ -38,7 +49,8 @@ class UrlVideosController < ApplicationController
       return redirect_to submit_post_path(@post.id) if @post.scheduled?
       return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
     else 
-      return redirect_to new_loop_video_path,notice: "Invalid Details"
+      return redirect_to frame_path(@post.id), notice: 'Error occured while saving post'
     end
   end
+
 end

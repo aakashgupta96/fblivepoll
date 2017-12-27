@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def check_slots_and_concurrent_eligibility_of_user
-    if params["post"]["scheduled"] == "on" #User wants to schedule
+    if (@post && @post.scheduled?) || (params["post"] && (params["post"]["scheduled"] == "on")) #Post is scheduled or User wants to schedule
       if current_user.has_scheduled_post_in_limit?
         return true
       else

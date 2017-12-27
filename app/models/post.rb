@@ -164,7 +164,7 @@
 	end
 
 	def can_start?
-		return required_images_available? && self.user.worker_available? && self.user.has_live_post_in_limit?
+		return required_images_available? && !live_streams.empty? && user.worker_available? && user.has_live_post_in_limit?
 	end
 
 	def video_id

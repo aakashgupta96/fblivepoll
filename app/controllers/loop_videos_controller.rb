@@ -30,17 +30,8 @@ class LoopVideosController < ApplicationController
     else
       @post.start_time = DateTime.now
     end
-    
     if @post.save
-      if (@post.status != "scheduled" and @post.can_start?)
-        if @post.start 
-          return redirect_to submit_post_path(@post.id)
-        else
-          return redirect_to root_path, alert: Constant::FB_DECLINED_REQUEST_MESSAGE
-        end
-      end
-      return redirect_to submit_post_path(@post.id) if @post.scheduled?
-      return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
+      return redirect_to select_pages_path(@post.id)
     else 
       return redirect_to new_loop_video_path,notice: "Invalid Details"
     end

@@ -11,9 +11,17 @@ class LiveStream < ActiveRecord::Base
 	end
 
 	def live_on_fb?
-		query = "https://graph.facebook.com/v2.8/#{video_id}?fields=live_status&access_token=#{user.token}"
-		response = HTTParty.get(query)
-		return response.ok? && (response.parsed_response["live_status"] == "LIVE")
+		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+			query = "https://graph.facebook.com/v2.8/#{video_id}?fields=live_status&access_token=#{user.token}"
+			response = HTTParty.get(query)
+			if response.ok?
+				return response.parsed_response["live_status"] == "LIVE"
+			else
+				return false
+			end
+		else
+			return false
+		end
 	end
 
 	def ended_on_fb?
@@ -21,7 +29,11 @@ class LiveStream < ActiveRecord::Base
 			query = "https://graph.facebook.com/v2.8/#{video_id}?fields=live_status&access_token=#{user.token}"
 			response = HTTParty.get(query)
 			possible_values = ["PROCESSING","VOD", "LIVE_STOPPED"]
-			return response.ok? && possible_values.include?(response.parsed_response["live_status"])
+			if response.ok?
+				return possible_values.include?(response.parsed_response["live_status"])
+			else
+				return true
+			end
 		else
 			return true
 		end
@@ -109,6 +121,9 @@ class LiveStream < ActiveRecord::Base
 
 	def self.update_statuses	
 		begin
+			live.each do |ls|
+				ls.update_status if ls.ended_on_fb?
+			end
 			stopped_by_user.each do |ls|
 				ls.update_status
 			end
