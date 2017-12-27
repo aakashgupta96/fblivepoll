@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class VideoTest < ActiveSupport::TestCase
+class LiveStreamTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

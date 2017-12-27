@@ -12,11 +12,13 @@
 	has_many :counters, dependent: :destroy
 	has_many :shared_posts, dependent: :destroy
 	belongs_to :user
+	has_many :live_streams, dependent: :destroy
 	belongs_to :template
 	has_one :link, dependent: :destroy
 	
 	accepts_nested_attributes_for :images, allow_destroy: true
 	accepts_nested_attributes_for :link, allow_destroy: true
+	accepts_nested_attributes_for :live_streams, allow_destroy: true
 	
 	enum category: [:poll, :loop_video, :url_video]
 	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
@@ -24,6 +26,12 @@
 	scope :ongoing, ->{ where(live: true) }
 
 	before_save :set_default_values
+
+	def self.migrate_changes_for_live_streams
+		all.each do |post|
+			post.live_streams.create(key: post.key, status: post.status, page_id: post.page_id, live_id: post.live_id, video_id: post.video_id)
+		end
+	end
 
 	def set_default_values
 		self.default_message = Constant::DEFAULT_PROMOTION_MESSAGE
@@ -36,7 +44,7 @@
 		driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
 		driver.manage.window.size = Selenium::WebDriver::Dimension.new(1280,786)
 
-		Post.poll.where("template_id != 0").order(id: :desc).each do |post|
+		poll.where("template_id != 0").order(id: :desc).each do |post|
 			begin
 				post.create_html
 				driver.navigate.to "file://#{Rails.root.to_s}/public/uploads/post/#{post.id}/frame.html"
@@ -59,7 +67,7 @@
 	
 	def self.get_live_with_reaction_count
 		temp = Hash.new()
-		live_facebook_posts = Post.live.where("template_id NOT IN (?)",Constant::RTMP_TEMPLATE_IDS)
+		live_facebook_posts = live.where("template_id NOT IN (?)",Constant::RTMP_TEMPLATE_IDS)
 		return if live_facebook_posts.empty?
     attempts = 0
     begin
@@ -81,118 +89,59 @@
 	end
 
 	def update_status
-		if Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
-			self.published!
-			return
-		end
-		begin
-			query = "https://graph.facebook.com/v2.8/?ids=#{self.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
-			status = HTTParty.get(query)
-			if status.parsed_response["#{self.video_id}"].nil?
-				self.deleted_from_fb!
-			else
-				self.published!
-			end
-		rescue Exception => e
-			puts e.class,e.message
-		end
+		live_streams.each{|ls| ls.update_status}
 	end
 
-	def self.update_statuses	
-		begin
-			Post.stopped_by_user.each do |p|
-				p.update_status
-			end
-			Post.unknown.each do |p|
-				if Constant::RTMP_TEMPLATE_IDS.include?(p.template.id)
-					p.published!
-					next
-				end
-				query = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
-				status = HTTParty.get(query)
-				if status.parsed_response["#{p.video_id}"].nil?
-					p.deleted_from_fb!
-				else
-					query_with_user_token = "https://graph.facebook.com/v2.8/?ids=#{p.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{p.user.token}"
-					status = HTTParty.get(query_with_user_token)
-					if status.ok?
-						p.network_error!
-					else
-						p.user_session_invalid!
-					end
-				end
-			end
-    rescue Exception => e
-      puts e.class,e.message
-    end
+	def change_live_streams(from: "", to: "")
+		return if from.empty? || to.empty?
+		live_streams.send(from.to_sym).update_all(status: LiveStream.statuses[to])
 	end
 
 	#Code for removing video files of published or other erroneous loop video posts
-	def self.remove_videos
-		Post.loop_video.where(live: false).select{|p| p.status != 'scheduled' && p.status != 'drafted' && p.status != 'queued' && p.video.url != nil}.each do |post|
-			post.remove_video = true
-			post.save
-		end
-	end
+	# def self.remove_videos
+	# 	loop_video.where(live: false).select{|p| p.status != 'scheduled' && p.status != 'drafted' && p.status != 'queued' && p.video.url != nil}.each do |post|
+	# 		post.remove_video = true
+	# 		post.save
+	# 	end
+	# end
 	
 	def stop(status="published")
-		begin
-      self.graph_with_page_token.graph_call("#{self.live_id}", {end_live_video: "true"},"post") unless Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
-    rescue Exception => e
-    	puts e.class,e.message
-    end
-    self.update(status: status, live: false)
+		live_streams.where(status: [LiveStream.statuses["queued"], LiveStream.statuses["live"]]).each{|l| l.stop(status)}
+    self.update(live: false)
 	end
 
 	def live_on_fb?
-		query = "https://graph.facebook.com/v2.8/#{self.video_id}?fields=live_status&access_token=#{self.user.token}"
-		response = HTTParty.get(query)
-		return response.ok? && (response.parsed_response["live_status"] == "LIVE")
+		#if any of the live stream has status live, return true
+		live_streams.each do |ls|
+			return true if ls.live_on_fb?
+		end
+		return false
 	end
 
 	def ended_on_fb?
-		unless Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
-			query = "https://graph.facebook.com/v2.8/#{self.video_id}?fields=live_status&access_token=#{self.user.token}"
-			response = HTTParty.get(query)
-			possible_values = ["PROCESSING","VOD", "LIVE_STOPPED"]
-			return response.ok? && possible_values.include?(response.parsed_response["live_status"])
-		else
-			return true
+		#return true if all live_streams have ended
+		live_streams.each do |ls|
+			return false unless ls.ended_on_fb?	
 		end
+		return true
 	end
 
+	# def any_valid_live_stream
+
+	# end
+
 	def start
-		if Constant::RTMP_TEMPLATE_IDS.include?(self.template.id)
-			self.update(live: true, status: "queued")
-			Resque.enqueue(StreamLive,self.id)
-		  Resque.enqueue(NewLive,self.id)
+		any_ls_started = false
+		live_streams.each do |ls|
+			any_ls_started = true if ls.start
+		end
+		if any_ls_started
+			self.update(live: true)
+			Resque.enqueue(StreamJob,id)
+		  #Resque.enqueue(NewLive,self.id)
 		  return true
 		else
-			begin
-				graph = graph_with_page_token
-				if self.user.member?
-					caption_suffix = "\n #{self.default_message}"
-				else
-					caption_suffix = ""
-				end
-
-				if  self.ambient?
-					video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title, stream_type: "AMBIENT"},"post")
-				else
-					video = graph.graph_call("#{self.page_id}/live_videos",{status: "LIVE_NOW", description: "#{self.caption}#{caption_suffix}", title: self.title},"post")
-				end
-				live_id = video["id"]
-			  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
-				self.update(key: video["stream_url"], video_id: video_id, live_id: live_id, live: true, status: "queued")
-			 
-			  Resque.enqueue(StreamLive,self.id)
-			  Resque.enqueue(NewLive,self.id)
-			  return true
-			rescue Exception => e
-				puts e.class,e.message
-	      self.request_declined!
-				return false
-			end
+			return false
 		end
 	end
 
@@ -219,28 +168,8 @@
 	end
 
 	def page_access_token
-		attempts = 0
-		begin
-			graph = Koala::Facebook::API.new(self.user.token)
-			access_token = graph.get_page_access_token(self.page_id)
-		rescue Exception => e
-			attempts += 1
-			retry if attempts <= 1
-			raise e
-		end
-	end
-
-	def graph_with_page_token
-		attempts = 0
-		begin
-			graph = Koala::Facebook::API.new(self.user.token)
-			access_token = graph.get_page_access_token(self.page_id)
-			graph = Koala::Facebook::API.new(access_token) 			
-		rescue Exception => e
-			attempts += 1
-			retry if attempts <= 3
-			raise e
-		end
+		#Assuming that it is required only for polls/videos containing only one live streams
+		live_streams.first.page_access_token
 	end
 	
 	def take_screenshot_of_frame
@@ -333,26 +262,7 @@
 	end
 
 	def ambient?
-		return (self.duration.hour*3600) + (self.duration.min*60) >= 4.hours.to_i
-	end
-
-	def self.update_caption_for_site_credits
-		posts = Post.live.select{|x| ((x.user.member?)&&(!Constant::RTMP_TEMPLATE_IDS.include?(x.template.id)))}
-		posts.each do |p|
-			begin
-				query = "https://graph.facebook.com/v2.8/#{p.video_id}?fields=description&access_token=#{p.user.token}"
-				current_status = HTTParty.get(query).parsed_response["description"]
-				caption_suffix = p.default_message
-				if current_status.match(caption_suffix).nil?
-					new_caption =  "#{current_status} \n #{caption_suffix}"
-					query = "https://graph.facebook.com/v2.8/#{p.live_id}"
-					response = HTTParty.post(query,:query => {"description" => "#{new_caption}", "access_token" => "#{p.user.token}"})
-					p.update(caption: current_status)
-				end
-			rescue Exception => e
-				puts e.message
-			end
-		end
+		return (self.duration.hour*3600) + (self.duration.min*60) > 4.hours.to_i
 	end
 
 	def from_google_drive?
@@ -439,27 +349,8 @@
 
 
 	def get_file_url
-		# if from_google_drive?
-		# 	patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
-		# 	patterns.each do |pattern|
-		# 		if self.link.url.match pattern
-		# 			return "https://drive.google.com/uc?export=download&id=" + self.link.url.match(pattern)[1]
-		# 		end
-		# 	end	
-		# elsif from_dropbox?
-		# 	self.link.url.split("?").first + "?dl=1"
-		# elsif from_onedrive?
-		# 	begin
-		# 		res = Net::HTTP.get_response(URI(self.link.url))
-		# 		res['location'].gsub("redir","download")
-		# 	rescue
-		# 		false
-		# 	end
-		# else
-			#download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4,dash_hd_src' -g #{self.link.url} ]
-			download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{self.link.url} ]
-			download_url.strip
-		# end
+		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{self.link.url} ]
+		download_url.strip
 	end
 
 	def share_on(page_ids)

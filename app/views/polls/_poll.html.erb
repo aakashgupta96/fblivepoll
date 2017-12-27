@@ -76,10 +76,12 @@
       </div>
     </div>
 
-   <div class="input-field col s12 m6 l6">
-      <%=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
-      <%= f.label :page_id, "Select Page" %>
+    <%= f.fields_for :live_streams do |builder| %>
+    <div class="input-field col s12 m6 l6">
+      <%=  builder.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
+      <%= builder.label :page_id, "Select Page" %>
     </div>
+    <% end %>
   </div>
 
   <% if @template.needs_background %>

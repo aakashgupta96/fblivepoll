@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
   paginates_per Constant::USER_PER_PAGE
   
   has_many :posts, dependent: :destroy
+  has_many :live_streams, through: :posts
   has_many :payments, dependent: :destroy
-
   enum role: [:member, :donor, :admin, :premium, :ultimate]
   
   scope :banned, ->{ where(banned: true) }
@@ -156,8 +156,8 @@ class User < ActiveRecord::Base
   end
 
   def worker_available?
-    queued_jobs = Resque.size("stream_live")
-    available_workers = Resque.workers.select{|worker|  worker.queues.include?("stream_live") && !worker.working?}.count
+    queued_jobs = Resque.size("stream_job")
+    available_workers = Resque.workers.select{|worker|  worker.queues.include?("stream_job") && !worker.working?}.count
     if available_workers > queued_jobs
       return true
     else #No slot is available for user
@@ -165,7 +165,7 @@ class User < ActiveRecord::Base
         return false
       else
         #Checking if any worker is in closing phase
-        Resque.workers.select{|worker|  worker.queues.include?("stream_live") && worker.working?}.each do |worker|
+        Resque.workers.select{|worker|  worker.queues.include?("stream_job") && worker.working?}.each do |worker|
           return true if Post.live.find_by_id(worker.job["payload"]["args"].first).nil?
         end
         #Trying to make slot for premium user

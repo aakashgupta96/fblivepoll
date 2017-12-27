@@ -1,5 +1,5 @@
-class StreamLive
-  @queue = :stream_live
+class StreamJob
+  @queue = :stream_job
 
   def self.perform(post_id)
     @post = Post.find_by_id(post_id)
@@ -10,10 +10,15 @@ class StreamLive
     
     source_live = @post.source_file_is_live?
     unless source_live
-        driver,headless = @post.open_in_browser("chrome") 
-        driver.navigate.to "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
-        sleep(5)
-      end
+      driver,headless = @post.open_in_browser("chrome") 
+      driver.navigate.to "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
+      sleep(5)
+    end
+    rtmp_keys = []
+    @post.live_streams.queued.each do |ls|
+      rtmp_keys << "[f=flv\:onfail=ignore]#{ls.key.split(':80').join}"
+    end
+    rtmp_keys = rtmp_keys.join("|")
     if Rails.env.production?
       if source_live
         command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f flv '#{@post.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
@@ -22,9 +27,9 @@ class StreamLive
       end
     else
       if source_live
-        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f tee -map 0:v -map 1:a '[f=flv\:onfail=ignore]#{@post.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       else
-        command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f tee -map 0:v -map 1:a '[f=flv\:onfail=ignore]#{@post.key.split(':80').join}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 2000k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       end
     end
     start_time = Time.now
@@ -42,7 +47,7 @@ class StreamLive
       sleep(20)
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
-      @post.live! if @post.live
+      @post.change_live_streams(from: "queued", to: "live") if @post.live
       query = "https://graph.facebook.com/v2.8/?ids=#{@post.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{@post.user.token}"
       nil_count = 0
       restart_process = false

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171213183834) do
+ActiveRecord::Schema.define(version: 20171225200310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,17 @@ ActiveRecord::Schema.define(version: 20171213183834) do
     t.integer  "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "live_streams", force: :cascade do |t|
+    t.string   "page_id"
+    t.integer  "post_id"
+    t.string   "key"
+    t.string   "video_id"
+    t.string   "live_id"
+    t.integer  "status",     default: 0, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "moderators", force: :cascade do |t|

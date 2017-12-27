@@ -3,7 +3,7 @@ class UpdateStatuses
 
 	def self.perform(args=nil)
 	  #Update status of posts with unknown statuses
-		Post.update_statuses
+		LiveStream.update_statuses
 	end
 
 end
