@@ -167,6 +167,11 @@
 		return required_images_available? && self.user.worker_available? && self.user.has_live_post_in_limit?
 	end
 
+	def video_id
+		#Assuming it is required only for live polls
+		live_streams.first.video_id
+	end
+
 	def page_access_token
 		#Assuming that it is required only for polls/videos containing only one live streams
 		live_streams.first.page_access_token
