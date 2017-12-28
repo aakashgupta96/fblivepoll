@@ -181,7 +181,7 @@
 		driver,headless = open_in_browser("chrome")
 		path = File.join(Rails.root,'public','uploads','post',id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
-    #sleep 1
+    sleep 1
     driver.save_screenshot("#{path}/frame.png")
     begin
     	f = File.open(File.join(path,"frame.png"))
@@ -247,7 +247,7 @@
     	raise e
     end
     prefix = get_html_url_prefix(browser)
-    driver.get "#{prefix}#{self.html.url}"
+    driver.navigate.to "#{prefix}#{self.html.url}"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width+10} #{height+10}]

@@ -11,7 +11,7 @@ class StreamJob
     source_live = @post.source_file_is_live?
     unless source_live
       driver,headless = @post.open_in_browser("chrome") 
-      driver.get "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
+      driver.navigate.to "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
       sleep(5)
     end
     if Rails.env.production?
