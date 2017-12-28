@@ -1,5 +1,4 @@
-	class Post < ActiveRecord::Base
-	
+class Post < ActiveRecord::Base	
 	paginates_per Constant::POST_PER_PAGE
 
 	mount_uploader :audio, AudioUploader
@@ -137,7 +136,7 @@
 			any_ls_started = true if ls.start
 		end
 		if any_ls_started
-			update(live: true)
+			update(live: true, status: "live")
 			Resque.enqueue(StreamJob,id)
 		  #Resque.enqueue(NewLive,id)
 		  return true

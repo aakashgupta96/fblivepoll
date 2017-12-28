@@ -1,5 +1,4 @@
 class EditorsController < ApplicationController
-  
   before_action :authenticate_editor!
   before_action :set_post, except: [:lives_list, :users_list]
 

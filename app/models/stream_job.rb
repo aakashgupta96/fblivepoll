@@ -32,12 +32,13 @@ class StreamJob
       end
       rtmp_keys = rtmp_keys.join("|")
       if source_live
-        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       else
         command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
       end
     end
     to_fix_alsa = true
+    start_time_initialized = false
     loop do #For respawning process on connection error
       pid = Process.spawn(command)
       #Logic to navigate to post.html after ffmpeg process has started
@@ -46,9 +47,12 @@ class StreamJob
         prefix = @post.get_html_url_prefix("chrome")
         driver.get "#{prefix}#{@post.html.url}"
         to_fix_alsa = false
+        @post.mark_live_on_fb
+      end
+      unless start_time_initialized
         start_time = Time.now
         @post.update(started_at: start_time)
-        @post.mark_live_on_fb
+        start_time_initialized = true
       end
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
@@ -68,6 +72,11 @@ class StreamJob
           @post.stop
           break 
         end
+        
+        #Checking whether post is manually ended or not
+        if (@post.live == false)
+          break
+        end
 
         #Checking if reloading browser is required
         if !source_live && @post.reload_browser
@@ -82,18 +91,19 @@ class StreamJob
             #puts "retrying"
             restart_process = true
           elsif @post.ended_on_fb?
-            #Case 2 : Connection was closed by FB because video ended succesfully
-            #Reasons can be 1. User used fb directly or used our panel or admin ended the video
+            #Case 2 : Connection was closed by FB because all live_streams ended.
+            #Reasons can be 1. User used fb directly 2. or used our panel 3. admin ended the video 4. User session invalidated by FB.
+            #and some live streams may have been deleted since last status update task.
+            @post.live_streams.live.each do |ls|
+              ls.stop
+              ls.update_status
+            end
             @post.stop
           else
             #Case 3 : Connection was closed by FB
             #Reasons can be 1. Session Invalidated 2. Deleted from FB 
             @post.stop("unknown")
           end
-          break
-        end
-        #Checking whether post is manually ended or not
-        if (@post.live == false)
           break
         end
         sleep(10)

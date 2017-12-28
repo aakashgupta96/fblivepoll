@@ -228,8 +228,5 @@ class LiveStream < ActiveRecord::Base
       raise e
     end 
 	end
-
-	def test
-		byebug
-	end
+	
 end

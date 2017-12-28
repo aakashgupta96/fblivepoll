@@ -34,6 +34,7 @@
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>
+          <% unless live_stream.scheduled? %>
           <li class="collection-item avatar">
             <i class="material-icons circle cyan darken-2">play_arrow</i>
             <span class="title">Video Link</span>
@@ -42,8 +43,6 @@
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>
-          
-          <% unless @post.scheduled? %>
           <li class="collection-item avatar">
             <i class="material-icons circle red lighten-2">share</i>
             <!-- <span class="title">Share</span> -->
