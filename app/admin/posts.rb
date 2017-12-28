@@ -21,7 +21,6 @@ ActiveAdmin.register Post do
 	filter :live
   filter :user
   filter :user_id
-  filter :page_id
 
 	show do
     attributes_table do
@@ -30,8 +29,6 @@ ActiveAdmin.register Post do
   		row :key
   		row :duration
   		row :user
-  		row :page_id
-      row :video_id
    		row :live
   		row :category
   		row :start_time if post.scheduled?

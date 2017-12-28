@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171228175252) do
+ActiveRecord::Schema.define(version: 20171228224349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -157,27 +157,22 @@ ActiveRecord::Schema.define(version: 20171228175252) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string   "key"
     t.string   "title"
     t.time     "duration"
     t.datetime "created_at",                                                                          null: false
     t.datetime "updated_at",                                                                          null: false
     t.string   "background"
     t.integer  "comparisons"
-    t.string   "video_id"
     t.string   "audio"
     t.string   "counter_color"
     t.integer  "user_id"
     t.string   "caption"
-    t.string   "page_id"
     t.boolean  "live",            default: false
     t.datetime "start_time"
     t.integer  "category"
     t.string   "video"
     t.string   "image"
     t.integer  "template_id"
-    t.string   "live_id"
-    t.string   "process_id"
     t.boolean  "reload_browser",  default: false
     t.integer  "status",          default: 0
     t.string   "html"
@@ -187,7 +182,6 @@ ActiveRecord::Schema.define(version: 20171228175252) do
 
   create_table "shared_posts", force: :cascade do |t|
     t.string   "shared_post_id"
-    t.integer  "post_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "live_stream_id"
