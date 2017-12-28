@@ -95,15 +95,22 @@
           <input class="file-path validate" type="text">
         </div>
       </div>
-
-     <!-- <div class="input-field col s12 m6 l6">
-        <%#=  f.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
-        <%#= f.label "Select Page" %>
-      </div> -->
+    <% if @template.id == 9%>
+      <% @post.live_streams.build%>
+      <% next_step_message = "Submit" %>
+      <%= f.fields_for :live_streams do |builder| %>
+        <div class="input-field col s12 m6 l6">
+          <%=  builder.select(:page_id, options_for_select(@pages.map { |obj| [obj['name'], obj['id'], {class: "left circle", "data-icon" => obj['image']}] }),{},{class: 'icons'}) %>
+          <%= builder.label :page_id, "Select Page" %>
+        </div>
+      <% end %>
+    <% else %>
+      <% next_step_message = "Proceed to Select Pages" %>
+    <% end %>
     </div>
-    
+  
     <div class="row">
-      <%= f.submit "Proceed to Select Pages", {class: "col s12 btn",data: {:confirm => 'Are you sure?'} }%>
+      <%= f.submit next_step_message, {class: "col s12 btn",data: {:confirm => 'Are you sure?'} }%>
     </div>
   <% end %>
   </div>

@@ -24,13 +24,19 @@ Rails.application.routes.draw do
 
   scope :posts do
     get '/validate_url' => 'extras#validate_url'
-    get '/:post_id/share' => 'posts#share_select'
-    post '/:post_id/share' => 'posts#share'
     get '/:post_id/submit' => 'posts#submit', as: "submit_post"
     get '/:post_id/select_pages' => 'posts#select_pages', as: "select_pages"
     post '/:post_id/submit_pages' => 'posts#submit_pages', as: "submit_pages"
+    post '/:post_id/stop' => 'posts#stop_post', as: "stop_post"
+    post '/:post_id/cancel_schedule' => 'posts#cancel_scheduled_post', as: "cancel_schedule"
     get '/:post_id' => 'posts#show', as: "show_post"
-    
+  end
+
+  scope :live_streams do
+    get '/:live_stream_id/share' => 'live_streams#share_select'
+    post '/:live_stream_id/share' => 'live_streams#share'
+    post '/:live_stream_id/stop' => 'live_streams#stop_live_stream', as: "stop_live_stream"
+    post '/:live_stream_id/cancel_schedule' => 'live_streams#cancel_scheduled_live_stream', as: "cancel_schedule_live_stream"
   end
 
   scope :polls do
@@ -53,8 +59,6 @@ Rails.application.routes.draw do
   end
 
   scope :users do
-    post '/stop/:post_id' => 'users#stop_post'
-    post '/cancel/:post_id' => 'users#cancel_scheduled_post'
     get '/posts' => 'users#posts', as: "myposts"
     get '/try_premium' => 'users#try_premium'
   end

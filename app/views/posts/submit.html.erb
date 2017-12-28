@@ -25,12 +25,8 @@
 					    <p><%=@post.caption%></p>
 				    </div>
 				    <div class="card-action">
-					    <% unless @post.status == "scheduled" %>
-					    	<a class="btn" href="https://www.facebook.com/<%=@post.video_id%>">Watch Video</a>
-					    	<a class="btn" href="/posts/<%=@post.id%>/share"> Share on Pages</a>
-					    <% else %>
-					    	<%= link_to "My Posts", myposts_path, class: "btn"%>
-					    <% end %>
+					    <%= link_to "Show Post Details", show_post_path(@post.id),class: "btn" %>
+					    <%= link_to "My Posts", myposts_path, class: "btn"%>
 				    </div>
 				  </div>
 				</div>

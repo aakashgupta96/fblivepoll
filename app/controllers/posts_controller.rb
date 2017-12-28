@@ -1,14 +1,10 @@
 class PostsController < ApplicationController
 	before_action :set_post
   before_action :authenticate_user!
-  before_action :authorize_user!
+  before_action :authorize_user_post!
   before_action :check_not_poll_and_status_of_post, only: [:select_pages, :submit_pages]
   before_action :check_slots_and_concurrent_eligibility_of_user, only: [:select_pages, :submit_pages]
   before_action :check_for_eligibility_of_free_posts, only: [:select_pages, :submit_pages]
-
-  def share_select
-  	@pages = current_user.pages
-  end
 
   def select_pages
     @pages = current_user.pages
@@ -21,23 +17,22 @@ class PostsController < ApplicationController
     return save_and_redirect
   end
 
-  
-  def share
-  	selected_pages = Array.new()
-  	params["page"].each do |page_id,value|
-  		selected_pages << page_id if value == "on"
-  	end unless params["page"].nil?
-  	if @post.share_on(selected_pages)
-  	 return redirect_to "/posts/#{@post.id}", notice: "Post shared successfully"
+  def cancel_scheduled_post
+    if @post.scheduled?
+      @post.cancel_scheduled
+      return redirect_to myposts_path, notice: Constant::SCHEDULE_CANCELLED_MESSAGE
     else
-      return redirect_to "/posts/#{@post.id}", notice: "There occurred some error while sharing post."
+      return redirect_to myposts_path, notice: Constant::INVALID_OPERATION_MESSAGE
     end
   end
 
+  def stop_post
+    @post.stop("stopped_by_user")
+    return redirect_to show_post_path(@post.id), notice: Constant::POST_STOPPED_MESSAGE
+  end
+
   def show
-    response = HTTParty.get("https://graph.facebook.com/#{@post.page_id}?fields=name,picture{url}&access_token=#{@post.user.token}")
-    @url = response.parsed_response["picture"]["data"]["url"] rescue false
-    @name = response.parsed_response["name"]
+    @pages = @post.live_streams.get_details unless Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
     return redirect_to myposts_path, notice: Constant::INVALID_OPERATION_MESSAGE if @post.nil?
   end
 
@@ -47,7 +42,7 @@ class PostsController < ApplicationController
   protected
 
   def check_not_poll_and_status_of_post
-    return redirect_to dashboard_path, alert: Constant::INVALID_OPERATION_MESSAGE if @post.poll?
+    return redirect_to dashboard_path, alert: Constant::INVALID_OPERATION_MESSAGE if (@post.poll? || @post.template == Template.find_by_name("Hybrid Video")) #Hybrid template is also not allowed
     return redirect_to dashboard_path, alert: Constant::INVALID_OPERATION_MESSAGE unless (@post.drafted? || @post.scheduled?)
   end
 

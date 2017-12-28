@@ -1,3 +1,66 @@
+<% unless Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id) %>
+<div class="flexbox">
+  <div class="container-extrawide">
+    <ul class="collapsible" data-collapsible="accordion">
+      <% @post.live_streams.each do |live_stream| %>
+      <li>
+        <div class="collapsible-header"><img src="<%=@pages[live_stream.page_id]['image']%>" alt="" class="circle relative" style=" top: 10px;"><span class="relative bold grey-text text-darken-1" style="left: 10px; top: -10px; font-size: 16px;"><%=@pages[live_stream.page_id]['name']%></span></div>
+        <div class="collapsible-body" style="background-color: rgba(41, 43, 44, 0.9);">
+          <ul class="collection">
+          <% if live_stream.live? %>
+            <li class="collection-item avatar">
+              <i class="material-icons circle red">fitness_center</i>
+              <span class="title">Action</span>
+              <p>
+                <%= link_to "End Live Stream", stop_live_stream_path(live_stream.id), data: {confirm: "This will end your live stream for this page. Are you sure you want to continue?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
+              </p>
+              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            </li>
+          <% elsif live_stream.scheduled? %>
+            <li class="collection-item avatar">
+              <i class="material-icons circle red">fitness_center</i>
+              <span class="title">Action</span>
+              <p>
+                <%= link_to "Cancel schedule for this page", cancel_schedule_live_stream_path(live_stream.id), data: {confirm: "Are you sure you want to cancel this scheduled post?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
+              </p>
+              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            </li>
+          <% end %>
+          <li class="collection-item avatar">
+            <i class="material-icons circle green">play_arrow</i>
+            <span class="title">Status</span>
+            <p>
+              <%=status_message(live_stream)%>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <i class="material-icons circle cyan darken-2">play_arrow</i>
+            <span class="title">Video Link</span>
+            <p>
+              <a href="https://www.facebook.com/<%=live_stream.video_id%>" target="_blank">Watch Video</a>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          
+          <% unless @post.scheduled? %>
+          <li class="collection-item avatar">
+            <i class="material-icons circle red lighten-2">share</i>
+            <!-- <span class="title">Share</span> -->
+            <p>
+              <a href="/live_streams/<%=live_stream.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <% end %>
+        </ul>
+        </div>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+</div>
+<% end %>
 <div class="flexbox post-show">
   <div class="col s12 m6 l6">
   	<div class="card z-depth-4">
@@ -10,34 +73,20 @@
       </div>
       <div class="card-tabs">
         <ul class="tabs">
-          <li class="tab hide-on-small-only"><a href="#page<%=@post.id%>">Page</a></li>
           <li class="tab"><a href="#status<%=@post.id%>">Status</a></li>
           <li class="tab"><a href="#duration<%=@post.id%>">Duration</a></li>
-          <li class="tab hide-on-small-only"><a href="#video<%=@post.id%>">Video Link</a></li>
           <li class="tab"><a href="#action<%=@post.id%>">Action</a></li>
           <i class="activator material-icons right pointer" style="position: relative; top: 10px; right: 8px;">toc</i>
         </ul>
       </div>
       <div class="card-content grey lighten-4">
-        <div id="page<%=@post.id%>" class="chip hide-on-small-only">
-          <img src="<%=@url%>">
-          <%=@name%>
-        </div>
         <div id="status<%=@post.id%>"><%=status_message(@post)%></div>
         <div id="duration<%=@post.id%>"><%= @post.duration.hour %> Hours : <%=@post.duration.min%> Minutes</div>
-        <div id="video<%=@post.id%>" class="hide-on-small-only">
-          <% unless @post.video_id.nil? %>
-            <a href="https://www.facebook.com/<%=@post.video_id%>" class="btn">Watch Video</a>
-          <% end %>
-        </div>
         <div id="action<%=@post.id%>">
-          <% unless @post.scheduled? %>
-            <a href="/posts/<%=@post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
-          <% end %>
           <% if @post.live %>
-            <a href="/users/stop/<%=@post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+            <%= link_to "End Video", stop_post_path(@post.id), data: {confirm: "This will end your live post. Are you sure you want to continue?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
           <% elsif @post.status == "scheduled" %>
-            <a href="/users/cancel/<%=@post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+            <%= link_to "Cancel Schedule", cancel_schedule_path(@post.id), data: {confirm: "Are you sure you want to cancel this scheduled post?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
           <% end %>
         </div>
       </div>
@@ -49,16 +98,16 @@
               <i class="material-icons circle red">fitness_center</i>
               <span class="title">Action</span>
               <p>
-                <a href="/users/stop/<%=@post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+                <%= link_to "End Video", stop_post_path(@post.id), data: {confirm: "This will end your live post. Are you sure you want to continue?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
               </p>
               <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
             </li>
-          <% elsif @post.status == "scheduled" %>
+          <% elsif @post.scheduled? %>
             <li class="collection-item avatar">
               <i class="material-icons circle red">fitness_center</i>
               <span class="title">Action</span>
               <p>
-                <a href="/users/cancel/<%=@post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+                <%= link_to "Cancel Schedule", cancel_schedule_path(@post.id), data: {confirm: "Are you sure you want to cancel this scheduled post?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
               </p>
               <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
             </li>
@@ -79,14 +128,7 @@
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>
-          <li class="collection-item avatar">
-            <img src="<%=@url%>" alt="" class="circle">
-            <span class="title">Page</span>
-            <p>
-              <%=@name%>
-            </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-          </li>
+          
           <li class="collection-item avatar">
             <i class="material-icons circle red">play_arrow</i>
             <span class="title">Duration</span>
@@ -103,17 +145,6 @@
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>
-          <li class="collection-item avatar">
-            <i class="material-icons circle cyan">play_arrow</i>
-            <span class="title">Video Link</span>
-            <p>
-              <a href="https://www.facebook.com/<%=@post.video_id%>" target="_blank">Watch Video</a>
-              <% unless @post.scheduled? %>
-                <a href="/posts/<%=@post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
-              <% end %>
-            </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-          </li>
         </ul>        
         
         <div class="absolute hide-on-small-only" style=" bottom: 10px;">
@@ -123,3 +154,5 @@
     </div>
   </div>
 </div>
+
+

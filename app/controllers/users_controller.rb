@@ -33,6 +33,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def cancel_scheduled_stream
+    if @live_stream.scheduled?
+      @live_stream.cancel_scheduled
+      return redirect_to myposts_path, notice: Constant::SCHEDULE_CANCELLED_MESSAGE
+    else
+      return redirect_to myposts_path, notice: Constant::INVALID_OPERATION_MESSAGE
+    end
+  end
+
   private
 
   def set_post

@@ -1,14 +1,9 @@
 class LiveStream < ActiveRecord::Base
 	belongs_to :post
+	delegate :user, to: :post
+	delegate :template, to: :post
+	has_many :shared_posts, dependent: :destroy
 	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
-
-	def user
-		post.user
-	end
-
-	def template
-		post.template
-	end
 
 	def live_on_fb?
 		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
@@ -83,7 +78,10 @@ class LiveStream < ActiveRecord::Base
 		else
 			return true
 		end
+	end
 
+	def cancel_schedule
+		destroy if scheduled?
 	end
 
 	def stop(status="published")
@@ -136,6 +134,31 @@ class LiveStream < ActiveRecord::Base
 		end
 	end
 
+	def share_on(page_ids)
+		begin
+			attempts = 0
+			url = "https://www.facebook.com/" + video_id
+			user_graph = Koala::Facebook::API.new(user.token)
+			page_ids.each do |page_id|
+				begin
+					access_token = user_graph.get_page_access_token(page_id)
+					graph = Koala::Facebook::API.new(access_token)
+					response = graph.put_wall_post("",link: url)
+					self.shared_posts << SharedPost.create(shared_post_id: response["id"])
+				rescue Exception => e
+					puts e.message
+					attempts += 1
+					retry if attempts <= 3
+					raise e
+				end
+			end
+		rescue Exception => e
+			puts e.message
+			return false
+		end
+		return true
+	end
+
 	def self.update_statuses	
 		begin
 			live.each do |ls|
@@ -184,6 +207,26 @@ class LiveStream < ActiveRecord::Base
 				puts e.message
 			end
 		end
+	end
+
+	def self.get_details
+		temp = Hash.new()
+    attempts = 0
+    begin
+      graph = Koala::Facebook::API.new(ENV["FB_ACCESS_TOKEN"])
+      page_ids = pluck(:page_id)
+      query = "?ids=#{page_ids.first(49).join(',')}&fields=picture{url},name"
+      response = graph.get_object(query)
+      response.each do |page_attrs|
+        page_hash = {"name"=> page_attrs.second["name"], "id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
+        temp[page_hash["id"]] = page_hash
+      end
+      temp
+    rescue Exception => e
+    	attempts += 1
+      retry if attempts <= 3
+      raise e
+    end 
 	end
 
 	def test

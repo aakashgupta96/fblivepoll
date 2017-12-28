@@ -63,8 +63,12 @@ class ApplicationController < ActionController::Base
     check_user_if_banned
   end
 
-  def authorize_user!
+  def authorize_user_post!
     redirect_to root_path, alert: Constant::AUTHORIZATION_FAILED_MESSAGE unless current_user == @post.user
+  end
+
+  def authorize_user_live_stream!
+    redirect_to root_path, alert: Constant::AUTHORIZATION_FAILED_MESSAGE unless current_user == @live_stream.user
   end
 
   def check_user_if_banned

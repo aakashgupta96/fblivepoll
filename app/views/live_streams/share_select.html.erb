@@ -2,7 +2,7 @@
 	Select Pages
 </div>
 <div class="row container-wide white z-depth-3">
-  <%= form_tag("/posts/" + @post.id.to_s + "/share", class: "row zero-margin") do %>
+  <%= form_tag("/live_streams/" + @live_stream.id.to_s + "/share", class: "row zero-margin") do %>
   	<% @pages.each do |page| %>
 	    <div class="card col s12 m3 l2 relative unchecked page">
 	    	<input type="checkbox" class="checkbox" name="page[<%=page['id']%>]"/>

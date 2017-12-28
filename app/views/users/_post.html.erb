@@ -11,26 +11,23 @@
       <ul class="tabs">
         <li class="tab"><a class="active" href="#title<%=post.id%>">Title</a></li>
         <li class="tab"><a href="#caption<%=post.id%>">Caption</a></li>
-        <li class="tab"><a href="#status<%=post.id%>">Status</a></li>
+        <li class="tab"><a href="#details<%=post.id%>">Details</a></li>
         <i class="activator material-icons right pointer" style="position: relative; top: 10px; right: 8px;">toc</i>
       </ul>
     </div>
     <div class="card-content grey lighten-4">
       <div id="title<%=post.id%>" class="truncate"><%=post.title.capitalize%></div>
       <div id="caption<%=post.id%>" class="truncate"><%=post.caption.capitalize%></div>
-      <div id="status<%=post.id%>" class="truncate"><%=status_message(post)%></div>
+      <div id="details<%=post.id%>" class="truncate"><%= link_to "Click here for all details", show_post_path(post.id) %></div>
     </div>
     <div class="card-reveal relative">
       <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>
       <p><%=post.caption.capitalize%></p>
       <div class="absolute" style=" bottom: 10px;">
-      	<% unless post.scheduled? %>
-          <a href="/posts/<%=post.id%>/share" class="btn btn-less-padding margin-2 bolder">Share</a>
-        <% end %>
         <% if post.live %>
-      		<a href="/users/stop/<%=post.id%>" data-method="post" data-confirm="This will end your live post. Are you sure you want to continue?" class="btn btn-less-padding margin-2 bolder">End Video</a>
+      		<%= link_to "End Video", stop_post_path(post.id), data: {confirm: "This will end your live post. Are you sure you want to continue?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
       	<% elsif post.scheduled? %>
-      		<a href="/users/cancel/<%=post.id%>" data-method="post" data-confirm="Are you sure you want to cancel this scheduled post?" class="btn btn-less-padding margin-2 bolder">Cancel Schedule</a>
+      		<%= link_to "Cancel Schedule", cancel_schedule_path(post.id), data: {confirm: "Are you sure you want to cancel this scheduled post?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
       	<% end %>
       	<a href="/posts/<%=post.id%>" class="btn bold dull-purple">Show Full Post</a>
       </div>

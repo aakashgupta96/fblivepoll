@@ -18,16 +18,34 @@
 
 <script>
 	$(document).ready(function(){
+		var max_page_limit = <%=current_user.live_stream_page_limit%>;
 		$(".label").click(function(){
+			var actionTaken = true;
 			if($(this).prev().attr('checked'))
 			{
 				$(this).prev().attr('checked', false);
 			}
 			else
 			{
-				$(this).prev().attr('checked', true);	
+				var selected_pages = $("input[checked='checked']").length;
+				if (selected_pages >= max_page_limit)
+				{
+					actionTaken = false;
+					$.alert({
+	          theme: "supervan",
+	          boxWidth: width,
+	          useBootstrap: false,
+	          title: "Alert!",
+	          content: "You can select " + max_page_limit + " page(s) only. Please unselect any other page first to select this page."
+	        });
+				}
+				else
+				{
+					$(this).prev().attr('checked', true);	
+				}
 			}
-			$(this).parent().toggleClass("unchecked checked", 'slow', "easeOutSine");
+			if(actionTaken)
+				$(this).parent().toggleClass("unchecked checked", 'slow', "easeOutSine");
 		});
 	});
 </script>

@@ -50,7 +50,6 @@ class StreamJob
         @post.update(started_at: start_time)
         @post.mark_live_on_fb
       end
-      sleep(20)
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
       @post.change_live_streams(from: "queued", to: "live") if @post.live
@@ -109,6 +108,7 @@ class StreamJob
         break
       end
     end
+    @post.published!
     @post.user.update(free_videos_left: @post.user.free_videos_left - 1) if @post.user.member?
     driver.quit unless source_live
     headless.destroy unless source_live

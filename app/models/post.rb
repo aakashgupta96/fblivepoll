@@ -10,7 +10,7 @@
 	
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
-	has_many :shared_posts, dependent: :destroy
+	has_many :shared_posts, dependent: :destroy, through: :live_streams
 	belongs_to :user
 	has_many :live_streams, dependent: :destroy
 	belongs_to :template
@@ -26,6 +26,7 @@
 	scope :ongoing, ->{ where(live: true) }
 
 	before_save :set_default_values
+	after_save :propogate_status_changes, if: :status_changed?
 
 	def self.migrate_changes_for_live_streams
 		all.each do |post|
@@ -408,4 +409,13 @@
 		return false
 	end
 
+	def propogate_status_changes
+		if scheduled?
+			live_streams.update_all(status: LiveStream.statuses["scheduled"])
+		elsif unknown?
+			live_streams.each do |ls|
+				ls.unknown! if ls.live?
+			end
+		end
+	end
 end

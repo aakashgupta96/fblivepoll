@@ -145,6 +145,21 @@ class User < ActiveRecord::Base
     end
   end
 
+  def live_stream_page_limit
+    if member?
+      Constant::MEMBER_LIVE_STREAM_LIMIT
+    elsif donor?
+      Constant::DONOR_LIVE_STREAM_LIMIT
+    elsif premium?
+      Constant::PREMIUM_LIVE_STREAM_LIMIT
+    elsif ultimate?
+      Constant::ULTIMATE_LIVE_STREAM_LIMIT
+    else
+      Constant::ADMIN_LIVE_STREAM_LIMIT
+    end 
+  end
+
+
   def try_premium
     if eligible_to_try_premium?
       self.subscription_duration = 1

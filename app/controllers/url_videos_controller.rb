@@ -1,5 +1,4 @@
 class UrlVideosController < ApplicationController
-  
   before_action :set_post, except: [:new, :create, :templates]
   before_action :authenticate_user!
   before_action :authorize_user! , except: [:new, :create, :templates]
