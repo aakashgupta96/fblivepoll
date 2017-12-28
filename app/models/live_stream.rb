@@ -53,9 +53,9 @@ class LiveStream < ActiveRecord::Base
 				end
 
 				if post.ambient?
-					video = graph.graph_call("#{page_id}/live_videos",{status: "LIVE_NOW", description: "#{post.caption}#{caption_suffix}", title: post.title, stream_type: "AMBIENT"},"post")
+					video = graph.graph_call("#{page_id}/live_videos",{status: "UNPUBLISHED", description: "#{post.caption}#{caption_suffix}", title: post.title, stream_type: "AMBIENT"},"post")
 				else
-					video = graph.graph_call("#{page_id}/live_videos",{status: "LIVE_NOW", description: "#{post.caption}#{caption_suffix}", title: post.title},"post")
+					video = graph.graph_call("#{page_id}/live_videos",{status: "UNPUBLISHED", description: "#{post.caption}#{caption_suffix}", title: post.title},"post")
 				end
 				live_id = video["id"]
 			  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
@@ -67,6 +67,23 @@ class LiveStream < ActiveRecord::Base
 				return false
 			end
 		end	
+	end
+
+	def mark_live_on_fb
+		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+			begin
+				graph = graph_with_page_token
+				video = graph.graph_call("#{live_id}",{status: "LIVE_NOW"},"post")
+			  return true
+			rescue Exception => e
+				puts e.class,e.message
+	      request_declined!
+				return false
+			end
+		else
+			return true
+		end
+
 	end
 
 	def stop(status="published")

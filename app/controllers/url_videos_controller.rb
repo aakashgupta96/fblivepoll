@@ -17,7 +17,6 @@ class UrlVideosController < ApplicationController
   end
 
   def create
-    byebug
     temp = post_params
     @post = Post.new(temp)
     @post.category = "url_video"

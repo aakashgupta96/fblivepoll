@@ -145,6 +145,12 @@
 		end
 	end
 
+	def mark_live_on_fb
+		live_streams.each do |ls|
+			ls.mark_live_on_fb
+		end
+	end
+
 	def refresh_browser
 		create_html
 		update(reload_browser: true)
