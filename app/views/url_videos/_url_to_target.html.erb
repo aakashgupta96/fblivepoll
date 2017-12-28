@@ -64,12 +64,14 @@
     <% end %>
   </div>
 
+  <%= f.fields_for :live_streams do |builder| %>
   <div class="row">
     <div class="input-field col s12">
-      <%= f.label :key, "Enter RTMP/RTSP Target URL" %>
-      <%= f.text_field :key, required: true, placeholder: "rtmp://site-name.com/xxxxxxxxx" %>
+      <%= builder.label :key, "Enter RTMP/RTSP Target URL" %>
+      <%= builder.text_field :key, required: true, placeholder: "rtmp://site-name.com/xxxxxxxxx" %>
     </div>
   </div>
+  <% end %>
 
   <div class="row">
     <%= f.submit "Proceed To Select Pages", {class: "col s12 btn",data: {:confirm => 'Are you sure?'} }%>

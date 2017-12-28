@@ -11,7 +11,7 @@ class StreamJob
     source_live = @post.source_file_is_live?
     unless source_live
       driver,headless = @post.open_in_browser("chrome") 
-      driver.navigate.to "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
+      driver.get "http://www.e-try.com/black.htm" #fix for channel count 2 alsa error
       sleep(5)
     end
     if Rails.env.production?
@@ -46,7 +46,7 @@ class StreamJob
       if (!source_live and to_fix_alsa)
         sleep(5)
         prefix = @post.get_html_url_prefix("chrome")
-        driver.navigate.to "#{prefix}#{@post.html.url}"
+        driver.get "#{prefix}#{@post.html.url}"
         to_fix_alsa = false
       end
       sleep(20)
@@ -92,7 +92,6 @@ class StreamJob
           end
           break
         end
-
         #Checking whether post is manually ended or not
         if (@post.live == false)
           break

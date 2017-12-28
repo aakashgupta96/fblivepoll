@@ -107,7 +107,7 @@
 	
 	def stop(status="published")
 		live_streams.where(status: [LiveStream.statuses["queued"], LiveStream.statuses["live"]]).each{|l| l.stop(status)}
-    self.update(live: false)
+    self.update(live: false, status: status)
 	end
 
 	def live_on_fb?
@@ -136,9 +136,9 @@
 			any_ls_started = true if ls.start
 		end
 		if any_ls_started
-			self.update(live: true)
+			update(live: true)
 			Resque.enqueue(StreamJob,id)
-		  #Resque.enqueue(NewLive,self.id)
+		  #Resque.enqueue(NewLive,id)
 		  return true
 		else
 			return false
@@ -146,17 +146,17 @@
 	end
 
 	def refresh_browser
-		self.create_html
-		self.update(reload_browser: true)
+		create_html
+		update(reload_browser: true)
 	end
 
 	def cancel_scheduled
-		self.destroy if self.scheduled?
+		destroy if scheduled?
 	end
 
 	def required_images_available?
-		return true unless self.poll? 
-		if self.template.id == 0
+		return true unless poll? 
+		if template.id == 0
 		  self.image.url != nil
 		else
 			self.images.size > 0
@@ -179,14 +179,14 @@
 	
 	def take_screenshot_of_frame
 		driver,headless = open_in_browser("chrome")
-		path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
+		path = File.join(Rails.root,'public','uploads','post',id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
-    sleep 1
+    #sleep 1
     driver.save_screenshot("#{path}/frame.png")
     begin
     	f = File.open(File.join(path,"frame.png"))
     	self.image = f
-    	self.save
+    	save
     rescue
     	#ignore
     ensure
@@ -199,13 +199,13 @@
 
 	def create_html
 		images = self.images #Prepare an html for the frame of this post
-    erb_file = Rails.root.to_s + "/public#{self.template.path}/frame.html.erb" #Path of erb file to be rendered
-    html_file = Rails.root.to_s + "/public/uploads/post/#{self.id}/frame.html" #=>"target file name"
+    erb_file = Rails.root.to_s + "/public#{template.path}/frame.html.erb" #Path of erb file to be rendered
+    html_file = Rails.root.to_s + "/public/uploads/post/#{id}/frame.html" #=>"target file name"
     erb_str = File.read(erb_file)
     namespace = OpenStruct.new(post: self, images: images)
     result = ERB.new(erb_str)
     result = result.result(namespace.instance_eval { binding })
-    path = File.join(Rails.root,'public','uploads','post',self.id.to_s)
+    path = File.join(Rails.root,'public','uploads','post',id.to_s)
     FileUtils.mkdir_p(path) unless File.exist?(path)
     File.open(html_file, 'w') do |f|
       f.write(result)
@@ -213,7 +213,7 @@
     begin
     	f = File.open(html_file)
     	self.html = f
-    	self.save
+    	save
     rescue
     	#ignore
     ensure
@@ -239,7 +239,7 @@
    	headless.start
     attempts = 0
     begin
-    	client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 120, read_timeout: 120)
+    	client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 180, read_timeout: 180)
     	driver = Selenium::WebDriver.for browser.to_sym, options: options, http_client: client
     rescue Exception => e
     	attempts += 1
@@ -247,7 +247,7 @@
     	raise e
     end
     prefix = get_html_url_prefix(browser)
-    driver.navigate.to "#{prefix}#{self.html.url}"
+    driver.get "#{prefix}#{self.html.url}"
     driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width+10} #{height+10}]
@@ -267,12 +267,12 @@
 	end
 
 	def ambient?
-		return (self.duration.hour*3600) + (self.duration.min*60) > 4.hours.to_i
+		return (duration.hour*3600) + (duration.min*60) > 4.hours.to_i
 	end
 
 	def from_google_drive?
-		return false unless self.url_video?
-		url = self.link.url
+		return false unless url_video?
+		url = link.url
 		patterns = [/https:\/\/drive\.google\.com\/file\/d\/(.*?)\/.*?\?usp=sharing/, /https:\/\/drive\.google\.com\/open\?id=(.*)/]
 		patterns.each do |pattern|
 			return true unless (url =~ pattern).nil?
@@ -281,8 +281,8 @@
 	end
 
 	def from_dropbox?
-		return false unless self.url_video?
-		url = self.link.url
+		return false unless url_video?
+		url = link.url
 		pattern = /https:\/\/www\.dropbox\.com\/s\/(.*)\/.*/
 		if (url =~ pattern).nil?
 			false
@@ -292,8 +292,8 @@
 	end
 
 	def from_onedrive?
-		return false unless self.url_video?
-		url = self.link.url
+		return false unless url_video?
+		url = link.url
 		patterns = [/https:\/\/1drv\.ms\/v\/s!(.*?)/]
 		patterns.each do |pattern|
 			return true unless (url =~ pattern).nil?
@@ -302,8 +302,8 @@
 	end
 
 	def from_youtube?
-		return false unless self.url_video?
-		url = self.link.url
+		return false unless url_video?
+		url = link.url
 		pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
 		if (url =~ pattern).nil?
 			false
@@ -315,7 +315,7 @@
 	def youtube_live_to_fb?
 		if from_youtube?
 			pattern = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
-			query = "https://www.googleapis.com/youtube/v3/videos?key=#{ENV['GOOGLE_API_KEY']}&part=snippet&id=#{self.link.url.match(pattern)[7]}"
+			query = "https://www.googleapis.com/youtube/v3/videos?key=#{ENV['GOOGLE_API_KEY']}&part=snippet&id=#{link.url.match(pattern)[7]}"
 			response = HTTParty.get(query)
 			return (response.ok? && response.parsed_response["items"][0]["snippet"]["liveBroadcastContent"] == "live") rescue false
 		else
@@ -324,8 +324,8 @@
 	end
 
 	def fb_live_to_fb?
-		return false unless self.url_video?
-		url = self.link.url
+		return false unless url_video?
+		url = link.url
 		pattern = /^.*(https:)\/\/(www|m)\.(facebook\.com)\/(([a-zA-Z0-9]*)\/videos\/)?([0-9]*).*/
 		post_id = url.match(pattern)[6] rescue nil
 		if post_id.nil? || post_id.empty?
@@ -338,8 +338,8 @@
 	end
 
 	def periscope_to_fb?
-		return false unless self.url_video?
-		url = self.link.url
+		return false unless url_video?
+		url = link.url
 		pattern = /https?:\/\/(?:www\.)?(?:periscope|pscp)\.tv\/[^\/]+\/([a-zA-Z0-9]*[^\/?#])/
 		if (url =~ pattern).nil?
 			false
@@ -354,7 +354,7 @@
 
 
 	def get_file_url
-		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{self.link.url} ]
+		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{link.url} ]
 		download_url.strip
 	end
 
@@ -362,7 +362,7 @@
 		begin
 			attempts = 0
 			url = "https://www.facebook.com/" + self.video_id
-			user_graph = Koala::Facebook::API.new(self.user.token)
+			user_graph = Koala::Facebook::API.new(user.token)
 			page_ids.each do |page_id|
 				begin
 					access_token = user_graph.get_page_access_token(page_id)

@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   def post_params
-    params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio,:category,:video,:image,:key,:background,:template_id,link_attributes: [:url],images_attributes: [:file, :reaction, :name], live_streams_attributes: [:page_id])
+    params.require(:post).permit(:title,:caption,:page_id,:duration,:start_time,:audio,:category,:video,:image,:key,:background,:template_id,link_attributes: [:url],images_attributes: [:file, :reaction, :name], live_streams_attributes: [:page_id, :key])
   end
 
   def authenticate_user!
