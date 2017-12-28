@@ -27,12 +27,6 @@ class Post < ActiveRecord::Base
 	before_save :set_default_values
 	after_save :propogate_status_changes, if: :status_changed?
 
-	def self.migrate_changes_for_live_streams
-		all.each do |post|
-			post.live_streams.create(key: post.key, status: post.status, page_id: post.page_id, live_id: post.live_id, video_id: post.video_id)
-		end
-	end
-
 	def set_default_values
 		self.default_message = Constant::DEFAULT_PROMOTION_MESSAGE
 	end
