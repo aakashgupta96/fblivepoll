@@ -21,9 +21,17 @@ class StreamJob
       end
       rtmp_keys = rtmp_keys.join("|")
       if source_live
-        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
+          command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        else
+          command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        end
       else
-        command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        else
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        end
       end
     else
       rtmp_keys = []
@@ -32,9 +40,17 @@ class StreamJob
       end
       rtmp_keys = rtmp_keys.join("|")
       if source_live
-        command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
+          command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        else
+          command = "$HOME/bin/ffmpeg -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        end
       else
-        command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        else
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 128k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1500k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+        end
       end
     end
     to_fix_alsa = true
@@ -61,7 +77,7 @@ class StreamJob
       nil_count = 0
       restart_process = false
       loop do
-        #oclose_any_firefox_message(headless.display) unless source_live
+        #close_any_firefox_message(headless.display) unless source_live
         @post.reload
         
         #Checking whether duration of post has completed or not
@@ -129,13 +145,13 @@ class StreamJob
     end
   end
 
-  def self.close_any_firefox_message(display)
-    begin
-      %x[DISPLAY=':#{display}' xdotool mousemove 1280 100 click 1]
-      %x[DISPLAY=':#{display}' xdotool mousemove 1290 800 click 1]
-    rescue
-      #Ignore
-    end
-  end
+  # def self.close_any_firefox_message(display)
+  #   begin
+  #     %x[DISPLAY=':#{display}' xdotool mousemove 1280 100 click 1]
+  #     %x[DISPLAY=':#{display}' xdotool mousemove 1290 800 click 1]
+  #   rescue
+  #     #Ignore
+  #   end
+  # end
 
 end
