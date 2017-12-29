@@ -29,7 +29,7 @@ module ApplicationHelper
 		elsif post.scheduled?
 			"Scheduled"
 		elsif post.stopped_by_user?
-			"Stopped by user"
+			"Manually ended by user"
 		elsif post.request_declined?
 			"Facebook declined request for publishing live post. Contact facebook for more details."
 		elsif post.deleted_from_fb?

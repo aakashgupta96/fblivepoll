@@ -10,6 +10,7 @@ class Post < ActiveRecord::Base
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
 	has_many :shared_posts, dependent: :destroy, through: :live_streams
+	has_many :messages
 	belongs_to :user
 	has_many :live_streams, dependent: :destroy
 	belongs_to :template
@@ -400,6 +401,12 @@ class Post < ActiveRecord::Base
 			return true unless (url =~ pattern).nil?
 		end
 		return false
+	end
+
+	def self.update_statuses
+		stopped_by_user.each do |post|
+			post.published!
+		end
 	end
 
 	def propogate_status_changes

@@ -12,7 +12,6 @@ ActiveAdmin.register Post do
 	scope :published
 	scope :scheduled
 	scope :live
-	scope("Erroneous") {|scope| scope.where(id: (scope.drafted + scope.request_declined + scope.deleted_from_fb + scope.network_error).map(& :id))}
 
 	filter :created_at
 	filter :template

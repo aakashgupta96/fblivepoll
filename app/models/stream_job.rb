@@ -48,9 +48,9 @@ class StreamJob
         prefix = @post.get_html_url_prefix("chrome")
         driver.get "#{prefix}#{@post.html.url}"
         to_fix_alsa = false
-        @post.mark_live_on_fb
       end
       unless start_time_initialized
+        @post.mark_live_on_fb
         start_time = Time.now
         @post.update(started_at: start_time)
         start_time_initialized = true

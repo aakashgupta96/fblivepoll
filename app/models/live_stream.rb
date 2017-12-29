@@ -3,6 +3,7 @@ class LiveStream < ActiveRecord::Base
 	delegate :user, to: :post
 	delegate :template, to: :post
 	has_many :shared_posts, dependent: :destroy
+	has_many :messages
 	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
 
 	def live_on_fb?
