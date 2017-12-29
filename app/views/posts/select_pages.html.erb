@@ -2,7 +2,7 @@
 	Select Pages
 </div>
 <div class="row container-wide white z-depth-3">
-  <%= form_tag("/posts/" + @post.id.to_s + "/submit_pages", class: "row zero-margin") do %>
+  <%= form_tag("/posts/" + @post.id.to_s + "/submit_pages",id: "selectPages", class: "row zero-margin") do %>
   	<% @pages.each do |page| %>
 	    <div class="card col s12 m3 l2 relative unchecked page">
 	    	<input type="checkbox" class="checkbox" name="page[<%=page['id']%>]"/>
@@ -15,8 +15,17 @@
 		<input type="submit" class="btn col s12" data-confirm="Are you sure?" value="Submit">
 	<%end%>
 </div>
+<style>
+		body{
+			display: none;
+		}
+</style>
 
 <script>
+	$(window).load(function() {
+  // When the page has loaded
+  $("body").fadeIn(1000);
+});
 	$(document).ready(function(){
 		var max_page_limit = <%=current_user.live_stream_page_limit%>;
 		$(".label").click(function(){
@@ -46,6 +55,22 @@
 			}
 			if(actionTaken)
 				$(this).parent().toggleClass("unchecked checked", 'slow', "easeOutSine");
+		});
+
+		$("#selectPages").on('submit',function(){
+			setTimeout(function(){
+        $.dialog({
+          theme: "supervan",
+          boxWidth: width,
+          useBootstrap: false,
+          title: "Submitting !!!",
+          content: "Please be patient and wait while we are submitting details.",
+          onOpenBefore: function () {
+            $(".jconfirm-closeIcon").hide();
+          }
+        });
+      },1); 
+      return true;
 		});
 	});
 </script>

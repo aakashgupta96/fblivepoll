@@ -169,12 +169,12 @@ class Post < ActiveRecord::Base
 
 	def video_id
 		#Assuming it is required only for live polls
-		live_streams.first.video_id
+		live_streams.first.video_id rescue nil
 	end
 
 	def page_access_token
 		#Assuming that it is required only for polls/videos containing only one live streams
-		live_streams.first.page_access_token
+		live_streams.first.page_access_token rescue nil
 	end
 	
 	def take_screenshot_of_frame

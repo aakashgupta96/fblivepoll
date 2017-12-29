@@ -11,8 +11,9 @@ class PostsController < ApplicationController
   end
 
   def submit_pages
+    return redirect_to show_post_path(@post.id), notice: "Post details have already been submitted. Modifications are not allowed." unless @post.live_streams.empty?
     params["page"].each do |page_id,value|
-      @post.live_streams.create(page_id: page_id) if value == "on"
+      @post.live_streams.create(page_id: page_id, status: @post.status) if value == "on"
     end unless params["page"].nil?
     return save_and_redirect
   end
