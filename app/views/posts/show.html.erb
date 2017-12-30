@@ -4,7 +4,7 @@
     <ul class="collapsible" data-collapsible="accordion">
       <% @post.live_streams.each do |live_stream| %>
       <li>
-        <div class="collapsible-header"><img src="<%=@pages[live_stream.page_id]['image']%>" alt="" class="circle relative" style=" top: 10px;"><span class="relative bold grey-text text-darken-1" style="left: 10px; top: -10px; font-size: 16px;"><%=@pages[live_stream.page_id]['name']%></span></div>
+        <div class="collapsible-header"><img src="<%=@pages[live_stream.page_id]['image'] rescue nil%>" alt="" class="circle relative" style=" top: 10px;"><span class="relative bold grey-text text-darken-1" style="left: 10px; top: -10px; font-size: 16px;"><%=@pages[live_stream.page_id]['name'] rescue nil%></span></div>
         <div class="collapsible-body" style="background-color: rgba(41, 43, 44, 0.9);">
           <ul class="collection">
           <% if live_stream.live? %>
@@ -127,9 +127,28 @@
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>
-          
+          <% unless @post.link.nil? %>
           <li class="collection-item avatar">
-            <i class="material-icons circle red">play_arrow</i>
+            <i class="material-icons circle lime accent-2" style="font-size: 26px;">insert_link</i>
+            <span class="title">Source Video URL</span>
+            <p>
+              <%=@post.link.url%>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <% end %>
+          <% if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id) %>
+          <li class="collection-item avatar">
+            <i class="material-icons circle orange accent-3">live_tv</i>
+            <span class="title">Target URL</span>
+            <p>
+              <%=@post.live_streams.first.key%>
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+          </li>
+          <% end %>
+          <li class="collection-item avatar">
+            <i class="material-icons circle red">access_alarm</i>
             <span class="title">Duration</span>
             <p>
               <%=@post.duration.hour %> Hours : <%=@post.duration.min%> Minutes
@@ -137,7 +156,7 @@
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>
           <li class="collection-item avatar">
-            <i class="material-icons circle green">play_arrow</i>
+            <i class="material-icons circle green">event_note</i>
             <span class="title">Status</span>
             <p>
               <%=status_message(@post)%>

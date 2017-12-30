@@ -93,12 +93,12 @@ class Post < ActiveRecord::Base
 	end
 
 	#Code for removing video files of published or other erroneous loop video posts
-	# def self.remove_videos
-	# 	loop_video.where(live: false).select{|p| p.status != 'scheduled' && p.status != 'drafted' && p.status != 'queued' && p.video.url != nil}.each do |post|
-	# 		post.remove_video = true
-	# 		post.save
-	# 	end
-	# end
+	def self.remove_videos
+		loop_video.where(live: false).select{|p| (p.published? || p.stopped_by_user?) && p.video.url != nil}.each do |post|
+			post.remove_video = true
+			post.save
+		end
+	end
 	
 	def stop(status="published")
 		live_streams.where(status: [LiveStream.statuses["queued"], LiveStream.statuses["live"]]).each{|l| l.stop(status)}
