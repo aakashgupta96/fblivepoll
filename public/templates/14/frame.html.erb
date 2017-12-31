@@ -1,60 +1,28 @@
 <html>
   <head>
-    <title>Loop Video Template 1</title>
+    <title>URL to RTMP</title>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video-js.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
   </head>
 
   <body>
-    <% link = post.get_file_url %>
-    <div class="container">
-      <canvas id="canvas" height="720" width="1280"></canvas>
-    </div>
-    <video id="my-video" class="video-js" loop preload="auto" autoplay width="1280" height="720" data-setup="{}">
-      <source src="<%=link%>" type="video/mp4">
-      <source src="<%=link%>" type="video/ogg">
-      <source src="<%=link%>" type="video/webm">
+    <% video_url = post.get_file_url%>
+    <video loop id="video" width=1280 height=720 class="video-js vjs-default-skin" data-setup='{ "controls": false, "autoplay": true, "preload": "auto"}'>
+      <source src="<%=video_url%>" type="video/mp4">
     </video>
-
+    
+    <script>
+      var player = videojs('video');
+      player.play();
+    </script>
+    <style>
+      *{
+        padding: 0;
+        margin: 0;
+      }
+    </style>
   </body>
 
-    <script>
-        function updateVideo(){
-            var canvas = document.getElementById('canvas');
-            var ctx = canvas.getContext( '2d' );
-            var myVideo = document.getElementById('my-video');
-            ctx.drawImage( myVideo, 0, 0, 1280, 720 );
-        }
-        setInterval ( updateVideo, 24 );
-    </script>
-
-  <style>
-    *{
-      padding: 0;
-      margin: 0;
-      cursor: none !important;
-    }
-    body
-    {
-      height: 720px;
-      width: 1280px;
-      position: relative;
-    }
-    #my-video
-    {
-      display: none;
-      overflow: hidden;
-    }
-    #canvas
-    {
-      position: absolute;
-    }
-    .container
-    {
-      height: 720px;
-      width: 1280px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background-color: black;
-    }
-  </style>
 </html>
