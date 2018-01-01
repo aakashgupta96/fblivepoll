@@ -240,7 +240,7 @@ class Post < ActiveRecord::Base
    	headless.start
     attempts = 0
     begin
-    	client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 180, read_timeout: 180)
+    	client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 300, read_timeout: 300)
     	driver = Selenium::WebDriver.for browser.to_sym, options: options, http_client: client
     rescue Exception => e
     	attempts += 1
