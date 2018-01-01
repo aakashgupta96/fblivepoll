@@ -136,6 +136,7 @@ class Post < ActiveRecord::Base
 		  #Resque.enqueue(NewLive,id)
 		  return true
 		else
+			update(status: "request_declined")
 			return false
 		end
 	end
