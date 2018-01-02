@@ -3,7 +3,6 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user_post!
   before_action :check_not_poll_and_status_of_post, only: [:select_pages, :submit_pages]
-  before_action :check_slots_and_concurrent_eligibility_of_user, only: [:select_pages, :submit_pages]
   before_action :check_for_eligibility_of_free_posts, only: [:select_pages, :submit_pages]
 
   def select_pages
