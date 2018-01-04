@@ -115,7 +115,7 @@
             <i class="material-icons circle brown">label</i>
             <span class="title">Title</span>
             <p>
-              <%=@post.title.capitalize%>
+              <%=@post.title.capitalize rescue nil%>
             </p>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
           </li>

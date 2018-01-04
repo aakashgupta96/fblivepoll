@@ -22,7 +22,7 @@
     </div>
     <div class="card-reveal relative">
       <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>
-      <p class="truncate"><%=post.caption.capitalize%></p>
+      <p class="truncate"><%=post.caption.capitalize rescue nil%></p>
       <p>Duration => <%= post.duration.hour %>hrs:<%=post.duration.min%>min</p>
       <% unless post.video_id.nil? %>
       <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>

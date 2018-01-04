@@ -22,7 +22,7 @@
     </div>
     <div class="card-reveal relative">
       <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>
-      <p><%=post.caption.capitalize%></p>
+      <p><%=post.caption.capitalize rescue nil%></p>
       <div class="absolute" style=" bottom: 10px;">
         <% if post.live %>
       		<%= link_to "End Video", stop_post_path(post.id), data: {confirm: "This will end your live post. Are you sure you want to continue?", method: "post" }, class: "btn btn-less-padding margin-2 bolder"%>
