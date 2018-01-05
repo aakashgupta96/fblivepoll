@@ -165,9 +165,9 @@ class LiveStream < ActiveRecord::Base
 			live.each do |ls|
 				ls.update_status if ls.ended_on_fb?
 			end
-			stopped_by_user.each do |ls|
-				ls.update_status
-			end
+			# stopped_by_user.each do |ls|
+			# 	ls.update_status
+			# end
 			unknown.each do |ls|
 				if Constant::RTMP_TEMPLATE_IDS.include?(ls.template.id)
 					ls.published!
