@@ -55,7 +55,6 @@
       <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down bolder">
         <li><a href="/" class="nav-option center-align flexbox"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
-        <li><a href="/pricing" class="nav-option center-align flexbox"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="icon-descriptor">Pricing</span></a></li>
         <li><a href="/faqs" class="nav-option center-align flexbox"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
         <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li>
         <li style="margin-right: 10px; margin-top: 14px;">
@@ -90,7 +89,6 @@
       </ul>
       <ul class="side-nav" id="mobile-demo">
         <li><a href="/"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
-        <li><a href="/pricing"><i class="material-icons">add_shopping_cart</i><span class="icon-descriptor">Pricing</span></a></li>
         <li><a href="/faqs"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
         <li><a href="/demo"><i class="material-icons">ondemand_video</i><span class="icon-descriptor">Watch Demo</span></a></li>
         <% if user_signed_in? %>
@@ -127,11 +125,7 @@
         });
    </script>
   <% end %>
-
-  <!-- <div class="container-wide section white card hoverable" style="margin: 10px auto">
-    <div class="grey-text text-darken-2 center-align bold" style="font-size: 20px;">Interested in Buying or Selling Facebook Pages? <a href="https://www.facebook.com/shurikenlivepages" target="_blank" class="btn btn-less-padding" style="margin-left: 10px;">Contact US</a></div>
-  </div> -->
-
+  
   <main>
     <%= yield %>
   </main>

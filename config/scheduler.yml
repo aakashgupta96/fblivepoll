@@ -12,25 +12,12 @@ queue_unknown_posts_for_updating_status:
   queue: update_statuses
   description: "This will hit facebook api and update status of post based on response."
 
-remove_videos_of_published_posts:
-  every:
-    - "1d"
-  class: "RemoveVideos"
-  queue: remove_videos
-  description: "This will remove video of posts that are no more required."
-
 update_captions_of_post:
   every:
     - "20s"
   class: "UpdateCaptions"
   queue: update_captions
   description: "This will hit facebook api and update caption of a free user's post."
-
-clean_up_erroneous_post:
-  every:
-    - "1d"
-  class: "DestroyErroneousPosts"
-  queue: "destroy_erroneous_posts"
 
 end_subscription_of_users:
   every:
