@@ -8,8 +8,8 @@ CarrierWave.configure do |config|
 	      :provider               => 'AWS',
 	      :aws_access_key_id      => ENV['AWS_ACCESS_KEY'],
 	      :aws_secret_access_key  => ENV['AWS_SECRET_KEY'],
-	      :region                 => 'nyc3', # Change this for different AWS region. Default is 'us-east-1'
-	      :endpoint               => 'https://nyc3.digitaloceanspaces.com'
+	      :region                 => 'ams3', # Change this for different AWS region. Default is 'us-east-1'
+	      :endpoint               => 'https://ams3.digitaloceanspaces.com'
 	  }
 	  config.storage = :fog
 	  config.fog_directory  = "swarnimsps"

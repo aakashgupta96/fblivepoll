@@ -52,7 +52,7 @@ class LoopVideosController < ApplicationController
       return redirect_to submit_post_path(@post.id) if @post.scheduled?
       return redirect_to root_path, alert: Constant::NO_SLOT_AVAILABLE_MESSAGE
     else 
-      return redirect_to frame_path(@post.id), notice: 'Error occured while saving post'
+      return redirect_to dashboard_path, notice: 'Error occured while saving post'
     end
   end
 

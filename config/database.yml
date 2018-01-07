@@ -7,15 +7,15 @@ default: &default
   host: <%= ENV['HOST'] %>
 development:
   <<: *default
-  database: db/shuriken_live_dev
+  database: db/swarnim_touch_dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/shuriken_live_test
+  database: db/swarnim_touch_test
 
 production:
   <<: *default
-  database: db/shuriken_live_prod
+  database: db/swarnim_touch_prod
