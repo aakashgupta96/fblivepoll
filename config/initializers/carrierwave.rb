@@ -12,7 +12,7 @@ CarrierWave.configure do |config|
 	      :endpoint               => 'https://ams3.digitaloceanspaces.com'
 	  }
 	  config.storage = :fog
-	  config.fog_directory  = "swarnimsps"
+	  config.fog_directory  = "swarnimtouch"
 	  config.fog_attributes = { :multipart_chunk_size => 104857600 }
 		ENV["prefix"] = ""
 	end
