@@ -33,7 +33,7 @@ module Live
       end if File.exists?(env_file)
     end
     if Rails.env.production?
-      ENV["domain"] = "http://188.226.167.240"
+      ENV["domain"] = "http://www.streamidea.com"
       # ENV["INSTAMOJO_KEY"] = ENV["PROD_INSTAMOJO_KEY"]
       # ENV["INSTAMOJO_TOKEN"] = ENV["PROD_INSTAMOJO_TOKEN"]
       # ENV["INSTAMOJO_API_BASE_URL"] = ENV["PROD_INSTAMOJO_API_BASE"]
