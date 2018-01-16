@@ -34,6 +34,7 @@ module Live
     end
     if Rails.env.production?
       ENV["domain"] = "http://www.streamidea.com"
+      ENV["domain_name"] = "www.streamidea.com"
       # ENV["INSTAMOJO_KEY"] = ENV["PROD_INSTAMOJO_KEY"]
       # ENV["INSTAMOJO_TOKEN"] = ENV["PROD_INSTAMOJO_TOKEN"]
       # ENV["INSTAMOJO_API_BASE_URL"] = ENV["PROD_INSTAMOJO_API_BASE"]
@@ -45,6 +46,7 @@ module Live
       # ENV["PAYPAL_API_BASE_URL"] = ENV["PROD_PAYPAL_API_BASE"]
     else
       ENV["domain"] = "http://localhost:3000"
+      ENV["domain_name"] = "www.streamidea.com"
       # ENV["INSTAMOJO_KEY"] = ENV["DEV_INSTAMOJO_KEY"]
       # ENV["INSTAMOJO_TOKEN"] = ENV["DEV_INSTAMOJO_TOKEN"]
       # ENV["INSTAMOJO_API_BASE_URL"] = ENV["DEV_INSTAMOJO_API_BASE"]

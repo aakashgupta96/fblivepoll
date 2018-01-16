@@ -1,7 +1,5 @@
 class NewLive
 	@queue = :new_live
-	@support = ["support@shurikenlive.com"]
-	@admins = ["aakash@shurikenlive.com"]
 	@editors = []
 
 	def self.perform(post_id=nil)
