@@ -52,7 +52,7 @@
         <%= f.label "Title" %>
       </div>
       <div class="input-field col s12 l6">
-        <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, default:{hour: 0, minute: 30}, time_separator: ""},{class: 'col s6'}%>
+        <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, include_seconds: true, default:{hour: 0, minute: 30, second: 0}, time_separator: ""},{class: 'col s4'}%>
         <%= f.label :duration, "Duration ( Hrs : Min )" %>
       </div>
     </div>
