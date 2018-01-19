@@ -15,8 +15,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
   <script src="https://js.instamojo.com/v1/button.js"></script>
 </head>
-<!-- Script for Crisp Live Chat Box -->
-<script type="text/javascript"> window.$crisp=[];window.CRISP_WEBSITE_ID="a51d3462-8f3f-4705-935b-f057de03e95d";(function(){ d=document;s=d.createElement("script"); s.src="https://client.crisp.chat/l.js"; s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})(); </script>
+
 <body>
   
   <nav class="white grey-text">
@@ -26,7 +25,6 @@
       <ul class="right hide-on-med-and-down bolder">
         <li><a href="/" class="nav-option center-align flexbox grey-text text-darken-2"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
         <li><a href="/faqs" class="nav-option center-align flexbox grey-text text-darken-2"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
-        <li><a href="/demo" class="nav-option center-align grey-text text-darken-2">Watch Demo</a></li>
         <li style="margin-right: 10px; margin-top: 14px;">
           <div class='dropdown-button waves-effect waves-light btn btn-less-padding flexbox' data-activates='dropdown1' style="flex-wrap: nowrap;">
             <i class="material-icons">videocam</i><span class="icon-descriptor">Plugins<span class="newFeature">New</span></span>
@@ -60,7 +58,6 @@
       <ul class="side-nav" id="mobile-demo">
         <li><a href="/"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
         <li><a href="/faqs"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
-        <li><a href="/demo"><i class="material-icons">ondemand_video</i><span class="icon-descriptor">Watch Demo</span></a></li>
         <% if user_signed_in? %>
           <li><%= link_to raw("<i class='material-icons'>dashboard</i><span class='icon-descriptor'>Dashboard</span>"), dashboard_path%></li>
         <% end %>
