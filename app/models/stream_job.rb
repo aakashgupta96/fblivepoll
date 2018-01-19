@@ -122,7 +122,7 @@ class StreamJob
           end
           break
         end
-        sleep(2)
+        sleep(1)
       end #End of inside loop
 
       unless restart_process
