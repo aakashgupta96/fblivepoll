@@ -351,7 +351,8 @@ class Post < ActiveRecord::Base
 	end
 
 	def source_file_is_live?
-		return youtube_live_to_fb? || periscope_to_fb? #|| fb_live_to_fb?
+		return get_file_url.include?(".m3u8")
+		#return youtube_live_to_fb? || periscope_to_fb? #|| fb_live_to_fb?
 	end
 
 
