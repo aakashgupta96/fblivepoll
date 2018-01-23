@@ -356,7 +356,7 @@ class Post < ActiveRecord::Base
 
 
 	def get_file_url
-		return nil if link.nil?
+		return "" if link.nil?
 		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{link.url} ]
 		download_url.strip
 	end
