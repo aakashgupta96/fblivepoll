@@ -11,7 +11,7 @@ ActiveAdmin.register Template do
 		column :needs_background
 		column :needs_image_names
 		column :category
-			actions
+		actions
 	end
 
 	filter :path

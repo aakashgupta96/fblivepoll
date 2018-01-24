@@ -11,5 +11,8 @@ ActiveAdmin.register SharedPost do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
+	controller do
+    actions :all, :except => [:edit, :destroy]
+  end
 
 end
