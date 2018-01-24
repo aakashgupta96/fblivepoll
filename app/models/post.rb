@@ -9,10 +9,10 @@ class Post < ActiveRecord::Base
 	
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
-	has_many :shared_posts, dependent: :destroy, through: :live_streams
 	has_many :messages
 	belongs_to :user
 	has_many :live_streams, dependent: :destroy
+	has_many :shared_posts, dependent: :destroy, through: :live_streams
 	belongs_to :template
 	has_one :link, dependent: :destroy
 	
