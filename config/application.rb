@@ -21,7 +21,6 @@ module Live
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.assets.paths << "#{Rails.root}/app/assets/videos"
     config.action_dispatch.default_headers = {
       'X-Frame-Options' => 'ALLOWALL'
     }
