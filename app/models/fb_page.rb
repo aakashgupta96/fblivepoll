@@ -60,7 +60,7 @@ class FbPage < ActiveRecord::Base
 
 		#Retrying individually for each page where error occured
 		erroneous_pages.each do |page_id|
-			query = "https://graph.facebook.com/v2.8/?ids=#{page_id}&fields=fields=name,picture.type(large){url},fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+			query = "https://graph.facebook.com/v2.8/?ids=#{page_id}&fields=name,picture.type(large){url},fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
 			begin
 				response = HTTParty.get(query)
 				if response.ok?
