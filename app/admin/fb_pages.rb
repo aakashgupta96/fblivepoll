@@ -1,4 +1,4 @@
-ActiveAdmin.register BigPage do
+ActiveAdmin.register FbPage do
 	
 	actions :all
 	
@@ -9,6 +9,7 @@ ActiveAdmin.register BigPage do
 		column :page_id
 		column :image_url
 		column :fan_count
+		column :status
 		actions
 	end
 
@@ -19,6 +20,7 @@ ActiveAdmin.register BigPage do
   		row :page_id
   		row :image_url
   		row :fan_count
+  		row :status
   		row :created_at
   	end
     active_admin_comments

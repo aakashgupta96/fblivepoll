@@ -2,7 +2,8 @@ class FbPage < ActiveRecord::Base
 	
 	enum status: [:small, :removed, :big]
 	validates :page_id, uniqueness: true, presence: true
-
+	paginates_per Constant::BIGPAGES_PER_PAGE
+	
 	def self.update_information(follower_count=100000,batch_size=49)
 		#Adding new pages to table
 		new_page_ids = (LiveStream.pluck(:page_id).compact.to_set - all.pluck(:page_id).to_set)
@@ -20,12 +21,10 @@ class FbPage < ActiveRecord::Base
 				begin
 					response = HTTParty.get(query)
 					if response.ok?
-						response.parsed_response.each do |id,value|
-							page = FbPage.find_by_page_id(id)
+						response.parsed_response.each do |page_id,value|
+							page = FbPage.find_by_page_id(page_id)
 							page.update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
-							if value["fan_count"].to_i > follower_count
-								page.big!
-							end
+							page.big! if (value["fan_count"].to_i > follower_count)
 						end
 					else
 						erroneous_pages += current_batch
@@ -44,12 +43,10 @@ class FbPage < ActiveRecord::Base
 		begin
 			response = HTTParty.get(query)
 			if response.ok?
-				response.parsed_response.each do |id,value|
-					page = FbPage.find_by_page_id(id)
+				response.parsed_response.each do |page_id,value|
+					page = FbPage.find_by_page_id(page_id)
 					page.update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
-					if value["fan_count"].to_i > follower_count
-						page.big!
-					end
+					page.big! if (value["fan_count"].to_i > follower_count)
 				end
 			else
 				erroneous_pages += current_batch
@@ -65,11 +62,9 @@ class FbPage < ActiveRecord::Base
 				response = HTTParty.get(query)
 				if response.ok?
 					response.parsed_response.each do |id,value|
-						page = FbPage.find_by_page_id(id)
+						page = FbPage.find_by_page_id(page_id)
 						page.update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
-						if value["fan_count"].to_i > follower_count
-							page.big!
-						end
+						page.big! if (value["fan_count"].to_i > follower_count)
 					end
 				else
 					puts response.code,response.parsed_response["error"]["message"],page_id

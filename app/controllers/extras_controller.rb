@@ -6,14 +6,14 @@ class ExtrasController < ApplicationController
 
   def home
 		@templates = ordered_templates_accoding_to_user(Template.all)
-		@clients = BigPage.order(fan_count: :desc).limit(8)
+		@clients = FbPage.big.order(fan_count: :desc).limit(8)
   end
   
 	def privacy
 	end
 		
 	def clients
-		@clients = BigPage.order(fan_count: :desc).page(params[:page])
+		@clients = FbPage.big.order(fan_count: :desc).page(params[:page])
 	end
 
 	def terms
