@@ -21,7 +21,8 @@ class FbPage < ActiveRecord::Base
 					response = HTTParty.get(query)
 					if response.ok?
 						response.parsed_response.each do |id,value|
-							page = FbPage.find_by_page_id(id).update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
+							page = FbPage.find_by_page_id(id)
+							page.update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
 							if value["fan_count"].to_i > follower_count
 								page.big!
 							end
@@ -44,7 +45,8 @@ class FbPage < ActiveRecord::Base
 			response = HTTParty.get(query)
 			if response.ok?
 				response.parsed_response.each do |id,value|
-					page = FbPage.find_by_page_id(id).update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
+					page = FbPage.find_by_page_id(id)
+					page.update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
 					if value["fan_count"].to_i > follower_count
 						page.big!
 					end
@@ -63,7 +65,8 @@ class FbPage < ActiveRecord::Base
 				response = HTTParty.get(query)
 				if response.ok?
 					response.parsed_response.each do |id,value|
-						page = FbPage.find_by_page_id(id).update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
+						page = FbPage.find_by_page_id(id)
+						page.update(name: value["name"], image_url: value["picture"]["data"]["url"], fan_count: value["fan_count"])
 						if value["fan_count"].to_i > follower_count
 							page.big!
 						end
