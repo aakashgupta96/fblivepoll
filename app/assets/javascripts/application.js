@@ -19,7 +19,7 @@
 // = require_tree
 
 var width;
-$( document ).ready(function(){
+$(document).ready(function(){
     width = Math.min(650,0.9*$(window).width());
     $('.modal').modal();
     $('.parallax').parallax();

@@ -11,28 +11,30 @@
   <% end %>
 </div>
 <script>
-	if(sessionStorage.getItem("livePolllingRestricted") != "true")
-	{
-		$.alert({
-		  theme: "supervan",
-		  boxWidth: width,
-		  useBootstrap: false,
-		  title: "Restricted Templates !",
-		  content: "<%=Constant::LIVE_POLLING_RESTRICTED_MESSAGE%>",
-		  buttons: {
-		  	readPolicies: {
-		  		text: "Read FB Live Policies",
-		  		action: function(){
-		  			window.open('https://developers.facebook.com/policy#liveAPI','_blank');
-		  		}
-		  	},
-		  	dismiss: function(){
-		  		$(this).hide();
-		  	}
-		  	
-		  }
-		});
-		sessionStorage.setItem("livePolllingRestricted",true);
-	}
+	$(document).ready(function(){
+		if(sessionStorage.getItem("livePolllingRestricted") != "true")
+		{
+			$.alert({
+			  theme: "supervan",
+			  boxWidth: width,
+			  useBootstrap: false,
+			  title: "Restricted Templates !",
+			  content: "<%=Constant::LIVE_POLLING_RESTRICTED_MESSAGE%>",
+			  buttons: {
+			  	readPolicies: {
+			  		text: "Read FB Live Policies",
+			  		action: function(){
+			  			window.open('https://developers.facebook.com/policy#liveAPI','_blank');
+			  		}
+			  	},
+			  	dismiss: function(){
+			  		$(this).hide();
+			  	}
+			  	
+			  }
+			});
+			sessionStorage.setItem("livePolllingRestricted",true);
+		}
+	});
 	
 </script>
