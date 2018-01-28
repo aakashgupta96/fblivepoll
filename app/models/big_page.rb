@@ -18,7 +18,8 @@ class BigPage < ActiveRecord::Base
 		pages_array = Array.new
 		big_pages = Set.new
 		erroneous_pages = Array.new
-		Post.all.pluck(:page_id).to_set.each do |page_id|
+		LiveStream.all.pluck(:page_id).to_set.each do |page_id|
+			next if page_id.nil?
 			if pages_array.size <= batch_size	
 				pages_array << page_id
 			else
@@ -41,6 +42,7 @@ class BigPage < ActiveRecord::Base
 				pages_array.clear
 			end
 		end
+		#Work for Last batch in array
 		query = "https://graph.facebook.com/v2.8/?ids=#{pages_array.join(',')}&fields=fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
 		pages_array.clear
 		begin
@@ -55,6 +57,8 @@ class BigPage < ActiveRecord::Base
 		rescue Exception => e
 			puts e.class, e.message
 		end
+
+		#Retrying individually for each page where error occured
 		erroneous_pages.each do |page_id|
 			query = "https://graph.facebook.com/v2.8/?ids=#{page_id}&fields=fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
 			begin

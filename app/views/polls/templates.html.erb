@@ -1,16 +1,38 @@
-<!-- <center>
-	<ins class="adsbygoogle"
-	     style="display:block"
-	     data-ad-client="ca-pub-4726706343331157"
-	     data-ad-slot="5921286380"
-	     data-ad-format="auto"></ins>
-	<script>
-	(adsbygoogle = window.adsbygoogle || []).push({});
-	</script>
-</center>
- --><div class="header page-heading grey-text text-darken-2 bolder center">Live Poll Templates</div>
+<div class="header page-heading grey-text text-darken-2 bolder center">Live Poll Templates</div>
+<div class="row">
+	<div class="center-align">
+		<div class="note white-text container-extrawide">
+			<div><%=Constant::LIVE_POLLING_RESTRICTED_MESSAGE%></div>
+		</div>
+</div>
 <div class="row post-container white z-depth-3">
   <% @templates.each do |template| %>
       <%= render 'template', template: template %>
   <% end %>
 </div>
+<script>
+	if(sessionStorage.getItem("livePolllingRestricted") != "true")
+	{
+		$.alert({
+		  theme: "supervan",
+		  boxWidth: width,
+		  useBootstrap: false,
+		  title: "Restricted Templates !",
+		  content: "<%=Constant::LIVE_POLLING_RESTRICTED_MESSAGE%>",
+		  buttons: {
+		  	readPolicies: {
+		  		text: "Read FB Live Policies",
+		  		action: function(){
+		  			window.open('https://developers.facebook.com/policy#liveAPI','_blank');
+		  		}
+		  	},
+		  	dismiss: function(){
+		  		$(this).hide();
+		  	}
+		  	
+		  }
+		});
+		sessionStorage.setItem("livePolllingRestricted",true);
+	}
+	
+</script>

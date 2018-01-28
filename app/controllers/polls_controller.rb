@@ -39,7 +39,6 @@ class PollsController < ApplicationController
     end
     @post.update(counter_color: params[:color])
     data = params[:data_uri]
-    #return redirect_to frame_path(@post.id), notice: 'Error occured while saving post' if data.nil?
     image_data = Base64.decode64(data['data:image/png;base64,'.length .. -1])
 
     path = File.join(Rails.root,'public','uploads','post',@post.id.to_s)
