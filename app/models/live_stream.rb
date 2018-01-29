@@ -213,9 +213,10 @@ class LiveStream < ActiveRecord::Base
 	def self.get_details
 		temp = Hash.new()
     attempts = 0
+    page_ids = pluck(:page_id)
+    return temp if page_ids.empty?
     begin
       graph = Koala::Facebook::API.new(ENV["FB_ACCESS_TOKEN"])
-      page_ids = pluck(:page_id)
       query = "?ids=#{page_ids.first(49).join(',')}&fields=picture{url},name"
       response = graph.get_object(query)
       response.each do |page_attrs|
