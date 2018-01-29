@@ -13,7 +13,8 @@ class FbPage < ActiveRecord::Base
 
 		current_batch = Array.new
 		erroneous_pages = Array.new
-		all.pluck(:page_id).each do |page_id|
+		complete_batch = FbPage.big.pluck(:page_id) + FbPage.small.pluck(:page_id)
+		complete_batch.each do |page_id|
 			if current_batch.size <= batch_size	
 				current_batch << page_id
 			else
@@ -71,7 +72,8 @@ class FbPage < ActiveRecord::Base
 					FbPage.find_by_page_id(page_id).removed!
 				end
 			rescue Exception => e
-					puts e.class, e.message
+				FbPage.find_by_page_id(page_id).removed!
+				puts e.class, e.message
 			end
 		end
 	end

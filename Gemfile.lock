@@ -335,6 +335,7 @@ GEM
     multi_json (1.12.2)
     multi_xml (0.6.0)
     multipart-post (1.2.0)
+    net-ssh (4.2.0)
     netrc (0.11.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
@@ -522,6 +523,7 @@ DEPENDENCIES
   materialize-sass (~> 0.99.0)
   mediaelement_rails
   mini_magick
+  net-ssh
   omniauth-facebook
   pg (~> 0.20.0)
   process_exists

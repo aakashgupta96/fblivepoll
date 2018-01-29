@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'net-ssh'
 gem 'Instamojo-rb', '~> 1.1'
 gem 'resque-scheduler'
 gem 'activeadmin', github: 'activeadmin'
