@@ -16,12 +16,12 @@
       </ul>
     </div>
     <div class="card-content grey lighten-4">
-      <div id="title<%=post.id%>" class="truncate"><%=post.title.capitalize%></div>
-      <div id="caption<%=post.id%>" class="truncate"><%=post.caption.capitalize%></div>
+      <div id="title<%=post.id%>" class="truncate"><%=post.title.capitalize rescue nil%></div>
+      <div id="caption<%=post.id%>" class="truncate"><%=post.caption.capitalize rescue nil%></div>
       <div id="details<%=post.id%>" class="truncate"><%= link_to "Click here for all details", show_post_path(post.id) %></div>
     </div>
     <div class="card-reveal relative">
-      <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize%><i class="material-icons right">close</i></span>
+      <span class="card-title grey-text text-darken-4 truncate bolder"><%=post.title.capitalize rescue nil%><i class="material-icons right">close</i></span>
       <p><%=post.caption.capitalize rescue nil%></p>
       <div class="absolute" style=" bottom: 10px;">
         <% if post.live %>
