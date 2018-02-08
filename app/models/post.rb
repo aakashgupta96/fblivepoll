@@ -250,7 +250,7 @@ class Post < ActiveRecord::Base
     end
     prefix = get_html_url_prefix(browser)
     driver.navigate.to "#{prefix}#{self.html.url}"
-    driver.manage.window.position = Selenium::WebDriver::Point.new(22,0)
+    driver.manage.window.position = Selenium::WebDriver::Point.new(0,0)
     driver.manage.window.size = Selenium::WebDriver::Dimension.new(width,height)
     %x[DISPLAY=':#{headless.display}' xdotool mousemove #{width+10} #{height+10}]
     [driver,headless]
