@@ -5,24 +5,40 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video-js.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
-  </head>
-
-  <body>
-    <% video_url = post.get_file_url%>
-	 	<video loop id="video" width=1280 height=720 class="video-js vjs-default-skin" data-setup='{ "controls": false, "autoplay": true, "preload": "auto"}'>
-      <source src="<%=video_url%>" type="video/mp4">
-    </video>
-    
-    <script>
-      var player = videojs('video');
-      player.play();
-    </script>
     <style>
       *{
         padding: 0;
         margin: 0;
       }
     </style>
+  </head>
+
+  <body>
+    <% if post.fb_live_to_fb? %>
+      <div id="fb-root"></div>
+      <script>
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.12&appId=<%=ENV['FACEBOOK_KEY']%>";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+      </script>
+
+      <div class="fb-video" data-href="<%=post.link.url%>" data-width="1280" data-show-text="false" data-autoplay="true">
+      </div>
+    <% else %>
+      <% video_url = post.get_file_url%>
+  	 	<video loop id="video" width=1280 height=720 class="video-js vjs-default-skin" data-setup='{ "controls": false, "autoplay": true, "preload": "auto"}'>
+        <source src="<%=video_url%>" type="video/mp4">
+      </video>
+      
+      <script>
+        var player = videojs('video');
+        player.play();
+      </script>
+    <% end %>
   </body>
 
 </html>

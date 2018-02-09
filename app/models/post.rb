@@ -260,11 +260,11 @@ class Post < ActiveRecord::Base
 		if Rails.env.production?
     	prefix = nil
     else
-    	if browser == "firefox"
+    	#if browser == "firefox"
     		prefix = "http://localhost:3000"
-    	else
-    		prefix = "file://#{Rails.root.to_s}/public"
-    	end
+    	#else
+    	#	prefix = "file://#{Rails.root.to_s}/public"
+    	#end
     end
 	end
 
@@ -325,9 +325,10 @@ class Post < ActiveRecord::Base
 		end
 	end
 
-	def fb_live_to_fb?
-		return false unless url_video?
-		url = link.url
+	def fb_live_to_fb?(passed_url = nil)
+		return false if (!url_video? && passed_url.nil?)
+		url = link.url rescue nil
+		url = passed_url if passed_url
 		pattern = /^.*(https:)\/\/(www|m)\.(facebook\.com)\/(([a-zA-Z0-9]*)\/videos\/)?([0-9]*).*/
 		post_id = url.match(pattern)[6] rescue nil
 		if post_id.nil? || post_id.empty?
@@ -351,7 +352,8 @@ class Post < ActiveRecord::Base
 	end
 
 	def source_file_is_live?
-		return get_file_url.include?(".m3u8")#|| fb_live_to_fb?
+		#This does not include FB Live videos as they are not m3u8 urls, but Dash URL which can't be directly used for streaming
+		return get_file_url.include?(".m3u8")
 	end
 
 
@@ -391,7 +393,9 @@ class Post < ActiveRecord::Base
 		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{url}]
 		download_url.strip!
 		if (download_url.empty? || Post.from_google_drive(url))
-			return false
+			#Checking if video is from FB Live
+			result = (Post.new.fb_live_to_fb?(url))
+			return result
 		else
 			return true
 		end

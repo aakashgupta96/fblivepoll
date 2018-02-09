@@ -70,6 +70,10 @@ class StreamJob
         start_time = Time.now
         @post.update(started_at: start_time)
         start_time_initialized = true
+        if @post.fb_live_to_fb?
+          sleep(10)
+          unmute_iframe(headless.display)
+        end
       end
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
@@ -144,6 +148,18 @@ class StreamJob
       %x[kill -9 #{target_ids}]
     end
   end
+
+  def self.unmute_iframe(display)
+    begin
+      %x[DISPLAY=':#{display}' xdotool mousemove 1120 760 click 1]
+      sleep(0.3)
+      %x[DISPLAY=':#{display}' xdotool mousemove 1120 760 click 1]
+      %x[DISPLAY=':#{display}' xdotool mousemove 1300 810 ]
+    rescue
+      false
+    end
+  end
+
 
   # def self.close_any_firefox_message(display)
   #   begin
