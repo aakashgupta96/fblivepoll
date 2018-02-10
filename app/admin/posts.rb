@@ -43,7 +43,7 @@ ActiveAdmin.register Post do
 
 	index as: :grid do |post|
 		a href: admin_post_path(post) do
-        img src: post.image.url, style: "width: 100%;"
+        img src: image_url(post), style: "width: 100%;"
         div post.title, style: "text-align: center; font-size: 18px;"
     end
     #link_to image_tag(post.image.url, {style: "width: 250px;"}), admin_post_path(post)

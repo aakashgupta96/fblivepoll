@@ -277,3 +277,8 @@ ActiveAdmin.setup do |config|
   # config.order_clause = MyOrderClause
   
 end
+
+# Manually changed
+module ActiveAdmin::ViewHelpers
+  include ApplicationHelper
+end

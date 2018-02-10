@@ -15,11 +15,7 @@
 			<div class="row">
 					<div class="card hoverable z-depth-5">
 					  <div class="card-image">
-					  	<% if @post.poll? %>
-					    	<img src="<%=@post.image.url%>">
-					    <% else %>
-					    	<img src="/videos/frame.png">
-					 		<% end %>
+					    <img src="<%=image_url(@post)%>">
 				    </div>
 					  <div class="card-content">
 					    <p><%=@post.caption%></p>

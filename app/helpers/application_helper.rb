@@ -1,4 +1,9 @@
 module ApplicationHelper
+	
+	def image_url(post)
+		return post.image.url.nil? ? "/videos/frame.png"  : post.image.url
+	end
+
 	def current_user_is_donor?
 		if current_user
 			return current_user.member?	? false : true

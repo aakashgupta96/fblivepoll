@@ -1,11 +1,7 @@
 <div class="col s12 m6 l4 hoverable">
 	<div class="card">
     <div class="card-content zero-padding">
-      <% if post.poll? %>
-        <img src="<%=post.image.url%>" class=" activator post-image">
-      <% else %>
-        <img src="/videos/frame.png" class=" activator post-image">
-      <% end %>
+      <img src="<%=image_url(post)%>" class=" activator post-image">
     </div>
     <div class="card-tabs">
       <ul class="tabs">
