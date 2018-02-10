@@ -232,8 +232,8 @@ class Post < ActiveRecord::Base
    		options = Selenium::WebDriver::Firefox::Options.new #(profile: profile)
    		headless = Headless.new(dimensions: "1920x1200x24")
    	else 
-   		width = 1290
-   		height = 800
+   		width = 1280
+   		height = 786
    		options = Selenium::WebDriver::Chrome::Options.new
    		options.add_argument("--no-sandbox")
    		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
