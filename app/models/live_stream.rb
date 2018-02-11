@@ -128,18 +128,22 @@ class LiveStream < ActiveRecord::Base
 		end
 	end
 
-	def update_status
+	def update_status #Can change status to deleted, published and session invalid state
 		if Constant::RTMP_TEMPLATE_IDS.include?(template.id)
 			self.published!
 			return
 		end
 		begin
-			query = "https://graph.facebook.com/v2.8/?ids=#{video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
-			status = HTTParty.get(query)
-			if status.parsed_response["#{video_id}"].nil?
-				self.deleted_from_fb!
-			else
+			query_from_app = "https://graph.facebook.com/v2.8/#{video_id}?access_token=#{ENV['FB_ACCESS_TOKEN']}"
+			query_from_user = "https://graph.facebook.com/v2.8/#{video_id}?access_token=#{user.token}"
+			status_from_app = HTTParty.get(query_from_app)
+			status_from_user = HTTParty.get(query_from_user)
+			if status_from_app.ok? and status_from_user.ok?
+				self.published!
+			elsif status_from_app.ok?
 				self.user_session_invalid!
+			else
+				self.deleted_from_fb!
 			end
 		rescue Exception => e
 			puts e.class,e.message
@@ -173,9 +177,11 @@ class LiveStream < ActiveRecord::Base
 
 	def self.update_statuses	
 		begin
+			#Required when some live streams of post are ended from fb end
 			live.each do |ls|
 				ls.update_status if ls.ended_on_fb?
 			end
+
 			# stopped_by_user.each do |ls|
 			# 	ls.update_status
 			# end
@@ -184,18 +190,16 @@ class LiveStream < ActiveRecord::Base
 					ls.published!
 					next
 				end
-				query = "https://graph.facebook.com/v2.8/?ids=#{ls.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
-				status = HTTParty.get(query)
-				if status.parsed_response["#{ls.video_id}"].nil?
-					ls.deleted_from_fb!
+				query_from_app = "https://graph.facebook.com/v2.8/#{ls.video_id}?access_token=#{ENV['FB_ACCESS_TOKEN']}"
+				query_from_user = "https://graph.facebook.com/v2.8/#{ls.video_id}?access_token=#{ls.user.token}"
+				status_from_app = HTTParty.get(query_from_app)
+				status_from_user = HTTParty.get(query_from_user)
+				if status_from_app.ok? and status_from_user.ok?
+					self.network_error! #Can it be changed to published ?
+				elsif status_from_app.ok?
+					self.user_session_invalid!
 				else
-					query_with_user_token = "https://graph.facebook.com/v2.8/?ids=#{ls.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ls.user.token}"
-					status = HTTParty.get(query_with_user_token)
-					if status.ok?
-						ls.network_error!
-					else
-						ls.user_session_invalid!
-					end
+					self.deleted_from_fb!
 				end
 			end
     rescue Exception => e
