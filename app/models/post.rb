@@ -121,9 +121,13 @@ class Post < ActiveRecord::Base
 		return true
 	end
 
-	# def any_valid_live_stream
-
-	# end
+	def exists_on_fb?
+		#return true if any live stream exists
+		live_streams.each do |ls|
+			return true if ls.exists_on_fb?
+		end
+		return false
+	end
 
 	def start
 		any_ls_started = false
@@ -424,4 +428,5 @@ class Post < ActiveRecord::Base
 			end
 		end
 	end
+
 end

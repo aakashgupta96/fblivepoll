@@ -20,6 +20,17 @@ class LiveStream < ActiveRecord::Base
 		end
 	end
 
+	def exists_on_fb?
+		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+			query = "https://graph.facebook.com/v2.8/#{video_id}?access_token=#{user.token}"
+			response = HTTParty.get(query)
+			return response.ok?
+		else
+			return false
+		end
+	end
+
+
 	def ended_on_fb?
 		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
 			query = "https://graph.facebook.com/v2.8/#{video_id}?fields=live_status&access_token=#{user.token}"
