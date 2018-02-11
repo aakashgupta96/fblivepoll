@@ -46,7 +46,7 @@ module ApplicationHelper
 		elsif post.live?
 			"Live"
 		elsif post.user_session_invalid?
-			"User's session was invalidated by Facebook."
+			"User's session was invalidated from Facebook."
 		else
 			"Unknown and yet to be confirmed"
 		end

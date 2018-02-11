@@ -139,7 +139,7 @@ class LiveStream < ActiveRecord::Base
 			if status.parsed_response["#{video_id}"].nil?
 				self.deleted_from_fb!
 			else
-				self.published!
+				self.user_session_invalid!
 			end
 		rescue Exception => e
 			puts e.class,e.message

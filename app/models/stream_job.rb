@@ -110,14 +110,19 @@ class StreamJob
             #Case 1 : Connection broke from our side => Respawn the process
             #puts "retrying"
             restart_process = true
-          elsif @post.ended_on_fb?
+          elsif(@post.exists_on_fb? && @post.ended_on_fb?)
             #Case 2 : Connection was closed by FB because all live_streams ended.
             #Reasons can be 1. User used fb directly 2. or used our panel 3. admin ended the video 4. User session invalidated by FB.
-            #and some live streams may have been deleted since last status update task.
+            
+            #Note: Session invalidation can't be in this case as exists_in_fb will return false due to missing permissions
+
+            # Updating status of live streams which are marked Live on our end
             @post.live_streams.live.each do |ls|
               ls.stop
-              ls.update_status
+              ls.update_status #some live streams may have been deleted since last status update task.
             end
+
+            #Only to mark post as ended, this will not update statuses of live streams because all statuses have been already updated
             @post.stop
           else
             #Case 3 : Connection was closed by FB
