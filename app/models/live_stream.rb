@@ -195,11 +195,11 @@ class LiveStream < ActiveRecord::Base
 				status_from_app = HTTParty.get(query_from_app)
 				status_from_user = HTTParty.get(query_from_user)
 				if status_from_app.ok? and status_from_user.ok?
-					self.network_error! #Can it be changed to published ?
+					ls.network_error! #Can it be changed to published ?
 				elsif status_from_app.ok?
-					self.user_session_invalid!
+					ls.user_session_invalid!
 				else
-					self.deleted_from_fb!
+					ls.deleted_from_fb!
 				end
 			end
     rescue Exception => e
