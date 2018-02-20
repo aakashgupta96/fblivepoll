@@ -68,7 +68,7 @@ module Deployment
 	def create_droplet_from(access_token,image_id,name,default_timeout = 600)
 		client = DropletKit::Client.new(access_token: access_token)
 		key = client.ssh_keys.all.first.fingerprint
-		new_droplet = DropletKit::Droplet.new(name: name, region: 'ams2', size: "s-1vcpu-1gb", image: image_id.to_i, ssh_keys: [key])
+		new_droplet = DropletKit::Droplet.new(name: name, region: 'ams3', size: "s-1vcpu-1gb", image: image_id.to_i, ssh_keys: [key])
 		d = client.droplets.create(new_droplet)
 		puts "New Droplet ID = #{d.id}"
 		completed = false
