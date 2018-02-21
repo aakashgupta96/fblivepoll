@@ -80,6 +80,7 @@ GEM
       mime-types (>= 1.16)
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
+    choice (0.2.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (4.1.1)
@@ -380,6 +381,11 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
+    rails-erd (1.5.2)
+      activerecord (>= 3.2)
+      activesupport (>= 3.2)
+      choice (~> 0.2.0)
+      ruby-graphviz (~> 1.2)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
     railties (4.2.6)
@@ -429,6 +435,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    ruby-graphviz (1.2.3)
     rubyzip (1.2.1)
     rufus-scheduler (3.4.2)
       et-orbi (~> 1.0)
@@ -528,6 +535,7 @@ DEPENDENCIES
   pg (~> 0.20.0)
   process_exists
   rails (= 4.2.6)
+  rails-erd
   redis (~> 3.2)
   resque
   resque-scheduler

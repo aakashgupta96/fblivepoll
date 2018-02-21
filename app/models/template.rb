@@ -2,6 +2,7 @@ class Template < ActiveRecord::Base
 	has_many :posts
 	has_many :live_streams, through: :posts
 	has_many :features, dependent: :destroy
+	has_many :user_templates
 
 	enum category: [:poll, :loop_video, :url_video]
 
