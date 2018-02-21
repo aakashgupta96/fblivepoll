@@ -25,10 +25,10 @@ class Post < ActiveRecord::Base
 
 	scope :ongoing, ->{ where(live: true) }
 
+	after_initialize :set_default_message
 	after_save :propogate_status_changes, if: :status_changed?
 
-	def initialize
-		super
+	def set_default_message
 		self.default_message = Constant::DEFAULT_PROMOTION_MESSAGE
 	end
 
