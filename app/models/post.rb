@@ -240,6 +240,7 @@ class Post < ActiveRecord::Base
    		height = 786
    		options = Selenium::WebDriver::Chrome::Options.new
    		options.add_argument("--no-sandbox")
+   		options.add_argument("--disable-infobars")
    		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
    	end
    	headless.start
