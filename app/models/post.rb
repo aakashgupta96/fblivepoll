@@ -25,10 +25,10 @@ class Post < ActiveRecord::Base
 
 	scope :ongoing, ->{ where(live: true) }
 
-	before_save :set_default_values
+	after_initialize :set_default_message
 	after_save :propogate_status_changes, if: :status_changed?
 
-	def set_default_values
+	def set_default_message
 		self.default_message = Constant::DEFAULT_PROMOTION_MESSAGE
 	end
 
@@ -121,9 +121,13 @@ class Post < ActiveRecord::Base
 		return true
 	end
 
-	# def any_valid_live_stream
-
-	# end
+	def exists_on_fb?
+		#return true if any live stream exists
+		live_streams.each do |ls|
+			return true if ls.exists_on_fb?
+		end
+		return false
+	end
 
 	def start
 		any_ls_started = false
@@ -231,7 +235,7 @@ class Post < ActiveRecord::Base
    		#profile = Selenium::WebDriver::Firefox::Profile.new; profile["toolkit.telemetry.enabled"] = false;profile["toolkit.telemetry.prompted"] = 2;profile["toolkit.telemetry.rejected"] = true
    		options = Selenium::WebDriver::Firefox::Options.new #(profile: profile)
    		headless = Headless.new(dimensions: "1920x1200x24")
-   	else
+   	else 
    		width = 1280
    		height = 786
    		options = Selenium::WebDriver::Chrome::Options.new
@@ -261,11 +265,11 @@ class Post < ActiveRecord::Base
 		if Rails.env.production?
     	prefix = nil
     else
-    	if browser == "firefox"
+    	#if browser == "firefox"
     		prefix = "http://localhost:3000"
-    	else
-    		prefix = "file://#{Rails.root.to_s}/public"
-    	end
+    	#else
+    	#	prefix = "file://#{Rails.root.to_s}/public"
+    	#end
     end
 	end
 
@@ -326,9 +330,10 @@ class Post < ActiveRecord::Base
 		end
 	end
 
-	def fb_live_to_fb?
-		return false unless url_video?
-		url = link.url
+	def fb_live_to_fb?(passed_url = nil)
+		return false if (!url_video? && passed_url.nil?)
+		url = link.url rescue nil
+		url = passed_url if passed_url
 		pattern = /^.*(https:)\/\/(www|m)\.(facebook\.com)\/(([a-zA-Z0-9]*)\/videos\/)?([0-9]*).*/
 		post_id = url.match(pattern)[6] rescue nil
 		if post_id.nil? || post_id.empty?
@@ -352,7 +357,8 @@ class Post < ActiveRecord::Base
 	end
 
 	def source_file_is_live?
-		return get_file_url.include?(".m3u8")#|| fb_live_to_fb?
+		#This does not include FB Live videos as they are not m3u8 urls, but Dash URL which can't be directly used for streaming
+		return get_file_url.include?(".m3u8")
 	end
 
 
@@ -392,7 +398,9 @@ class Post < ActiveRecord::Base
 		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{url}]
 		download_url.strip!
 		if (download_url.empty? || Post.from_google_drive(url))
-			return false
+			#Checking if video is from FB Live
+			result = (Post.new.fb_live_to_fb?(url))
+			return result
 		else
 			return true
 		end
@@ -421,4 +429,5 @@ class Post < ActiveRecord::Base
 			end
 		end
 	end
+
 end
