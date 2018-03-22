@@ -79,7 +79,8 @@ class ApplicationController < ActionController::Base
     begin
       @pages = current_user.pages
     rescue Exception => e
-      return redirect_to user_facebook_omniauth_authorize_path
+      return redirect_to dashboard_path, alert: "Facebook is upgrading their platform and temporarily disabled this feature. Kindly try after few hours."
+      #return redirect_to user_facebook_omniauth_authorize_path
     end
   end
 
