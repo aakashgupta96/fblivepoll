@@ -23,7 +23,7 @@
           <td><a href="https://www.facebook.com/<%=post.user.uid%>"><%= post.user.name %></a></td>
           <td><%= post.start_time.in_time_zone('New Delhi').strftime("%d %B %Y, %I:%M %p") %></td>
           <td><%= post.duration.hour %>hrs:<%=post.duration.min%>min</td>
-          <td><%= @reaction_hash[post.video_id.to_s] %></td>
+          <td><%= @reaction_hash[post.video_id.to_s] rescue nil%></td>
           <td>
           <% unless post.video_id.nil? %>
             <a href="https://www.facebook.com/<%=post.video_id%>">Watch Video</a>
