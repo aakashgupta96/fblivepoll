@@ -26,6 +26,13 @@ update_captions_of_post:
   queue: update_captions
   description: "This will hit facebook api and update caption of a free user's post."
 
+update_fb_pages:
+  every:
+    - "30d"
+  class: "UpdateFbPages"
+  queue: update_fb_pages
+  description: "This will hit facebook api and update Fb page information."
+
 clean_up_erroneous_post:
   every:
     - "1d"
