@@ -15,9 +15,10 @@ class FbPage < ActiveRecord::Base
 		erroneous_pages = Array.new
 		complete_batch = FbPage.big.pluck(:page_id) + FbPage.small.pluck(:page_id)
 		complete_batch.each do |page_id|
-			if current_batch.size <= batch_size	
+			if current_batch.size < batch_size	
 				current_batch << page_id
 			else
+				current_batch << page_id
 				query = "https://graph.facebook.com/v2.8/?ids=#{current_batch.join(',')}&fields=name,picture.type(large){url},fan_count&access_token=#{ENV['FB_ACCESS_TOKEN']}"
 				begin
 					response = HTTParty.get(query)
