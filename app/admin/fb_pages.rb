@@ -1,6 +1,7 @@
 ActiveAdmin.register FbPage do
 	
 	actions :all
+	permit_params :status
 	
 	index do
 		selectable_column
