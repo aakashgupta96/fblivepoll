@@ -32,7 +32,7 @@
       <%= f.label :title, "Title / Heading" %>
     </div>
     <div class="input-field col s12 l6">
-      <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, include_seconds: true, default:{hour: 0, minute: 30, second: 0}, time_separator: ""},{class: 'col s4'}%>
+      <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, include_seconds: true, default:{hour: 3, minute: 50, second: 0}, time_separator: ""},{class: 'col s4'}%>
       <%= f.label :duration, "Duration ( HH : MM : SS )" %>
     </div>
   </div>
