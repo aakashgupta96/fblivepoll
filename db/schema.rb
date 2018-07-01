@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171229091111) do
+ActiveRecord::Schema.define(version: 20180701121200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,10 @@ ActiveRecord::Schema.define(version: 20171229091111) do
     t.integer  "post_id"
     t.string   "reaction"
     t.string   "name"
+    t.integer  "position_x"
+    t.integer  "position_y"
+    t.integer  "height"
+    t.integer  "width"
   end
 
   create_table "links", force: :cascade do |t|

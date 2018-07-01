@@ -1,13 +1,3 @@
-<!-- <center>
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-4726706343331157"
-       data-ad-slot="5921286380"
-       data-ad-format="auto"></ins>
-  <script>
-  (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</center> -->
 <% if @pages.count==0 %>
   <div class="card valign-wrapper center" style="height: 280px;">
     <div class="valign container">
@@ -68,10 +58,16 @@
       <div class="col s12 l6">
         <input type="checkbox" id="schedule" name="post[scheduled]"/>
         <label for="schedule">Schedule Post</label>
-      </div>  
+      </div> 
+      <% if @template.id != 9 # Not hybrid video template%> 
+      <div class="col s12 l6">
+        <input type="checkbox" id="edit_video" name="post[edit_video]"/>
+        <label for="edit_video">Edit Video</label>
+      </div>
+      <% end %>  
     </div>
     <div  id="datetime" class="row" style="display: none;">
-      <div class="input-field col s12 l6">
+      <div class="input-field col s12 l4">
         <select id="timeZone" name="post[timezone]">
           <% ActiveSupport::TimeZone.all.sort.each do |timezone| %>
           <option value="<%=timezone.formatted_offset%>"><%=timezone%></option>
@@ -79,8 +75,8 @@
         </select>
         <label>Select TimeZone</label>
       </div>
-      <div class="input-field col s12 l6">
-        <%= f.datetime_select :start_time,{datetime_separator: "",time_separator: "", ampm: true},{class: "col s6 l3"}%>
+      <div class="input-field col s12 l8">
+        <%= f.datetime_select :start_time,{datetime_separator: "",time_separator: "", ampm: true},{class: "col s4 l2"}%>
         <%= f.label :start_time, "Scheduling Date and Time" %>
       </div>
     </div>
@@ -105,7 +101,7 @@
         </div>
       <% end %>
     <% else %>
-      <% next_step_message = "Proceed to Select Pages" %>
+      <% next_step_message = "Proceed to Next Step" %>
     <% end %>
     </div>
   

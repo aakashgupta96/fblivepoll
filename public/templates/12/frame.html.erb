@@ -1,7 +1,5 @@
 <html>
   <head>
-    <title>URL to FB</title>
-    <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video-js.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.3.3/video.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
@@ -11,8 +9,15 @@
     <% video_url = post.get_file_url%>
 	 	<video loop id="video" width=1280 height=720 class="video-js vjs-default-skin" data-setup='{ "controls": false, "autoplay": true, "preload": "auto"}'>
       <source src="<%=video_url%>" type="video/mp4">
+      <source src="<%=video_url%>" type="video/ogg">
+      <source src="<%=video_url%>" type="video/webm">
     </video>
-    
+
+    <% unless images.nil? %>
+    <% images.each do |img| %>
+    <img src="<%=img.file.url%>" height=<%=img.height%> width=<%=img.width%> style="position: absolute; top: <%=img.position_y%>; left: <%=img.position_x;%>">
+    <%end%>
+    <% end %>
     <script>
       var player = videojs('video');
       player.play();

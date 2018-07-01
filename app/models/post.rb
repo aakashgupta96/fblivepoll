@@ -356,7 +356,7 @@ class Post < ActiveRecord::Base
 
 
 	def get_file_url
-		return "" if link.nil?
+		return video.url if link.nil?
 		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{link.url} ]
 		download_url.strip
 	end
@@ -386,14 +386,18 @@ class Post < ActiveRecord::Base
 		return true
 	end
 
-	def self.validate_url(url)
+	def self.validate_url(url,edit_request) #return true with empty message if url is valid for our app
 		#download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4,dash_hd_src' -g #{url}] #For support of FB live videos as surce video
 		download_url = %x[youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=mp4a]/mp4' -g #{url}]
 		download_url.strip!
-		if (download_url.empty? || Post.from_google_drive(url))
-			return false
+		if download_url.empty?
+			return false , "Invalid Video URL. Please enter a correct video url and then continue."
+		elsif Post.from_google_drive(url)
+			return true, "Google Drive Videos can't be used."
+		elsif edit_request && download_url.include?("m3u8")
+			return true, "Sorry but Live Source Videos can't be editted. Please unselect edit video option and then continue."
 		else
-			return true
+			return true, ""
 		end
 	end
 

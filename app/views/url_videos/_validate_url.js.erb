@@ -1,9 +1,10 @@
 $('#video_form').on('submit',function(e){
   jQuery.ajaxSetup({async:false});
   var source_url = $("#post_link_attributes_url").val(); 
-  var valid = true;
-  $.get(window.location.origin + "/posts/validate_url", { "source_url": source_url}, function(data,success){
-    if(data == true)
+  var edit_video = $("#edit_video").prop("checked");
+  var move_to_next = true;
+  $.get(window.location.origin + "/posts/validate_url", { "source_url": source_url, "edit_video": edit_video}, function(data,success){
+    if(data["valid"] == true && data["message"] == "")
     {
       setTimeout(function(){
         $.dialog(
@@ -21,7 +22,7 @@ $('#video_form').on('submit',function(e){
     }
     else
     {
-      valid = false;
+      move_to_next = false;
       setTimeout(function(){
         $.alert(
         {
@@ -29,10 +30,10 @@ $('#video_form').on('submit',function(e){
           boxWidth: width,
           useBootstrap: false,
           title: "Entered Shareable Video URL can't be used!",
-          content: "Either there is some mistake in the entered URL or our system does not support the URLS from site that you entered. Please fix the video url and then try again."
+          content: data["message"] //"Either there is some mistake in the entered URL or our system does not support the URLS from site that you entered. Please fix the video url and then try again."
         });
       },1);
     }
   });
-  return valid;
+  return move_to_next;
  });

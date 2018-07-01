@@ -28,6 +28,7 @@ class UrlVideosController < ApplicationController
       @post.start_time = DateTime.now
     end
     if @post.save
+      return redirect_to edit_video_path(@post.id) if params["post"]["edit_video"] == "on"
       return save_and_redirect if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
       return redirect_to select_pages_path(@post.id)
     else 

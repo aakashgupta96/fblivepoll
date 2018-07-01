@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'url_video/new'
-
-  get 'url_video/create'
-
   devise_for :editors, skip: [:registrations, :passwords]
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -15,7 +11,7 @@ Rails.application.routes.draw do
   root 'extras#home'
   get '/privacy' => 'extras#privacy'
   get '/terms' => 'extras#terms'
-  get '/demo' => 'extras#demo'
+  #get '/demo' => 'extras#demo'
   # get '/pricing' => 'extras#pricing'
   get '/faqs' => 'extras#faqs'
   get '/dashboard' => 'users#dashboard', as: "dashboard"
@@ -47,6 +43,8 @@ Rails.application.routes.draw do
 
   scope :loop_videos do 
     get '/templates' => 'loop_videos#templates', as: "loop_video_templates"
+    get "/:post_id/edit_video" => "loop_videos#edit_video", as: "edit_video"
+    post "/:post_id/update_video" => "loop_videos#update_video", as: "update_video"
   end
 
   scope :moderators do
