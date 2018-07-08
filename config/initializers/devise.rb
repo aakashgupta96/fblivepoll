@@ -12,7 +12,8 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.omniauth :facebook, ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"], callback_url: "#{ENV["domain"]}/users/auth/facebook/callback", scope: 'email, manage_pages, publish_pages, pages_show_list', info_fields: 'email,name',token_params: { parse: :json }
+  config.omniauth :facebook, ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"], callback_url: "#{ENV["domain"]}/users/auth/facebook/callback", scope: 'email, manage_pages, publish_pages, pages_show_list, user_managed_groups, publish_video', info_fields: 'email,name',token_params: { parse: :json }, :client_options => {:site => 'https://graph.facebook.com/v3.0', :authorize_url => "https://www.facebook.com/v3.0/dialog/oauth"}
+  
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
   # Configure the class responsible to send e-mails.

@@ -12,7 +12,7 @@ class UrlVideosController < ApplicationController
     return redirect_to loop_video_templates_path, notice: Constant::UNAUTHORIZED_USER_FOR_TEMPLATE_MESSAGE unless current_user.can_use_template(@template)
     @post.build_link
     @post.live_streams.build if Constant::RTMP_TEMPLATE_IDS.include?(@template.id)
-    set_user_pages
+    set_user_handles
   end
 
   def create

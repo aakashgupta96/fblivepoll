@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :live_streams, through: :posts
   has_many :payments, dependent: :destroy
   enum role: [:member, :donor, :admin, :premium, :ultimate]
+
+  PERMISSIONS = ["manage_pages", "publish_pages", "pages_show_list", "user_managed_groups", "publish_video"]
   
   scope :banned, ->{ where(banned: true) }
 
@@ -39,11 +41,6 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
       user.token = auth.credentials.token
       user.name = auth.info.name
-      # assuming the user model has a name
-      #user.image = auth.info.image # assuming the user model has an image
-      # If you are using confirmable and the provider(s) you use validate emails, 
-      # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
     end
   end
 
@@ -73,18 +70,13 @@ class User < ActiveRecord::Base
   def has_granted_permissions
     ret = HTTParty.get("https://graph.facebook.com/#{self.uid}/permissions?access_token=#{self.token}").parsed_response['data']
     pages_show_list = publish_pages = manage_pages = false
+    required_permissions = Set.new(PERMISSIONS)
     unless ret.nil? 
       ret.each do |item|
-        if item["permission"] == "publish_pages" && item["status"] == "granted"
-          publish_pages = true
-        elsif item["permission"] == "manage_pages" && item["status"] == "granted"
-          manage_pages = true
-        elsif item["permission"] == "pages_show_list" && item["status"] == "granted"
-          pages_show_list = true
-        end
-      end
+        required_permissions.delete(item["permission"]) if (required_permissions.include?(item["permission"]) && item["status"] == "granted")
+      end    
     end
-    return (publish_pages && manage_pages && pages_show_list)
+    return (required_permissions.size == 0)
   end
 
   def pages
@@ -114,6 +106,65 @@ class User < ActiveRecord::Base
 	    end
     rescue Exception => e
     	attempts += 1
+      retry if attempts <= 3
+      raise e 
+    end
+  end
+
+  def groups
+    temp = Array.new()
+    attempts = 0
+    begin
+      graph = Koala::Facebook::API.new(self.token)
+      response = graph.get_object('me/groups?fields=administrator&limit=500')
+      if response.nil? || response.size==0
+        temp
+      else
+        ids = Array.new
+        response.each do |hash| 
+          ids << hash['id'] if hash["administrator"] == true
+        end
+        until ids.empty?
+          query = "?ids=#{ids.first(49).join(',')}&fields=picture{url},name"
+          ids = ids - ids.slice(0..48)
+          response = graph.get_object(query)
+          response.each do |group_attrs|
+            group_hash = {"name"=> group_attrs.second["name"], "id" => group_attrs.second["id"], "image" => group_attrs.second["picture"]["data"]["url"]}
+            temp << group_hash
+          end
+        end
+        temp
+      end
+    rescue Exception => e
+      attempts += 1
+      retry if attempts <= 3
+      raise e 
+    end
+  end
+
+  def timeline
+    temp = Array.new()
+    attempts = 0
+    begin
+      graph = Koala::Facebook::API.new(self.token)
+      response = graph.get_object('me')
+      if response.nil? || response.size==0
+        temp
+      else
+        ids = [response["id"]]
+        until ids.empty?
+          query = "?ids=#{ids.first(49).join(',')}&fields=picture{url},name"
+          ids = ids - ids.slice(0..48)
+          response = graph.get_object(query)
+          response.each do |group_attrs|
+            group_hash = {"name"=> group_attrs.second["name"], "id" => group_attrs.second["id"], "image" => group_attrs.second["picture"]["data"]["url"]}
+            temp << group_hash
+          end
+        end
+        temp
+      end
+    rescue Exception => e
+      attempts += 1
       retry if attempts <= 3
       raise e 
     end

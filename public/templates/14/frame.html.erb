@@ -14,9 +14,20 @@
     </video>
 
     <% unless images.nil? %>
-    <% images.each do |img| %>
-    <img src="<%=img.file.url%>" height=<%=img.height%> width=<%=img.width%> style="position: absolute; top: <%=img.position_y%>; left: <%=img.position_x;%>">
-    <%end%>
+      <% images.each do |img| %>
+        <% if Rails.env.production? %>
+          <% url = img.file.url%>
+        <% else %>
+          <% url = img.file.url.split("/").last %>
+        <% end %>
+        <img src="<%=url%>" height=<%=img.height%> width=<%=img.width%> style="position: absolute; top: <%=img.position_y%>; left: <%=img.position_x%> ;">
+      <%end%>
+    <% end %>
+
+    <% unless extra_texts.nil? %>
+      <% extra_texts.each do |extra_text| %>
+        <p style="line-height: <%=extra_text.font_size%>px; position: absolute; top: <%=extra_text.position_y%>; left: <%=extra_text.position_x%> ; color: <%=extra_text.color%>; font-family: 'Arial'; font-size: <%=extra_text.font_size%>; "><%= extra_text.text %></p>
+      <% end %>
     <% end %>
     <script>
       var player = videojs('video');

@@ -75,9 +75,12 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: Constant::USER_BANNED_MESSAGE if current_user.banned
   end
 
-  def set_user_pages
+  def set_user_handles
     begin
       @pages = current_user.pages
+      @groups = current_user.groups
+      @timelines = current_user.timeline
+      @handles = {"pages": @pages, "groups": @groups, "timelines": @timelines}
     rescue Exception => e
       return redirect_to user_facebook_omniauth_authorize_path
     end

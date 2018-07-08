@@ -4,13 +4,38 @@
   <section> 
     <canvas id='textCanvas' style=" display: none;"></canvas>
   
-    <div class="note white-text">Just hit Refresh button in case your image does not load or any thing goes wrong.</div>
+    <div class="note white-text">Just hit Refresh button in case your video or image does not load or any thing goes wrong.</div>
     <div class="row section">
-      <div class="col l1 m1 s0" style="display: flex; flex-direction: column; justify-content: space-around;">
+      <div class="col l3 m1 s0" style="display: flex; flex-direction: column; justify-content: space-around;">
+
+        <div class="row">
+          <div class="col s12">
+            <div class="card z-depth-5">
+              <div class="row zero-margin">
+                <div class="input-field col s12">
+                    <input placeholder="Enter Text" id="addText" type="text">
+                </div>
+                <div class="input-field col s6 zero-margin">
+                  <input type="text" placeholder="enter text" id="colorPallete" class="jscolor">
+                  <label for="colorPallete" style="padding-bottom: 2px;">Pick Color</label>
+                </div>
+                <div class="input-field col s6 zero-margin">
+                  <input id="fontSize" type="number" value="30">
+                  <label for="fontSize">Font Size</label>
+                </div>
+              </div>
+              
+              <div class="card-action">
+                <a id="addTextAnchor" class="btn" href="#" style="font-size: 14px;">Add Text</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
 
-      <div class="col l8 m8 s12" id="container"></div>
+      <div class="col l7 m8 s12" id="container"></div>
 
 
       <div class="col l2 m2 s12 relative" style="right: 20px;">
@@ -210,7 +235,6 @@
         }
       }
 
-      var prom;
       function initStage(images) 
       {
         var vid = 1;
@@ -222,7 +246,7 @@
         var vidobj = '<video id="video' + vid + '" playsinline loop controls width="' + vw + '" height="' + vh + ' preload="auto" ><source src="' + '<%=link%>' + '" type="video/mp4"></source></video>';
         $('#videoContainer').html(vidobj);
         
-        var stage = new Kinetic.Stage({
+        stage = new Kinetic.Stage({
             container: 'container',
             width: 720,
             height: 405,
@@ -258,8 +282,8 @@
       
       var addBorder = function()
       {
-        this.find("Image")[0].attrs.stroke= "white",
-        this.find("Image")[0].attrs.strokeWidth=2,
+        this.find("Image")[0].attrs.stroke= "white";
+        this.find("Image")[0].attrs.strokeWidth=2;
         temp = this.find("Circle");
         for(i=0;i<temp.length;i++)
         {
@@ -308,6 +332,7 @@
         var imageGroup = new Kinetic.Group({
           x: 100,
           y: 100,
+          name: "ImageGroup",
           draggable: true
         });
 
@@ -350,7 +375,45 @@
                 add_image(fr.result,200,200);
             }
         }
-      }
+      };
+
+      var addTextToCanvas = function(){
+        var text = $("#addText").val();
+        var color = "#" + $("#colorPallete").val();
+        var fontSize = $("#fontSize").val();
+
+        var textGroup = new Kinetic.Group({
+          x: 100,
+          y: 100,
+          name: "TextGroup",
+          draggable: true
+        })
+
+        var textObj = new Kinetic.Text({
+          x: 0,
+          y: 0,
+          text: text,
+          fontSize: fontSize,
+          fill: color
+        });
+
+        // dummy image for borders
+        var dummyImg = new Kinetic.Image({ 
+          x: -5,
+          y: -5,
+          width: textObj.textWidth + 10,
+          height: textObj.textHeight + 10,
+          name: 'image'
+        });
+        textGroup.add(dummyImg);
+        textGroup.add(textObj);
+        layer1.add(textGroup);
+        addCloseButton(textGroup, -2, -2,'topLeft');
+        addBorderEvents(textGroup);
+        layer1.draw();
+        //console.log(text,color,fontSize);
+      };
+
 
       var toggleVideoState = function(e)
       {
@@ -374,9 +437,17 @@
           e.preventDefault();
           var groups = layer1.children;
           var user_images = [];
-          for(i=1;i<groups.length;i++)
+          var texts = [];
+          for(i=0;i<groups.length;i++)
           {
-            user_images.push(groups[i]);
+            if(groups[i].name() == "ImageGroup")
+            {
+              user_images.push(groups[i]);
+            }
+            else if(groups[i].name() == "TextGroup")
+            {
+              texts.push(groups[i]);
+            }
           }
           // Child 0 will be image used to play video
           // other children will be groups added by user.
@@ -384,27 +455,27 @@
           for(i=0;i<user_images.length;i++)
           {
             var image=document.createElement("input");
-            image.name = "image["+ i +"][file]";
+            image.name = "image[][file]";
             image.value = user_images[i].children[0].attrs.image.src;
             image.type = "hidden";
 
             var position_x = document.createElement("input");
-            position_x.name = "image["+ i +"][position_x]";
+            position_x.name = "image[][position_x]";
             position_x.value =  user_images[i].attrs.x;
             position_x.type="hidden";
 
             var position_y = document.createElement("input");
-            position_y.name = "image["+ i +"][position_y]";
+            position_y.name = "image[][position_y]";
             position_y.value =  user_images[i].attrs.y;
             position_y.type="hidden";
 
             var height = document.createElement("input");
-            height.name = "image["+ i +"][height]";
+            height.name = "image[][height]";
             height.value =  user_images[i].children[0].attrs.height;
             height.type="hidden";
 
             var width = document.createElement("input");
-            width.name = "image["+ i +"][width]";
+            width.name = "image[][width]";
             width.value =  user_images[i].children[0].attrs.width;
             width.type="hidden";
 
@@ -414,7 +485,42 @@
             form.appendChild(height);
             form.appendChild(width);
           }
+          for(i=0;i<texts.length;i++)
+          {
+            var text=document.createElement("input");
+            text.name = "extra_text[][text]";
+            text.value = texts[i].children[1].text();
+            text.type = "hidden";
 
+
+            var color=document.createElement("input");
+            color.name = "extra_text[][color]";
+            color.value = texts[i].children[1].fill();
+            color.type = "hidden";
+
+            var fontSize=document.createElement("input");
+            fontSize.name = "extra_text[][font_size]";
+            fontSize.value = texts[i].children[1].fontSize();
+            fontSize.type = "hidden";
+
+            var position_x = document.createElement("input");
+            position_x.name = "extra_text[][position_x]";
+            position_x.value =  texts[i].x(); 
+            // 5 factor because size of group = text size + 10; margin 5 on each size
+            position_x.type="hidden";
+
+            var position_y = document.createElement("input");
+            position_y.name = "extra_text[][position_y]";
+            position_y.value =  texts[i].y();
+            position_y.type="hidden";
+
+            //console.log(text,fontSize,color);
+            form.appendChild(text);
+            form.appendChild(color);
+            form.appendChild(fontSize);
+            form.appendChild(position_x);
+            form.appendChild(position_y);
+          }
           form.submit();
           $.dialog(
           {
@@ -429,11 +535,11 @@
           });
       }
 
-
       document.getElementById("addImageFile").addEventListener('change',addImageFile); 
       //document.getElementById("addText").addEventListener('input', addSample);
       $("#data_form").submit(sendImage);
       $("#toggleVideo").click(toggleVideoState);
+      $("#addTextAnchor").click(addTextToCanvas);
       
       $(document).ready(function(){
         var showInstructions = function()

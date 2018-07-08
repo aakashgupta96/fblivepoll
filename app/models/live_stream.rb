@@ -5,6 +5,7 @@ class LiveStream < ActiveRecord::Base
 	has_many :shared_posts, dependent: :destroy
 	has_many :messages
 	enum status: [:drafted, :published, :scheduled, :stopped_by_user, :request_declined, :deleted_from_fb, :network_error, :unknown, :queued, :live, :schedule_cancelled, :user_session_invalid]
+  enum target: [:on_page, :on_group, :on_timeline, :other]
 
 	def live_on_fb?
 		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
@@ -36,7 +37,7 @@ class LiveStream < ActiveRecord::Base
 	end
 
 	def start
-		if Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+		if Constant::RTMP_TEMPLATE_IDS.include?(template.id) || (self.target == "other")
 			self.update(status: "queued")
 		  return true
 		else
@@ -47,11 +48,15 @@ class LiveStream < ActiveRecord::Base
 				else
 					caption_suffix = ""
 				end
-
-				if post.ambient?
-					video = graph.graph_call("#{page_id}/live_videos",{status: "UNPUBLISHED", description: "#{post.caption}#{caption_suffix}", title: post.title, stream_type: "AMBIENT"},"post")
+        if Rails.env.production?
+          privacy = "EVERYONE"
+        else
+          privacy = "SELF"
+        end
+        if post.ambient?
+					video = graph.graph_call("#{page_id}/live_videos",{privacy: {value: privacy}, status: "UNPUBLISHED", description: "#{post.caption}#{caption_suffix}", title: post.title, stream_type: "AMBIENT"},"post")
 				else
-					video = graph.graph_call("#{page_id}/live_videos",{status: "UNPUBLISHED", description: "#{post.caption}#{caption_suffix}", title: post.title},"post")
+					video = graph.graph_call("#{page_id}/live_videos",{privacy: {value: privacy},status: "UNPUBLISHED", description: "#{post.caption}#{caption_suffix}", title: post.title},"post")
 				end
 				live_id = video["id"]
 			  video_id=graph.graph_call("#{video["id"]}?fields=video")["video"]["id"]
@@ -66,7 +71,7 @@ class LiveStream < ActiveRecord::Base
 	end
 
 	def mark_live_on_fb
-		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+		unless (Constant::RTMP_TEMPLATE_IDS.include?(template.id) || self.target == "other")
 			begin
 				graph = graph_with_page_token
 				video = graph.graph_call("#{live_id}",{status: "LIVE_NOW"},"post")
@@ -87,7 +92,7 @@ class LiveStream < ActiveRecord::Base
 
 	def stop(status="published")
 		begin
-      self.graph_with_page_token.graph_call("#{live_id}", {end_live_video: "true"},"post") unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+      self.graph_with_page_token.graph_call("#{live_id}", {end_live_video: "true"},"post") unless (Constant::RTMP_TEMPLATE_IDS.include?(template.id) || self.target == "other")
     rescue Exception => e
     	puts e.class,e.message
     end
@@ -97,8 +102,12 @@ class LiveStream < ActiveRecord::Base
 	def page_access_token
 		attempts = 0
 		begin
-			graph = Koala::Facebook::API.new(user.token)
-			access_token = graph.get_page_access_token(page_id)
+      if on_page?
+  			graph = Koala::Facebook::API.new(user.token)
+  			access_token = graph.get_page_access_token(page_id)
+      else
+        access_token = user.token
+      end
 		rescue Exception => e
 			attempts += 1
 			retry if attempts <= 1
@@ -135,16 +144,24 @@ class LiveStream < ActiveRecord::Base
 		end
 	end
 
-	def share_on(page_ids)
-		begin
+	def share_on(handle_ids)
+    begin
 			attempts = 0
 			url = "https://www.facebook.com/" + video_id
+      user_page_ids = Set.new()
+      user.pages.each do |page|
+        user_page_ids.add(page["id"])
+      end
 			user_graph = Koala::Facebook::API.new(user.token)
-			page_ids.each do |page_id|
+			handle_ids.each do |handle_id|
 				begin
-					access_token = user_graph.get_page_access_token(page_id)
+          if user_page_ids.include?(handle_id)
+					 access_token = user_graph.get_page_access_token(handle_id)
+          else
+            access_token = user.token
+          end
 					graph = Koala::Facebook::API.new(access_token)
-					response = graph.put_wall_post("",link: url)
+					response = graph.graph_call("#{handle_id}/feed",{link: url},"post")
 					self.shared_posts << SharedPost.create(shared_post_id: response["id"])
 				rescue Exception => e
 					puts e.message
@@ -165,9 +182,6 @@ class LiveStream < ActiveRecord::Base
 			live.each do |ls|
 				ls.update_status if ls.ended_on_fb?
 			end
-			# stopped_by_user.each do |ls|
-			# 	ls.update_status
-			# end
 			unknown.each do |ls|
 				if Constant::RTMP_TEMPLATE_IDS.include?(ls.template.id)
 					ls.published!
@@ -214,8 +228,8 @@ class LiveStream < ActiveRecord::Base
 		temp = Hash.new()
     attempts = 0
     begin
-      graph = Koala::Facebook::API.new(ENV["FB_ACCESS_TOKEN"])
-      page_ids = pluck(:page_id)
+      graph = Koala::Facebook::API.new(self.first.user.token) #(ENV["FB_ACCESS_TOKEN"])
+      page_ids = self.where.not(target: LiveStream.targets["other"]).pluck(:page_id).compact
       query = "?ids=#{page_ids.first(49).join(',')}&fields=picture{url},name"
       response = graph.get_object(query)
       response.each do |page_attrs|

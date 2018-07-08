@@ -4,7 +4,12 @@
     <ul class="collapsible" data-collapsible="accordion">
       <% @post.live_streams.each do |live_stream| %>
       <li>
-        <div class="collapsible-header"><img src="<%=@pages[live_stream.page_id]['image'] rescue nil%>" alt="" class="circle relative" style=" top: 10px;"><span class="relative bold grey-text text-darken-1" style="left: 10px; top: -10px; font-size: 16px;"><%=@pages[live_stream.page_id]['name'] rescue nil%></span></div>
+        <div class="collapsible-header">
+          <img src="<%=@pages[live_stream.page_id]['image']rescue "/other.png"%>"  height=50 width=50 alt="" class="circle relative" style=" top: 10px;">
+          <span class="relative bold grey-text text-darken-1" style="left: 10px; top: -10px; font-size: 16px;">
+            <%=@pages[live_stream.page_id]['name'] rescue "Custom RTMP Target"%>
+          </span>
+        </div>
         <div class="collapsible-body" style="background-color: rgba(41, 43, 44, 0.9);">
           <ul class="collection">
           <% if live_stream.live? %>

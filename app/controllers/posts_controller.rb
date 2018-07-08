@@ -6,14 +6,18 @@ class PostsController < ApplicationController
   before_action :check_for_eligibility_of_free_posts, only: [:select_pages, :submit_pages]
 
   def select_pages
-    @pages = current_user.pages
+    set_user_handles
   end
 
   def submit_pages
     return redirect_to show_post_path(@post.id), notice: "Post details have already been submitted. Modifications are not allowed." unless @post.live_streams.empty?
-    params["page"].each do |page_id,value|
-      @post.live_streams.create(page_id: page_id, status: @post.status) if value == "on"
-    end unless params["page"].nil?
+    params["handle"].each do |handle_hash|
+      @post.live_streams.create(page_id: handle_hash["id"], target: handle_hash["target"].to_i, status: @post.status) if handle_hash["value"] == "on"
+    end unless params["handle"].nil?
+
+    params["rtmp_url"].each do |url_hash|
+      @post.live_streams.create(target: LiveStream.targets["other"], key: url_hash["key"], status: @post.status)
+    end unless params["rtmp_url"].nil?
     return save_and_redirect
   end
 

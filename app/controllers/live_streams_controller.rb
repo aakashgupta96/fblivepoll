@@ -4,7 +4,7 @@ class LiveStreamsController < ApplicationController
   before_action :authorize_user_live_stream!
   
 	def share_select
-  	@pages = current_user.pages
+  	set_user_handles
   end
 
   def share

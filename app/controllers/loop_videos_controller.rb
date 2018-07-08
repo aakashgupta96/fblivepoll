@@ -15,7 +15,7 @@ class LoopVideosController < ApplicationController
     @template = Template.loop_video.find_by_id(params[:template])
     return redirect_to '/#pluginCarousel', notice: Constant::INVALID_TEMPLATE_MESSAGE if @template.nil?
     return redirect_to loop_video_templates_path, notice: Constant::UNAUTHORIZED_USER_FOR_TEMPLATE_MESSAGE unless current_user.can_use_template(@template)
-    set_user_pages
+    set_user_handles
   end
 
   def create
@@ -45,23 +45,30 @@ class LoopVideosController < ApplicationController
 
   def update_video
     images = params[:image]
+    extra_texts = params[:extra_text]
     @post.images.destroy_all
+    @post.extra_texts.destroy_all
+    scaling_factor = 1280.0/720;
     unless images.nil?
       path = File.join(Rails.root,'public','tmp',@post.id.to_s)
-      FileUtils.mkdir_p(path) unless File.exist?(path)  
-      images.each do |index,attributes|
+      FileUtils.mkdir_p(path) unless File.exist?(path)
+      images.each_with_index do |attributes,index|
         image_data = Base64.decode64(attributes["file"].split("base64,")[1])
         extension = attributes["file"].split("base64,")[0].split("/")[1].split(";")[0]
-        file_name = index + "." + extension
+        file_name = index.to_s + "." + extension
         File.open(File.join(path,file_name),'wb') do |f|
           f.write image_data
         end
-        scaling_factor = 1280.0/720;
         current_image = Image.new(position_x: attributes["position_x"].to_i*scaling_factor, position_y: attributes["position_y"].to_i*scaling_factor,height: attributes["height"].to_i*scaling_factor, width: attributes["width"].to_i*scaling_factor)
         current_image.file = File.open(File.join(path,file_name))
         current_image.post = @post
         current_image.save!
         FileUtils.rm("#{path}/#{file_name}")
+      end
+    end
+    unless extra_texts.nil?
+      extra_texts.each do |extra_text|
+        @post.extra_texts.create(position_x: extra_text["position_x"].to_i*scaling_factor, position_y: extra_text["position_y"].to_i*scaling_factor, text: extra_text["text"], color: extra_text["color"], font_size: extra_text["font_size"].to_i*scaling_factor)
       end
     end
     return redirect_to select_pages_path(@post)

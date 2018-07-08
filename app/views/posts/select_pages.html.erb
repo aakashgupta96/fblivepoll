@@ -1,20 +1,57 @@
 <div class="header page-heading grey-text text-darken-2 bolder center">
-	Select Pages
+	Select Handles
 </div>
 <div class="row container-wide white z-depth-3">
   <%= form_tag("/posts/" + @post.id.to_s + "/submit_pages",id: "selectPages", class: "row zero-margin") do %>
+    <div class="row">
+    <% @timelines.each do |timeline| %>
+      <div class="card col s12 m3 l2 relative unchecked page">
+        <input type="hidden" value="<%=LiveStream.targets['on_timeline']%>" name="handle[][target]"/>
+        <input type="hidden" value="<%=timeline['id']%>" name="handle[][id]"/>
+        <input type="checkbox" class="checkbox" name="handle[][value]"/>
+        <div id="<%=timeline['id']%>" class="flexbox-vertical label">
+          <center><img src="<%=timeline['image']%>" class="circle responsive-image" width=80></center>
+          <center class="page_name bold truncate"><%=timeline['name']%></center>
+          <center class="page_name bold truncate">Type: Timeline</center>
+        </div>
+      </div>
+    <% end %>
   	<% @pages.each do |page| %>
 	    <div class="card col s12 m3 l2 relative unchecked page">
-	    	<input type="checkbox" class="checkbox" name="page[<%=page['id']%>]"/>
-		   	<div id="<%=page['id']%>" class="flexbox-vertical label">
+	    	<input type="hidden" value="<%=LiveStream.targets['on_page']%>" name="handle[][target]"/>
+        <input type="hidden" value="<%=page['id']%>" name="handle[][id]"/>
+        <input type="checkbox" class="checkbox" name="handle[][value]"/>
+        <div id="<%=page['id']%>" class="flexbox-vertical label">
 		   		<center><img src="<%=page['image']%>" class="circle responsive-image" width=80></center>
 		   		<center class="page_name bold truncate"><%=page['name']%></center>
+          <center class="page_name bold truncate">Type: Page</center>
 		   	</div>
 	    </div>
 		<% end %>
+    <% @groups.each do |group| %>
+      <div class="card col s12 m3 l2 relative unchecked page">
+        <input type="hidden" value="<%=LiveStream.targets['on_group']%>" name="handle[][target]"/>
+        <input type="hidden" value="<%=group['id']%>" name="handle[][id]"/>
+        <input type="checkbox" class="checkbox" name="handle[][value]"/>
+        <div id="<%=group['id']%>" class="flexbox-vertical label">
+          <center><img src="<%=group['image']%>" class="circle responsive-image" width=80></center>
+          <center class="page_name bold truncate"><%=group['name']%></center>
+          <center class="page_name bold truncate">Type: Group</center>
+        </div>
+      </div>
+    <% end %>
+    </div>
+
+    <div id="rtmp_form" class="row">
+    </div>
+
+    <div class="row">
+      <center><button id="add_rtmp" class="btn blue">Add Custom RTMP Target</button></center>
+    </div>
 		<input type="submit" class="btn col s12" data-confirm="Are you sure?" value="Submit">
 	<%end%>
 </div>
+
 <style>
 		body{
 			display: none;
@@ -22,10 +59,11 @@
 </style>
 
 <script>
-	$(window).load(function() {
-  // When the page has loaded
-  $("body").fadeIn(1000);
-});
+  var counter = 1;
+  $(window).load(function() {
+    // When the page has loaded
+    $("body").fadeIn(1000);
+  });
 	$(document).ready(function(){
 		var max_page_limit = <%=current_user.live_stream_page_limit%>;
 		$(".label").click(function(){
@@ -72,6 +110,25 @@
       },1); 
       return true;
 		});
+
+    $("#add_rtmp").on('click',function(e){
+      e.preventDefault();
+      //console.log(e);
+      var div = document.createElement("div");
+      var id = counter;
+      counter++;
+      div.innerHTML = "<div class='card' id='input_" + id + "'> <div class='row'> <div class='col s10'> <input placeholder='Enter RTMP Target URL' type='text' name='rtmp_url[][key]'> </div> <div class='col s2 valign-wrapper'> <button class='btn remove-rtmp' data-remove_id='input_" + id + "' >Remove</button> </div> </div> </div>";
+      $("#rtmp_form").append(div);
+      add_remove_event();
+    });
+    
+    var add_remove_event = function(){
+      $(".remove-rtmp").on('click',function(e){
+        e.preventDefault();
+        var target_id = "#" + $(this).attr("data-remove_id");
+        $(target_id).remove();
+      });
+    }
 	});
 </script>
 
@@ -106,6 +163,11 @@
 		background: #98d66c;
 		color: white;
 	}
+
+  .remove_rtmp_button
+  {
+
+  }
 	@media only screen and (max-width : 992px) {
 		.page
 		{

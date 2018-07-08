@@ -10,6 +10,7 @@ class Post < ActiveRecord::Base
 	has_many :images, dependent: :destroy
 	has_many :counters, dependent: :destroy
 	has_many :messages
+  has_many :extra_texts
 	belongs_to :user
 	has_many :live_streams, dependent: :destroy
 	has_many :shared_posts, dependent: :destroy, through: :live_streams
@@ -201,10 +202,11 @@ class Post < ActiveRecord::Base
 
 	def create_html
 		images = self.images #Prepare an html for the frame of this post
+    extra_texts = self.extra_texts
     erb_file = Rails.root.to_s + "/public#{template.path}/frame.html.erb" #Path of erb file to be rendered
     html_file = Rails.root.to_s + "/public/uploads/post/#{id}/frame.html" #=>"target file name"
     erb_str = File.read(erb_file)
-    namespace = OpenStruct.new(post: self, images: images)
+    namespace = OpenStruct.new(post: self, images: images, extra_texts: extra_texts)
     result = ERB.new(erb_str)
     result = result.result(namespace.instance_eval { binding })
     path = File.join(Rails.root,'public','uploads','post',id.to_s)
@@ -232,8 +234,8 @@ class Post < ActiveRecord::Base
    		options = Selenium::WebDriver::Firefox::Options.new #(profile: profile)
    		headless = Headless.new(dimensions: "1920x1200x24")
    	else
-   		width = 1280
-   		height = 786
+   		width = 1500 #1280
+   		height = 1000 #786
    		options = Selenium::WebDriver::Chrome::Options.new
    		options.add_argument("--no-sandbox")
    		headless = Headless.new(dimensions: "1920x1200x24", display: rand(100))
@@ -351,7 +353,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def source_file_is_live?
-		return get_file_url.include?(".m3u8")#|| fb_live_to_fb?
+		return get_file_url.include?(".m3u8") rescue false#|| fb_live_to_fb?
 	end
 
 
