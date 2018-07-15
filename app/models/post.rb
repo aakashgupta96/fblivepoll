@@ -71,7 +71,7 @@ class Post < ActiveRecord::Base
       live_facebook_posts.each do |post| 
         ids << post.video_id
       end
-      query = "https://graph.facebook.com/v2.8/?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+      query = "https://graph.facebook.com/v3.0/?ids=#{ids.first(49).join(',')}&fields=reactions.limit(0).summary(total_count)&access_token=#{ENV['FB_ACCESS_TOKEN']}"
       response = HTTParty.get(query)
       response.each do |video_id,value|
         temp[video_id.to_s] = value["reactions"]["summary"]["total_count"]
@@ -335,7 +335,7 @@ class Post < ActiveRecord::Base
 		if post_id.nil? || post_id.empty?
 			false
 		else
-			query = "https://graph.facebook.com/v2.8/#{post_id}?fields=live_status&access_token=#{ENV['FB_ACCESS_TOKEN']}"
+			query = "https://graph.facebook.com/v3.0/#{post_id}?fields=live_status&access_token=#{ENV['FB_ACCESS_TOKEN']}"
 			response = HTTParty.get(query)
 			return response.ok? && (response.parsed_response["live_status"] == "LIVE")
 		end

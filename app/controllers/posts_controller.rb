@@ -16,7 +16,7 @@ class PostsController < ApplicationController
     end unless params["handle"].nil?
 
     params["rtmp_url"].each do |url_hash|
-      @post.live_streams.create(target: LiveStream.targets["other"], key: url_hash["key"], status: @post.status)
+      @post.live_streams.create(target: LiveStream.targets["other"], key: url_hash["key"], status: @post.status) unless (url_hash["key"].strip.empty?)
     end unless params["rtmp_url"].nil?
     return save_and_redirect
   end

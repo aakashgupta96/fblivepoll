@@ -9,7 +9,7 @@ class LiveStream < ActiveRecord::Base
 
 	def live_on_fb?
 		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
-			query = "https://graph.facebook.com/v2.8/#{video_id}?fields=live_status&access_token=#{user.token}"
+			query = "https://graph.facebook.com/v3.0/#{video_id}?fields=live_status&access_token=#{user.token}"
 			response = HTTParty.get(query)
 			if response.ok?
 				return response.parsed_response["live_status"] == "LIVE"
@@ -23,7 +23,7 @@ class LiveStream < ActiveRecord::Base
 
 	def ended_on_fb?
 		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
-			query = "https://graph.facebook.com/v2.8/#{video_id}?fields=live_status&access_token=#{user.token}"
+			query = "https://graph.facebook.com/v3.0/#{video_id}?fields=live_status&access_token=#{user.token}"
 			response = HTTParty.get(query)
 			possible_values = ["PROCESSING","VOD", "LIVE_STOPPED"]
 			if response.ok?
@@ -35,6 +35,26 @@ class LiveStream < ActiveRecord::Base
 			return true
 		end
 	end
+
+  def get_reactions_count
+    reactions = {}
+    unless self.target == "other"
+      query = "https://graph.facebook.com/v3.0/?ids=#{video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(like),reactions.type(LOVE).limit(0).summary(total_count).as(love),reactions.type(WOW).limit(0).summary(total_count).as(wow),reactions.type(HAHA).limit(0).summary(total_count).as(haha),reactions.type(SAD).limit(0).summary(total_count).as(sad),reactions.type(ANGRY).limit(0).summary(total_count).as(angry),comments.limit(0).summary(total_count).as(comments)&access_token=#{self.user.token}"
+      status = HTTParty.get(query)
+      response = status.parsed_response["#{video_id}"]
+      unless response.nil?
+        reactions["like"] = response["like"]["summary"]["total_count"]
+        reactions["love"] = response["love"]["summary"]["total_count"]
+        reactions["wow"] = response["wow"]["summary"]["total_count"]
+        reactions["sad"] = response["sad"]["summary"]["total_count"]
+        reactions["angry"] = response["angry"]["summary"]["total_count"]
+        reactions["haha"] = response["haha"]["summary"]["total_count"]
+        reactions["comments"] = response["comments"]["summary"]["total_count"]
+      end
+    end
+    reactions
+  end
+
 
 	def start
 		if Constant::RTMP_TEMPLATE_IDS.include?(template.id) || (self.target == "other")
@@ -132,7 +152,7 @@ class LiveStream < ActiveRecord::Base
 			return
 		end
 		begin
-			query = "https://graph.facebook.com/v2.8/?ids=#{video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
+			query = "https://graph.facebook.com/v3.0/?ids=#{video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
 			status = HTTParty.get(query)
 			if status.parsed_response["#{video_id}"].nil?
 				self.deleted_from_fb!
@@ -187,12 +207,12 @@ class LiveStream < ActiveRecord::Base
 					ls.published!
 					next
 				end
-				query = "https://graph.facebook.com/v2.8/?ids=#{ls.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
+				query = "https://graph.facebook.com/v3.0/?ids=#{ls.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ENV["FB_ACCESS_TOKEN"]}"
 				status = HTTParty.get(query)
 				if status.parsed_response["#{ls.video_id}"].nil?
 					ls.deleted_from_fb!
 				else
-					query_with_user_token = "https://graph.facebook.com/v2.8/?ids=#{ls.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ls.user.token}"
+					query_with_user_token = "https://graph.facebook.com/v3.0/?ids=#{ls.video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(total_count).as(reactions_love),reactions.type(WOW).limit(0).summary(total_count).as(reactions_wow),reactions.type(HAHA).limit(0).summary(total_count).as(reactions_haha),reactions.type(SAD).limit(0).summary(total_count).as(reactions_sad),reactions.type(ANGRY).limit(0).summary(total_count).as(reactions_angry)&access_token=#{ls.user.token}"
 					status = HTTParty.get(query_with_user_token)
 					if status.ok?
 						ls.network_error!
@@ -210,12 +230,12 @@ class LiveStream < ActiveRecord::Base
 		live_posts = live.select{|x| ((x.user.member?)&&(!Constant::RTMP_TEMPLATE_IDS.include?(x.template.id)))}
 		live_posts.each do |p|
 			begin
-				query = "https://graph.facebook.com/v2.8/#{p.video_id}?fields=description&access_token=#{p.user.token}"
+				query = "https://graph.facebook.com/v3.0/#{p.video_id}?fields=description&access_token=#{p.user.token}"
 				current_status = HTTParty.get(query).parsed_response["description"]
 				caption_suffix = p.post.default_message
 				if current_status.match(caption_suffix).nil?
 					new_caption =  "#{current_status} \n #{caption_suffix}"
-					query = "https://graph.facebook.com/v2.8/#{p.live_id}"
+					query = "https://graph.facebook.com/v3.0/#{p.live_id}"
 					response = HTTParty.post(query,:query => {"description" => "#{new_caption}", "access_token" => "#{p.user.token}"})
 				end
 			rescue Exception => e
