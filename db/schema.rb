@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180708183426) do
+ActiveRecord::Schema.define(version: 20180715163540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(version: 20180708183426) do
     t.boolean  "needs_image_names", default: false
     t.integer  "category",          default: 0
     t.string   "name"
+    t.boolean  "active",            default: true
   end
 
   create_table "user_templates", force: :cascade do |t|

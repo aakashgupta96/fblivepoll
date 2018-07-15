@@ -29,7 +29,7 @@
             <i class="material-icons">videocam</i><span class="icon-descriptor">Plugins<span class="newFeature">New</span></span>
           </div>
             <ul id='dropdown1' class='dropdown-content' style="color: '#6ca4ec';">
-              <li><%= link_to "Live Polling", poll_templates_path%></li>
+              <!-- <li><%#= link_to "Live Polling", poll_templates_path%></li> -->
               <li class="divider"></li>
               <li><%= link_to "Stream Video", loop_video_templates_path%></li>
             </ul>
@@ -61,7 +61,7 @@
           <li><%= link_to raw("<i class='material-icons'>dashboard</i><span class='icon-descriptor'>Dashboard</span>"), dashboard_path%></li>
         <% end %>
         <li>
-          <a href="/polls/templates" class="waves-effect waves-light btn btn-less-padding">Live Polling</a>
+          <!-- <a href="/polls/templates" class="waves-effect waves-light btn btn-less-padding">Live Polling</a> -->
           <a href="/loop_videos/templates" class="waves-effect waves-light btn btn-less-padding">Stream Video</a>
         </li>
         <% if user_signed_in? %>

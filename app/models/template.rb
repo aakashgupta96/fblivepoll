@@ -4,6 +4,7 @@ class Template < ActiveRecord::Base
 	has_many :features, dependent: :destroy
 
 	enum category: [:poll, :loop_video, :url_video]
+  scope :active, ->{ where(active: true) }
 
 	def premium?
 		UserTemplate.where(template_id: self.id, user_role: User.roles["member"]).empty? ? true : false

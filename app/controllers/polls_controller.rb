@@ -19,7 +19,7 @@ class PollsController < ApplicationController
   end
 
   def templates
-    @templates = ordered_templates_accoding_to_user(Template.poll)
+    @templates = ordered_templates_accoding_to_user(Template.active.poll)
   end
 
   def frame

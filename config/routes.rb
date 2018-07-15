@@ -35,11 +35,11 @@ Rails.application.routes.draw do
     post '/:live_stream_id/cancel_schedule' => 'live_streams#cancel_scheduled_live_stream', as: "cancel_schedule_live_stream"
   end
 
-  scope :polls do
-    get '/templates' => 'polls#templates', as: "poll_templates"
-    get '/:post_id/frame' => 'polls#frame', as: "frame"
-    post '/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
-  end  
+  # scope :polls do
+  #   get '/templates' => 'polls#templates', as: "poll_templates"
+  #   get '/:post_id/frame' => 'polls#frame', as: "frame"
+  #   post '/:post_id/save_canvas' => 'polls#save_canvas', as: "save_canvas"
+  # end  
 
   scope :loop_videos do 
     get '/templates' => 'loop_videos#templates', as: "loop_video_templates"
