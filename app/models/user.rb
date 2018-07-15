@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :payments, dependent: :destroy
   enum role: [:member, :donor, :admin, :premium, :ultimate]
 
-  PERMISSIONS = ["manage_pages", "publish_pages", "pages_show_list", "user_managed_groups", "publish_video"]
+  PERMISSIONS = ["manage_pages", "publish_pages", "pages_show_list", "publish_to_groups", "publish_video"]
   
   scope :banned, ->{ where(banned: true) }
 

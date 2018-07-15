@@ -41,7 +41,7 @@ class LiveStreamsController < ApplicationController
 	def set_live_stream
 		@live_stream = LiveStream.find_by_id(params[:live_stream_id])
 		if @live_stream.nil?
-      return redirect_to root_path, notice: Constant::PAGE_NOT_FOUND_MESSAGE
+      return redirect_to myposts_path, notice: Constant::PAGE_NOT_FOUND_MESSAGE
     end
 	end
 end

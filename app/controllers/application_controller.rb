@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   def set_post
     @post = Post.find_by_id(params[:post_id]) 
     if @post.nil?
-      return redirect_to root_path, notice: Constant::PAGE_NOT_FOUND_MESSAGE
+      return redirect_to myposts_path, notice: Constant::PAGE_NOT_FOUND_MESSAGE
     end
   end
 
@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_user_live_stream!
-    redirect_to root_path, alert: Constant::AUTHORIZATION_FAILED_MESSAGE unless current_user == @live_stream.user
+    redirect_to dashboard_path, alert: Constant::AUTHORIZATION_FAILED_MESSAGE unless current_user == @live_stream.user
   end
 
   def check_user_if_banned

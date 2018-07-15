@@ -248,9 +248,19 @@
         
         stage = new Kinetic.Stage({
             container: 'container',
-            width: 720,
-            height: 405,
+            width: vw,
+            height: vh,
           });
+        var layer0 = new Kinetic.Layer();
+        var rect = new Kinetic.Rect({
+            x: vx,
+            y: vy,
+            width: vw,
+            height: vh,
+            fill: 'black', //background color
+        });
+        layer0.add(rect);
+        stage.add(layer0);
         var video = $('#video' + vid).get(0);
         layer1 = new Kinetic.Layer();
         var img = new Kinetic.Image({
@@ -264,9 +274,39 @@
         layer1.add(img);
         stage.add(layer1);
         setVideo(img);
+        
+        function setPositionAndSizeOfVideo(v,i){
+          var scaling_factor;
+          var v_width;
+          var v_height;
+          var available_frame_res = vw/vh;
+          var org_video_res = v.videoWidth / v.videoHeight;
+
+          if(available_frame_res > org_video_res)
+          {
+            //scale height to 405
+            scaling_factor = vh/v.videoHeight;
+            v_height = vh;
+            v_width = v.videoWidth * scaling_factor;
+          }
+          else
+          {
+            //scale width to 720
+            scaling_factor = vw/v.videoWidth;
+            v_width = vw;
+            v_height = v.videoHeight * scaling_factor;
+          }
+          var x = (vw - v_width)/2;
+          var y =(vh - v_height)/2;
+          i.x(x);
+          i.y(y);
+          i.attrs.height = v_height;
+          i.attrs.width = v_width;
+        }
 
         function setVideo(i) {
-          var v = $('#video' + vid + ' > video').get(0);
+          var v = $('#video' + vid)[0];
+          setPositionAndSizeOfVideo(v,i);
           i.setImage(v);
           stage.draw();
           setTimeout(setVideo,20,i);
@@ -278,7 +318,6 @@
       };
       loadImages(sources, initStage);
 
-    
       
       var addBorder = function()
       {
