@@ -1,15 +1,5 @@
-<% if @pages.count==0 %>
-  <div class="card valign-wrapper center" style="height: 280px;">
-    <div class="valign container">
-      <h4 class="row red-text"> Sorry! But you do not own any Facebook page.</h4>
-      <h4 class="row red-text">You have to be editor or admin of atleast one facebook page to proceed further. </h4>
-    </div>
-  </div>
-<% else %>
-  
 <% if Constant::RTMP_TEMPLATE_IDS.include?(@template.id) %>
   <%= render "url_to_target" %>
 <% else %>
   <%= render "url_to_fb" %>
-<% end %>
 <% end %>
