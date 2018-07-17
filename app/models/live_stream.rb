@@ -39,10 +39,11 @@ class LiveStream < ActiveRecord::Base
   def get_reactions_count
     reactions = {}
     unless self.target == "other"
-      query = "https://graph.facebook.com/v3.0/?ids=#{video_id}&fields=reactions.type(LIKE).limit(0).summary(total_count).as(like),reactions.type(LOVE).limit(0).summary(total_count).as(love),reactions.type(WOW).limit(0).summary(total_count).as(wow),reactions.type(HAHA).limit(0).summary(total_count).as(haha),reactions.type(SAD).limit(0).summary(total_count).as(sad),reactions.type(ANGRY).limit(0).summary(total_count).as(angry),comments.limit(0).summary(total_count).as(comments)&access_token=#{self.user.token}"
+      query = "https://graph.facebook.com/v3.0/?ids=#{video_id}&fields=from,reactions.type(LIKE).limit(0).summary(total_count).as(like),reactions.type(LOVE).limit(0).summary(total_count).as(love),reactions.type(WOW).limit(0).summary(total_count).as(wow),reactions.type(HAHA).limit(0).summary(total_count).as(haha),reactions.type(SAD).limit(0).summary(total_count).as(sad),reactions.type(ANGRY).limit(0).summary(total_count).as(angry),comments.limit(0).summary(total_count).as(comments)&access_token=#{self.user.token}"
       status = HTTParty.get(query)
       response = status.parsed_response["#{video_id}"]
       unless response.nil?
+        reactions["from"] = response["from"]["name"]
         reactions["like"] = response["like"]["summary"]["total_count"]
         reactions["love"] = response["love"]["summary"]["total_count"]
         reactions["wow"] = response["wow"]["summary"]["total_count"]
