@@ -7,7 +7,7 @@ class LoopVideosController < ApplicationController
   before_action :check_for_eligibility_of_free_posts, only: [:new, :create]
 
   def templates
-    @templates = ordered_templates_accoding_to_user(Template.where("category in (?)",[Template.categories["url_video"],Template.categories["loop_video"]]))
+    @templates = ordered_templates_accoding_to_user(Template.active.where("category in (?)",[Template.categories["url_video"],Template.categories["loop_video"]]))
   end
 
   def new

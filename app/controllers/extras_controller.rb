@@ -5,7 +5,7 @@ class ExtrasController < ApplicationController
   end
 
   def home
-		@templates = ordered_templates_accoding_to_user(Template.all)
+		@templates = ordered_templates_accoding_to_user(Template.active.all)
 		@clients = FbPage.big.order(fan_count: :desc).limit(8)
   end
   

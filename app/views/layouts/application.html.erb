@@ -57,15 +57,15 @@
         <li><a href="/" class="nav-option center-align flexbox"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
         <li><a href="/pricing" class="nav-option center-align flexbox"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="icon-descriptor">Pricing</span></a></li>
         <li><a href="/faqs" class="nav-option center-align flexbox"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
-        <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li>
+        <!-- <li><a href="/demo" class="nav-option center-align">Watch Demo</a></li> -->
         <li style="margin-right: 10px; margin-top: 14px;">
           <div class='dropdown-button waves-effect waves-light btn btn-less-padding flexbox' data-activates='dropdown1' style="flex-wrap: nowrap;">
             <i class="material-icons">videocam</i><span class="icon-descriptor">Plugins<span class="newFeature">New</span></span>
           </div>
             <ul id='dropdown1' class='dropdown-content' style="color: '#6ca4ec';">
-              <li><%= link_to "Live Polling", poll_templates_path%></li>
+              <!-- <li><%#= link_to "Live Polling", poll_templates_path%></li>
               <li class="divider"></li>
-              <li><%= link_to "Stream Video", loop_video_templates_path%></li>
+               --><li><%= link_to "Stream Video", loop_video_templates_path%></li>
             </ul>
         </li>
 
@@ -92,12 +92,12 @@
         <li><a href="/"><i class="material-icons">home</i><span class="icon-descriptor">Home</span></a></li>
         <li><a href="/pricing"><i class="material-icons">add_shopping_cart</i><span class="icon-descriptor">Pricing</span></a></li>
         <li><a href="/faqs"><i class="material-icons">info</i><span class="icon-descriptor">FAQ</span></a></li>
-        <li><a href="/demo"><i class="material-icons">ondemand_video</i><span class="icon-descriptor">Watch Demo</span></a></li>
+        <!-- <li><a href="/demo"><i class="material-icons">ondemand_video</i><span class="icon-descriptor">Watch Demo</span></a></li> -->
         <% if user_signed_in? %>
           <li><%= link_to raw("<i class='material-icons'>dashboard</i><span class='icon-descriptor'>Dashboard</span>"), dashboard_path%></li>
         <% end %>
         <li>
-          <a href="/polls/templates" class="waves-effect waves-light btn btn-less-padding">Live Polling</a>
+          <!-- <a href="/polls/templates" class="waves-effect waves-light btn btn-less-padding">Live Polling</a> -->
           <a href="/loop_videos/templates" class="waves-effect waves-light btn btn-less-padding">Stream Video</a>
         </li>
         <% if user_signed_in? %>
