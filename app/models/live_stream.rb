@@ -148,7 +148,7 @@ class LiveStream < ActiveRecord::Base
 	end
 
 	def update_status
-		if Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+		if (Constant::RTMP_TEMPLATE_IDS.include?(template.id)  || self.target == "other")
 			self.published!
 			return
 		end
@@ -251,11 +251,13 @@ class LiveStream < ActiveRecord::Base
     begin
       graph = Koala::Facebook::API.new(self.first.user.token) #(ENV["FB_ACCESS_TOKEN"])
       page_ids = self.where.not(target: LiveStream.targets["other"]).pluck(:page_id).compact
-      query = "?ids=#{page_ids.first(49).join(',')}&fields=picture{url},name"
-      response = graph.get_object(query)
-      response.each do |page_attrs|
-        page_hash = {"name"=> page_attrs.second["name"], "id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
-        temp[page_hash["id"]] = page_hash
+      unless page_ids.size == 0
+        query = "?ids=#{page_ids.first(49).join(',')}&fields=picture{url},name"
+        response = graph.get_object(query)
+        response.each do |page_attrs|
+          page_hash = {"name"=> page_attrs.second["name"], "id" => page_attrs.second["id"], "image" => page_attrs.second["picture"]["data"]["url"]}
+          temp[page_hash["id"]] = page_hash
+        end
       end
       temp
     rescue Exception => e
