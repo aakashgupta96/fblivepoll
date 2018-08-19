@@ -43,14 +43,14 @@ class LiveStream < ActiveRecord::Base
       status = HTTParty.get(query)
       response = status.parsed_response["#{video_id}"]
       unless response.nil?
-        reactions["from"] = response["from"]["name"]
-        reactions["like"] = response["like"]["summary"]["total_count"]
-        reactions["love"] = response["love"]["summary"]["total_count"]
-        reactions["wow"] = response["wow"]["summary"]["total_count"]
-        reactions["sad"] = response["sad"]["summary"]["total_count"]
-        reactions["angry"] = response["angry"]["summary"]["total_count"]
-        reactions["haha"] = response["haha"]["summary"]["total_count"]
-        reactions["comments"] = response["comments"]["summary"]["total_count"]
+        reactions["from"] = (response["from"]["name"] rescue "NA")
+        reactions["like"] = (response["like"]["summary"]["total_count"] rescue "NA")
+        reactions["love"] = (response["love"]["summary"]["total_count"] rescue "NA")
+        reactions["wow"] = (response["wow"]["summary"]["total_count"] rescue "NA")
+        reactions["sad"] = (response["sad"]["summary"]["total_count"] rescue "NA")
+        reactions["angry"] = (response["angry"]["summary"]["total_count"] rescue "NA")
+        reactions["haha"] = (response["haha"]["summary"]["total_count"] rescue "NA")
+        reactions["comments"] = (response["comments"]["summary"]["total_count"] rescue "NA")
       end
     end
     reactions
