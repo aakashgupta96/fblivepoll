@@ -71,7 +71,11 @@ class LoopVideosController < ApplicationController
         @post.extra_texts.create(position_x: extra_text["position_x"].to_i*scaling_factor, position_y: extra_text["position_y"].to_i*scaling_factor, text: extra_text["text"], color: extra_text["color"], font_size: extra_text["font_size"].to_i*scaling_factor)
       end
     end
-    return redirect_to select_pages_path(@post)
+    unless Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id) 
+      return redirect_to select_pages_path(@post)
+    else
+      return save_and_redirect
+    end
   end
 
   private
