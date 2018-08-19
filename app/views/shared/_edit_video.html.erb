@@ -67,7 +67,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/kineticjs/5.2.0/kinetic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.min.js"></script>
     <script>
-     
+      
       function update(activeAnchor) 
       {
         var group = activeAnchor.getParent();
@@ -364,9 +364,8 @@
 
       var add_image = function(source,w,h)
       {
-        var new_image = document.createElement("img")
+        var new_image = new Image();
         new_image.src = source;
-        
         var imageGroup = new Kinetic.Group({
           x: 100,
           y: 100,
@@ -410,7 +409,11 @@
             var fr = new FileReader();
             fr.readAsDataURL(files[0]);
             fr.onload = function () {
-                add_image(fr.result,200,200);
+                var tempImg = new Image();
+                tempImg.onload = function(){
+                  add_image(fr.result,tempImg.width,tempImg.height);
+                }
+                tempImg.src = fr.result;
             }
         }
       };
