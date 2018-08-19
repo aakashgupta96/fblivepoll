@@ -102,7 +102,6 @@
         }
 
         image.setPosition(topLeft.getPosition());
-
         var width = topRight.x() - topLeft.x();
         var height = bottomLeft.y() - topLeft.y();
         if(width && height) 
@@ -500,12 +499,12 @@
 
             var position_x = document.createElement("input");
             position_x.name = "image[][position_x]";
-            position_x.value =  user_images[i].attrs.x;
+            position_x.value =  user_images[i].children[0].getAbsolutePosition().x;
             position_x.type="hidden";
 
             var position_y = document.createElement("input");
             position_y.name = "image[][position_y]";
-            position_y.value =  user_images[i].attrs.y;
+            position_y.value =  user_images[i].children[0].getAbsolutePosition().y;
             position_y.type="hidden";
 
             var height = document.createElement("input");
