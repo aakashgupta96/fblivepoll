@@ -116,22 +116,13 @@ class User < ActiveRecord::Base
     attempts = 0
     begin
       graph = Koala::Facebook::API.new(self.token)
-      response = graph.get_object('me/groups?fields=administrator&limit=500')
+      response = graph.get_object('me/groups?admin_only=true&limit=500&fields=picture{url},name')
       if response.nil? || response.size==0
         temp
       else
-        ids = Array.new
         response.each do |hash| 
-          ids << hash['id'] if hash["administrator"] == true
-        end
-        until ids.empty?
-          query = "?ids=#{ids.first(49).join(',')}&fields=picture{url},name"
-          ids = ids - ids.slice(0..48)
-          response = graph.get_object(query)
-          response.each do |group_attrs|
-            group_hash = {"name"=> group_attrs.second["name"], "id" => group_attrs.second["id"], "image" => group_attrs.second["picture"]["data"]["url"]}
-            temp << group_hash
-          end
+          group_hash = {"name"=> hash["name"], "id" => hash["id"], "image" => hash["picture"]["data"]["url"]}
+          temp << group_hash
         end
         temp
       end
