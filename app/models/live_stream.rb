@@ -22,7 +22,7 @@ class LiveStream < ActiveRecord::Base
 	end
 
 	def ended_on_fb?
-		unless Constant::RTMP_TEMPLATE_IDS.include?(template.id)
+		unless (Constant::RTMP_TEMPLATE_IDS.include?(template.id) || (self.target == "other"))
 			query = "https://graph.facebook.com/v3.0/#{video_id}?fields=live_status&access_token=#{user.token}"
 			response = HTTParty.get(query)
 			possible_values = ["PROCESSING","VOD", "LIVE_STOPPED"]
