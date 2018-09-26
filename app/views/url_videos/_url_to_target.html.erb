@@ -22,7 +22,7 @@
       <%= f.label "Title" %>
     </div>
     <div class="input-field col s12 l6">
-      <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, include_seconds: true, default:{hour: 0, minute: 30, second: 0}, time_separator: ""},{class: 'col s4'}%>
+      <%=  f.time_select :duration, {start_hour: 0 , end_hour: hour_limit, include_seconds: true, default:{hour: 3, minute: 55, second: 0}, time_separator: ""},{class: 'col s4'}%>
       <%= f.label :duration, "Duration ( HH : MM : SS )" %>
     </div>
   </div>
@@ -71,7 +71,7 @@
   <% end %>
 
   <div class="row">
-    <%= f.submit "Submit", {class: "col s12 btn",data: {:confirm => 'Are you sure?'} }%>
+    <%= f.submit "Submit", {class: "col s12 btn"}%>
   </div>
 <% end %>
 </div>
