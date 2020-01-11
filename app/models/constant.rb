@@ -33,6 +33,10 @@ class Constant < ActiveRecord::Base
   BIGPAGES_PER_PAGE = 20
 
   RTMP_TEMPLATE_IDS = [14]
+
+  AMBIENT_VIDEO_HOUR_LIMIT = 8
+
+  POLLING_FREQUENCY_SECONDS = 1
   
   ALREADY_LIVE_MESSAGE = "You already have max. number of ongoing live post(s). Please try after that live video ends."
   ALREADY_SCHEDULED_MESSAGE = "You already have max. number of scheduled post(s)."
@@ -54,4 +58,5 @@ class Constant < ActiveRecord::Base
   INELIGIBLE_FOR_FREE_TRIAL_MESSAGE = "You are ineligible to try our free Premium Plan trial offer."
   FREE_VIDEO_LIMIT_REACHED_MESSAGE = "You have reached the limit of free trial account. To make more lives, visit our PRICING page and SUBSCRIBE to any of the plans you want."
   DEFAULT_PROMOTION_MESSAGE = ""#To make something like this, visit www.shurikenlive.com"# and follow www.facebook.com/shurikenlive" #@[1807618226144625]"
+
 end

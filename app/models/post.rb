@@ -271,7 +271,7 @@ class Post < ActiveRecord::Base
 	end
 
 	def ambient?
-		return (duration.hour*3600) + (duration.min*60) > 4.hours.to_i
+		return (duration.hour*3600) + (duration.min*60) > Constant::AMBIENT_VIDEO_HOUR_LIMIT.hours.to_i
 	end
 
 	def from_google_drive?

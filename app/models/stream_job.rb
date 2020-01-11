@@ -22,15 +22,15 @@ class StreamJob
       rtmp_keys = rtmp_keys.join("|")
       if source_live
         if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
-          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         else
-          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1200k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         end
       else
         if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
-          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         else
-          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1200k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,66 -f alsa -ac 1 -i hw:0,1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2>> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         end
       end
     else
@@ -41,15 +41,15 @@ class StreamJob
       rtmp_keys = rtmp_keys.join("|")
       if source_live
         if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
-          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         else
-          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1200k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -re -i '#{@post.get_file_url}' -codec:a aac -ac 1 -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f tee -map 0:v -map 0:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         end
       else
         if Constant::RTMP_TEMPLATE_IDS.include?(@post.template.id)
-          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,105 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,105 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f flv '#{@post.live_streams.first.key}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         else
-          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,105 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 1200k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
+          command = "$HOME/bin/ffmpeg -s 1280x720 -r 24 -f x11grab -i :#{headless.display}.0+0,105 -i 'public/silent.aac' -ac 1 -codec:a aac -ar 44100 -b:a 96k -preset ultrafast -vcodec libx264 -pix_fmt yuv420p -vb 4000k -r 24 -g 48 -f tee -map 0:v -map 1:a '#{rtmp_keys}' 2> #{Rails.root.join('log').join('stream').join(@post.id.to_s).to_s}"
         end
       end
     end
@@ -74,7 +74,6 @@ class StreamJob
       @post.reload
       ffmpeg_id = %x[pgrep -P #{pid}]
       @post.change_live_streams(from: "queued", to: "live") if @post.live
-      nil_count = 0
       restart_process = false
       loop do
         #close_any_firefox_message(headless.display) unless source_live
@@ -122,7 +121,7 @@ class StreamJob
           end
           break
         end
-        sleep(1)
+        sleep(Constant::POLLING_FREQUENCY_SECONDS)
       end #End of inside loop
 
       unless restart_process

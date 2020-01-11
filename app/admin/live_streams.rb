@@ -49,32 +49,32 @@ ActiveAdmin.register LiveStream do
     column :id
 
     column raw(str) do |ls|
-      result = ls.get_reactions_count
+      #result = ls.get_reactions_count
       raw "
       <div style='display: flex;'>
         <div style='width: 100px; margin-right: #{margin}px; text-align: center;'>
-          <a href='https://www.facebook.com/#{ls.page_id}' target='_blank'>#{result['from'].nil? ? "NA" : result['from']} </a>
+          <a href='https://www.facebook.com/#{ls.page_id}' target='_blank'>NA</a>
         </div>
         <div style='width: #{width}px; margin-right: #{margin}px; text-align: center;'>
-          #{result['like'].nil? ? "NA" : result['like']} 
+          NA
         </div>
         <div style='width: #{width}px; margin-right: #{margin}px; text-align: center;'>
-          #{result['love'].nil? ? "NA" : result['love']} 
+          NA
         </div>
         <div style='width: #{width}px; margin-right: #{margin}px; text-align: center;'>
-         #{result['haha'].nil? ? "NA" : result['haha']} 
+         NA
         </div>
         <div style='width: #{width}px; margin-right: #{margin}px; text-align: center;'>
-         #{result['wow'].nil? ? "NA" : result['wow']} 
+         NA
         </div>
         <div style='width: #{width}px; margin-right: #{margin}px; text-align: center;'>
-          #{result['sad'].nil? ? "NA" : result['sad']} 
+          NA
         </div>
         <div style='width: #{width}px; margin-right: #{margin}px; text-align: center;'>
-          #{result['angry'].nil? ? "NA" : result['angry']} 
+          NA
         </div>
         <div style='width: #{width}px; margin-right: #{margin}px; text-align: center;'>
-          #{result['comments'].nil? ? "NA" : result['comments']} 
+          NA
         </div>
       </div>
       "
