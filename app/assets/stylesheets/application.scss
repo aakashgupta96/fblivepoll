@@ -22,10 +22,17 @@ body
   flex-direction: column;
   background: linear-gradient(to right, #bbbbbb, #cccccc, #eeeeee, #ffffff, #eeeeee, #cccccc, #bbbbbb);
 }
-html, body, .block 
+html, body 
 {
   height: 100%;
 }
+
+.block 
+{
+    display: block;
+    height: 100%;
+}
+
 .small-heading
 {
   font-size: 24px;
@@ -172,6 +179,11 @@ main
 {
   background: linear-gradient(to bottom, #4267b2, #0089ec, #0089ec, #0089ec, #4267b2, #421782);
   //background: linear-gradient(to bottom, hsla(220, 46%, 48%, 1), hsla(205, 100%, 46%, 1), hsla(205, 100%, 46%, 1), hsla(205, 100%, 46%, 1), hsla(220, 46%, 48%, 1), hsla(264, 70%, 80%, 1));
+}
+
+.facebook-blue
+{
+  background-color: #4267b2 !important;
 }
 
 .greenish
@@ -501,6 +513,11 @@ footer
   {
     left: 0px;
   }  
+}
+
+#nav-container
+{
+    height: 66px;
 }
 
 @media only screen and (max-width : 1080px)

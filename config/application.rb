@@ -32,7 +32,7 @@ module Live
       end if File.exists?(env_file)
     end
     if Rails.env.production?
-      ENV["domain"] = "http://www.streamidea.com"
+      ENV["domain"] = "https://www.streamidea.com"
       ENV["domain_name"] = "www.streamidea.com"
       ENV["FACEBOOK_KEY"] = ENV["PROD_FACEBOOK_KEY"]
       ENV["FACEBOOK_SECRET"] = ENV["PROD_FACEBOOK_SECRET"]

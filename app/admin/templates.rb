@@ -1,7 +1,7 @@
 ActiveAdmin.register Template do
 	scope :poll
 	scope :loop_video
-	permit_params :path, :needs_background, :needs_image_names, :category, :name
+	permit_params :path, :needs_background, :needs_image_names, :category, :name, :active
 
 	index do
 		selectable_column
